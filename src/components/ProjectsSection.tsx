@@ -22,7 +22,6 @@ const projects = [
     id: 'cba',
     name: 'Commonwealth Bank of Australia',
     company: 'Nous Infosystems · Team Lead',
-    duration: 'Apr 2024 – Oct 2025',
     tagline: 'Institutional Banking platform — event-driven microservices, Temporal workflows, and AI-powered engineering tooling for high-value corporate clients.',
     domain: 'Banking / Financial Services – Institutional Banking',
     featured: true,
@@ -207,9 +206,11 @@ export default function ProjectsSection() {
               >
                 {/* Header */}
                 <div style={{ padding: 24 }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, marginBottom: 10 }}>
                     <div style={{ fontSize: '0.75rem', color: '#6e869e', fontFamily: 'JetBrains Mono, monospace' }}>{p.company}</div>
-                    <div style={{ fontSize: '0.72rem', color: '#3a5066', fontFamily: 'JetBrains Mono, monospace', padding: '2px 9px', background: '#07101f', borderRadius: 4 }}>{p.duration}</div>
+                    {p.duration && (
+                      <div style={{ fontSize: '0.72rem', color: '#3a5066', fontFamily: 'JetBrains Mono, monospace', padding: '2px 9px', background: '#07101f', borderRadius: 4 }}>{p.duration}</div>
+                    )}
                   </div>
                   <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#e2eeff', marginBottom: 7, lineHeight: 1.2 }}>{p.name}</div>
                   <div style={{ fontSize: '0.87rem', color: '#6e869e', lineHeight: 1.5, marginBottom: 14 }}>{p.tagline}</div>
