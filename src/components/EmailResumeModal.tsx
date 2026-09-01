@@ -15,6 +15,7 @@ export default function EmailResumeModal({ resumeType, onClose }: Props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [devOtp, setDevOtp] = useState<string | null>(null);
+  const [otpToken, setOtpToken] = useState('');
 
   const sendOtp = async () => {
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -30,6 +31,8 @@ export default function EmailResumeModal({ resumeType, onClose }: Props) {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Failed to send OTP');
+      if (!data.otpToken) throw new Error('Verification session was not created. Please try again.');
+      setOtpToken(data.otpToken);
       if (data.dev && data.otp) setDevOtp(data.otp);
       setStep('otp');
     } catch (e: unknown) {
@@ -46,7 +49,7 @@ export default function EmailResumeModal({ resumeType, onClose }: Props) {
       const res = await fetch('/api/verify-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, otp, resumeType }),
+        body: JSON.stringify({ email, otp, otpToken, resumeType }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Verification failed');
@@ -210,7 +213,7 @@ export default function EmailResumeModal({ resumeType, onClose }: Props) {
               {loading ? 'Verifying…' : 'Verify & Email Resume'}
             </button>
             <button
-              onClick={() => { setStep('email'); setOtp(''); setError(''); }}
+              onClick={() => { setStep('email'); setOtp(''); setOtpToken(''); setDevOtp(null); setError(''); }}
               style={{ width: '100%', marginTop: 10, padding: '10px', background: 'none', border: 'none', cursor: 'pointer', color: '#3a5066', fontSize: '0.82rem', fontFamily: 'inherit' }}
             >
               ← Change email / resend code

@@ -5,11 +5,11 @@ import { sendResumeEmail } from '@/lib/resumeEmail';
 
 export async function POST(req: NextRequest) {
   try {
-    const { email, otp, resumeType } = await req.json();
-    if (!email || !otp) return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
+    const { email, otp, otpToken, resumeType } = await req.json();
+    if (!email || !otp || !otpToken) return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
     const safeResumeType = resumeType === 'detailed' ? 'detailed' : 'basic';
 
-    const result = await verifyOtp(email, otp.toString().trim());
+    const result = await verifyOtp(email, otp.toString().trim(), otpToken);
 
     if (result !== 'ok') {
       const msgs: Record<string, string> = {

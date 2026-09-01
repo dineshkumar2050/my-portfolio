@@ -68,24 +68,24 @@ export async function POST(req: NextRequest) {
     }
 
     const otp = generateOtp();
-    await setOtp(email, otp);
+    const otpToken = await setOtp(email, otp);
     await logOtpRequest(email);
 
     // Priority 1: Gmail SMTP (EMAIL_USER + EMAIL_APP_PASSWORD)
     if (process.env.EMAIL_USER && process.env.EMAIL_APP_PASSWORD) {
       await sendViaGmail(email, otp);
-      return NextResponse.json({ ok: true });
+      return NextResponse.json({ ok: true, otpToken });
     }
 
     // Priority 2: Resend (RESEND_API_KEY)
     if (process.env.RESEND_API_KEY && !process.env.RESEND_API_KEY.startsWith('re_xxx')) {
       await sendViaResend(email, otp);
-      return NextResponse.json({ ok: true });
+      return NextResponse.json({ ok: true, otpToken });
     }
 
     // Priority 3: Dev mode — return OTP in response so modal can display it
     console.log(`[DEV] OTP for ${email}: ${otp}`);
-    return NextResponse.json({ ok: true, dev: true, otp });
+    return NextResponse.json({ ok: true, dev: true, otp, otpToken });
 
   } catch (err) {
     console.error('send-otp error:', err);
