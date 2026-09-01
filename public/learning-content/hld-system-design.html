@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HLD & System Design Reference</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+  :root {
+    --bg: #0d1117;
+    --bg2: #161b22;
+    --bg3: #21262d;
+    --border: #30363d;
+    --text: #c9d1d9;
+    --muted: #8b949e;
+    --accent: #58a6ff;
+    --green: #3fb950;
+    --yellow: #d29922;
+    --red: #f85149;
+    --purple: #bc8cff;
+    --orange: #f0883e;
+    --teal: #39d353;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 15px; line-height: 1.6; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 24px 16px; }
+  h1 { font-size: 2rem; color: var(--accent); margin-bottom: 6px; }
+  h2 { font-size: 1.4rem; color: var(--accent); margin: 28px 0 12px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+  h3 { font-size: 1.1rem; color: var(--orange); margin: 18px 0 8px; }
+  h4 { font-size: 1rem; color: var(--purple); margin: 12px 0 6px; }
+  p { color: var(--text); margin-bottom: 10px; }
+  a { color: var(--accent); text-decoration: none; }
+  .subtitle { color: var(--muted); margin-bottom: 24px; font-size: 0.95rem; }
+  .card { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 18px; margin-bottom: 16px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+  @media(max-width: 700px) { .grid2, .grid3 { grid-template-columns: 1fr; } }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+  th { background: var(--bg3); color: var(--accent); padding: 8px 12px; text-align: left; border: 1px solid var(--border); font-size: 0.85rem; }
+  td { padding: 7px 12px; border: 1px solid var(--border); color: var(--text); font-size: 0.85rem; }
+  tr:nth-child(even) td { background: var(--bg3); }
+  ul, ol { padding-left: 20px; margin-bottom: 10px; }
+  li { margin-bottom: 4px; color: var(--text); }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; margin: 2px; }
+  .tag-blue { background: rgba(88,166,255,0.15); color: var(--accent); border: 1px solid rgba(88,166,255,0.3); }
+  .tag-green { background: rgba(63,185,80,0.15); color: var(--green); border: 1px solid rgba(63,185,80,0.3); }
+  .tag-yellow { background: rgba(210,153,34,0.15); color: var(--yellow); border: 1px solid rgba(210,153,34,0.3); }
+  .tag-red { background: rgba(248,81,73,0.15); color: var(--red); border: 1px solid rgba(248,81,73,0.3); }
+  .tag-purple { background: rgba(188,140,255,0.15); color: var(--purple); border: 1px solid rgba(188,140,255,0.3); }
+  details { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 10px; }
+  summary { padding: 12px 16px; cursor: pointer; font-weight: 600; color: var(--text); list-style: none; display: flex; justify-content: space-between; align-items: center; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: '+'; color: var(--accent); font-size: 1.2rem; }
+  details[open] summary::after { content: '−'; }
+  details[open] summary { color: var(--accent); border-bottom: 1px solid var(--border); }
+  .details-body { padding: 14px 16px; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; margin-right: 6px; }
+  .easy { background: rgba(63,185,80,0.2); color: var(--green); }
+  .medium { background: rgba(210,153,34,0.2); color: var(--yellow); }
+  .hard { background: rgba(248,81,73,0.2); color: var(--red); }
+  .vhard { background: rgba(188,140,255,0.2); color: var(--purple); }
+  pre { background: #1c2128 !important; border: 1px solid var(--border); border-radius: 6px; padding: 14px; overflow-x: auto; margin: 10px 0; }
+  code { font-family: 'SFMono-Regular', Consolas, monospace; font-size: 0.85rem; }
+  .inline-code { background: var(--bg3); padding: 2px 5px; border-radius: 4px; font-size: 0.85rem; color: var(--orange); }
+  .mermaid { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin: 12px 0; text-align: center; overflow-x: auto; }
+  .tradeoff { background: var(--bg3); border-left: 3px solid var(--yellow); padding: 10px 14px; border-radius: 0 6px 6px 0; margin: 10px 0; }
+  .tradeoff li { color: var(--muted); font-size: 0.88rem; }
+  .tradeoff li::before { content: '⚖ '; }
+  .note { background: rgba(88,166,255,0.08); border-left: 3px solid var(--accent); padding: 10px 14px; border-radius: 0 6px 6px 0; margin: 10px 0; font-size: 0.88rem; color: var(--muted); }
+  .steps { counter-reset: step; }
+  .steps li { counter-increment: step; list-style: none; padding-left: 32px; position: relative; margin-bottom: 8px; }
+  .steps li::before { content: counter(step); position: absolute; left: 0; top: 0; background: var(--accent); color: var(--bg); width: 22px; height: 22px; border-radius: 50%; font-size: 0.75rem; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+  .toc { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin-bottom: 24px; }
+  .toc ul { columns: 2; list-style: none; padding: 0; }
+  .toc li { margin-bottom: 4px; }
+  .toc a { color: var(--muted); font-size: 0.88rem; }
+  .toc a:hover { color: var(--accent); }
+  .section-divider { border: none; border-top: 1px solid var(--border); margin: 30px 0; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>HLD & System Design</h1>
+<p class="subtitle">High-Level Design reference — interview frameworks, building blocks, real system walkthroughs, patterns, and Q&A</p>
+
+<div class="toc">
+  <h3 style="margin-top:0;margin-bottom:10px;color:var(--muted);">Contents</h3>
+  <ul>
+    <li><a href="#framework">Interview Framework</a></li>
+    <li><a href="#cap">CAP Theorem</a></li>
+    <li><a href="#building-blocks">Core Building Blocks</a></li>
+    <li><a href="#url-shortener">URL Shortener</a></li>
+    <li><a href="#twitter">Twitter Timeline</a></li>
+    <li><a href="#youtube">YouTube</a></li>
+    <li><a href="#uber">Uber</a></li>
+    <li><a href="#whatsapp">WhatsApp</a></li>
+    <li><a href="#google-drive">Google Drive</a></li>
+    <li><a href="#patterns">Design Patterns</a></li>
+    <li><a href="#qa">Interview Q&amp;A</a></li>
+  </ul>
+</div>
+
+<!-- ─────────────────────────────────────────────────────────────────── -->
+<h2 id="framework">Interview Framework</h2>
+
+<div class="card">
+  <h3>5-Step System Design Process</h3>
+  <ol class="steps">
+    <li><strong>Clarify Requirements (5 min)</strong> — functional vs non-functional, scale estimates (DAU, QPS, storage), SLAs. Ask before assuming.</li>
+    <li><strong>Capacity Estimation (5 min)</strong> — QPS = DAU × actions / 86400. Storage = writes/day × record_size × retention. Identify read/write ratio.</li>
+    <li><strong>High-Level Design (10 min)</strong> — draw client → API gateway → services → DB → cache → CDN. Keep it broad, identify hotspots.</li>
+    <li><strong>Deep Dive (15 min)</strong> — pick 2-3 critical components the interviewer cares about. Database schema, sharding strategy, cache invalidation, async flows.</li>
+    <li><strong>Trade-offs & Wrap-up (5 min)</strong> — bottlenecks, failure scenarios, what you'd do with more time, monitoring strategy.</li>
+  </ol>
+  <div class="note">Always ask: "What should I prioritize?" — interviewers want to see structured thinking, not a perfect design.</div>
+</div>
+
+<div class="grid2">
+  <div class="card">
+    <h3>Quick Estimation Numbers</h3>
+    <table>
+      <tr><th>Metric</th><th>Value</th></tr>
+      <tr><td>Seconds/day</td><td>~86,400</td></tr>
+      <tr><td>1M users, 10 req/day</td><td>~116 QPS</td></tr>
+      <tr><td>1B users, 10 req/day</td><td>~116K QPS</td></tr>
+      <tr><td>1KB × 1M writes/day</td><td>~1 GB/day</td></tr>
+      <tr><td>1KB × 1B writes/day</td><td>~1 TB/day</td></tr>
+      <tr><td>Tweet (280 chars)</td><td>~300 bytes</td></tr>
+      <tr><td>Profile photo</td><td>~200 KB</td></tr>
+      <tr><td>1 min HD video</td><td>~100 MB</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h3>Availability Nines</h3>
+    <table>
+      <tr><th>Nines</th><th>Uptime</th><th>Downtime/year</th></tr>
+      <tr><td>99% (2 nines)</td><td>99%</td><td>3.65 days</td></tr>
+      <tr><td>99.9% (3 nines)</td><td>99.9%</td><td>8.76 hours</td></tr>
+      <tr><td>99.99% (4 nines)</td><td>99.99%</td><td>52.6 min</td></tr>
+      <tr><td>99.999% (5 nines)</td><td>99.999%</td><td>5.26 min</td></tr>
+      <tr><td>99.9999% (6 nines)</td><td>99.9999%</td><td>31.5 sec</td></tr>
+    </table>
+    <div class="note" style="margin-top:10px;">Serial systems multiply availability: A=0.99, B=0.99 → 0.98. Parallel systems: 1−(1−0.99)² = 0.9999.</div>
+  </div>
+</div>
+
+<!-- ─────────────────────────────────────────────────────────────────── -->
+<h2 id="cap">CAP Theorem & Consistency Models</h2>
+
+<div class="grid2">
+  <div class="card">
+    <h3>CAP Triangle</h3>
+    <p><strong>Consistency</strong>: every read gets the most recent write. <strong>Availability</strong>: every request gets a response (not necessarily latest). <strong>Partition Tolerance</strong>: system continues despite network partitions.</p>
+    <p>In a distributed system, P is mandatory — so the real choice is <strong>CP vs AP</strong>. During a partition: choose consistency (block/error) or availability (serve stale data).</p>
+    <table>
+      <tr><th>System</th><th>Type</th><th>Example</th></tr>
+      <tr><td>Zookeeper, HBase</td><td>CP</td><td>Coordination, banking</td></tr>
+      <tr><td>Cassandra, DynamoDB</td><td>AP</td><td>Shopping cart, DNS</td></tr>
+      <tr><td>RDBMS (single node)</td><td>CA</td><td>No partition tolerance</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h3>Consistency Levels</h3>
+    <ul>
+      <li><strong>Strong</strong>: linearizability — reads always see latest write</li>
+      <li><strong>Sequential</strong>: operations appear in some sequential order consistent with program order</li>
+      <li><strong>Eventual</strong>: replicas converge given no new updates (DNS, caches)</li>
+      <li><strong>Read-your-writes</strong>: user always sees own updates (session consistency)</li>
+      <li><strong>Monotonic reads</strong>: never read older data after reading newer</li>
+    </ul>
+    <h4>PACELC Extension</h4>
+    <p>If partition (P): choose A or C. Else (E): choose Latency or Consistency. Cassandra: PA/EL (low latency). MySQL: PC/EC (strong consistency).</p>
+  </div>
+</div>
+
+<!-- ─────────────────────────────────────────────────────────────────── -->
+<hr class="section-divider">
+<h2 id="building-blocks">Core Building Blocks</h2>
+
+<div class="grid2">
+  <div class="card">
+    <h3>Load Balancer</h3>
+    <p>Distributes traffic across servers. <strong>L4 LB</strong> (TCP/UDP level) is faster; <strong>L7 LB</strong> (HTTP level) enables content-based routing, SSL termination, cookie-based affinity.</p>
+    <h4>Algorithms</h4>
+    <ul>
+      <li><strong>Round Robin</strong>: equal distribution, ignores server load</li>
+      <li><strong>Weighted RR</strong>: proportional to server capacity</li>
+      <li><strong>Least Connections</strong>: best for variable request duration</li>
+      <li><strong>IP Hash</strong>: sticky sessions — same client → same server</li>
+      <li><strong>Consistent Hash</strong>: minimal reshuffling on server changes</li>
+    </ul>
+    <div class="tradeoff"><ul>
+      <li>Active-passive HA: failover delay ~30s; active-active: no failover but complex state sync</li>
+      <li>Session stickiness breaks horizontal scaling; prefer stateless services + external session store</li>
+    </ul></div>
+  </div>
+  <div class="card">
+    <h3>CDN (Content Delivery Network)</h3>
+    <p>Caches static/dynamic content at edge PoPs close to users. Reduces origin load and latency. <strong>Push CDN</strong>: you upload content proactively (good for small, infrequently changed assets). <strong>Pull CDN</strong>: edge fetches from origin on first miss (simpler, origin must handle bursts).</p>
+    <h4>Cache Control Headers</h4>
+    <ul>
+      <li><span class="inline-code">Cache-Control: max-age=86400</span> — browser + CDN TTL</li>
+      <li><span class="inline-code">s-maxage</span> — CDN-only TTL override</li>
+      <li><span class="inline-code">Surrogate-Key / Cache-Tag</span> — tag-based purge</li>
+    </ul>
+    <div class="tradeoff"><ul>
+      <li>Stale content risk: use versioned URLs (hash in filename) for zero-TTL invalidation overhead</li>
+      <li>Dynamic content CDN (edge compute) adds complexity but dramatically cuts TTFB globally</li>
+    </ul></div>
+  </div>
+</div>
+
+<div class="grid2">
+  <div class="card">
+    <h3>Caching</h3>
+    <h4>Strategies</h4>
+    <ul>
+      <li><strong>Cache-Aside (Lazy)</strong>: app checks cache → miss → load DB → populate cache. Simple, resilient to cache failure. Risk: cache stampede on cold start.</li>
+      <li><strong>Write-Through</strong>: write to cache and DB together. Always consistent but write latency doubles.</li>
+      <li><strong>Write-Behind (Write-Back)</strong>: write to cache only, async flush to DB. Low write latency, risk of data loss on cache crash.</li>
+      <li><strong>Read-Through</strong>: cache handles DB load transparently. Simpler app code.</li>
+    </ul>
+    <h4>Eviction Policies</h4>
+    <p>LRU (most common), LFU (frequency-based), FIFO, TTL-based. Redis supports LRU, LFU, volatile-lru.</p>
+    <div class="tradeoff"><ul>
+      <li>Cache invalidation is hard: use event-driven invalidation or short TTLs + background refresh</li>
+      <li>Hot key problem: one key gets 90% traffic — use local in-process cache or key sharding</li>
+    </ul></div>
+  </div>
+  <div class="card">
+    <h3>Databases</h3>
+    <h4>SQL vs NoSQL</h4>
+    <table>
+      <tr><th>Factor</th><th>SQL</th><th>NoSQL</th></tr>
+      <tr><td>Schema</td><td>Fixed</td><td>Flexible</td></tr>
+      <tr><td>ACID</td><td>Full</td><td>BASE / partial</td></tr>
+      <tr><td>Scale</td><td>Vertical + read replicas</td><td>Horizontal sharding</td></tr>
+      <tr><td>Joins</td><td>Yes</td><td>Denormalize</td></tr>
+      <tr><td>Use case</td><td>Financial, relational</td><td>Social, IoT, catalog</td></tr>
+    </table>
+    <h4>Sharding Strategies</h4>
+    <ul>
+      <li><strong>Range</strong>: simple, hotspots on sequential keys</li>
+      <li><strong>Hash</strong>: even distribution, range queries hard</li>
+      <li><strong>Directory</strong>: flexible, lookup table is SPOF</li>
+      <li><strong>Consistent Hash</strong>: minimal data movement on rebalance</li>
+    </ul>
+  </div>
+</div>
+
+<div class="grid2">
+  <div class="card">
+    <h3>Message Queues</h3>
+    <p>Decouple producers from consumers, absorb traffic spikes, enable async processing. <strong>Kafka</strong>: append-only log, high throughput, replay, ordered within partition. <strong>RabbitMQ</strong>: traditional broker, routing/fanout, message TTL, DLQ. <strong>SQS</strong>: managed, at-least-once, visibility timeout.</p>
+    <h4>Key Concepts</h4>
+    <ul>
+      <li><strong>At-most-once</strong>: fire-and-forget, possible loss</li>
+      <li><strong>At-least-once</strong>: retry on failure, idempotent consumers required</li>
+      <li><strong>Exactly-once</strong>: hardest — Kafka transactions, idempotent producers</li>
+      <li><strong>Consumer groups</strong>: scale consumers independently per partition</li>
+      <li><strong>Dead Letter Queue</strong>: capture failed messages for inspection</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>API Gateway & Consistent Hashing</h3>
+    <h4>API Gateway</h4>
+    <p>Single entry point for microservices. Handles: auth/authz, rate limiting, SSL termination, request routing, request/response transformation, circuit breaking, observability. Examples: Kong, AWS API GW, Nginx.</p>
+    <h4>Consistent Hashing</h4>
+    <p>Map both servers and keys onto a ring (0–2³²). Each key is served by the first server clockwise. Adding/removing a server affects only ~K/N keys (K=keys, N=nodes). Virtual nodes (vnodes) improve distribution — each server gets 100-200 positions on the ring.</p>
+    <div class="tradeoff"><ul>
+      <li>More vnodes = better load balance but higher memory for the ring lookup</li>
+      <li>Without vnodes, uneven data distribution when N is small</li>
+    </ul></div>
+  </div>
+</div>
+
+<!-- ─────────────────────────────────────────────────────────────────── -->
+<hr class="section-divider">
+<h2 id="url-shortener">System Design: URL Shortener</h2>
+<div class="card">
+  <p><strong>Scale:</strong> 100M URLs shortened/day, 100:1 read:write ratio → 10B redirects/day → ~116K read QPS, 1.16K write QPS. Storage: 500 bytes × 100M/day × 5 years ≈ 90 TB.</p>
+
+  <div class="mermaid">
+graph LR
+    C[Client] --> AG[API Gateway / LB]
+    AG --> WS[Write Service]
+    AG --> RS[Read Service]
+    WS --> DB[(PostgreSQL\nURL Mapping)]
+    WS --> KG[ID Generator\nSnowflake]
+    RS --> RC[(Redis Cache\nshort→long)]
+    RC -- miss --> DB
+    RS --> CDN[CDN Edge\nRedirect Cache]
+  </div>
+
+  <h4>Key Components</h4>
+  <ul>
+    <li><strong>ID Generation</strong>: Snowflake ID → base62 encode (a-z, A-Z, 0-9 = 62 chars). 7-char string = 62⁷ ≈ 3.5T unique URLs. Alternatively: MD5(url) → first 7 chars (collision risk ~0.1% at 365M URLs).</li>
+    <li><strong>Redirect</strong>: HTTP 301 (permanent, browser caches — reduces server load) vs 302 (temporary, every request hits server — enables analytics). Choose 302 if analytics matter.</li>
+    <li><strong>Redis Cache</strong>: shortCode → longURL, TTL 24h, LRU eviction. 20% of URLs drive 80% of traffic — cache hit rate ~90%+.</li>
+    <li><strong>Read path</strong>: CDN edge → Redis → DB (cascading cache layers).</li>
+  </ul>
+
+  <div class="tradeoff">
+    <ul>
+      <li>Base62 vs base58 (no 0, O, I, l): base58 avoids user confusion for manually typed URLs but reduces address space slightly</li>
+      <li>Counter-based IDs are predictable (enumerable); hash-based adds privacy but risks collisions requiring retry logic</li>
+      <li>301 vs 302 redirect: 301 saves bandwidth but loses click analytics; 302 enables tracking but increases server load 10×</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ─────────────────────────────────────────────────────────────────── -->
+<h2 id="twitter">System Design: Twitter Timeline</h2>
+<div class="card">
+  <p><strong>Scale:</strong> 300M DAU, 600M tweets/day, average 200 followers. Timeline load = top 20 tweets from 200 followees → fan-out challenge at scale.</p>
+
+  <div class="mermaid">
+graph TD
+    TW[Tweet Service] --> MQ[Kafka\nTweet Events]
+    MQ --> FO[Fan-out Service]
+    FO -->|push to| TL[(Redis Timeline\nCache per user)]
+    MQ --> SR[Search Indexer]
+    FO -->|celebrities >1M followers| PA[Pull-on-read\nfor mega accounts]
+    Client --> AG[API Gateway]
+    AG --> TS[Timeline Service]
+    TS --> TL
+    TS --> PA
+    TS --> DB[(Cassandra\nTweet Store)]
+  </div>
+
+  <h4>Fan-out Strategies</h4>
+  <ul>
+    <li><strong>Fan-out on Write (Push)</strong>: when tweet is posted, pre-compute and push to each follower's timeline cache. Fast reads (O(1)), but costly writes for users with millions of followers (Lady Gaga's tweet → 80M writes).</li>
+    <li><strong>Fan-out on Read (Pull)</strong>: fetch tweets from all followees at read time, merge/rank. No write amplification, but slow reads requiring N DB calls per timeline load.</li>
+    <li><strong>Hybrid</strong>: Push for regular users (< 1M followers), pull for celebrities. Merge at read time. Twitter uses this approach.</li>
+  </ul>
+  <h4>Timeline Ranking</h4>
+  <p>Raw chronological: simple, no ML needed. Engagement-ranked: ML model scores tweets (likes, retweets, dwell time). Store only tweet IDs in timeline cache; hydrate tweet content from tweet service to reduce storage.</p>
+
+  <div class="tradeoff">
+    <ul>
+      <li>Push model: celebrity with 100M followers × 1 tweet = 100M Redis writes. Unfollow doesn't clean cache — serve stale but use tombstones</li>
+      <li>Pull model: N=200 followees, each DB query must be fast. Cassandra partition per user + time range query works well</li>
+      <li>Caching tweet IDs vs full tweet objects: IDs are tiny (8 bytes) vs full tweet (300 bytes); hydration adds a second RTT but keeps cache fresh for edits</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ─────────────────────────────────────────────────────────────────── -->
+<h2 id="youtube">System Design: YouTube</h2>
+<div class="card">
+  <p><strong>Scale:</strong> 500 hours of video uploaded/minute, 1B hours watched/day. Massive asymmetry: read-heavy (views vs uploads ~1000:1). Storage: 500h/min × 60min × 24h × 365 × 10GB/h ≈ 2.6 EB/year raw (before transcoding).</p>
+
+  <div class="mermaid">
+graph LR
+    U[User Upload] --> UPS[Upload Service]
+    UPS --> S3_RAW[(S3\nRaw Storage)]
+    S3_RAW --> MQ[Kafka\nUpload Events]
+    MQ --> TS[Transcoding\nWorkers]
+    TS -->|360p/720p/1080p/4K| S3_CDN[(S3\nTranscoded)]
+    S3_CDN --> CDN[CDN PoPs]
+    CDN --> Viewer[Viewer]
+    UPS --> DB[(MySQL\nVideo Metadata)]
+    DB --> MC[(Memcached)]
+  </div>
+
+  <h4>Upload & Transcoding Pipeline</h4>
+  <ul>
+    <li><strong>Chunked upload</strong>: split video into 5-10MB chunks, upload with resumable protocol. On failure, resume from last successful chunk. Store chunks in blob storage (S3).</li>
+    <li><strong>Transcoding workers</strong>: stateless, horizontally scalable workers pull from queue. Produce multiple renditions: 360p, 480p, 720p, 1080p, 4K. Container formats: MP4 (H.264) for broad compatibility, WebM (VP9) for open-source.</li>
+    <li><strong>Adaptive Bitrate (ABR)</strong>: HLS or DASH segments video into 2-10s chunks at multiple bitrates. Player selects quality based on bandwidth. Segments cached aggressively at CDN (immutable once created).</li>
+    <li><strong>Metadata</strong>: MySQL for structured video metadata (title, description, views). Denormalize read-heavy fields. Cassandra or BigTable for view counts at scale.</li>
+  </ul>
+
+  <div class="tradeoff">
+    <ul>
+      <li>Transcoding is CPU-intensive; use spot instances for cost efficiency but require checkpointing for preemption resilience</li>
+      <li>HLS (Apple) vs DASH (MPEG): HLS has broader device support; DASH is codec-agnostic and better for DRM flexibility</li>
+      <li>View count consistency: exact counts require distributed counters (HyperLogLog for uniques, Kafka aggregation for total) — eventual consistency is acceptable for display</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ─────────────────────────────────────────────────────────────────── -->
+<h2 id="uber">System Design: Uber</h2>
+<div class="card">
+  <p><strong>Scale:</strong> 5M trips/day, 20M active drivers globally. Location updates every 4 seconds per active driver → ~500K location updates/sec peak. Real-time matching latency < 2s.</p>
+
+  <div class="mermaid">
+graph TD
+    D[Driver App] -->|WebSocket| LS[Location Service]
+    LS --> GS[(GeoHash Store\nRedis)]
+    Rider[Rider App] --> MS[Match Service]
+    MS --> GS
+    MS --> PS[Pricing Service\nSurge]
+    MS --> TS[Trip Service]
+    TS --> DB[(PostgreSQL\nTrips)]
+    TS --> NS[Notification\nService]
+    NS --> D
+    NS --> Rider
+  </div>
+
+  <h4>Key Components</h4>
+  <ul>
+    <li><strong>Geohash</strong>: encode lat/lng as a string (e.g., "9q8yy"). Nearby cells share a prefix. Precision 6 = ~1.2km cells. Store driver locations as <span class="inline-code">geohash → [driverIds]</span> in Redis Sorted Set with expiry. On match request, search current + 8 neighboring cells.</li>
+    <li><strong>Driver Location Updates</strong>: WebSocket for persistent bidirectional connection. Driver sends location every 4s; server updates Redis with TTL of ~30s (driver considered offline if no update).</li>
+    <li><strong>Matching</strong>: find N nearest drivers → filter by availability → rank by ETA (actual routing, not straight-line). ETA from precomputed road graph (OSRM or Google Maps API).</li>
+    <li><strong>Surge Pricing</strong>: demand/supply ratio per geohash cell. If demand > supply × threshold → surge multiplier. Updated every 60s. Stored in Redis, cached on API gateway.</li>
+  </ul>
+
+  <div class="tradeoff">
+    <ul>
+      <li>Geohash vs S2 cells: S2 cells have equal area (no polar distortion), better for global consistency, but more complex to implement; geohash is simpler with good tooling</li>
+      <li>WebSocket vs polling: WebSocket reduces location update overhead 10× but requires sticky sessions or a pub/sub fan-out layer (Redis pub/sub per driver)</li>
+      <li>Match latency vs optimality: greedy nearest-driver match is fast O(log N) but suboptimal; Hungarian algorithm is optimal but O(N³) — use greedy with constraints</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ─────────────────────────────────────────────────────────────────── -->
+<h2 id="whatsapp">System Design: WhatsApp</h2>
+<div class="card">
+  <p><strong>Scale:</strong> 2B users, 100B messages/day → 1.16M messages/sec. Most traffic is 1:1 chat. Storage: 100B × 100 bytes avg ≈ 10 TB/day. Delivery latency target: < 500ms for online users.</p>
+
+  <div class="mermaid">
+graph LR
+    SA[Sender App] -->|WebSocket| CS1[Chat Server 1]
+    CS1 --> MQ[Kafka\nMessage Router]
+    MQ --> CS2[Chat Server 2]
+    CS2 -->|WebSocket| RA[Receiver App]
+    CS1 --> MS[(Cassandra\nMessage Store)]
+    CS2 --> MS
+    MQ --> PS[Push Service\nAPNS/FCM]
+    PS -->|offline user| RA
+    CS1 --> PRS[Presence Service\nRedis]
+  </div>
+
+  <h4>Key Components</h4>
+  <ul>
+    <li><strong>WebSocket Connection</strong>: each client maintains persistent WebSocket to a chat server. Connection layer is stateful — use consistent hashing to map user → chat server. Chat servers are stateless in logic but stateful in connections.</li>
+    <li><strong>Message Flow</strong>: Sender → Chat Server A → Kafka → Chat Server B (if receiver online via WebSocket) OR Push Notification (FCM/APNS) if offline → Receiver pulls unread on reconnect.</li>
+    <li><strong>Cassandra for Messages</strong>: partition key = conversation_id, clustering key = message_id (time-ordered). Wide rows enable efficient range queries for chat history. Replication factor 3 for HA.</li>
+    <li><strong>E2E Encryption</strong>: Signal Protocol — each message encrypted with a one-time pre-key. Server stores only ciphertext; cannot read messages. Key exchange during first message in a conversation.</li>
+    <li><strong>Message Status</strong>: single tick (sent to server), double tick (delivered to device), blue tick (read). Stored as events, not denormalized on message row to avoid hot spots.</li>
+  </ul>
+
+  <div class="tradeoff">
+    <ul>
+      <li>Cassandra append-only model is ideal for messages (no updates), but message deletion requires tombstones and compaction tuning to reclaim space</li>
+      <li>E2E encryption prevents server-side spam filtering and content moderation — WhatsApp uses metadata analysis and user reports instead</li>
+      <li>Group chat fan-out: 1 message → N members. At 256 members, server-side fan-out; at thousands, push-to-member-service with partitioned delivery</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ─────────────────────────────────────────────────────────────────── -->
+<h2 id="google-drive">System Design: Google Drive</h2>
+<div class="card">
+  <p><strong>Scale:</strong> 1B users, 15 GB free quota. 10M files uploaded/day → ~116 uploads/sec. Files range from 1KB to 5GB. Key challenge: sync across multiple devices with conflict resolution.</p>
+
+  <div class="mermaid">
+graph TD
+    Client -->|Chunked Upload| US[Upload Service]
+    US --> S3[(Blob Storage\nS3/GCS)]
+    US --> MDB[(Metadata DB\nMySQL)]
+    US --> MQ[Kafka\nSync Events]
+    MQ --> NS[Notification Service]
+    NS -->|long-poll/SSE| OtherDevices[Other Devices]
+    OtherDevices --> DS[Download Service]
+    DS --> CDN[CDN]
+    CDN --> S3
+    MDB --> MC[(Memcached\nMetadata Cache)]
+  </div>
+
+  <h4>Key Components</h4>
+  <ul>
+    <li><strong>Chunked Upload</strong>: split file into 4-10MB chunks. Hash each chunk (SHA-256). If same hash exists in blob store, skip upload (deduplication). Resume interrupted uploads from last successful chunk. Store chunk manifest in metadata DB.</li>
+    <li><strong>Delta Sync</strong>: on file change, compute diff at block level (rsync algorithm). Upload only changed blocks. A 100MB file with 1KB change → upload 1KB not 100MB. Reduces bandwidth 99%+ for edits.</li>
+    <li><strong>Conflict Resolution</strong>: Last-write-wins (LWW) with vector clocks for detecting conflicts. If two devices edit offline simultaneously, detect via vector clock divergence → create a "conflict copy" and notify user. Google Docs uses OT (Operational Transformation) for real-time collaborative editing.</li>
+    <li><strong>Metadata DB</strong>: MySQL stores file hierarchy (path, parent_id), version history, chunk list per version, ACL (sharing permissions). Partition by user_id.</li>
+    <li><strong>Sync Protocol</strong>: clients maintain local state DB. On reconnect, compare local version with server version using sync tokens. Long-polling or Server-Sent Events for push notifications of remote changes.</li>
+  </ul>
+
+  <div class="tradeoff">
+    <ul>
+      <li>Deduplication at block level saves storage but requires cryptographically strong hashing (SHA-256) to avoid hash collision attacks that could leak data</li>
+      <li>Strong consistency for metadata (you must see your own upload immediately) vs eventual consistency for sync events to other devices (acceptable 1-5s delay)</li>
+      <li>Version history storage cost: keep N versions or time-based retention — trade storage cost vs user expectation of recovery window</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ─────────────────────────────────────────────────────────────────── -->
+<hr class="section-divider">
+<h2 id="patterns">Design Patterns</h2>
+
+<div class="grid2">
+  <div class="card">
+    <h3>Saga Pattern</h3>
+    <p>Manages distributed transactions across microservices without 2PC. A saga is a sequence of local transactions; each step publishes an event to trigger the next. On failure, compensating transactions roll back prior steps.</p>
+    <h4>Choreography vs Orchestration</h4>
+    <ul>
+      <li><strong>Choreography</strong>: services react to events. Decoupled, but hard to track flow and debug.</li>
+      <li><strong>Orchestration</strong>: a central saga orchestrator directs each step. Easier to monitor, but orchestrator is a coupling point.</li>
+    </ul>
+    <div class="note">Use case: e-commerce order — reserve inventory → charge payment → dispatch. Compensating: release inventory if payment fails.</div>
+  </div>
+  <div class="card">
+    <h3>Circuit Breaker</h3>
+    <p>Prevents cascading failures by stopping calls to a failing service. Three states: <strong>Closed</strong> (normal), <strong>Open</strong> (failing, reject calls fast), <strong>Half-Open</strong> (probe with limited traffic to test recovery).</p>
+    <p>Thresholds: open after N failures in T seconds. Half-open probe: allow 1 request; if success → close; if fail → open again. Libraries: Hystrix (deprecated), Resilience4j, Polly (.NET).</p>
+    <div class="tradeoff"><ul>
+      <li>Fast failure improves UX (immediate error) over hanging requests that consume threads and memory</li>
+      <li>Combine with retry + exponential backoff + jitter to avoid thundering herd on recovery</li>
+    </ul></div>
+  </div>
+</div>
+
+<div class="grid2">
+  <div class="card">
+    <h3>Transactional Outbox Pattern</h3>
+    <p>Solves the dual-write problem: writing to DB and publishing to message broker atomically. Solution: write the event to an <span class="inline-code">outbox</span> table in the same DB transaction. A separate <strong>message relay</strong> (Debezium CDC or polling) reads the outbox and publishes to Kafka.</p>
+    <p>Guarantees at-least-once delivery. Consumers must be idempotent (deduplicate via event_id). Inbox pattern at consumer side for exactly-once semantics.</p>
+  </div>
+  <div class="card">
+    <h3>CQRS (Command Query Responsibility Segregation)</h3>
+    <p>Separate the write model (commands) from the read model (queries). Write side: normalized, strongly consistent, optimized for integrity. Read side: denormalized, eventually consistent, optimized for query patterns.</p>
+    <p>Often paired with Event Sourcing: store all state changes as an immutable event log; derive read models by replaying events. Enables audit trails, temporal queries, and rebuilding projections.</p>
+    <div class="tradeoff"><ul>
+      <li>Adds complexity: two models to maintain, eventual consistency between write and read side</li>
+      <li>Excellent for high-read systems where read patterns differ significantly from write structure</li>
+    </ul></div>
+  </div>
+</div>
+
+<div class="card">
+  <h3>Rate Limiting Algorithms</h3>
+  <div class="grid3">
+    <div>
+      <h4>Token Bucket</h4>
+      <p>Bucket holds max N tokens; replenished at rate R/sec. Each request consumes 1 token. Allows bursts up to N. Redis: INCR + TTL or Lua script for atomic check-and-decrement.</p>
+    </div>
+    <div>
+      <h4>Leaky Bucket</h4>
+      <p>Requests enter a queue (bucket) and are processed at a fixed rate R. Smooths out bursts — no burst allowed. If queue full, request is dropped. Good for network traffic shaping.</p>
+    </div>
+    <div>
+      <h4>Sliding Window Log</h4>
+      <p>Store timestamp of each request in a sorted set. On request, remove timestamps older than window, count remaining. If count < limit, allow. Accurate but memory-intensive.</p>
+    </div>
+    <div>
+      <h4>Sliding Window Counter</h4>
+      <p>Approximate: current_window_count + previous_window_count × (1 - elapsed/window). ~0.003% error rate but O(1) memory. Best accuracy-to-memory tradeoff.</p>
+    </div>
+    <div>
+      <h4>Fixed Window Counter</h4>
+      <p>Simple: counter per time window (e.g., per minute). INCR in Redis with EXPIRE. Weakness: burst at window boundary (2× limit in 1s straddling two windows).</p>
+    </div>
+    <div>
+      <h4>Distributed Rate Limiting</h4>
+      <p>Multiple API gateway nodes share a central Redis counter. Lua script for atomic check-and-increment. Alternative: each node enforces N/num_nodes limit locally (less accurate but no Redis hop).</p>
+    </div>
+  </div>
+</div>
+
+<!-- ─────────────────────────────────────────────────────────────────── -->
+<hr class="section-divider">
+<h2 id="qa">Interview Q&A</h2>
+
+<h3>Easy</h3>
+
+<details>
+<summary><span class="badge easy">Easy</span> What is the difference between horizontal and vertical scaling?</summary>
+<div class="details-body">
+<p><strong>Vertical scaling (scale up)</strong>: add more CPU/RAM/disk to a single machine. Simple (no code changes), but limited by hardware max, single point of failure, and expensive at the top end. Good for stateful systems that are hard to distribute (legacy DBs).</p>
+<p><strong>Horizontal scaling (scale out)</strong>: add more machines, distribute load. Theoretically unlimited, fault-tolerant, cost-effective with commodity hardware. Requires stateless services, load balancing, and distributed state management (harder to implement).</p>
+<p>In practice: vertical scale first (cheaper and simpler), then horizontal when you hit the wall. Databases often use vertical scaling + read replicas before sharding horizontally.</p>
+</div>
+</details>
+
+<details>
+<summary><span class="badge easy">Easy</span> What is a CDN and when would you use one?</summary>
+<div class="details-body">
+<p>A CDN (Content Delivery Network) is a geographically distributed network of proxy servers that cache content close to users. It reduces latency (data travels shorter distance), reduces origin server load, and improves availability (edge serves content even if origin is down).</p>
+<p><strong>Use when</strong>: serving static assets (images, JS, CSS, videos), globally distributed users, high read QPS on public content, need for DDoS protection at edge. <strong>Don't use when</strong>: content is personalized/private (requires cache-bypass), real-time data (WebSockets), or you have a strictly regional user base with low scale.</p>
+<p>Key decision: push vs pull CDN. Push is better for large files you control the update cycle for. Pull is better for unpredictable traffic patterns where you can't pre-populate.</p>
+</div>
+</details>
+
+<details>
+<summary><span class="badge easy">Easy</span> Explain the difference between SQL and NoSQL databases. When would you choose each?</summary>
+<div class="details-body">
+<p><strong>SQL databases</strong> (PostgreSQL, MySQL): structured schema, ACID transactions, powerful join queries, vertical scaling + read replicas. Choose for: financial systems, user accounts, anything requiring strong consistency and complex relational queries. Mature tooling, well-understood failure modes.</p>
+<p><strong>NoSQL databases</strong>: flexible schema, horizontal scaling, BASE consistency. Types: Document (MongoDB — flexible JSON), Key-Value (Redis, DynamoDB — ultra-fast simple lookups), Wide-column (Cassandra — time-series, write-heavy), Graph (Neo4j — relationship traversal).</p>
+<p>Choose NoSQL for: massive scale (billions of records), flexible/evolving schema, specific access patterns (time-series, graph), high write throughput. In most real systems you use both: PostgreSQL for user data + Cassandra for events + Redis for cache.</p>
+</div>
+</details>
+
+<h3>Intermediate</h3>
+
+<details>
+<summary><span class="badge medium">Medium</span> How do you handle database hotspots / hot keys?</summary>
+<div class="details-body">
+<p>A hot key occurs when a small subset of keys receives disproportionate traffic — e.g., a celebrity's profile page or a viral post. Common causes: hash-based sharding with a key that maps to one shard, or a single Redis key for a popular counter.</p>
+<p><strong>Solutions</strong>: (1) <strong>Key splitting</strong>: append a random suffix (counter_1, counter_2 … counter_100), read all and aggregate. (2) <strong>Local in-process cache</strong>: each app server caches hot keys for 1-5s, dramatically reducing Redis load. (3) <strong>Read replicas</strong>: distribute hot reads across replicas. (4) <strong>Cache warming</strong>: preload known hot keys before traffic spike. (5) <strong>Consistent hashing with vnodes</strong>: distributes load more evenly across shards.</p>
+<p>For counters specifically: use approximate counting (HyperLogLog for uniques), batched updates (buffer in memory, flush every N seconds), or probabilistic sampling.</p>
+</div>
+</details>
+
+<details>
+<summary><span class="badge medium">Medium</span> How does consistent hashing work and why is it preferred over simple modulo hashing?</summary>
+<div class="details-body">
+<p><strong>Simple modulo hashing</strong>: <span class="inline-code">key % N</span> where N is number of servers. Problem: when N changes (server added/removed), almost all keys remap. Adding 1 server to 10 reshuffles ~90% of keys — catastrophic for cache invalidation.</p>
+<p><strong>Consistent hashing</strong>: map servers and keys onto a hash ring [0, 2³²). A key is assigned to the first server clockwise from its position. Adding/removing a server only affects keys between it and its predecessor — typically K/N keys (1/N of all keys). With 10 servers, adding 1 remaps ~9% of keys.</p>
+<p><strong>Virtual nodes</strong>: each physical server gets 100-200 positions on the ring (e.g., server1_0, server1_1 … server1_150). This improves load distribution when N is small and allows weighted assignment (more powerful servers get more vnodes). Used by Cassandra, DynamoDB, Memcached (ketama).</p>
+</div>
+</details>
+
+<details>
+<summary><span class="badge medium">Medium</span> Design a rate limiter for an API with 1M requests/second.</summary>
+<div class="details-body">
+<p><strong>Requirements</strong>: limit per user/IP, distributed across 100 API servers, respond with 429 on limit breach, minimal latency overhead (< 5ms).</p>
+<p><strong>Algorithm</strong>: Sliding Window Counter (best accuracy-to-performance tradeoff). Store in Redis: <span class="inline-code">rate:{userId}:{windowMin}</span> with INCR and 2-minute TTL. Check: current_count + (previous_count × overlap_fraction) < limit.</p>
+<p><strong>Architecture</strong>: API gateway → Redis cluster (sharded by user_id). Use Lua script for atomic check-and-increment to avoid race conditions. Redis pipeline reduces RTT. For 1M RPS across 100 servers = 10K RPS/server → Redis at 100K ops/sec (well within Redis limits of 500K-1M ops/sec). Add Redis replica for read offload. If Redis is down, fail open (allow traffic) or fail closed (block) — business decision. Local in-process cache for burst absorption: allow 10 requests without Redis check, sync periodically.</p>
+</div>
+</details>
+
+<details>
+<summary><span class="badge medium">Medium</span> How do you design a notification system for 100M users?</summary>
+<div class="details-body">
+<p>A notification system must handle multiple channels (push, email, SMS), prioritize notifications, handle failures gracefully, and respect user preferences.</p>
+<p><strong>Architecture</strong>: Event sources → Kafka topics (one per notification type or priority tier) → Notification Service (fan-out, template rendering, user preference lookup) → Channel-specific senders (FCM/APNS for push, SES for email, Twilio for SMS) → Delivery tracking in Cassandra.</p>
+<p><strong>Key considerations</strong>: (1) User preferences DB (opt-outs per channel/type) checked before sending. (2) Rate limit notifications per user (max N per hour) to avoid spam. (3) Retry with exponential backoff for failed deliveries. (4) Dead Letter Queue for persistently failed messages. (5) Idempotency: store notification_id; skip if already sent (handles Kafka at-least-once). (6) Batching: group low-priority notifications into digest emails. (7) Priority queues: critical notifications (OTP, password reset) skip queues and send directly.</p>
+</div>
+</details>
+
+<h3>Advanced</h3>
+
+<details>
+<summary><span class="badge hard">Hard</span> How would you design a globally distributed database with strong consistency?</summary>
+<div class="details-body">
+<p>Strong consistency globally means all readers see the same data as soon as a write commits, regardless of geographic location. This conflicts directly with the CAP theorem — network partitions between regions mean you must choose: block writes until all regions confirm (strong consistency) or allow divergence (availability).</p>
+<p><strong>Google Spanner approach</strong>: uses TrueTime API (GPS + atomic clocks, uncertainty ± 7ms) to assign globally ordered transaction timestamps. Two-phase commit across regions with Paxos per shard. Guarantees external consistency (linearizability). External commits wait for TrueTime uncertainty to pass. High latency (50-150ms for cross-region transactions) but strongest guarantees available.</p>
+<p><strong>Practical approach without atomic clocks</strong>: Hybrid Logical Clocks (HLC) combine physical time and logical counters. Use multi-region Paxos (CockroachDB) or Raft (etcd) with a leader per shard. For cross-shard transactions, use two-phase commit with a transaction coordinator. Read from local replica for non-critical reads (potential stale), force leader reads for critical data. Accept 100-300ms write latency for cross-region commits as the fundamental physics cost.</p>
+</div>
+</details>
+
+<details>
+<summary><span class="badge hard">Hard</span> Explain how you'd implement distributed tracing for a microservices system with 500 services.</summary>
+<div class="details-body">
+<p>Distributed tracing tracks a request as it flows through multiple services, each adding a span. A trace = tree of spans. Each span captures: service name, operation, start time, duration, parent span ID, status, and custom tags.</p>
+<p><strong>Implementation</strong>: Propagate a trace context header (W3C TraceContext standard: <span class="inline-code">traceparent: 00-{traceId}-{spanId}-{flags}</span>) through HTTP headers, Kafka message headers, and gRPC metadata. Each service SDK (OpenTelemetry) creates child spans and forwards context downstream. Spans are sent asynchronously (UDP or fire-and-forget HTTP) to a local agent (Jaeger agent, OTel collector) to avoid impacting request latency.</p>
+<p><strong>At scale</strong>: 500 services × 1000 RPS each = 500K spans/sec. Sampling is critical: head-based sampling (decide at trace root, propagate decision) at 1% for normal traffic; tail-based sampling (buffer all spans, decide after trace completes based on error/latency) preserves all error traces. Storage: Cassandra for span data (write-heavy, time-series access patterns), Elasticsearch for tag-based search. Retention: full detail 7 days, aggregated metrics 90 days.</p>
+</div>
+</details>
+
+<details>
+<summary><span class="badge hard">Hard</span> How would you design a search autocomplete system for 10B queries/day?</summary>
+<div class="details-body">
+<p>Autocomplete must return top-N suggestions in < 100ms for a partial query string. 10B queries/day = ~116K QPS globally. Most queries are reads; index updates lag writes by acceptable minutes.</p>
+<p><strong>Data structure</strong>: Trie (prefix tree) stores all query strings. Each node stores the top K (e.g., 10) queries with their scores for that prefix. This allows O(L) lookup (L = query length) returning pre-sorted suggestions. Problem: in-memory trie for web-scale is huge. Solution: serialize to sorted string table (SST) or use Elasticsearch prefix queries with edge n-gram analyzer.</p>
+<p><strong>Architecture</strong>: Query logs → Kafka → Aggregation service (count by query, 1-hour windows) → Score update service (computes trending score = freq × recency × quality) → Trie builder (periodic full rebuild or incremental update) → Distributed trie servers (consistent hash by prefix prefix, e.g., first 2 chars). API layer checks Redis cache for hot prefixes (< 2ms), falls back to trie servers (< 20ms), falls back to Elasticsearch (< 100ms). CDN caches top 10K prefixes at edge. Personalization: blend global results with user-specific query history at serving time.</p>
+</div>
+</details>
+
+<details>
+<summary><span class="badge hard">Hard</span> Design a real-time collaborative document editor (like Google Docs).</summary>
+<div class="details-body">
+<p>The core challenge: multiple users editing the same document simultaneously, each seeing others' changes in real-time, with no conflicts and correct merge semantics. Network latency means users apply operations locally before receiving remote operations — these can conflict.</p>
+<p><strong>Operational Transformation (OT)</strong>: Transform incoming operations against concurrent operations. Example: User A inserts 'X' at position 5; User B deletes char at position 3. If B's op arrives at A's server, transform it to account for A's insert: adjust position. OT requires a central server to serialize and transform operations (Google Docs uses this). Server is the source of truth; clients speculatively apply operations locally and reconcile on acknowledgment.</p>
+<p><strong>CRDT (Conflict-free Replicated Data Type)</strong>: Alternative — no coordination needed. Yjs, Automerge use sequence CRDTs where each character has a unique ID (site + counter). Concurrent inserts are deterministically ordered by ID. Deletes mark characters as tombstones. Merge is always convergent. Enables peer-to-peer collaboration. Tradeoff: higher memory (tombstones accumulate), more complex implementation.</p>
+<p><strong>System architecture</strong>: WebSocket connections to document server. Operations stored in Kafka (ordered log per document). Presence service (Redis pub/sub) broadcasts cursor positions. Document snapshot stored in PostgreSQL; op log in Cassandra. Periodic checkpointing (snapshot + compact old ops). Rate limit ops per user (max 50 ops/sec) to prevent flooding. Conflict window after network partition: buffer ops, replay on reconnect using OT/CRDT merge.</p>
+</div>
+</details>
+
+<h3>Very Advanced</h3>
+
+<details>
+<summary><span class="badge vhard">Very Advanced</span> How would you design a distributed transaction system that handles partial failures across microservices without 2PC?</summary>
+<div class="details-body">
+<p>Two-Phase Commit (2PC) is synchronous and blocks if the coordinator fails mid-transaction — unacceptable in microservices with independent deployments and network unreliability. The goal: achieve transaction semantics without a blocking coordinator.</p>
+<p><strong>Saga Pattern with Outbox</strong>: decompose into local transactions with compensating actions. Each service writes to a local <span class="inline-code">outbox</span> table atomically with its business data. A CDC relay (Debezium) publishes outbox events to Kafka. Downstream services consume events and either complete or publish failure events. Orchestrated saga: a saga coordinator service manages state machine, retries, and triggers compensations. Choreographed: services react to events directly.</p>
+<p><strong>Idempotency is non-negotiable</strong>: all operations must be idempotent (safe to retry). Use idempotency keys (event_id) stored in a deduplicate table per service. Check before processing, insert after. TTL the dedup table to bounded size.</p>
+<p><strong>Handling partial failure</strong>: stuck saga (compensating failed too) → Dead Letter Queue → human intervention or retry with exponential backoff. Semantic locks: while saga is in-progress, mark resource as "pending" to prevent concurrent sagas conflicting. Forward recovery (retry failed step) is preferred over backward recovery (compensate) when possible — compensations are business-logic-heavy and often imperfect (cannot un-send an email).</p>
+</div>
+</details>
+
+<details>
+<summary><span class="badge vhard">Very Advanced</span> Design a system to detect duplicate events in a stream of 10M events/second.</summary>
+<div class="details-body">
+<p>Exact deduplication at 10M events/sec requires O(1) lookup. If events must be deduplicated within a 24-hour window, that's 10M × 86400 = 864B events — storing all event IDs is ~8.6 TB for 10-byte IDs. Not feasible for exact matching at low latency.</p>
+<p><strong>Probabilistic: Bloom Filter</strong>: bit array of size M with K hash functions. False positive rate ~1% at M=10M bits per million elements. For 864B events, bloom filter size: 10B bits ≈ 1.25 GB at 1% FPR. Bloom filters never have false negatives (if it says "not seen", it hasn't been seen). Use a rotating bloom filter — two filters, switch every 12 hours, clear the older one. Implement in Redis with RedisBloom module: <span class="inline-code">BF.ADD key event_id</span>.</p>
+<p><strong>Exact with bounded window</strong>: if window is 1 hour not 24h: 36B events × 10 bytes = 360 GB — still large. Partition event stream by event_id hash across 100 Kafka partitions → each partition handles 100K events/sec. Each consumer maintains an in-process LRU cache of seen event IDs for last N seconds. LRU of 36M entries × 10 bytes = 360 MB per partition — feasible. Persist to Redis for cross-instance deduplication. Key insight: partition by event_id ensures the same event always goes to the same consumer, enabling purely local deduplication without coordination.</p>
+</div>
+</details>
+
+<details>
+<summary><span class="badge vhard">Very Advanced</span> How would you build a system to handle thundering herd problems at cache layer?</summary>
+<div class="details-body">
+<p>Thundering herd: a popular cache key expires; thousands of simultaneous requests all miss the cache and hit the DB simultaneously. DB gets spike that can be 100-1000× normal load. Classic scenario: product launch page, viral content, market open.</p>
+<p><strong>Solution 1 — Mutex/Probabilistic Lock</strong>: first request to detect a miss acquires a distributed lock (Redis SET NX EX), fetches from DB, populates cache, releases lock. All other requests either wait or return stale data. Redis SETNX + GETEX pattern. Risk: lock holder fails, other requests starve. Mitigate with lock TTL.</p>
+<p><strong>Solution 2 — Probabilistic Early Expiration (XFetch)</strong>: before a key expires, probabilistically refresh it. Formula: <span class="inline-code">currentTime - (delta × beta × log(rand())) > expiry_time</span>. As expiry approaches, probability of early refresh increases. The first requester to trigger early refresh re-populates. No locking needed, works at any scale, smooth repopulation.</p>
+<p><strong>Solution 3 — Stale-While-Revalidate</strong>: serve stale data immediately, trigger async background refresh. Cache-Control HTTP header supports this natively. Zero latency impact; stale window = max staleness acceptable. Combine with background queue: when stale threshold crossed, enqueue exactly one refresh job (check-and-set to avoid duplicate jobs). This is the recommended approach for most systems — decouple cache refresh from request path entirely.</p>
+<p><strong>Additional mitigations</strong>: jitter on TTLs (instead of 3600s, use 3600 ± 300s random) to stagger mass expiration. Warm cache proactively before anticipated traffic spikes. Use layered caches (L1 in-process → L2 Redis → DB) so L1 miss doesn't always mean Redis miss.</p>
+</div>
+</details>
+
+<details>
+<summary><span class="badge vhard">Very Advanced</span> Design a multi-region active-active database architecture with conflict resolution.</summary>
+<div class="details-body">
+<p>Active-active multi-region means users in any region can write, and writes are replicated to other regions. No region is a replica — all are primaries. Challenges: write conflicts (same record updated in two regions before sync), replication lag (50-200ms cross-region), and maintaining consistency guarantees users expect.</p>
+<p><strong>Conflict Detection</strong>: use vector clocks or hybrid logical clocks to track causality. Each write is stamped with {region, timestamp, counter}. On receiving a remote write, compare versions: if local version happened-before remote → accept remote. If concurrent (neither happened-before the other) → conflict.</p>
+<p><strong>Conflict Resolution Strategies</strong>: (1) <strong>LWW (Last Write Wins)</strong>: highest timestamp wins. Simple, but clock skew can cause recent writes to lose. Use with NTP + bounded drift. (2) <strong>CRDT-based</strong>: data structures that always merge correctly (counters: add both; sets: union; registers: LWW or MV-register). DynamoDB uses CRDTs for counters. (3) <strong>Application-level merge</strong>: surface conflict to application; shopping cart merges items, document editor merges edits via OT/CRDT. (4) <strong>Write to primary region, async replicate</strong>: for user profile updates, route writes to "home region" (consistent hashing by user_id → region). Eliminates conflicts at the cost of cross-region write latency for traveling users.</p>
+<p><strong>Practical architecture (CockroachDB/Spanner model)</strong>: partition data by region locality. Each row has a "home region." Writes to home region are single-Paxos-group (low latency). Writes to a non-home region go cross-region (higher latency). Reads from any region: local reads for home-region data (stale-ok), cross-region reads for other data. Global secondary indexes require fan-out to all regions. Accept that some data (e.g., global leaderboard, inventory count) cannot be active-active without coordination cost — use centralized single-region service for those hotspots with async replication for display purposes.</p>
+</div>
+</details>
+
+<hr class="section-divider">
+<p style="color:var(--muted);font-size:0.82rem;text-align:center;margin-top:20px;">HLD & System Design Reference — covers interview framework, core building blocks, 6 real system designs, design patterns, and Q&A across 4 difficulty levels.</p>
+
+</div>
+
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'dark',
+    themeVariables: {
+      primaryColor: '#21262d',
+      primaryTextColor: '#c9d1d9',
+      primaryBorderColor: '#30363d',
+      lineColor: '#58a6ff',
+      secondaryColor: '#161b22',
+      tertiaryColor: '#0d1117',
+      edgeLabelBackground: '#161b22',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
+    }
+  });
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('pre code').forEach(block => {
+      hljs.highlightElement(block);
+    });
+  });
+</script>
+</body>
+</html>

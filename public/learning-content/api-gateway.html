@@ -1,0 +1,1704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>API Gateway, REST, GraphQL &amp; gRPC — Comprehensive Reference</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6;display:flex;flex-direction:column}.topnav{background:#161b22;padding:10px 24px;border-bottom:1px solid #30363d;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100}.topnav a{color:#58a6ff;text-decoration:none;font-size:13px}.topnav h1{font-size:16px;color:#e6edf3;margin:0}.layout{display:flex;flex:1}.sidebar{width:260px;background:#161b22;border-right:1px solid #30363d;padding:16px;position:sticky;top:41px;height:calc(100vh - 41px);overflow-y:auto;flex-shrink:0}.sidebar a{display:block;padding:4px 8px;color:#8b949e;text-decoration:none;font-size:13px;border-radius:4px;margin-bottom:2px}.sidebar a:hover{background:#21262d;color:#c9d1d9}.sidebar .section-title{color:#58a6ff;font-size:11px;text-transform:uppercase;letter-spacing:.5px;margin:16px 0 6px;padding:0 8px;font-weight:600}main{flex:1;padding:32px 48px;max-width:960px}h1{font-size:2rem;color:#e6edf3;border-bottom:1px solid #30363d;padding-bottom:16px;margin-bottom:24px}h2{font-size:1.5rem;color:#e6edf3;margin:48px 0 16px;border-bottom:1px solid #21262d;padding-bottom:8px}h3{font-size:1.15rem;color:#79c0ff;margin:24px 0 10px}h4{font-size:1rem;color:#d2a8ff;margin:16px 0 8px}p{margin-bottom:12px}ul,ol{margin:0 0 16px 24px}li{margin-bottom:4px}pre{margin:16px 0;border-radius:6px;overflow-x:auto;font-size:13px}code:not(pre code){background:#161b22;padding:2px 6px;border-radius:4px;font-size:13px;color:#f0883e;border:1px solid #30363d}table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}th{background:#161b22;color:#58a6ff;padding:10px 14px;text-align:left;border:1px solid #30363d}td{padding:10px 14px;border:1px solid #30363d;vertical-align:top}tr:nth-child(even) td{background:#0a0d12}.mermaid{background:#161b22;padding:20px;border-radius:6px;margin:16px 0;text-align:center}details{border:1px solid #30363d;border-radius:6px;margin:10px 0;overflow:hidden}summary{padding:12px 16px;cursor:pointer;background:#161b22;color:#79c0ff;font-weight:600;list-style:none}details[open] summary{border-bottom:1px solid #30363d}.answer{padding:16px 20px;background:#0d1117}.badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:700;margin-left:8px}.easy{background:#1a4731;color:#3fb950}.intermediate{background:#2d2b00;color:#e3b341}.advanced{background:#3d1f00;color:#f0883e}.very-advanced{background:#3d0000;color:#ff7b72}.callout{background:#161b22;border-left:4px solid #58a6ff;padding:12px 16px;border-radius:0 6px 6px 0;margin:16px 0}footer{text-align:center;padding:24px;color:#8b949e;font-size:12px;border-top:1px solid #30363d;margin-top:40px}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <h1>API Gateway, REST, GraphQL &amp; gRPC</h1>
+  <a href="solid-principles.html">SOLID</a>
+  <a href="microservices.html">Microservices</a>
+</nav>
+
+<div class="layout">
+<aside class="sidebar">
+  <div class="section-title">API Gateway</div>
+  <a href="#what-is-gateway">What Is an API Gateway</a>
+  <a href="#gw-vs-lb-vs-proxy">Gateway vs LB vs Proxy</a>
+  <a href="#gw-features">Gateway Features</a>
+  <a href="#bff">BFF Pattern</a>
+  <a href="#gateway-comparison">Gateway Comparison Table</a>
+  <div class="section-title">API Styles</div>
+  <a href="#rest-graphql-grpc">REST vs GraphQL vs gRPC</a>
+  <a href="#rest-design">REST Design Best Practices</a>
+  <a href="#graphql">GraphQL Deep Dive</a>
+  <a href="#grpc">gRPC Deep Dive</a>
+  <a href="#openapi">OpenAPI / Swagger</a>
+  <div class="section-title">API Security</div>
+  <a href="#oauth2">OAuth 2.0 Flows</a>
+  <a href="#jwt">JWT Deep Dive</a>
+  <a href="#rate-limiting">Rate Limiting</a>
+  <a href="#mtls">mTLS &amp; API Keys</a>
+  <div class="section-title">API Design</div>
+  <a href="#versioning">API Versioning</a>
+  <a href="#pagination">Pagination Strategies</a>
+  <a href="#error-format">Error Response Format</a>
+  <a href="#webhooks">Webhook Design</a>
+  <div class="section-title">Interview Q&amp;A</div>
+  <a href="#qa">20+ Interview Questions</a>
+</aside>
+
+<main>
+<h1>API Gateway, REST, GraphQL &amp; gRPC</h1>
+
+<!-- ===== WHAT IS API GATEWAY ===== -->
+<h2 id="what-is-gateway">What Is an API Gateway?</h2>
+<p>An API Gateway is a single entry point for all client requests to backend services. It acts as a reverse proxy, routing requests to the appropriate services while handling cross-cutting concerns centrally.</p>
+
+<div class="mermaid">
+graph TB
+  subgraph Clients
+    M[Mobile App]
+    W[Web Browser]
+    T[Third Party]
+    IO[IoT Device]
+  end
+  subgraph API Gateway
+    AUTH[1. Auth / JWT Validation]
+    SSL[2. SSL Termination]
+    RL[3. Rate Limiting]
+    ROUTE[4. Routing]
+    TRANS[5. Request Transform]
+    LOG[6. Logging / Tracing]
+    CACHE[7. Response Cache]
+    CB[8. Circuit Breaking]
+  end
+  subgraph Backend Services
+    US[User Service :8001]
+    OS[Order Service :8002]
+    PS[Product Service :8003]
+    LS[Legacy Service]
+  end
+  M --> API Gateway
+  W --> API Gateway
+  T --> API Gateway
+  IO --> API Gateway
+  ROUTE --> US
+  ROUTE --> OS
+  ROUTE --> PS
+  ROUTE --> LS
+</div>
+
+<!-- ===== GATEWAY vs LB vs PROXY ===== -->
+<h2 id="gw-vs-lb-vs-proxy">API Gateway vs Load Balancer vs Reverse Proxy</h2>
+
+<table>
+  <thead>
+    <tr><th>Feature</th><th>Load Balancer</th><th>Reverse Proxy (Nginx)</th><th>API Gateway</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Primary purpose</td><td>Distribute traffic across instances of the SAME service</td><td>Forward requests, SSL termination, serve static files</td><td>Manage APIs — routing, auth, rate limiting, transformation</td></tr>
+    <tr><td>Layer</td><td>L4 (TCP) or L7 (HTTP)</td><td>L7 (HTTP)</td><td>L7 (HTTP) — application-aware</td></tr>
+    <tr><td>Authentication</td><td>No (usually pass-through)</td><td>Basic (IP allowlist, basic auth)</td><td>Yes (JWT, OAuth 2.0, API keys)</td></tr>
+    <tr><td>Rate limiting</td><td>Connection limits only</td><td>Basic rate limiting</td><td>Advanced per-client/endpoint rate limiting</td></tr>
+    <tr><td>Request transformation</td><td>No</td><td>Header manipulation only</td><td>Full request/response transformation</td></tr>
+    <tr><td>Routing logic</td><td>Round-robin / least-conn to same service</td><td>Path-based to different upstreams</td><td>Path/header/method-based to different microservices</td></tr>
+    <tr><td>Protocol translation</td><td>No</td><td>Limited</td><td>Yes (HTTP → gRPC, REST → SOAP)</td></tr>
+    <tr><td>API analytics</td><td>No</td><td>Basic logs</td><td>Full API usage analytics</td></tr>
+    <tr><td>Examples</td><td>AWS ALB/NLB, HAProxy</td><td>Nginx, Caddy</td><td>Kong, AWS API GW, Apigee, Traefik</td></tr>
+    <tr><td>Performance overhead</td><td>Minimal</td><td>Very low</td><td>Low to moderate (depends on plugins)</td></tr>
+  </tbody>
+</table>
+
+<!-- ===== GATEWAY FEATURES ===== -->
+<h2 id="gw-features">API Gateway Features</h2>
+
+<h3>1. Routing</h3>
+<pre><code class="language-yaml"># Kong routing configuration
+services:
+  - name: user-service
+    url: http://user-service:8001
+    routes:
+      - name: user-routes
+        paths: ["/api/v1/users"]
+        methods: ["GET", "POST", "PUT", "DELETE"]
+        strip_path: false
+
+  - name: order-service
+    url: http://order-service:8002
+    routes:
+      - name: order-routes
+        paths: ["/api/v1/orders"]
+        # Route by header
+        headers:
+          X-Client-Version: ["v2"]</code></pre>
+
+<h3>2. Rate Limiting</h3>
+<pre><code class="language-yaml"># Kong rate limiting plugin
+plugins:
+  - name: rate-limiting
+    config:
+      minute: 100        # 100 requests per minute per consumer
+      hour: 2000         # 2000 per hour
+      day: 10000         # 10000 per day
+      policy: redis      # shared across multiple gateway instances
+      limit_by: consumer # or ip, credential, service
+      hide_client_headers: false
+      # Response headers added: X-RateLimit-Limit-Minute, X-RateLimit-Remaining-Minute</code></pre>
+
+<h3>3. SSL Termination</h3>
+<p>The gateway handles HTTPS from clients and communicates with backend services over HTTP (or mTLS for zero-trust). Offloads TLS processing from application servers.</p>
+
+<h3>4. Request/Response Transformation</h3>
+<pre><code class="language-yaml"># Kong request transformer
+plugins:
+  - name: request-transformer
+    config:
+      add:
+        headers:
+          - "X-Internal-Service:true"
+          - "X-Gateway-Version:2.0"
+      remove:
+        headers:
+          - "Authorization"   # strip before forwarding to internal service
+      rename:
+        querystring:
+          - "page_num:page"   # rename query param</code></pre>
+
+<h3>5. Request Aggregation</h3>
+<p>The gateway (or BFF) can aggregate multiple downstream calls into a single API response, reducing client chattiness.</p>
+<pre><code class="language-javascript">// AWS API Gateway Lambda integration for aggregation
+exports.handler = async (event) => {
+  const orderId = event.pathParameters.orderId;
+
+  // Parallel calls to internal services
+  const [order, customer, shipment] = await Promise.all([
+    fetch(`http://order-service/orders/${orderId}`).then(r => r.json()),
+    fetch(`http://customer-service/customers/${order?.customerId}`).then(r => r.json()),
+    fetch(`http://shipping-service/shipments/${orderId}`).then(r => r.json())
+  ]);
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ order, customer, shipment })
+  };
+};</code></pre>
+
+<h3>6. CORS Handling</h3>
+<pre><code class="language-yaml"># Kong CORS plugin
+plugins:
+  - name: cors
+    config:
+      origins: ["https://app.example.com", "https://admin.example.com"]
+      methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+      headers: ["Authorization", "Content-Type", "X-Correlation-ID"]
+      exposed_headers: ["X-RateLimit-Remaining-Minute"]
+      credentials: true
+      max_age: 3600</code></pre>
+
+<!-- ===== BFF ===== -->
+<h2 id="bff">Backend for Frontend (BFF) Pattern</h2>
+<p>Instead of one generic API gateway, create a dedicated backend API per client type. Each BFF is a thin layer that aggregates, filters, and shapes data specifically for its client.</p>
+
+<div class="mermaid">
+graph LR
+  subgraph Clients
+    MOB[iOS / Android]
+    WEB[Web SPA]
+    THIRD[Third-Party API]
+  end
+  subgraph BFFs
+    MB[Mobile BFF\nNode.js\nAggregates, compresses]
+    WB[Web BFF\nNode.js\nRich data, SSR support]
+    PB[Partner BFF\nJava\nStrict auth, limited endpoints]
+  end
+  subgraph Services
+    US[User Service]
+    OS[Order Service]
+    PS[Product Service]
+    INV[Inventory]
+  end
+  MOB --> MB
+  WEB --> WB
+  THIRD --> PB
+  MB --> US
+  MB --> OS
+  WB --> US
+  WB --> OS
+  WB --> PS
+  PB --> OS
+  PB --> INV
+</div>
+
+<h4>When to Use BFF</h4>
+<ul>
+  <li>Different clients have significantly different data requirements</li>
+  <li>Mobile must minimize payload size and number of requests</li>
+  <li>Different teams own different client frontends</li>
+  <li>Different security requirements per client (public API vs internal web app)</li>
+</ul>
+
+<!-- ===== GATEWAY COMPARISON ===== -->
+<h2 id="gateway-comparison">Popular API Gateways Comparison</h2>
+
+<table>
+  <thead>
+    <tr><th>Gateway</th><th>Type</th><th>Key Strengths</th><th>Pricing Model</th><th>Best For</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Kong</strong></td>
+      <td>OSS / Enterprise</td>
+      <td>Plugin ecosystem (200+), K8s native (Kong Ingress Controller), Lua/Go plugins</td>
+      <td>OSS free; Enterprise: per-node licensing</td>
+      <td>Complex enterprise, K8s deployments, plugin extensibility</td>
+    </tr>
+    <tr>
+      <td><strong>AWS API Gateway</strong></td>
+      <td>Managed cloud</td>
+      <td>Deep AWS integration, Lambda triggers, WebSocket support, WAF integration</td>
+      <td>Per API call ($3.50/million) + data transfer</td>
+      <td>AWS-native apps, serverless architectures</td>
+    </tr>
+    <tr>
+      <td><strong>NGINX</strong></td>
+      <td>OSS / NGINX Plus</td>
+      <td>High performance, battle-tested, reverse proxy + LB + gateway</td>
+      <td>OSS free; Plus: annual subscription</td>
+      <td>High-traffic, low-latency, existing NGINX deployments</td>
+    </tr>
+    <tr>
+      <td><strong>Traefik</strong></td>
+      <td>OSS / Enterprise</td>
+      <td>Auto-discovery with Docker/K8s, zero-config, Let's Encrypt built-in</td>
+      <td>OSS free; Enterprise: per-node</td>
+      <td>K8s/Docker, DevOps teams, auto-config environments</td>
+    </tr>
+    <tr>
+      <td><strong>Envoy</strong></td>
+      <td>OSS (CNCF)</td>
+      <td>xDS API, service mesh (Istio), advanced observability, HTTP/2 + gRPC native</td>
+      <td>Free OSS</td>
+      <td>Service mesh data plane, gRPC-heavy, Istio/Consul</td>
+    </tr>
+    <tr>
+      <td><strong>Apigee (Google)</strong></td>
+      <td>Managed cloud</td>
+      <td>Full API lifecycle management, analytics, developer portal, monetization</td>
+      <td>Per API call; GCP pricing</td>
+      <td>Enterprise API programs, external developer ecosystems</td>
+    </tr>
+    <tr>
+      <td><strong>Azure APIM</strong></td>
+      <td>Managed cloud</td>
+      <td>Azure integration, policy engine, developer portal, OpenAI integration</td>
+      <td>Per unit/hour; tiered pricing</td>
+      <td>Azure-native enterprise, hybrid (on-prem + cloud)</td>
+    </tr>
+    <tr>
+      <td><strong>Spring Cloud Gateway</strong></td>
+      <td>OSS (Java)</td>
+      <td>Spring ecosystem, reactive, easy Java customization</td>
+      <td>Free OSS</td>
+      <td>Java/Spring microservices teams</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ===== REST vs GraphQL vs gRPC ===== -->
+<h2 id="rest-graphql-grpc">REST vs GraphQL vs gRPC — Deep Comparison</h2>
+
+<table>
+  <thead>
+    <tr><th>Aspect</th><th>REST</th><th>GraphQL</th><th>gRPC</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Protocol</td><td>HTTP/1.1 or HTTP/2</td><td>HTTP/1.1 or HTTP/2 (POST)</td><td>HTTP/2 (required)</td></tr>
+    <tr><td>Data format</td><td>JSON (typically)</td><td>JSON</td><td>Protocol Buffers (binary)</td></tr>
+    <tr><td>Schema</td><td>Optional (OpenAPI)</td><td>Mandatory (GraphQL SDL)</td><td>Mandatory (Protobuf .proto)</td></tr>
+    <tr><td>Fetching</td><td>Fixed responses (over/under-fetching)</td><td>Client specifies exact fields needed</td><td>Fixed fields per RPC call</td></tr>
+    <tr><td>Streaming</td><td>SSE, WebSocket (add-ons)</td><td>Subscriptions (WebSocket)</td><td>4 streaming types built-in</td></tr>
+    <tr><td>Performance</td><td>Good (JSON overhead)</td><td>Moderate (query parsing, resolvers)</td><td>Excellent (binary, HTTP/2 multiplexing)</td></tr>
+    <tr><td>Browser support</td><td>Native</td><td>Native (any HTTP client)</td><td>grpc-web (requires proxy)</td></tr>
+    <tr><td>Code generation</td><td>OpenAPI generators</td><td>GraphQL Code Generator</td><td>Auto-generated stubs (11+ languages)</td></tr>
+    <tr><td>Caching</td><td>HTTP caching (ETags, Cache-Control)</td><td>Harder (all POST, no HTTP caching out-of-box)</td><td>No HTTP caching</td></tr>
+    <tr><td>Versioning</td><td>URL, header, or content negotiation</td><td>Schema evolution (deprecation)</td><td>Protobuf field numbers (backward compatible)</td></tr>
+    <tr><td>Learning curve</td><td>Low</td><td>Medium</td><td>Medium-High (Protobuf, stubs)</td></tr>
+    <tr><td>Best for</td><td>Public APIs, simple CRUD, browser clients</td><td>Flexible client needs, multiple clients, mobile</td><td>Internal service-to-service, high-performance, streaming</td></tr>
+    <tr><td>Tooling ecosystem</td><td>Excellent</td><td>Very good (growing)</td><td>Good for supported languages</td></tr>
+    <tr><td>Real-world examples</td><td>Twitter, Stripe, GitHub v3</td><td>GitHub v4, Shopify, Facebook</td><td>Google internal, Netflix, Dropbox</td></tr>
+  </tbody>
+</table>
+
+<!-- ===== REST DESIGN BEST PRACTICES ===== -->
+<h2 id="rest-design">REST Design Best Practices</h2>
+
+<h3>RESTful URL Conventions</h3>
+<pre><code class="language-http">## Collections and Resources
+GET    /api/v1/users              # List users (collection)
+POST   /api/v1/users              # Create user
+GET    /api/v1/users/{id}         # Get user by ID
+PUT    /api/v1/users/{id}         # Full update (replace)
+PATCH  /api/v1/users/{id}         # Partial update
+DELETE /api/v1/users/{id}         # Delete user
+
+## Nested resources (ownership relationship)
+GET    /api/v1/users/{userId}/orders         # Orders for a user
+POST   /api/v1/users/{userId}/orders         # Create order for user
+GET    /api/v1/users/{userId}/orders/{orderId}
+
+## Actions (use sparingly, prefer resource-based)
+POST   /api/v1/orders/{id}/cancel           # Action on resource
+POST   /api/v1/users/{id}/send-verification # Action
+
+## Filtering, sorting, pagination
+GET    /api/v1/products?category=electronics&minPrice=100&maxPrice=500
+GET    /api/v1/orders?status=pending&sort=createdAt&direction=desc
+GET    /api/v1/users?page=2&pageSize=20
+GET    /api/v1/users?cursor=eyJpZCI6MTAwfQ&limit=20</code></pre>
+
+<h3>HTTP Status Codes</h3>
+<table>
+  <thead>
+    <tr><th>Code</th><th>Meaning</th><th>When to Use</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>200 OK</td><td>Success with body</td><td>GET, PUT, PATCH, DELETE with response body</td></tr>
+    <tr><td>201 Created</td><td>Resource created</td><td>POST that creates a resource; include Location header</td></tr>
+    <tr><td>204 No Content</td><td>Success, no body</td><td>DELETE, or PUT/PATCH with no response needed</td></tr>
+    <tr><td>400 Bad Request</td><td>Client input error</td><td>Validation failures, malformed JSON, missing required fields</td></tr>
+    <tr><td>401 Unauthorized</td><td>Not authenticated</td><td>Missing or invalid credentials/token</td></tr>
+    <tr><td>403 Forbidden</td><td>Not authorized</td><td>Authenticated but lacks permission</td></tr>
+    <tr><td>404 Not Found</td><td>Resource missing</td><td>Resource doesn't exist (don't use for empty collections)</td></tr>
+    <tr><td>409 Conflict</td><td>State conflict</td><td>Duplicate resource, optimistic lock conflict</td></tr>
+    <tr><td>422 Unprocessable Entity</td><td>Semantic validation error</td><td>Valid JSON but business rule violation</td></tr>
+    <tr><td>429 Too Many Requests</td><td>Rate limited</td><td>Include Retry-After header</td></tr>
+    <tr><td>500 Internal Server Error</td><td>Server bug</td><td>Unexpected server error; never expose internals</td></tr>
+    <tr><td>502 Bad Gateway</td><td>Upstream error</td><td>Gateway can't reach backend service</td></tr>
+    <tr><td>503 Service Unavailable</td><td>Temporarily down</td><td>Circuit open, maintenance; include Retry-After</td></tr>
+  </tbody>
+</table>
+
+<!-- ===== ERROR FORMAT ===== -->
+<h2 id="error-format">Error Response Format</h2>
+<p>Standardize error responses. RFC 7807 (Problem Details for HTTP APIs) is widely adopted.</p>
+
+<pre><code class="language-json">// RFC 7807 Problem Details format
+{
+  "type": "https://api.example.com/errors/validation-error",
+  "title": "Validation Error",
+  "status": 400,
+  "detail": "The request body contains invalid fields.",
+  "instance": "/api/v1/users",
+  "traceId": "a8f3d2c1-e4b5-4f6a-9c8d-1234567890ab",
+  "timestamp": "2025-08-30T10:15:30Z",
+  "errors": [
+    {
+      "field": "email",
+      "code": "INVALID_FORMAT",
+      "message": "Must be a valid email address",
+      "rejectedValue": "not-an-email"
+    },
+    {
+      "field": "age",
+      "code": "OUT_OF_RANGE",
+      "message": "Age must be between 0 and 150",
+      "rejectedValue": -5
+    }
+  ]
+}</code></pre>
+
+<pre><code class="language-java">// Spring Boot global exception handler
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ProblemDetail handleValidation(MethodArgumentNotValidException ex, HttpServletRequest req) {
+        ProblemDetail pd = ProblemDetail.forStatusAndDetail(
+            HttpStatus.BAD_REQUEST, "The request body contains invalid fields.");
+        pd.setType(URI.create("https://api.example.com/errors/validation-error"));
+        pd.setTitle("Validation Error");
+        pd.setProperty("traceId", MDC.get("traceId"));
+        pd.setProperty("timestamp", Instant.now());
+
+        List&lt;FieldError&gt; errors = ex.getBindingResult().getFieldErrors().stream()
+            .map(e -> new FieldError(e.getField(), e.getCode(), e.getDefaultMessage(), e.getRejectedValue()))
+            .collect(Collectors.toList());
+        pd.setProperty("errors", errors);
+
+        return pd;
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ProblemDetail handleNotFound(ResourceNotFoundException ex) {
+        ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
+        pd.setType(URI.create("https://api.example.com/errors/not-found"));
+        pd.setProperty("traceId", MDC.get("traceId"));
+        return pd;
+    }
+}</code></pre>
+
+<!-- ===== GRAPHQL ===== -->
+<h2 id="graphql">GraphQL Deep Dive</h2>
+
+<h3>Schema Definition Language (SDL)</h3>
+<pre><code class="language-graphql">type User {
+  id: ID!
+  name: String!
+  email: String!
+  orders(limit: Int = 10, cursor: String): OrderConnection!
+  createdAt: DateTime!
+}
+
+type Order {
+  id: ID!
+  total: Float!
+  status: OrderStatus!
+  items: [OrderItem!]!
+  customer: User!
+}
+
+enum OrderStatus { PENDING CONFIRMED SHIPPED DELIVERED CANCELLED }
+
+type OrderConnection {
+  edges: [OrderEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+type OrderEdge { node: Order! cursor: String! }
+type PageInfo { hasNextPage: Boolean! endCursor: String }
+
+type Query {
+  user(id: ID!): User
+  users(limit: Int, cursor: String): [User!]!
+  order(id: ID!): Order
+}
+
+type Mutation {
+  createOrder(input: CreateOrderInput!): Order!
+  cancelOrder(id: ID!): Order!
+}
+
+type Subscription {
+  orderStatusChanged(orderId: ID!): Order!
+}
+
+input CreateOrderInput {
+  items: [OrderItemInput!]!
+  shippingAddressId: ID!
+}</code></pre>
+
+<h3>Queries &amp; Mutations</h3>
+<pre><code class="language-graphql"># Client specifies EXACTLY what fields it needs
+# No over-fetching!
+query GetUserDashboard {
+  user(id: "user-123") {
+    name
+    email
+    orders(limit: 5) {
+      edges {
+        node {
+          id
+          total
+          status
+          # Don't need items here — not fetched!
+        }
+      }
+    }
+  }
+}
+
+# Multiple resources in ONE request
+query GetOrderDetails {
+  order(id: "order-456") {
+    id
+    total
+    status
+    items {
+      product { name price }
+      quantity
+    }
+    customer {
+      name
+      email   # Only what we need
+    }
+  }
+}</code></pre>
+
+<h3>N+1 Problem &amp; DataLoader</h3>
+<pre><code class="language-javascript">// N+1 Problem: fetching orders for users
+// If 10 users each have orders, this fires 10+1 DB queries!
+const resolvers = {
+  Query: {
+    users: () => db.query('SELECT * FROM users LIMIT 10'), // 1 query
+  },
+  User: {
+    orders: (user) => db.query('SELECT * FROM orders WHERE user_id = ?', [user.id])
+    // Called 10 times = 10 queries! Total: 11 queries
+  }
+};
+
+// SOLUTION: DataLoader batches and caches
+const DataLoader = require('dataloader');
+
+const ordersByUserLoader = new DataLoader(async (userIds) => {
+  // Called ONCE with all 10 userIds batched!
+  const orders = await db.query(
+    'SELECT * FROM orders WHERE user_id IN (?)',
+    [userIds]
+  );
+  // Group by userId and return in same order as userIds
+  const orderMap = orders.reduce((map, order) => {
+    if (!map[order.userId]) map[order.userId] = [];
+    map[order.userId].push(order);
+    return map;
+  }, {});
+  return userIds.map(id => orderMap[id] || []);
+});
+
+const resolvers = {
+  User: {
+    orders: (user) => ordersByUserLoader.load(user.id) // batched!
+    // 10 calls to .load() → 1 DB query
+  }
+};</code></pre>
+
+<h3>GraphQL Subscriptions</h3>
+<pre><code class="language-graphql"># Client subscribes
+subscription TrackOrder {
+  orderStatusChanged(orderId: "order-456") {
+    id
+    status
+    updatedAt
+  }
+}
+</code></pre>
+<pre><code class="language-javascript">// Server-side subscription (Apollo Server)
+const resolvers = {
+  Subscription: {
+    orderStatusChanged: {
+      subscribe: (_, { orderId }) =>
+        pubsub.asyncIterator(`ORDER_STATUS_${orderId}`),
+      resolve: (payload) => payload.order
+    }
+  },
+  Mutation: {
+    updateOrderStatus: async (_, { id, status }) => {
+      const order = await orderService.updateStatus(id, status);
+      // Publish to all subscribers
+      await pubsub.publish(`ORDER_STATUS_${id}`, { order });
+      return order;
+    }
+  }
+};</code></pre>
+
+<!-- ===== GRPC ===== -->
+<h2 id="grpc">gRPC Deep Dive</h2>
+
+<h3>Protobuf Definition</h3>
+<pre><code class="language-protobuf">syntax = "proto3";
+package payment.v1;
+
+import "google/protobuf/timestamp.proto";
+
+service PaymentService {
+  rpc ProcessPayment(PaymentRequest) returns (PaymentResponse);
+  rpc GetPaymentStatus(PaymentStatusRequest) returns (stream PaymentStatusUpdate);
+  rpc BatchProcess(stream PaymentRequest) returns (BatchPaymentResponse);
+  rpc PaymentStream(stream PaymentRequest) returns (stream PaymentResponse);
+}
+
+message PaymentRequest {
+  string order_id = 1;
+  string customer_id = 2;
+  double amount = 3;
+  string currency = 4;
+  PaymentMethod method = 5;
+  map&lt;string, string&gt; metadata = 6;
+}
+
+message PaymentResponse {
+  string transaction_id = 1;
+  PaymentStatus status = 2;
+  string error_message = 3;
+  google.protobuf.Timestamp processed_at = 4;
+}
+
+enum PaymentStatus {
+  PAYMENT_STATUS_UNKNOWN = 0;
+  PAYMENT_STATUS_PENDING = 1;
+  PAYMENT_STATUS_SUCCESS = 2;
+  PAYMENT_STATUS_FAILED = 3;
+  PAYMENT_STATUS_REFUNDED = 4;
+}
+
+enum PaymentMethod {
+  PAYMENT_METHOD_UNKNOWN = 0;
+  PAYMENT_METHOD_CARD = 1;
+  PAYMENT_METHOD_BANK_TRANSFER = 2;
+  PAYMENT_METHOD_WALLET = 3;
+}</code></pre>
+
+<h3>gRPC Java Implementation</h3>
+<pre><code class="language-java">// Server implementation
+@GrpcService
+public class PaymentGrpcService extends PaymentServiceGrpc.PaymentServiceImplBase {
+
+    @Override
+    public void processPayment(PaymentRequest request, StreamObserver&lt;PaymentResponse&gt; responseObserver) {
+        try {
+            PaymentResult result = paymentService.process(
+                request.getOrderId(),
+                request.getAmount(),
+                request.getCurrency()
+            );
+
+            PaymentResponse response = PaymentResponse.newBuilder()
+                .setTransactionId(result.getTransactionId())
+                .setStatus(PaymentStatus.PAYMENT_STATUS_SUCCESS)
+                .setProcessedAt(Timestamps.fromMillis(System.currentTimeMillis()))
+                .build();
+
+            responseObserver.onNext(response);
+            responseObserver.onCompleted();
+
+        } catch (PaymentException e) {
+            responseObserver.onError(
+                Status.FAILED_PRECONDITION
+                    .withDescription(e.getMessage())
+                    .asRuntimeException()
+            );
+        }
+    }
+
+    // Server streaming: status updates
+    @Override
+    public void getPaymentStatus(PaymentStatusRequest request,
+                                  StreamObserver&lt;PaymentStatusUpdate&gt; responseObserver) {
+        // Stream multiple updates to client
+        paymentStatusSubscriber.subscribe(request.getTransactionId(), update -> {
+            responseObserver.onNext(PaymentStatusUpdate.newBuilder()
+                .setStatus(update.getStatus())
+                .setTimestamp(Timestamps.fromMillis(update.getTime()))
+                .build());
+
+            if (update.isFinal()) responseObserver.onCompleted();
+        });
+    }
+}
+
+// Client
+@Service
+public class PaymentClient {
+    private final PaymentServiceGrpc.PaymentServiceBlockingStub blockingStub;
+    private final PaymentServiceGrpc.PaymentServiceStub asyncStub;
+
+    public PaymentResponse charge(String orderId, double amount) {
+        PaymentRequest request = PaymentRequest.newBuilder()
+            .setOrderId(orderId)
+            .setAmount(amount)
+            .setCurrency("USD")
+            .setMethod(PaymentMethod.PAYMENT_METHOD_CARD)
+            .build();
+
+        return blockingStub
+            .withDeadlineAfter(3, TimeUnit.SECONDS) // deadline propagation
+            .processPayment(request);
+    }
+}</code></pre>
+
+<!-- ===== OPENAPI ===== -->
+<h2 id="openapi">OpenAPI / Swagger</h2>
+
+<h3>Spec-First vs Code-First</h3>
+<table>
+  <tr><th>Approach</th><th>Description</th><th>Pros</th><th>Cons</th></tr>
+  <tr><td><strong>Spec-First</strong></td><td>Write OpenAPI YAML/JSON first, generate server stubs and client SDKs</td><td>Contract agreed upfront; parallel FE/BE development; auto-generated docs</td><td>Spec can drift from implementation</td></tr>
+  <tr><td><strong>Code-First</strong></td><td>Write code with annotations; generate spec from code</td><td>Always in sync with implementation; familiar for developers</td><td>API design afterthought; harder for contract-driven development</td></tr>
+</table>
+
+<pre><code class="language-yaml"># OpenAPI 3.1 Example
+openapi: 3.1.0
+info:
+  title: Order Service API
+  version: 1.0.0
+  description: Manages customer orders
+
+paths:
+  /api/v1/orders:
+    get:
+      operationId: listOrders
+      summary: List orders
+      tags: [Orders]
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [pending, confirmed, shipped, delivered]
+        - name: cursor
+          in: query
+          schema: { type: string }
+        - name: limit
+          in: query
+          schema: { type: integer, default: 20, minimum: 1, maximum: 100 }
+      responses:
+        '200':
+          description: Paginated list of orders
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      security:
+        - bearerAuth: []
+
+    post:
+      operationId: createOrder
+      summary: Create a new order
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrderRequest'
+      responses:
+        '201':
+          description: Order created
+          headers:
+            Location:
+              description: URL of the created order
+              schema: { type: string, format: uri }
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Order:
+      type: object
+      required: [id, status, total, createdAt]
+      properties:
+        id: { type: string, format: uuid }
+        status: { type: string, enum: [pending, confirmed, shipped] }
+        total: { type: number, format: double }
+        createdAt: { type: string, format: date-time }
+
+  responses:
+    Unauthorized:
+      description: Authentication required
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetail'</code></pre>
+
+<!-- ===== OAUTH2 ===== -->
+<h2 id="oauth2">OAuth 2.0 Flows</h2>
+
+<h3>Authorization Code Flow (with PKCE)</h3>
+<p>For web and native apps where users grant access. PKCE (Proof Key for Code Exchange) prevents authorization code interception.</p>
+<div class="mermaid">
+sequenceDiagram
+  participant User
+  participant Client as Browser/App
+  participant AuthServer as Auth Server
+  participant API as Resource Server
+
+  Client->>Client: Generate code_verifier + code_challenge
+  Client->>AuthServer: GET /authorize?response_type=code&client_id=...&code_challenge=...&redirect_uri=...
+  AuthServer->>User: Show login/consent screen
+  User->>AuthServer: Authenticate + grant consent
+  AuthServer->>Client: Redirect to redirect_uri?code=AUTH_CODE
+  Client->>AuthServer: POST /token\n{code, code_verifier, client_id}
+  AuthServer->>AuthServer: Verify code_verifier matches code_challenge
+  AuthServer-->>Client: {access_token, refresh_token, id_token}
+  Client->>API: GET /resource\nAuthorization: Bearer ACCESS_TOKEN
+  API->>API: Validate JWT / introspect token
+  API-->>Client: Protected resource
+</div>
+
+<h3>Client Credentials Flow</h3>
+<p>For machine-to-machine (service-to-service) authentication. No user involved.</p>
+<pre><code class="language-java">// Service requesting a token for M2M communication
+@Service
+public class TokenService {
+    private final WebClient authClient;
+    private volatile String cachedToken;
+    private volatile Instant tokenExpiry;
+
+    public String getServiceToken() {
+        if (cachedToken != null && Instant.now().isBefore(tokenExpiry.minusSeconds(60))) {
+            return cachedToken; // Return cached token (with 60s buffer)
+        }
+        return refreshToken();
+    }
+
+    private String refreshToken() {
+        TokenResponse response = authClient.post()
+            .uri("/oauth2/token")
+            .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+            .bodyValue(Map.of(
+                "grant_type", "client_credentials",
+                "client_id", clientId,
+                "client_secret", clientSecret,
+                "scope", "payment:write inventory:read"
+            ))
+            .retrieve()
+            .bodyToMono(TokenResponse.class)
+            .block();
+
+        this.cachedToken = response.getAccessToken();
+        this.tokenExpiry = Instant.now().plusSeconds(response.getExpiresIn());
+        return cachedToken;
+    }
+}</code></pre>
+
+<h3>OAuth 2.0 Flows Comparison</h3>
+<table>
+  <tr><th>Flow</th><th>Use Case</th><th>Token Issuance</th></tr>
+  <tr><td>Authorization Code + PKCE</td><td>Web apps, mobile apps (user login)</td><td>Via server exchange (secure, no token in URL)</td></tr>
+  <tr><td>Client Credentials</td><td>M2M, background services</td><td>Direct (no user involvement)</td></tr>
+  <tr><td>Device Code</td><td>Smart TV, CLI, IoT devices</td><td>User authenticates on separate device</td></tr>
+  <tr><td>Implicit (deprecated)</td><td>SPAs (now replaced by Auth Code + PKCE)</td><td>Token in URL fragment — insecure</td></tr>
+  <tr><td>Resource Owner Password (deprecated)</td><td>Trusted first-party apps only</td><td>Direct password exchange — avoid</td></tr>
+</table>
+
+<!-- ===== JWT ===== -->
+<h2 id="jwt">JWT Deep Dive</h2>
+
+<h3>JWT Structure</h3>
+<p>JWT = Base64URL(Header) . Base64URL(Payload) . Base64URL(Signature)</p>
+<pre><code class="language-json">// Header
+{
+  "alg": "RS256",   // RSA-SHA256 (asymmetric — recommended over HS256)
+  "typ": "JWT",
+  "kid": "key-id-2025" // key ID for rotation
+}
+
+// Payload (Claims)
+{
+  // Registered claims
+  "iss": "https://auth.example.com",    // issuer
+  "sub": "user-id-123",                 // subject (user ID)
+  "aud": ["api.example.com"],           // audience (intended recipient)
+  "exp": 1756000000,                    // expiration (Unix timestamp)
+  "iat": 1755996400,                    // issued at
+  "jti": "unique-token-id",             // JWT ID (for revocation tracking)
+
+  // Custom claims
+  "email": "alice@example.com",
+  "roles": ["user", "admin"],
+  "org_id": "org-456",
+  "scope": "read:orders write:orders"
+}</code></pre>
+
+<h3>JWT Validation Checklist</h3>
+<pre><code class="language-java">@Component
+public class JwtValidator {
+
+    public Claims validate(String token) {
+        try {
+            return Jwts.parserBuilder()
+                // 1. Verify signature using public key (RS256)
+                .setSigningKeyResolver(keyResolver) // handles key rotation via kid
+
+                // 2. Verify issuer
+                .requireIssuer("https://auth.example.com")
+
+                // 3. Verify audience
+                .requireAudience("api.example.com")
+
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+
+            // Library also checks:
+            // 4. exp (not expired)
+            // 5. iat (not in future)
+            // 6. nbf (not before, if present)
+
+        } catch (ExpiredJwtException e) {
+            throw new TokenExpiredException("Token expired at: " + e.getClaims().getExpiration());
+        } catch (JwtException e) {
+            throw new InvalidTokenException("Invalid token: " + e.getMessage());
+        }
+    }
+
+    // Refresh token flow
+    public TokenPair refresh(String refreshToken) {
+        // Validate refresh token (longer-lived, stored in DB)
+        RefreshTokenEntity stored = refreshTokenRepo.findByToken(refreshToken)
+            .orElseThrow(() -> new InvalidTokenException("Unknown refresh token"));
+
+        if (stored.isRevoked()) throw new InvalidTokenException("Token revoked");
+        if (stored.getExpiry().isBefore(Instant.now())) throw new TokenExpiredException();
+
+        // Rotate refresh token (one-time use)
+        refreshTokenRepo.revoke(refreshToken);
+        String newRefreshToken = generateRefreshToken(stored.getUserId());
+
+        return new TokenPair(
+            generateAccessToken(stored.getUserId()), // short-lived (15min)
+            newRefreshToken // long-lived (7 days), stored in HttpOnly cookie
+        );
+    }
+}</code></pre>
+
+<h3>Token Storage Best Practices</h3>
+<table>
+  <tr><th>Storage Location</th><th>XSS Risk</th><th>CSRF Risk</th><th>Recommendation</th></tr>
+  <tr><td>localStorage</td><td>High (JS can read)</td><td>Low</td><td>Avoid for access tokens</td></tr>
+  <tr><td>sessionStorage</td><td>High (JS can read)</td><td>Low</td><td>Acceptable for SPA with short sessions</td></tr>
+  <tr><td>HttpOnly Cookie</td><td>Low (JS can't read)</td><td>High (need CSRF token)</td><td>Best for refresh tokens</td></tr>
+  <tr><td>Memory (JS variable)</td><td>Low</td><td>Low</td><td>Best for short-lived access tokens in SPA</td></tr>
+</table>
+
+<!-- ===== RATE LIMITING ===== -->
+<h2 id="rate-limiting">Rate Limiting Algorithms</h2>
+
+<table>
+  <tr><th>Algorithm</th><th>Description</th><th>Pros</th><th>Cons</th></tr>
+  <tr><td>Fixed Window</td><td>Count requests per time window (e.g., 100/minute). Reset at window boundary.</td><td>Simple to implement</td><td>Burst allowed at window edges (200 req in 2 seconds straddling two windows)</td></tr>
+  <tr><td>Sliding Window</td><td>Count requests in the last N seconds (rolling window)</td><td>Smooth limiting, no edge bursts</td><td>More memory (must track each request timestamp)</td></tr>
+  <tr><td>Token Bucket</td><td>Bucket holds tokens; requests consume tokens; tokens refill at fixed rate. Allows bursting up to bucket capacity.</td><td>Natural burst handling; smooth average rate</td><td>Slightly complex</td></tr>
+  <tr><td>Leaky Bucket</td><td>Requests queue; processed at fixed rate. Excess dropped.</td><td>Smooth output rate</td><td>Adds latency; burst requests queued then dropped</td></tr>
+</table>
+
+<pre><code class="language-java">// Token Bucket implementation with Redis
+@Service
+public class TokenBucketRateLimiter {
+    private final RedisScript&lt;Long&gt; rateLimitScript;
+
+    // Lua script for atomic token bucket check in Redis
+    private static final String SCRIPT = """
+        local key = KEYS[1]
+        local capacity = tonumber(ARGV[1])
+        local refill_rate = tonumber(ARGV[2])
+        local now = tonumber(ARGV[3])
+        local tokens_requested = tonumber(ARGV[4])
+
+        local bucket = redis.call('HMGET', key, 'tokens', 'last_refill')
+        local tokens = tonumber(bucket[1]) or capacity
+        local last_refill = tonumber(bucket[2]) or now
+
+        -- Refill tokens based on elapsed time
+        local elapsed = now - last_refill
+        tokens = math.min(capacity, tokens + elapsed * refill_rate)
+
+        if tokens >= tokens_requested then
+            tokens = tokens - tokens_requested
+            redis.call('HMSET', key, 'tokens', tokens, 'last_refill', now)
+            redis.call('EXPIRE', key, 3600)
+            return 1  -- allowed
+        else
+            return 0  -- rejected
+        end
+        """;
+
+    public boolean isAllowed(String clientId, int tokensRequested) {
+        Long result = redisTemplate.execute(rateLimitScript,
+            List.of("ratelimit:" + clientId),
+            String.valueOf(100),  // capacity: 100 tokens
+            String.valueOf(10),   // refill rate: 10 tokens/second
+            String.valueOf(System.currentTimeMillis() / 1000),
+            String.valueOf(tokensRequested)
+        );
+        return Long.valueOf(1).equals(result);
+    }
+}</code></pre>
+
+<!-- ===== API VERSIONING ===== -->
+<h2 id="versioning">API Versioning Strategies</h2>
+
+<table>
+  <thead>
+    <tr><th>Strategy</th><th>Example</th><th>Pros</th><th>Cons</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>URI Path Versioning</td>
+      <td><code>GET /api/v1/users</code> <code>GET /api/v2/users</code></td>
+      <td>Explicit, easy to see, cacheable, easy to route in gateway</td>
+      <td>URL should identify resource, not version; version is meta-information</td>
+    </tr>
+    <tr>
+      <td>Request Header</td>
+      <td><code>API-Version: 2</code> or <code>X-API-Version: 2.0</code></td>
+      <td>URL stays clean; resource-centric URLs</td>
+      <td>Not visible in browser; harder to test; less discoverable</td>
+    </tr>
+    <tr>
+      <td>Query Parameter</td>
+      <td><code>GET /users?version=2</code></td>
+      <td>Easy to test in browser; explicit</td>
+      <td>Pollutes URL; caching issues; accidental omission</td>
+    </tr>
+    <tr>
+      <td>Content Negotiation</td>
+      <td><code>Accept: application/vnd.company.v2+json</code></td>
+      <td>Semantically correct (HTTP spec); supports multiple representations</td>
+      <td>Complex; hard for most clients; poor tooling support</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout">
+  <strong>Practical Recommendation:</strong> Use URI path versioning (<code>/v1/</code>, <code>/v2/</code>) for public APIs — it's the most widely understood and tooling-friendly. Use header versioning for internal APIs where you control all clients.
+</div>
+
+<h3>API Deprecation Strategy</h3>
+<pre><code class="language-http">HTTP/1.1 200 OK
+Deprecation: true
+Sunset: Sat, 31 Dec 2025 23:59:59 GMT
+Link: &lt;https://api.example.com/v2/users&gt;; rel="successor-version"
+Warning: 299 - "This endpoint is deprecated. Migrate to /v2/users by 2025-12-31."</code></pre>
+
+<!-- ===== PAGINATION ===== -->
+<h2 id="pagination">Pagination Strategies</h2>
+
+<h3>Offset-Based Pagination</h3>
+<pre><code class="language-http">GET /api/v1/orders?page=3&pageSize=20
+# SQL: SELECT * FROM orders ORDER BY created_at DESC LIMIT 20 OFFSET 40
+
+# Response
+{
+  "data": [...],
+  "pagination": {
+    "page": 3,
+    "pageSize": 20,
+    "totalItems": 847,
+    "totalPages": 43,
+    "hasNext": true,
+    "hasPrevious": true
+  }
+}</code></pre>
+<p><strong>Pros:</strong> Simple, supports random access (jump to page 5). <strong>Cons:</strong> Unstable (if items are added/deleted, pages shift — duplicate/missing items). Slow at high offsets (DB scans all skipped rows).</p>
+
+<h3>Cursor-Based Pagination (Keyset Pagination)</h3>
+<pre><code class="language-http">GET /api/v1/orders?limit=20&cursor=eyJpZCI6IjEwMCIsImNyZWF0ZWRBdCI6IjIwMjUtMDEtMTUifQ==
+# cursor is Base64({"id": "100", "createdAt": "2025-01-15"})
+# SQL: SELECT * FROM orders WHERE (created_at, id) &lt; ('2025-01-15', '100')
+#      ORDER BY created_at DESC, id DESC LIMIT 20
+
+# Response
+{
+  "data": [...],
+  "pagination": {
+    "limit": 20,
+    "nextCursor": "eyJpZCI6IjgwIiwiY3JlYXRlZEF0IjoiMjAyNS0wMS0xMCJ9",
+    "previousCursor": "eyJpZCI6IjEyMCIsImNyZWF0ZWRBdCI6IjIwMjUtMDEtMjAifQ==",
+    "hasNextPage": true
+  }
+}</code></pre>
+<p><strong>Pros:</strong> Stable (new items don't affect pages), performant at any offset (uses indexed WHERE clause). <strong>Cons:</strong> No random access, requires consistent sort order, cursor must encode all sort fields.</p>
+
+<!-- ===== WEBHOOKS ===== -->
+<h2 id="webhooks">Webhook Design Patterns</h2>
+<p>Webhooks are HTTP callbacks — the server calls YOUR endpoint when something happens. Inverse of polling.</p>
+
+<pre><code class="language-java">// Webhook delivery with retry
+@Service
+public class WebhookDeliveryService {
+
+    @Async
+    @Retryable(maxAttempts = 5, backoff = @Backoff(delay = 1000, multiplier = 2, maxDelay = 30000))
+    public void deliver(WebhookEndpoint endpoint, WebhookEvent event) {
+        String payload = objectMapper.writeValueAsString(event);
+        String signature = signPayload(payload, endpoint.getSecret());
+
+        ResponseEntity&lt;Void&gt; response = restTemplate.exchange(
+            RequestEntity.post(endpoint.getUrl())
+                .header("Content-Type", "application/json")
+                .header("X-Webhook-Signature", signature) // HMAC-SHA256
+                .header("X-Event-Type", event.getType())
+                .header("X-Delivery-ID", UUID.randomUUID().toString())
+                .header("X-Timestamp", String.valueOf(Instant.now().getEpochSecond()))
+                .body(payload),
+            Void.class
+        );
+
+        if (!response.getStatusCode().is2xxSuccessful()) {
+            throw new WebhookDeliveryException("Webhook returned: " + response.getStatusCode());
+        }
+    }
+
+    // Receiver-side: verify signature
+    private String signPayload(String payload, String secret) {
+        Mac mac = Mac.getInstance("HmacSHA256");
+        mac.init(new SecretKeySpec(secret.getBytes(), "HmacSHA256"));
+        return "sha256=" + Hex.encode(mac.doFinal(payload.getBytes()));
+    }
+}
+
+// Receiver validates signature
+@PostMapping("/webhooks/orders")
+public ResponseEntity&lt;Void&gt; handleWebhook(
+        @RequestBody String payload,
+        @RequestHeader("X-Webhook-Signature") String signature,
+        @RequestHeader("X-Timestamp") long timestamp) {
+
+    // 1. Prevent replay attacks — reject if too old
+    if (Math.abs(Instant.now().getEpochSecond() - timestamp) &gt; 300) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
+    // 2. Verify HMAC signature
+    String expectedSig = "sha256=" + computeHmac(payload, webhookSecret);
+    if (!MessageDigest.isEqual(signature.getBytes(), expectedSig.getBytes())) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
+    // 3. Process idempotently
+    webhookProcessor.processAsync(payload);
+    return ResponseEntity.ok().build(); // Return 200 immediately, process async
+}</code></pre>
+
+<!-- ===== mTLS & API KEYS ===== -->
+<h2 id="mtls">mTLS &amp; API Keys</h2>
+
+<h3>API Keys</h3>
+<pre><code class="language-java">// API Key generation and hashing (never store plaintext)
+@Service
+public class ApiKeyService {
+
+    public ApiKeyResult generateApiKey(String customerId) {
+        // Generate cryptographically secure random key
+        byte[] keyBytes = new byte[32];
+        new SecureRandom().nextBytes(keyBytes);
+        String rawKey = "sk_" + Base64.getUrlEncoder().withoutPadding().encodeToString(keyBytes);
+
+        // Store only the hash
+        String hashedKey = BCrypt.hashpw(rawKey, BCrypt.gensalt(12));
+        apiKeyRepo.save(new ApiKey(customerId, hashedKey, Instant.now()));
+
+        // Return raw key ONCE to customer — never seen again
+        return new ApiKeyResult(rawKey, "Store this securely — it will not be shown again");
+    }
+
+    public Optional&lt;Customer&gt; validate(String providedKey) {
+        // Brute-force: scan all keys and BCrypt check — use prefix to narrow
+        String prefix = providedKey.substring(0, 7); // "sk_xxxx"
+        List&lt;ApiKey&gt; candidates = apiKeyRepo.findByKeyPrefix(prefix);
+
+        return candidates.stream()
+            .filter(k -> BCrypt.checkpw(providedKey, k.getHashedKey()))
+            .findFirst()
+            .map(k -> customerRepo.findById(k.getCustomerId()));
+    }
+}</code></pre>
+
+<!-- ===== Q&A ===== -->
+<h2 id="qa">Interview Questions &amp; Answers</h2>
+
+<details>
+<summary>Q1. What is an API Gateway and what problems does it solve? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p>An API Gateway is a single entry point for all client requests to backend microservices. It solves several cross-cutting concerns:</p>
+<ul>
+  <li><strong>Authentication/Authorization:</strong> Validates JWTs/API keys once, instead of in every service</li>
+  <li><strong>Rate limiting:</strong> Prevents API abuse centrally</li>
+  <li><strong>SSL termination:</strong> Handles HTTPS, services use HTTP internally</li>
+  <li><strong>Routing:</strong> Maps external URL paths to internal service URLs</li>
+  <li><strong>Observability:</strong> Central logging and tracing of all API traffic</li>
+  <li><strong>Request aggregation:</strong> Combines multiple service calls into one client response</li>
+  <li><strong>Protocol translation:</strong> REST → gRPC, HTTP → WebSocket</li>
+</ul>
+<p><strong>Without a gateway:</strong> Every service must implement its own auth, rate limiting, logging — massive duplication. Client must know about all service URLs and versions.</p>
+</div>
+</details>
+
+<details>
+<summary>Q2. What is the difference between an API Gateway and a Load Balancer? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p><strong>Load Balancer:</strong> Distributes traffic across multiple instances of the SAME service. Works at L4 (TCP) or L7 (HTTP). Concerned with availability and capacity, not API management. Minimal intelligence — round-robin, least-connections, etc.</p>
+<p><strong>API Gateway:</strong> Routes traffic to DIFFERENT services based on path, headers, methods. Application-aware — understands APIs. Handles cross-cutting concerns (auth, rate limiting, transformation). Sits in front of multiple services.</p>
+<p><strong>Typical setup:</strong> API Gateway (routes to services) → Service Load Balancer (distributes across service instances) → Service instances. Both exist in the same architecture for different purposes.</p>
+</div>
+</details>
+
+<details>
+<summary>Q3. Explain REST vs GraphQL — when would you choose each? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>Choose REST when:</strong></p>
+<ul>
+  <li>Public API for external developers — familiar, well-documented, easy tooling</li>
+  <li>Simple CRUD operations</li>
+  <li>HTTP caching is important (GET requests are cacheable)</li>
+  <li>Team prefers convention over configuration</li>
+  <li>Existing infrastructure doesn't support GraphQL</li>
+</ul>
+<p><strong>Choose GraphQL when:</strong></p>
+<ul>
+  <li>Multiple client types (mobile, web, third-party) with different data needs</li>
+  <li>Over-fetching is a real problem (mobile data costs)</li>
+  <li>Complex, deeply nested data that requires multiple REST calls</li>
+  <li>Frontend teams want autonomy to fetch exactly what they need</li>
+  <li>Rapidly evolving API where REST versioning would be cumbersome</li>
+</ul>
+<p><strong>Common hybrid:</strong> REST for public API, GraphQL for internal BFF that aggregates data for your own frontends.</p>
+</div>
+</details>
+
+<details>
+<summary>Q4. What is the N+1 problem in GraphQL and how do you solve it? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>When resolving a list of items, each item's sub-resolver fires individually, causing N+1 DB queries (1 for the list, N for sub-fields).</p>
+<p><strong>Example:</strong> Query for 20 orders with customer names → 1 query for orders + 20 queries for each customer = 21 queries.</p>
+<p><strong>Solution: DataLoader</strong></p>
+<ol>
+  <li>DataLoader collects all <code>.load(customerId)</code> calls made during a single execution tick</li>
+  <li>At the end of the tick, batches all IDs into a single DB query: <code>WHERE id IN (1,2,...,20)</code></li>
+  <li>Also caches: if the same ID is requested multiple times, only fetched once</li>
+</ol>
+<p><strong>Result:</strong> 21 individual resolver calls → 2 DB queries (orders + customers batch).</p>
+<p><strong>Tip:</strong> Create a DataLoader per request (not global) to avoid cross-request cache contamination.</p>
+</div>
+</details>
+
+<details>
+<summary>Q5. How do you design for API versioning? What's the best strategy? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>No universally "best" strategy — depends on context:</p>
+<p><strong>URI versioning (/v1/, /v2/) is the most practical for public APIs:</strong></p>
+<ul>
+  <li>Explicit and visible in browsers, logs, documentation</li>
+  <li>Easy to route in API gateways</li>
+  <li>Simple for clients to understand and switch</li>
+</ul>
+<p><strong>Versioning principles:</strong></p>
+<ul>
+  <li>Never break backward compatibility within a version</li>
+  <li>Additive changes (new optional fields, new endpoints) don't need a new version</li>
+  <li>Breaking changes (rename/remove fields, change semantics): new version</li>
+  <li>Maintain old versions for a reasonable deprecation period (e.g., 6-12 months for external APIs)</li>
+  <li>Communicate deprecation via <code>Deprecation</code> and <code>Sunset</code> HTTP headers</li>
+</ul>
+<p><strong>Protobuf/gRPC:</strong> Use field numbers, mark deprecated fields with <code>[deprecated=true]</code>. Field numbers are the contract, not names — never reuse a field number.</p>
+</div>
+</details>
+
+<details>
+<summary>Q6. Explain the OAuth 2.0 Authorization Code Flow with PKCE. <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>PKCE (Proof Key for Code Exchange) makes the Authorization Code flow safe for public clients (SPAs, mobile apps) where a client secret can't be kept confidential.</p>
+<p><strong>PKCE prevents authorization code interception:</strong> Without PKCE, a malicious app could intercept the authorization code (via a custom URL scheme) and exchange it for tokens. With PKCE, the code is useless without the original code_verifier.</p>
+<p><strong>Flow:</strong></p>
+<ol>
+  <li>Client generates random <code>code_verifier</code> (43-128 chars)</li>
+  <li>Client computes <code>code_challenge = BASE64URL(SHA256(code_verifier))</code></li>
+  <li>Auth request includes <code>code_challenge</code> (sent over HTTPS to auth server)</li>
+  <li>After login, auth server returns authorization code</li>
+  <li>Token request includes both the <code>code</code> AND <code>code_verifier</code></li>
+  <li>Auth server recomputes SHA256(code_verifier) and verifies it matches stored code_challenge</li>
+  <li>Only the original client has the code_verifier → tokens issued</li>
+</ol>
+<p><strong>Best practices:</strong> Store access token in memory (not localStorage), refresh token in HttpOnly cookie. Short access token TTL (5-15 min), longer refresh token TTL (7-30 days). Rotate refresh tokens on use.</p>
+</div>
+</details>
+
+<details>
+<summary>Q7. How do you validate and secure JWTs? What are common JWT vulnerabilities? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>Validation checklist:</strong></p>
+<ol>
+  <li>Verify signature (RS256 preferred over HS256 for microservices — uses public key, no shared secret)</li>
+  <li>Verify <code>iss</code> (issuer) matches expected auth server</li>
+  <li>Verify <code>aud</code> (audience) includes your service</li>
+  <li>Verify <code>exp</code> is in the future (not expired)</li>
+  <li>Verify <code>iat</code> is not in the future (clock skew tolerance: 60 seconds)</li>
+  <li>Verify <code>nbf</code> (not before) if present</li>
+</ol>
+<p><strong>Common vulnerabilities:</strong></p>
+<ul>
+  <li><strong>alg:none attack:</strong> Attacker sets <code>alg: "none"</code> to bypass signature verification. Fix: reject tokens with <code>alg: none</code>, whitelist allowed algorithms explicitly.</li>
+  <li><strong>RS256 → HS256 confusion:</strong> If server uses public key as HMAC secret, attacker can forge tokens signed with the public key. Fix: don't auto-detect algorithm from token header.</li>
+  <li><strong>Missing audience validation:</strong> Token for Service A accepted by Service B. Fix: always validate <code>aud</code> claim.</li>
+  <li><strong>Weak secrets (HS256):</strong> Short or dictionary-based secrets can be brute-forced. Fix: use RS256 or ES256 (asymmetric), or 256-bit random HS256 secrets.</li>
+  <li><strong>Token theft (XSS):</strong> Token in localStorage readable by injected JavaScript. Fix: store in HttpOnly cookies or memory.</li>
+</ul>
+</div>
+</details>
+
+<details>
+<summary>Q8. How do you implement rate limiting at scale across multiple gateway instances? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>Single-instance rate limiting uses in-memory counters. With multiple gateway instances, each has its own counter — clients can bypass limits by routing through different instances.</p>
+<p><strong>Distributed rate limiting with Redis:</strong></p>
+<ul>
+  <li>All gateway instances read/write counters from a central Redis cluster</li>
+  <li>Atomic operations via Lua scripts (Redis single-threaded, Lua runs atomically)</li>
+  <li>Redis replication for availability</li>
+</ul>
+<p><strong>Sliding window in Redis:</strong></p>
+<pre><code class="language-lua">-- Sorted set: member=request_id, score=timestamp
+local key = KEYS[1]
+local now = tonumber(ARGV[1])
+local window = tonumber(ARGV[2])  -- e.g., 60000ms
+local limit = tonumber(ARGV[3])
+
+-- Remove expired entries
+redis.call('ZREMRANGEBYSCORE', key, 0, now - window)
+
+-- Count current window
+local count = redis.call('ZCARD', key)
+
+if count &lt; limit then
+    redis.call('ZADD', key, now, now .. math.random())
+    redis.call('EXPIRE', key, window / 1000 + 1)
+    return 1
+end
+return 0</code></pre>
+<p><strong>Alternative: Redis INCR + EXPIRE</strong> (fixed window, simpler). Kong, AWS API GW, and most enterprise gateways support Redis-backed distributed rate limiting out of the box.</p>
+</div>
+</details>
+
+<details>
+<summary>Q9. When would you use cursor-based pagination over offset pagination? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>Always use cursor-based pagination for:</strong></p>
+<ul>
+  <li>Real-time feeds (Twitter timeline, social feeds) where new items are added constantly</li>
+  <li>Large datasets (millions of rows) — offset pagination is O(n) at the DB level</li>
+  <li>Any scenario where consistency matters (no duplicate/skipped items due to concurrent writes)</li>
+</ul>
+<p><strong>Cursor design:</strong> The cursor encodes the sort key(s) of the last item seen. For <code>ORDER BY created_at DESC, id DESC</code>, the cursor is <code>Base64({createdAt, id})</code>. Next page query: <code>WHERE (created_at, id) &lt; (cursor.createdAt, cursor.id)</code>.</p>
+<p><strong>Offset pagination is fine when:</strong></p>
+<ul>
+  <li>Data is static/append-only and doesn't change between pages</li>
+  <li>Users need random access ("go to page 50")</li>
+  <li>Admin UIs with small datasets</li>
+  <li>Total count is needed (cursor-based makes counting hard)</li>
+</ul>
+</div>
+</details>
+
+<details>
+<summary>Q10. How do webhooks differ from polling and Server-Sent Events? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<table>
+  <tr><th>Pattern</th><th>How it works</th><th>Pros</th><th>Cons</th></tr>
+  <tr><td>Polling</td><td>Client repeatedly asks "anything new?" on an interval</td><td>Simple client</td><td>Wasteful, latency = poll interval</td></tr>
+  <tr><td>Long Polling</td><td>Server holds connection open until event or timeout</td><td>Lower latency than polling</td><td>Latency still exists, connection overhead</td></tr>
+  <tr><td>SSE (Server-Sent Events)</td><td>Server streams events over single HTTP connection</td><td>Browser native, auto-reconnect</td><td>Server-to-client only, not cross-domain easily</td></tr>
+  <tr><td>WebSocket</td><td>Full-duplex persistent connection</td><td>Bidirectional, low latency</td><td>Complex, not HTTP-cacheable, firewalls sometimes block</td></tr>
+  <tr><td>Webhooks</td><td>Server POSTs to client's registered URL on event</td><td>No persistent connection; event-driven; works across internet</td><td>Client must expose public HTTPS endpoint; retry logic needed; must handle failures</td></tr>
+</table>
+<p><strong>Best practices for webhooks:</strong> Sign payloads (HMAC), include timestamp to prevent replay attacks, process async (return 200 immediately), implement idempotency (same event delivered multiple times on retry), provide a dead-letter queue for failed deliveries.</p>
+</div>
+</details>
+
+<details>
+<summary>Q11. How does gRPC handle backward compatibility as protobuf schemas evolve? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>Protobuf is designed for backward compatibility via <strong>field numbers</strong>:</p>
+<ul>
+  <li><strong>Field numbers are the wire contract</strong> — names can change, but field numbers cannot be reused</li>
+  <li><strong>Adding new fields:</strong> Always backward compatible if the field is optional/has a default. Old clients ignore unknown fields. New clients use defaults for missing fields.</li>
+  <li><strong>Removing fields:</strong> Mark as <code>reserved</code> to prevent future reuse of that field number</li>
+  <li><strong>Changing types:</strong> Dangerous — only compatible if wire types match (e.g., int32 and int64 are compatible; string and int are not)</li>
+  <li><strong>Renaming fields:</strong> Safe (wire uses field number, not name)</li>
+  <li><strong>Renaming RPC methods:</strong> Breaking change — clients use method names for routing</li>
+</ul>
+<pre><code class="language-protobuf">message PaymentRequest {
+  string order_id = 1;
+  double amount = 2;
+  reserved 3, 4;           // Field 3 was "old_currency", 4 was "deprecated_field"
+  reserved "old_currency", "deprecated_field"; // Prevent name reuse too
+  string currency = 5;     // New field — backward compatible
+  PaymentMethod method = 6;
+}</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q12. How do you design an idempotent REST API? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>HTTP methods have defined idempotency characteristics:</p>
+<ul>
+  <li><strong>GET, HEAD, PUT, DELETE:</strong> Inherently idempotent (calling N times = calling once)</li>
+  <li><strong>POST:</strong> Not idempotent by default — creates a new resource each time</li>
+</ul>
+<p><strong>Making POST idempotent with Idempotency-Key:</strong></p>
+<ol>
+  <li>Client generates a unique key (UUID) and sends it in the <code>Idempotency-Key</code> header</li>
+  <li>Server checks if a response for this key is cached</li>
+  <li>If yes: return cached response (don't re-execute)</li>
+  <li>If no: process, store result with the key, return result</li>
+</ol>
+<p><strong>Key storage:</strong> Redis with TTL (24h typical). Key: <code>idempotency:{client_id}:{idempotency_key}</code>. Value: serialized response.</p>
+<p><strong>Stripe's implementation:</strong> <code>Idempotency-Key</code> is scoped per client (API key). Same key for different clients is treated independently. Conflicting requests (same key, different parameters) return 422.</p>
+</div>
+</details>
+
+<details>
+<summary>Q13. What are the security risks of API Gateway and how do you mitigate them? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p><strong>OWASP API Security Top 10 — Gateway-level mitigations:</strong></p>
+<ul>
+  <li><strong>Broken Object Level Authorization (BOLA/IDOR):</strong> Can't be fixed at gateway; must validate in each service. Gateway can enforce user ID in token matches request context.</li>
+  <li><strong>Broken Authentication:</strong> Gateway validates JWT signature, expiry, issuer, audience. Block invalid tokens before reaching services.</li>
+  <li><strong>Excessive Data Exposure:</strong> Response transformation — strip sensitive fields at gateway level.</li>
+  <li><strong>Lack of Rate Limiting:</strong> Implement per-client rate limits at gateway.</li>
+  <li><strong>Injection attacks:</strong> WAF (Web Application Firewall) at gateway detects SQLi, XSS, XXE, command injection patterns.</li>
+  <li><strong>Improper Assets Management:</strong> API gateway enforces routing — only registered routes are accessible. Unknown paths return 404.</li>
+  <li><strong>Security Misconfiguration:</strong> Disable debug endpoints in production, enforce HTTPS only.</li>
+</ul>
+<p><strong>Additional gateway security:</strong> mTLS for internal service communication, IP allowlisting for admin APIs, request size limits, SSL/TLS version enforcement (TLS 1.2+).</p>
+</div>
+</details>
+
+<details>
+<summary>Q14. How do you implement GraphQL authorization? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>GraphQL authorization is more complex than REST because a single query can fetch data from multiple types/resolvers.</p>
+<p><strong>Levels of authorization:</strong></p>
+<ul>
+  <li><strong>Operation-level:</strong> Is this user allowed to run this query/mutation at all? (Middleware/plugin before execution)</li>
+  <li><strong>Field-level:</strong> Is this user allowed to see this specific field? (Per-resolver auth check)</li>
+  <li><strong>Object-level:</strong> Is this user allowed to see this specific record? (After fetching, check ownership)</li>
+</ul>
+<pre><code class="language-javascript">// Using graphql-shield for declarative authorization
+const permissions = shield({
+  Query: {
+    users: isAdmin,              // Only admins can list all users
+    user: isAuthenticated,       // Any authenticated user
+  },
+  Mutation: {
+    deleteUser: isAdmin,
+    updateUser: rule()(async (parent, { id }, ctx) => {
+      // Can only update own profile unless admin
+      return ctx.user.id === id || ctx.user.roles.includes('admin');
+    }),
+  },
+  User: {
+    email: rule()(async (parent, args, ctx) => {
+      // Only see your own email or if admin
+      return parent.id === ctx.user.id || ctx.user.roles.includes('admin');
+    }),
+    salary: isAdmin,  // Field-level: only admins see salary
+  }
+});
+
+const server = new ApolloServer({
+  schema: applyMiddleware(schema, permissions),
+});</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q15. What is the difference between REST HATEOAS and regular REST? Is it practical? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p><strong>HATEOAS</strong> (Hypermedia As The Engine Of Application State) is the highest level of REST maturity (Richardson Maturity Model Level 3). Responses include hypermedia links showing what actions are available.</p>
+<pre><code class="language-json">// HATEOAS response
+{
+  "id": "order-123",
+  "status": "CONFIRMED",
+  "total": 99.99,
+  "_links": {
+    "self": { "href": "/orders/123" },
+    "cancel": { "href": "/orders/123/cancel", "method": "POST" },
+    "track": { "href": "/shipments/ship-456", "method": "GET" },
+    "invoice": { "href": "/invoices/inv-789", "method": "GET" }
+  }
+}
+// Client doesn't need to know business rules — server tells it what's possible
+// If order is CANCELLED, cancel link disappears from response</code></pre>
+<p><strong>Practical reality:</strong> HATEOAS is rarely implemented in practice:</p>
+<ul>
+  <li>Clients (especially mobile) typically ignore links and hardcode URLs</li>
+  <li>API versioning breaks link semantics</li>
+  <li>Significant server-side complexity to generate accurate links per state</li>
+</ul>
+<p><strong>Verdict:</strong> Understand it conceptually for interviews. In practice, most "REST APIs" are Level 2 (resource-oriented with HTTP verbs). HATEOAS adds value in very dynamic workflow-driven APIs where the set of available actions genuinely varies per state.</p>
+</div>
+</details>
+
+<details>
+<summary>Q16. How would you design an API rate limiter for a multi-tenant SaaS product? <span class="badge very-advanced">Very Advanced</span></summary>
+<div class="answer">
+<p><strong>Requirements:</strong> Different limits per plan tier, per endpoint, per tenant, per user within tenant.</p>
+<p><strong>Design:</strong></p>
+<ol>
+  <li><strong>Rate limit keys:</strong> Hierarchical — <code>rl:tenant:{tenantId}:endpoint:{path}</code>, <code>rl:user:{userId}:endpoint:{path}</code></li>
+  <li><strong>Configuration store:</strong> Per-tenant limits in DB/cache: tenant_id → {plan: "enterprise", limits: {"/api/orders": 1000/min, "*": 5000/min}}</li>
+  <li><strong>Algorithm:</strong> Token bucket (allows bursts) stored in Redis, separate bucket per key</li>
+  <li><strong>Response headers:</strong>
+    <pre><code>X-RateLimit-Limit: 1000
+X-RateLimit-Remaining: 847
+X-RateLimit-Reset: 1756000060
+Retry-After: 30   # only when 429</code></pre>
+  </li>
+  <li><strong>Tenant-level vs user-level:</strong> Tenant bucket (shared across all users in org) AND per-user bucket. Both must have tokens for request to pass.</li>
+  <li><strong>Soft vs hard limits:</strong> At 80% of limit, add warning header. At 100%, return 429. Enterprise tenants may get "overflow" to burst queue instead of hard reject.</li>
+  <li><strong>Observability:</strong> Track rate limit hits per tenant in InfluxDB/Prometheus for capacity planning and billing.</li>
+</ol>
+</div>
+</details>
+
+<details>
+<summary>Q17. What are the trade-offs of spec-first vs code-first API development? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>Spec-First (Design-First):</strong></p>
+<ul>
+  <li>Write OpenAPI/GraphQL SDL/Protobuf before any code</li>
+  <li>Frontend and backend agree on contract; can develop in parallel</li>
+  <li>Auto-generate server stubs, client SDKs, mocks, documentation</li>
+  <li>API design reviewed before implementation (cheaper to change a spec than code)</li>
+  <li><strong>Challenge:</strong> Discipline to keep spec and implementation in sync; spec can drift</li>
+</ul>
+<p><strong>Code-First:</strong></p>
+<ul>
+  <li>Write code with annotations (<code>@GetMapping</code>, <code>@ApiOperation</code>); generate spec from code</li>
+  <li>Spec always reflects implementation (can't drift)</li>
+  <li>Familiar workflow for backend developers</li>
+  <li><strong>Challenge:</strong> API design is an afterthought; harder for contract-first development; frontend blocked until API is coded</li>
+</ul>
+<p><strong>Recommendation:</strong> Spec-first for any API with external consumers or multiple team collaboration. Code-first for internal APIs where teams are co-located and move fast. Use tools like Prism (spec-first mock server) to enable parallel development.</p>
+</div>
+</details>
+
+<details>
+<summary>Q18. How do you handle API breaking changes for mobile apps that can't be forced to update? <span class="badge very-advanced">Very Advanced</span></summary>
+<div class="answer">
+<p>Mobile apps are the hardest versioning challenge: old app versions remain in the wild for months/years (users who don't update), and you can't force them to upgrade.</p>
+<p><strong>Strategies:</strong></p>
+<ul>
+  <li><strong>Never make breaking changes within a version:</strong> Only additive changes (new optional fields). Clients ignore unknown fields (both REST and Protobuf).</li>
+  <li><strong>Version your API and maintain old versions:</strong> <code>/v1/</code> supported alongside <code>/v2/</code>. Use analytics to track which client versions still call <code>/v1/</code>. Sunset only when usage drops to near zero.</li>
+  <li><strong>Feature flags with version detection:</strong> Gateway extracts app version from <code>User-Agent</code> or custom header; routes to version-specific logic or response transformer.</li>
+  <li><strong>Transformation layer:</strong> API Gateway transforms <code>/v2/</code> responses to <code>/v1/</code> format for old clients — translation layer instead of maintaining full separate service.</li>
+  <li><strong>Force update mechanism:</strong> For truly critical breaking changes, return 410 Gone with <code>{"error": "CLIENT_UPDATE_REQUIRED", "updateUrl": "https://..."}.</code> App detects and shows update prompt.</li>
+</ul>
+<p><strong>Proactive approach:</strong> Semantic versioning with a sunset policy (e.g., "v1 supported for 18 months after v2 GA"). Notify through in-app messages, developer portal, email.</p>
+</div>
+</details>
+
+<details>
+<summary>Q19. What is the difference between synchronous and asynchronous API patterns? When to use which? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>Synchronous:</strong> Client waits for response. Simple request-response. Client thread/connection held open during processing.</p>
+<p><strong>Asynchronous:</strong> Client submits request, gets acknowledgment (202 Accepted), polls for result or receives callback (webhook).</p>
+<p><strong>Use Async API when:</strong></p>
+<ul>
+  <li>Operation takes more than a few seconds (video processing, ML inference, report generation)</li>
+  <li>Operation involves multiple steps or approval workflows</li>
+  <li>You want to throttle work (accept requests faster than you can process them)</li>
+  <li>High reliability needed (queue survives downstream failures)</li>
+</ul>
+<pre><code class="language-http">## Async API Pattern
+POST /api/v1/reports/generate
+{
+  "type": "monthly_sales",
+  "dateRange": {"start": "2025-01-01", "end": "2025-01-31"}
+}
+
+HTTP/1.1 202 Accepted
+Location: /api/v1/reports/jobs/job-uuid-123
+{
+  "jobId": "job-uuid-123",
+  "status": "QUEUED",
+  "statusUrl": "/api/v1/reports/jobs/job-uuid-123"
+}
+
+## Client polls for completion
+GET /api/v1/reports/jobs/job-uuid-123
+
+HTTP/1.1 200 OK
+{
+  "jobId": "job-uuid-123",
+  "status": "COMPLETED",
+  "resultUrl": "/api/v1/reports/rpt-abc-456",
+  "completedAt": "2025-01-15T10:30:00Z"
+}</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q20. How do you design a zero-downtime API migration from REST to GraphQL? <span class="badge very-advanced">Very Advanced</span></summary>
+<div class="answer">
+<p>A complete overnight migration is too risky. Use an incremental strategy:</p>
+<ol>
+  <li><strong>Run both in parallel:</strong> Deploy GraphQL endpoint alongside existing REST. Don't remove REST. Some clients can start using GraphQL immediately.</li>
+  <li><strong>GraphQL as a BFF layer:</strong> Initially, GraphQL resolvers call existing REST services internally. No new backend logic — GraphQL is a thin wrapper.</li>
+  <li><strong>Schema design:</strong> Design the GraphQL schema based on what clients need, NOT based on existing REST endpoints. Don't just map REST to GraphQL 1:1.</li>
+  <li><strong>Migrate clients incrementally:</strong> New features built in GraphQL. Existing REST features migrated one by one with client teams.</li>
+  <li><strong>Track REST usage:</strong> Monitor <code>/v1/users</code> call volume. When it approaches zero, deprecate with <code>Sunset</code> header, then remove.</li>
+  <li><strong>Feature flags:</strong> Toggle per-client between REST and GraphQL during rollout.</li>
+</ol>
+<p><strong>Timeline:</strong> Full migration for a large app typically takes 6-18 months. Don't force all teams to migrate at the same time — let them move at their own pace as long as REST endpoints are maintained.</p>
+</div>
+</details>
+
+<details>
+<summary>Q21. What is the GraphQL vs REST vs gRPC decision framework for a new project? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p><strong>Decision tree:</strong></p>
+<ol>
+  <li><strong>Is this an internal service-to-service API in a polyglot microservices architecture?</strong> → gRPC (strong typing, performance, auto-generated clients)</li>
+  <li><strong>Is this a public API consumed by external developers you don't control?</strong> → REST (universally understood, excellent tooling)</li>
+  <li><strong>Are there multiple diverse clients (mobile, web, desktop, TV) with very different data needs?</strong> → GraphQL (client-defined queries, BFF elimination)</li>
+  <li><strong>Do you need real-time bidirectional streaming?</strong> → gRPC (4 streaming types) or WebSocket</li>
+  <li><strong>Is caching via HTTP infrastructure critical?</strong> → REST (GET requests are natively cacheable)</li>
+  <li><strong>Do you control all clients and need to optimize payload size?</strong> → gRPC (binary Protobuf, ~7x smaller than JSON)</li>
+  <li><strong>Default for most web APIs:</strong> → REST with OpenAPI spec</li>
+</ol>
+<p><strong>Real-world combination:</strong> REST for public API + GraphQL for internal BFF consumed by own frontends + gRPC for high-performance internal microservice communication. All three can coexist, each where it provides the most value.</p>
+</div>
+</details>
+
+<details>
+<summary>Q22. How does an API Gateway handle circuit breaking differently from a service mesh? <span class="badge very-advanced">Very Advanced</span></summary>
+<div class="answer">
+<p><strong>API Gateway circuit breaking:</strong></p>
+<ul>
+  <li>Handles north-south traffic (external clients → gateway → services)</li>
+  <li>Configured per route/service in gateway</li>
+  <li>When upstream service is unhealthy, gateway fails fast to external clients</li>
+  <li>Can serve cached responses or custom error pages during circuit open state</li>
+  <li>Kong: <code>circuit-breaker</code> plugin; AWS API GW: no native CB, use Lambda with Resilience4j</li>
+</ul>
+<p><strong>Service mesh circuit breaking (Istio DestinationRule):</strong></p>
+<ul>
+  <li>Handles east-west traffic (service ↔ service)</li>
+  <li>Configured as infrastructure policy (DestinationRule), transparent to app code</li>
+  <li>More granular: can circuit-break per pod, not just per service</li>
+  <li>Combines with outlier detection (automatic ejection of unhealthy instances)</li>
+</ul>
+<pre><code class="language-yaml">apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: payment-circuit-breaker
+spec:
+  host: payment-service
+  trafficPolicy:
+    connectionPool:
+      tcp:
+        maxConnections: 100
+      http:
+        http1MaxPendingRequests: 50
+        maxRequestsPerConnection: 1
+    outlierDetection:
+      consecutive5xxErrors: 5       # Eject after 5 consecutive errors
+      interval: 30s
+      baseEjectionTime: 30s         # Eject for 30s
+      maxEjectionPercent: 50        # Eject max 50% of instances</code></pre>
+<p><strong>Both are complementary</strong> and needed for a robust system.</p>
+</div>
+</details>
+
+<footer>API Gateway, REST, GraphQL &amp; gRPC — Comprehensive Reference</footer>
+</main>
+</div>
+
+<script>hljs.highlightAll();mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

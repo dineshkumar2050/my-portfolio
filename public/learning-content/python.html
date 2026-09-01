@@ -1,0 +1,1785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Comprehensive Reference</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6;display:flex;flex-direction:column}.topnav{background:#161b22;padding:10px 24px;border-bottom:1px solid #30363d;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100}.topnav a{color:#58a6ff;text-decoration:none;font-size:13px}.topnav h1{font-size:16px;color:#e6edf3;margin:0}.layout{display:flex;flex:1}.sidebar{width:260px;background:#161b22;border-right:1px solid #30363d;padding:16px;position:sticky;top:41px;height:calc(100vh - 41px);overflow-y:auto;flex-shrink:0}.sidebar a{display:block;padding:4px 8px;color:#8b949e;text-decoration:none;font-size:13px;border-radius:4px;margin-bottom:2px}.sidebar a:hover{background:#21262d;color:#c9d1d9}.sidebar .section-title{color:#58a6ff;font-size:11px;text-transform:uppercase;letter-spacing:.5px;margin:16px 0 6px;padding:0 8px;font-weight:600}main{flex:1;padding:32px 48px;max-width:960px}h1{font-size:2rem;color:#e6edf3;border-bottom:1px solid #30363d;padding-bottom:16px;margin-bottom:24px}h2{font-size:1.5rem;color:#e6edf3;margin:48px 0 16px;border-bottom:1px solid #21262d;padding-bottom:8px}h3{font-size:1.15rem;color:#79c0ff;margin:24px 0 10px}h4{font-size:1rem;color:#d2a8ff;margin:16px 0 8px}p{margin-bottom:12px}ul,ol{margin:0 0 16px 24px}li{margin-bottom:4px}pre{margin:16px 0;border-radius:6px;overflow-x:auto;font-size:13px}code:not(pre code){background:#161b22;padding:2px 6px;border-radius:4px;font-size:13px;color:#f0883e;border:1px solid #30363d}table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}th{background:#161b22;color:#58a6ff;padding:10px 14px;text-align:left;border:1px solid #30363d}td{padding:10px 14px;border:1px solid #30363d;vertical-align:top}tr:nth-child(even) td{background:#0a0d12}.mermaid{background:#161b22;padding:20px;border-radius:6px;margin:16px 0;text-align:center}details{border:1px solid #30363d;border-radius:6px;margin:10px 0;overflow:hidden}summary{padding:12px 16px;cursor:pointer;background:#161b22;color:#79c0ff;font-weight:600;list-style:none}details[open] summary{border-bottom:1px solid #30363d}.answer{padding:16px 20px;background:#0d1117}.badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:700;margin-left:8px}.easy{background:#1a4731;color:#3fb950}.intermediate{background:#2d2b00;color:#e3b341}.advanced{background:#3d1f00;color:#f0883e}.very-advanced{background:#3d0000;color:#ff7b72}.callout{background:#161b22;border-left:4px solid #58a6ff;padding:12px 16px;border-radius:0 6px 6px 0;margin:16px 0}footer{text-align:center;padding:24px;color:#8b949e;font-size:12px;border-top:1px solid #30363d;margin-top:40px}
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <h1>Python Comprehensive Reference</h1>
+  <a href="index.html">Home</a>
+  <a href="java.html">Java</a>
+  <a href="react.html">React</a>
+</nav>
+<div class="layout">
+<aside class="sidebar">
+  <div class="section-title">Foundations</div>
+  <a href="#overview">Overview</a>
+  <a href="#versions">Version History</a>
+  <a href="#datatypes">Data Types</a>
+  <a href="#strings">Strings</a>
+  <a href="#comprehensions">Comprehensions</a>
+  <div class="section-title">OOP & Patterns</div>
+  <a href="#oop">OOP</a>
+  <a href="#decorators">Decorators</a>
+  <a href="#generators">Generators</a>
+  <a href="#contextmanagers">Context Managers</a>
+  <div class="section-title">Async & Types</div>
+  <a href="#async">Async Programming</a>
+  <a href="#typehints">Type Hints</a>
+  <a href="#dataclasses">Dataclasses</a>
+  <a href="#exceptions">Exception Handling</a>
+  <div class="section-title">Standard Library</div>
+  <a href="#itertools">Itertools</a>
+  <a href="#functools">Functools</a>
+  <a href="#collections">Collections Module</a>
+  <div class="section-title">Concurrency & Tools</div>
+  <a href="#concurrency">Concurrency</a>
+  <a href="#testing">Testing</a>
+  <a href="#envs">Virtual Environments</a>
+  <div class="section-title">Frameworks</div>
+  <a href="#fastapi">FastAPI</a>
+  <a href="#django">Django</a>
+  <div class="section-title">Interview</div>
+  <a href="#interview">Interview Q&amp;A</a>
+</aside>
+<main>
+<h1>Python Comprehensive Reference</h1>
+
+<!-- ==================== OVERVIEW ==================== -->
+<h2 id="overview">Overview</h2>
+<p>Python is an <strong>interpreted</strong>, <strong>dynamically typed</strong>, <strong>high-level</strong> general-purpose language emphasizing readability and simplicity. Its philosophy: "There should be one obvious way to do it."</p>
+
+<table>
+<tr><th>Use Case</th><th>Tools / Frameworks</th></tr>
+<tr><td>Web Development</td><td>Django, Flask, FastAPI, Starlette</td></tr>
+<tr><td>Data Science / ML</td><td>NumPy, Pandas, Scikit-learn, TensorFlow, PyTorch</td></tr>
+<tr><td>Automation / Scripting</td><td>os, subprocess, pathlib, requests, Playwright</td></tr>
+<tr><td>DevOps / Tooling</td><td>Ansible, Fabric, boto3, click, typer</td></tr>
+<tr><td>APIs &amp; Microservices</td><td>FastAPI, Flask, httpx, Pydantic</td></tr>
+</table>
+
+<!-- ==================== VERSION HISTORY ==================== -->
+<h2 id="versions">Version History</h2>
+<table>
+<tr><th>Version</th><th>Key Features</th></tr>
+<tr><td>Python 3.9</td><td>Dict merge/update operators (<code>|</code> and <code>|=</code>), type hints in built-ins (<code>list[int]</code>, <code>dict[str, int]</code>, <code>tuple[int, ...]</code>), <code>zoneinfo</code> module for IANA timezones, <code>str.removeprefix()</code> / <code>str.removesuffix()</code></td></tr>
+<tr><td>Python 3.10</td><td>Structural pattern matching (<code>match</code>/<code>case</code>), parenthesized context managers, better error messages with precise line locations, union type <code>X | Y</code> in annotations, <code>match</code> with OR patterns, guards, and sequence/mapping patterns</td></tr>
+<tr><td>Python 3.11</td><td>Exception groups (<code>ExceptionGroup</code>, <code>try*/except*</code>), <code>add_note()</code> on exceptions, <code>tomllib</code> module, fine-grained error locations in tracebacks, CPython 25% faster, <code>Self</code> type in typing</td></tr>
+<tr><td>Python 3.12</td><td>Improved f-strings (arbitrary expressions, reuse of quotes), <code>@override</code> decorator, type parameter syntax PEP 695 (<code>type X = int</code>, <code>def f[T](x: T) -> T</code>), buffer protocol in typing, more interpreter optimizations</td></tr>
+<tr><td>Python 3.13</td><td>Free-threaded CPython (no-GIL experimental, <code>--disable-gil</code>), new interactive REPL with colors and multi-line editing, incremental cyclic garbage collector, <code>locals()</code> defined semantics, <code>copy.replace()</code></td></tr>
+</table>
+
+<h3>match/case — Structural Pattern Matching (3.10)</h3>
+<pre><code class="language-python">command = "go north"
+match command.split():
+    case ["quit"]:
+        print("Quitting")
+    case ["go", direction]:
+        print(f"Going {direction}")
+    case ["go", direction] if direction in ("north", "south"):
+        print(f"Cardinal direction: {direction}")
+    case ["pick", "up", item]:
+        print(f"Picking up {item}")
+    case _:
+        print("Unknown command")
+
+# Class patterns
+from dataclasses import dataclass
+
+@dataclass
+class Point:
+    x: float
+    y: float
+
+def classify_point(point):
+    match point:
+        case Point(x=0, y=0):
+            return "origin"
+        case Point(x=0, y=y):
+            return f"Y-axis at y={y}"
+        case Point(x=x, y=0):
+            return f"X-axis at x={x}"
+        case Point(x=x, y=y) if x == y:
+            return f"diagonal at {x}"
+        case Point(x=x, y=y):
+            return f"point ({x}, {y})"
+
+# Mapping patterns
+def process_event(event: dict):
+    match event:
+        case {"type": "click", "x": x, "y": y}:
+            return f"Click at ({x}, {y})"
+        case {"type": "keypress", "key": key}:
+            return f"Key: {key}"
+        case {"type": str(t)}:
+            return f"Unknown event type: {t}"
+
+# OR patterns, sequence patterns
+def categorize(value):
+    match value:
+        case 0 | False | None:
+            return "falsy"
+        case [x, y]:
+            return f"two-element: {x}, {y}"
+        case [x, *rest]:
+            return f"starts with {x}, rest={rest}"
+        case {"name": str(name)}:
+            return f"has name: {name}"</code></pre>
+
+<!-- ==================== DATA TYPES ==================== -->
+<h2 id="datatypes">Data Types</h2>
+
+<h3>Built-in Types</h3>
+<table>
+<tr><th>Category</th><th>Types</th><th>Notes</th></tr>
+<tr><td>Numeric</td><td><code>int</code>, <code>float</code>, <code>complex</code>, <code>bool</code></td><td>int is arbitrary precision; bool is subclass of int</td></tr>
+<tr><td>Text</td><td><code>str</code></td><td>Immutable Unicode sequence</td></tr>
+<tr><td>Binary</td><td><code>bytes</code>, <code>bytearray</code>, <code>memoryview</code></td><td>bytes immutable, bytearray mutable</td></tr>
+<tr><td>Sequence</td><td><code>list</code>, <code>tuple</code>, <code>range</code></td><td>list mutable, tuple immutable</td></tr>
+<tr><td>Mapping</td><td><code>dict</code></td><td>Ordered (insertion order) since 3.7</td></tr>
+<tr><td>Set</td><td><code>set</code>, <code>frozenset</code></td><td>set mutable, frozenset immutable (hashable)</td></tr>
+<tr><td>None</td><td><code>NoneType</code></td><td>Singleton None</td></tr>
+</table>
+
+<pre><code class="language-python"># type() and isinstance()
+type(42)          # &lt;class 'int'&gt;
+isinstance(True, int)  # True — bool is int subclass
+
+# int operations
+x = 10 ** 18    # arbitrary precision
+bin(255)        # '0b11111111'
+hex(255)        # '0xff'
+int('ff', 16)   # 255
+
+# float
+import math
+math.isnan(float('nan'))
+math.isinf(float('inf'))
+round(3.14159, 2)  # 3.14
+
+# complex
+c = 3 + 4j
+c.real, c.imag  # 3.0, 4.0
+abs(c)          # 5.0
+
+# Walrus operator := (assignment expression, Python 3.8+)
+if (n := len(data)) &gt; 10:
+    print(f"Too many: {n}")
+
+while chunk := file.read(8192):
+    process(chunk)</code></pre>
+
+<!-- ==================== STRINGS ==================== -->
+<h2 id="strings">String Methods</h2>
+<pre><code class="language-python">s = "  Hello, World!  "
+
+# Case
+s.upper(); s.lower(); s.title(); s.swapcase(); s.capitalize()
+
+# Strip / split
+s.strip()        # "Hello, World!"
+s.lstrip(); s.rstrip()
+s.split(", ")    # ["Hello", "World!  "]
+s.split()        # ["Hello,", "World!"] — whitespace split
+s.splitlines()   # split on newlines
+s.partition(",") # ("  Hello", ",", " World!  ")
+
+# Search
+s.find("World")      # 8, -1 if not found
+s.index("World")     # 8, ValueError if not found
+s.startswith("  H")  # True
+s.endswith("  ")     # True
+s.count("l")         # 3
+"World" in s         # True
+
+# Replace / transform
+s.replace("World", "Python")
+s.strip().removeprefix("Hello, ").removesuffix("!")  # Python 3.9+
+s.encode("utf-8")    # bytes
+
+# Check
+"hello".isalpha()   # True
+"hello123".isalnum() # True
+"  \t\n".isspace()  # True
+"HELLO".isupper()
+
+# Join / format
+", ".join(["a", "b", "c"])  # "a, b, c"
+f"Name: {'Alice':>10}"      # f-string with format spec
+"{:,.2f}".format(1234567.89) # "1,234,567.89"
+f"{3.14159:.2f}"             # "3.14"
+
+# Center / padding
+"hi".center(10, "-")  # "----hi----"
+"42".zfill(5)         # "00042"</code></pre>
+
+<!-- ==================== COMPREHENSIONS ==================== -->
+<h2 id="comprehensions">Comprehensions &amp; Generators</h2>
+<pre><code class="language-python"># List comprehension
+squares = [x**2 for x in range(10)]
+evens = [x for x in range(20) if x % 2 == 0]
+matrix = [[i*j for j in range(1,4)] for i in range(1,4)]
+
+# Dict comprehension
+word_lengths = {word: len(word) for word in ["apple", "banana", "cherry"]}
+inverted = {v: k for k, v in original.items()}
+
+# Set comprehension
+unique_lengths = {len(word) for word in words}
+
+# Generator expression — lazy, memory efficient
+sum_squares = sum(x**2 for x in range(1_000_000))  # no list created
+
+# Conditional expression (ternary)
+result = "even" if n % 2 == 0 else "odd"
+
+# Nested comprehension
+flat = [item for sublist in nested_list for item in sublist]
+
+# Walrus in comprehension
+results = [y for x in data if (y := expensive(x)) is not None]</code></pre>
+
+<!-- ==================== OOP ==================== -->
+<h2 id="oop">Object-Oriented Programming</h2>
+
+<h3>Classes, __init__, self</h3>
+<pre><code class="language-python">class BankAccount:
+    # Class variable (shared by all instances)
+    interest_rate = 0.05
+
+    def __init__(self, owner: str, balance: float = 0.0):
+        # Instance variables
+        self.owner = owner
+        self._balance = balance  # convention: protected
+        self.__id = id(self)     # name-mangled: _BankAccount__id
+
+    @property
+    def balance(self):
+        return self._balance
+
+    @balance.setter
+    def balance(self, value: float):
+        if value &lt; 0:
+            raise ValueError("Balance cannot be negative")
+        self._balance = value
+
+    def deposit(self, amount: float) -> None:
+        self._balance += amount
+
+    def withdraw(self, amount: float) -> bool:
+        if amount &gt; self._balance:
+            return False
+        self._balance -= amount
+        return True
+
+    @classmethod
+    def with_bonus(cls, owner: str, bonus: float) -> "BankAccount":
+        """Factory classmethod"""
+        return cls(owner, bonus * (1 + cls.interest_rate))
+
+    @staticmethod
+    def validate_amount(amount: float) -> bool:
+        """No access to class or instance"""
+        return amount &gt; 0
+
+    def __repr__(self) -> str:
+        return f"BankAccount(owner={self.owner!r}, balance={self._balance:.2f})"
+
+    def __str__(self) -> str:
+        return f"{self.owner}'s account: ${self._balance:.2f}"
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, BankAccount):
+            return NotImplemented
+        return self.owner == other.owner and self._balance == other._balance
+
+    def __hash__(self) -> int:
+        return hash((self.owner, self._balance))</code></pre>
+
+<h3>Inheritance & MRO</h3>
+<pre><code class="language-python">class Animal:
+    def __init__(self, name: str):
+        self.name = name
+
+    def speak(self) -> str:
+        return f"{self.name} makes a sound"
+
+class Dog(Animal):
+    def speak(self) -> str:
+        return f"{self.name} barks"
+
+class Cat(Animal):
+    def speak(self) -> str:
+        return f"{self.name} meows"
+
+# Multiple inheritance — MRO (C3 linearization)
+class A:
+    def method(self): return "A"
+
+class B(A):
+    def method(self): return "B"
+
+class C(A):
+    def method(self): return "C"
+
+class D(B, C):  # MRO: D -> B -> C -> A
+    pass
+
+D.__mro__  # (D, B, C, A, object)
+D().method()  # "B" — follows MRO left to right
+
+# super() follows MRO correctly
+class Base:
+    def __init__(self, x):
+        self.x = x
+
+class Mixin:
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.extra = "mixin"
+
+class Child(Mixin, Base):
+    def __init__(self, x):
+        super().__init__(x)  # calls Mixin.__init__ which calls Base.__init__</code></pre>
+
+<h3>Important Dunder Methods</h3>
+<pre><code class="language-python">class Vector:
+    def __init__(self, x, y):
+        self.x, self.y = x, y
+
+    # String representation
+    def __repr__(self): return f"Vector({self.x}, {self.y})"
+    def __str__(self): return f"({self.x}, {self.y})"
+
+    # Arithmetic
+    def __add__(self, other): return Vector(self.x + other.x, self.y + other.y)
+    def __sub__(self, other): return Vector(self.x - other.x, self.y - other.y)
+    def __mul__(self, scalar): return Vector(self.x * scalar, self.y * scalar)
+    def __rmul__(self, scalar): return self.__mul__(scalar)  # 3 * v
+    def __neg__(self): return Vector(-self.x, -self.y)
+
+    # Comparison
+    def __eq__(self, other): return self.x == other.x and self.y == other.y
+    def __lt__(self, other): return abs(self) &lt; abs(other)
+
+    # Container
+    def __len__(self): return 2
+    def __getitem__(self, idx): return (self.x, self.y)[idx]
+    def __iter__(self): return iter((self.x, self.y))
+    def __contains__(self, val): return val in (self.x, self.y)
+
+    # Numeric
+    def __abs__(self): return (self.x**2 + self.y**2) ** 0.5
+    def __bool__(self): return self.x != 0 or self.y != 0
+
+    # Context manager
+    def __enter__(self): return self
+    def __exit__(self, exc_type, exc_val, exc_tb): return False
+
+    # Callable
+    def __call__(self, scale): return Vector(self.x * scale, self.y * scale)
+
+    # Hashing (needed if __eq__ defined)
+    def __hash__(self): return hash((self.x, self.y))</code></pre>
+
+<h3>Abstract Classes & Protocols</h3>
+<pre><code class="language-python">from abc import ABC, abstractmethod
+from typing import Protocol, runtime_checkable
+
+# Abstract Base Class — nominal typing
+class Shape(ABC):
+    @abstractmethod
+    def area(self) -> float: ...
+
+    @abstractmethod
+    def perimeter(self) -> float: ...
+
+    def describe(self) -> str:
+        return f"Area: {self.area():.2f}, Perimeter: {self.perimeter():.2f}"
+
+class Circle(Shape):
+    def __init__(self, radius: float):
+        self.radius = radius
+
+    def area(self) -> float:
+        import math
+        return math.pi * self.radius ** 2
+
+    def perimeter(self) -> float:
+        import math
+        return 2 * math.pi * self.radius
+
+# Protocol — structural typing (duck typing with type checking)
+@runtime_checkable
+class Drawable(Protocol):
+    def draw(self) -> None: ...
+    def resize(self, factor: float) -> None: ...
+
+# Any class implementing draw() and resize() satisfies Drawable
+# even without explicitly inheriting from it
+class Button:
+    def draw(self) -> None: print("Drawing button")
+    def resize(self, factor: float) -> None: print(f"Resizing by {factor}")
+
+isinstance(Button(), Drawable)  # True (runtime_checkable)</code></pre>
+
+<!-- ==================== DECORATORS ==================== -->
+<h2 id="decorators">Decorators</h2>
+
+<h3>Function Decorators</h3>
+<pre><code class="language-python">import functools
+import time
+
+# Basic decorator
+def timer(func):
+    @functools.wraps(func)  # preserve metadata
+    def wrapper(*args, **kwargs):
+        start = time.perf_counter()
+        result = func(*args, **kwargs)
+        elapsed = time.perf_counter() - start
+        print(f"{func.__name__} took {elapsed:.4f}s")
+        return result
+    return wrapper
+
+# Decorator with arguments
+def retry(max_attempts: int = 3, delay: float = 1.0):
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            last_exc = None
+            for attempt in range(max_attempts):
+                try:
+                    return func(*args, **kwargs)
+                except Exception as e:
+                    last_exc = e
+                    if attempt &lt; max_attempts - 1:
+                        time.sleep(delay)
+            raise last_exc
+        return wrapper
+    return decorator
+
+@timer
+@retry(max_attempts=3, delay=0.5)
+def fetch_data(url: str):
+    import urllib.request
+    return urllib.request.urlopen(url).read()
+
+# Class decorator
+def singleton(cls):
+    instances = {}
+    @functools.wraps(cls)
+    def get_instance(*args, **kwargs):
+        if cls not in instances:
+            instances[cls] = cls(*args, **kwargs)
+        return instances[cls]
+    return get_instance
+
+@singleton
+class Config:
+    def __init__(self):
+        self.settings = {}</code></pre>
+
+<h3>@dataclass, @lru_cache, @cached_property</h3>
+<pre><code class="language-python">from dataclasses import dataclass, field
+from functools import lru_cache, cached_property
+
+# @dataclass
+@dataclass
+class Employee:
+    name: str
+    department: str
+    salary: float = 50000.0
+    skills: list[str] = field(default_factory=list)
+
+    def __post_init__(self):
+        self.name = self.name.strip()
+
+# frozen=True makes instances immutable and hashable
+@dataclass(frozen=True)
+class Point:
+    x: float
+    y: float
+
+# @lru_cache — memoization with LRU eviction
+@lru_cache(maxsize=128)
+def fibonacci(n: int) -> int:
+    if n &lt; 2:
+        return n
+    return fibonacci(n - 1) + fibonacci(n - 2)
+
+fibonacci.cache_info()  # CacheInfo(hits=..., misses=..., maxsize=128, currsize=...)
+fibonacci.cache_clear()
+
+# @cached_property — computed once, cached per instance
+class Circle:
+    def __init__(self, radius: float):
+        self.radius = radius
+
+    @cached_property  # not recomputed unless deleted
+    def area(self) -> float:
+        import math
+        return math.pi * self.radius ** 2</code></pre>
+
+<!-- ==================== GENERATORS ==================== -->
+<h2 id="generators">Generators</h2>
+<pre><code class="language-python">from typing import Generator
+
+# Generator function
+def countdown(n: int) -> Generator[int, None, None]:
+    while n &gt; 0:
+        yield n
+        n -= 1
+
+# yield from — delegate to sub-generator
+def chain(*iterables):
+    for iterable in iterables:
+        yield from iterable
+
+# send() — coroutine-style generator
+def accumulator() -> Generator[float, float, str]:
+    total = 0.0
+    count = 0
+    while True:
+        value = yield total  # yield current total, receive next value
+        if value is None:
+            break
+        total += value
+        count += 1
+    return f"Final total: {total} from {count} values"
+
+gen = accumulator()
+next(gen)           # prime — advance to first yield
+gen.send(10)        # 10.0
+gen.send(20)        # 30.0
+
+# throw() and close()
+def safe_gen():
+    try:
+        while True:
+            yield
+    except GeneratorExit:
+        print("Generator closed")
+    except ValueError as e:
+        print(f"Got error: {e}")
+        yield "recovered"
+
+g = safe_gen()
+next(g)
+g.throw(ValueError, "test")  # sends exception into generator
+g.close()                     # triggers GeneratorExit
+
+# Generator pipeline — memory efficient processing
+def read_large_file(path: str):
+    with open(path) as f:
+        for line in f:
+            yield line.rstrip()
+
+def filter_lines(lines, pattern: str):
+    for line in lines:
+        if pattern in line:
+            yield line
+
+def parse_lines(lines):
+    for line in lines:
+        yield line.split(",")
+
+# All lazy — no full data in memory
+pipeline = parse_lines(filter_lines(read_large_file("big.csv"), "ERROR"))</code></pre>
+
+<!-- ==================== CONTEXT MANAGERS ==================== -->
+<h2 id="contextmanagers">Context Managers</h2>
+<pre><code class="language-python">from contextlib import contextmanager, asynccontextmanager, suppress
+
+# __enter__ / __exit__ protocol
+class ManagedResource:
+    def __enter__(self):
+        print("Acquiring resource")
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        print("Releasing resource")
+        # Return True to suppress exception, False/None to propagate
+        if exc_type is ValueError:
+            print(f"Suppressing ValueError: {exc_val}")
+            return True
+        return False  # propagate other exceptions
+
+# contextmanager decorator — easier way
+@contextmanager
+def timer_context(label: str):
+    import time
+    start = time.perf_counter()
+    try:
+        yield  # code inside 'with' block runs here
+    finally:
+        elapsed = time.perf_counter() - start
+        print(f"{label}: {elapsed:.4f}s")
+
+with timer_context("database query"):
+    time.sleep(0.1)
+
+# Suppress specific exceptions
+with suppress(FileNotFoundError):
+    os.remove("nonexistent.txt")
+
+# Parenthesized context managers (Python 3.10+)
+with (open("in.txt") as fin,
+      open("out.txt", "w") as fout):
+    fout.write(fin.read())
+
+# Async context manager
+@asynccontextmanager
+async def database_connection(url: str):
+    conn = await connect(url)
+    try:
+        yield conn
+    finally:
+        await conn.close()
+
+async with database_connection("postgresql://localhost/db") as conn:
+    await conn.execute("SELECT 1")</code></pre>
+
+<!-- ==================== ASYNC ==================== -->
+<h2 id="async">Async Programming</h2>
+
+<h3>asyncio Event Loop</h3>
+<div class="mermaid">
+flowchart TD
+    A[asyncio.run / Event Loop] --> B{Task Queue}
+    B --> C[Coroutine 1]
+    B --> D[Coroutine 2]
+    B --> E[Coroutine N]
+    C -->|await I/O| F[I/O Selector\nepoll/kqueue]
+    D -->|await sleep| G[Timer Heap]
+    E -->|CPU work| H[Runs to completion\nor next await]
+    F -->|I/O ready| B
+    G -->|timeout| B
+    H --> B
+    subgraph Single Thread
+        A
+        B
+        C
+        D
+        E
+        H
+    end
+</div>
+
+<pre><code class="language-python">import asyncio
+import httpx
+from typing import AsyncIterator
+
+# Basic coroutine
+async def fetch_url(url: str) -> str:
+    async with httpx.AsyncClient() as client:
+        response = await client.get(url)
+        return response.text
+
+# asyncio.run — entry point (Python 3.7+)
+result = asyncio.run(fetch_url("https://example.com"))
+
+# Concurrent execution with gather
+async def fetch_all(urls: list[str]) -> list[str]:
+    async with httpx.AsyncClient() as client:
+        tasks = [client.get(url) for url in urls]
+        responses = await asyncio.gather(*tasks, return_exceptions=True)
+        return [r.text for r in responses if not isinstance(r, Exception)]
+
+# asyncio.create_task — fire and forget / background
+async def main():
+    task1 = asyncio.create_task(fetch_url("https://api1.example.com"), name="api1")
+    task2 = asyncio.create_task(fetch_url("https://api2.example.com"), name="api2")
+
+    # Can do other work here while tasks run
+    await asyncio.sleep(0.1)
+
+    # Wait for both
+    result1, result2 = await asyncio.gather(task1, task2)
+
+# asyncio.Queue — producer/consumer pattern
+async def producer(queue: asyncio.Queue):
+    for i in range(10):
+        await queue.put(i)
+        await asyncio.sleep(0.1)
+    await queue.put(None)  # sentinel
+
+async def consumer(queue: asyncio.Queue):
+    while True:
+        item = await queue.get()
+        if item is None:
+            break
+        print(f"Processing {item}")
+        queue.task_done()
+
+async def main_queue():
+    queue = asyncio.Queue(maxsize=5)
+    await asyncio.gather(producer(queue), consumer(queue))
+
+# Async generator
+async def async_range(n: int) -> AsyncIterator[int]:
+    for i in range(n):
+        await asyncio.sleep(0)  # yield control
+        yield i
+
+async for value in async_range(5):
+    print(value)
+
+# Timeout
+try:
+    result = await asyncio.wait_for(fetch_url(url), timeout=5.0)
+except asyncio.TimeoutError:
+    print("Request timed out")
+
+# Semaphore — limit concurrency
+sem = asyncio.Semaphore(10)  # max 10 concurrent
+async def limited_fetch(url: str) -> str:
+    async with sem:
+        return await fetch_url(url)</code></pre>
+
+<!-- ==================== TYPE HINTS ==================== -->
+<h2 id="typehints">Type Hints</h2>
+<pre><code class="language-python">from typing import (
+    Optional, Union, List, Dict, Tuple, Set,
+    Callable, TypeVar, Generic, Protocol,
+    TypedDict, Literal, Final, ClassVar,
+    overload, Any, cast, TYPE_CHECKING
+)
+from collections.abc import Iterator, Generator, Sequence, Mapping
+
+# Basic annotations
+def greet(name: str, times: int = 1) -> str:
+    return (f"Hello, {name}! " * times).strip()
+
+# Optional vs Union
+def find(items: list[int], target: int) -> int | None:  # Python 3.10+
+    try:
+        return items.index(target)
+    except ValueError:
+        return None
+
+# Previously (3.9 and earlier):
+def find_old(items: List[int], target: int) -> Optional[int]: ...
+
+# TypeVar — generic functions
+T = TypeVar("T")
+def first(items: list[T]) -> T | None:
+    return items[0] if items else None
+
+# Generic class
+class Stack(Generic[T]):
+    def __init__(self) -> None:
+        self._items: list[T] = []
+
+    def push(self, item: T) -> None:
+        self._items.append(item)
+
+    def pop(self) -> T:
+        return self._items.pop()
+
+# Python 3.12 new syntax (PEP 695)
+# def first[T](items: list[T]) -> T | None: ...
+# class Stack[T]: ...
+# type Vector = list[float]
+
+# TypedDict
+class Movie(TypedDict):
+    title: str
+    year: int
+    rating: float
+
+class ExtendedMovie(Movie, total=False):  # optional fields
+    director: str
+
+# Literal
+Direction = Literal["north", "south", "east", "west"]
+def move(direction: Direction) -> None: ...
+
+# Final
+MAX_SIZE: Final = 1000
+
+# Protocol
+class Sized(Protocol):
+    def __len__(self) -> int: ...
+
+# overload — multiple signatures
+@overload
+def process(x: int) -> int: ...
+@overload
+def process(x: str) -> str: ...
+def process(x: int | str) -> int | str:
+    if isinstance(x, int):
+        return x * 2
+    return x.upper()
+
+# Callable
+Transform = Callable[[int], int]
+Predicate = Callable[[str], bool]
+
+# ClassVar
+class Config:
+    DEFAULT_TIMEOUT: ClassVar[int] = 30
+    timeout: int</code></pre>
+
+<!-- ==================== DATACLASSES ==================== -->
+<h2 id="dataclasses">Dataclasses</h2>
+<pre><code class="language-python">from dataclasses import dataclass, field, KW_ONLY, InitVar
+from typing import ClassVar
+
+@dataclass
+class Product:
+    name: str
+    price: float
+    quantity: int = 0
+    tags: list[str] = field(default_factory=list)
+    _id: int = field(default=0, repr=False, compare=False)
+
+    # Class variable — not a field
+    tax_rate: ClassVar[float] = 0.1
+
+    def __post_init__(self):
+        if self.price &lt; 0:
+            raise ValueError("Price cannot be negative")
+
+    @property
+    def total(self) -> float:
+        return self.price * self.quantity * (1 + self.tax_rate)
+
+# InitVar — init-only parameter, not stored
+@dataclass
+class DBModel:
+    name: str
+    debug: InitVar[bool] = False
+
+    def __post_init__(self, debug: bool):
+        if debug:
+            print(f"Created {self.name}")
+
+# frozen=True — immutable, hashable
+@dataclass(frozen=True)
+class Coordinate:
+    lat: float
+    lon: float
+
+# slots=True (Python 3.10+) — faster, less memory
+@dataclass(slots=True)
+class FastPoint:
+    x: float
+    y: float
+
+# kw_only (Python 3.10+)
+@dataclass
+class Config:
+    host: str
+    _: KW_ONLY
+    port: int = 8080
+    debug: bool = False</code></pre>
+
+<!-- ==================== EXCEPTIONS ==================== -->
+<h2 id="exceptions">Exception Handling</h2>
+<pre><code class="language-python"># Full syntax
+try:
+    result = 10 / 0
+except ZeroDivisionError as e:
+    print(f"Cannot divide by zero: {e}")
+except (TypeError, ValueError) as e:
+    print(f"Type/Value error: {e}")
+except Exception:
+    raise  # re-raise
+else:
+    print("No exception occurred")  # runs only if no exception
+finally:
+    print("Always runs")
+
+# Exception chaining
+try:
+    data = json.loads(raw)
+except json.JSONDecodeError as e:
+    raise ValueError("Invalid config format") from e  # explicit chaining
+
+# Suppress original context
+raise RuntimeError("new error") from None  # no __context__
+
+# Custom exceptions
+class AppError(Exception):
+    """Base application exception"""
+
+class ValidationError(AppError):
+    def __init__(self, field: str, message: str):
+        super().__init__(f"Validation failed for {field}: {message}")
+        self.field = field
+
+class NotFoundError(AppError):
+    def __init__(self, resource: str, id: int):
+        super().__init__(f"{resource} with id={id} not found")
+        self.resource = resource
+        self.id = id
+
+# Exception notes (Python 3.11+)
+try:
+    process_data(data)
+except Exception as e:
+    e.add_note(f"Failed while processing record id={record_id}")
+    raise
+
+# Exception groups (Python 3.11+)
+def validate_all(items):
+    errors = []
+    for item in items:
+        try:
+            validate(item)
+        except ValidationError as e:
+            errors.append(e)
+    if errors:
+        raise ExceptionGroup("validation failures", errors)
+
+try:
+    validate_all(items)
+except* ValidationError as eg:  # except* handles groups
+    for exc in eg.exceptions:
+        print(f"Validation: {exc}")</code></pre>
+
+<!-- ==================== ITERTOOLS ==================== -->
+<h2 id="itertools">Itertools</h2>
+<pre><code class="language-python">import itertools as it
+
+# Infinite iterators
+it.count(10, 2)         # 10, 12, 14, 16, ...
+it.cycle([1, 2, 3])     # 1, 2, 3, 1, 2, 3, ...
+it.repeat("x", 3)       # "x", "x", "x"
+
+# Finite iterators
+it.chain([1,2], [3,4], [5,6])          # 1,2,3,4,5,6
+it.chain.from_iterable([[1,2],[3,4]])   # 1,2,3,4
+list(it.islice(it.count(), 5))          # [0,1,2,3,4]
+list(it.takewhile(lambda x: x&lt;5, [1,3,5,7]))  # [1,3]
+list(it.dropwhile(lambda x: x&lt;5, [1,3,5,7]))  # [5,7]
+
+# Combinatoric
+list(it.product("AB", repeat=2))          # AA AB BA BB
+list(it.permutations("ABC", 2))           # AB AC BA BC CA CB
+list(it.combinations("ABC", 2))           # AB AC BC
+list(it.combinations_with_replacement("AB", 2))  # AA AB BB
+
+# Groupby — consecutive equal-key groups
+data = [("A", 1), ("A", 2), ("B", 3), ("A", 4)]
+for key, group in it.groupby(data, key=lambda x: x[0]):
+    print(key, list(group))
+# A [("A",1),("A",2)]  B [("B",3)]  A [("A",4)]
+
+# starmap — like map but unpacks args
+list(it.starmap(pow, [(2,3),(3,2),(4,2)]))  # [8,9,16]
+
+# zip_longest
+list(it.zip_longest([1,2,3], [4,5], fillvalue=0))  # [(1,4),(2,5),(3,0)]
+
+# accumulate
+list(it.accumulate([1,2,3,4,5]))             # [1,3,6,10,15] (running sum)
+list(it.accumulate([1,2,3,4,5], max))        # running max
+import operator
+list(it.accumulate([1,2,3,4,5], operator.mul, initial=1))  # factorial</code></pre>
+
+<!-- ==================== FUNCTOOLS ==================== -->
+<h2 id="functools">Functools</h2>
+<pre><code class="language-python">import functools
+
+# reduce
+functools.reduce(lambda a,b: a+b, [1,2,3,4,5])  # 15
+functools.reduce(lambda a,b: a*b, range(1,6), 1) # 120 with initial
+
+# partial — freeze arguments
+from functools import partial
+
+def power(base, exponent):
+    return base ** exponent
+
+square = partial(power, exponent=2)
+cube   = partial(power, exponent=3)
+square(4)  # 16
+
+# wraps — copy metadata from wrapped function
+def my_decorator(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        return func(*args, **kwargs)
+    wrapper.__wrapped__ = func  # also set by wraps
+    return wrapper
+
+# singledispatch — function overloading
+@functools.singledispatch
+def process(arg):
+    raise NotImplementedError(f"Cannot process {type(arg)}")
+
+@process.register(int)
+def _(arg: int):
+    return arg * 2
+
+@process.register(str)
+def _(arg: str):
+    return arg.upper()
+
+@process.register(list)
+def _(arg: list):
+    return [process(x) for x in arg]
+
+process(5)       # 10
+process("hi")    # "HI"
+process([1,"a"]) # [2,"A"]
+
+# total_ordering — define __eq__ + one comparison, get all
+@functools.total_ordering
+class Version:
+    def __init__(self, major, minor):
+        self.major, self.minor = major, minor
+    def __eq__(self, other):
+        return (self.major, self.minor) == (other.major, other.minor)
+    def __lt__(self, other):
+        return (self.major, self.minor) &lt; (other.major, other.minor)
+    # __le__, __gt__, __ge__ auto-generated</code></pre>
+
+<!-- ==================== COLLECTIONS MODULE ==================== -->
+<h2 id="collections">Collections Module</h2>
+<pre><code class="language-python">from collections import Counter, defaultdict, OrderedDict, namedtuple, deque, ChainMap
+
+# Counter — frequency counting
+words = ["apple", "banana", "apple", "cherry", "banana", "apple"]
+c = Counter(words)
+c.most_common(2)          # [("apple", 3), ("banana", 2)]
+c["apple"]                # 3
+c["missing"]              # 0 (no KeyError)
+c.update(["apple"])       # add more counts
+c.subtract(["apple"])     # subtract counts
++c                        # keep only positive counts
+Counter("aabbcc") + Counter("abc")  # add two counters
+
+# defaultdict — no KeyError on missing key
+dd = defaultdict(list)
+dd["key"].append(1)       # no need to check key exists
+dd["key"].append(2)
+
+dd_int = defaultdict(int)
+for word in words:
+    dd_int[word] += 1
+
+dd_set = defaultdict(set)
+
+# namedtuple — lightweight record
+Point = namedtuple("Point", ["x", "y"])
+p = Point(3, 4)
+p.x, p.y          # 3, 4
+p._asdict()       # {"x": 3, "y": 4}
+p._replace(x=10)  # Point(x=10, y=4) — returns new
+Point._fields     # ("x", "y")
+
+# typed namedtuple (preferred)
+from typing import NamedTuple
+class Coordinate(NamedTuple):
+    lat: float
+    lon: float
+    altitude: float = 0.0
+
+# deque — O(1) both ends
+d = deque([1,2,3], maxlen=5)  # maxlen auto-discards oldest
+d.appendleft(0)      # [0,1,2,3]
+d.popleft()          # 0, [1,2,3]
+d.rotate(1)          # [3,1,2] — rotate right
+d.rotate(-1)         # [1,2,3] — rotate left
+
+# ChainMap — multiple dicts as one view
+defaults = {"color": "blue", "size": 10}
+user = {"color": "red"}
+config = ChainMap(user, defaults)
+config["color"]   # "red" (user wins)
+config["size"]    # 10 (from defaults)
+config.maps       # [user_dict, defaults_dict]</code></pre>
+
+<!-- ==================== CONCURRENCY ==================== -->
+<h2 id="concurrency">Concurrency</h2>
+
+<h3>Threading — GIL Limitations</h3>
+<pre><code class="language-python">import threading
+from concurrent.futures import ThreadPoolExecutor
+
+# The GIL (Global Interpreter Lock) prevents true parallel execution of Python
+# bytecode. Threading is good for I/O-bound tasks, NOT CPU-bound.
+
+def download(url: str) -> bytes:
+    import urllib.request
+    return urllib.request.urlopen(url).read()
+
+# Thread class
+t = threading.Thread(target=download, args=("https://example.com",), daemon=True)
+t.start()
+t.join()  # wait for completion
+
+# Thread-safe sharing with Lock
+counter = 0
+lock = threading.Lock()
+
+def increment():
+    global counter
+    with lock:
+        counter += 1
+
+# ThreadPoolExecutor — easier high-level API
+urls = ["https://api1.com", "https://api2.com", "https://api3.com"]
+with ThreadPoolExecutor(max_workers=10) as executor:
+    futures = [executor.submit(download, url) for url in urls]
+    results = [f.result() for f in futures]
+
+# map — simpler
+with ThreadPoolExecutor(max_workers=5) as executor:
+    results = list(executor.map(download, urls))</code></pre>
+
+<h3>Multiprocessing — True Parallelism</h3>
+<pre><code class="language-python">from multiprocessing import Pool, Process, Queue, Pipe, Manager
+from concurrent.futures import ProcessPoolExecutor
+import os
+
+def cpu_task(n: int) -> int:
+    return sum(i * i for i in range(n))
+
+# Pool — parallel map
+with Pool(processes=os.cpu_count()) as pool:
+    results = pool.map(cpu_task, [1_000_000] * 8)
+    # starmap for multiple args
+    results = pool.starmap(pow, [(2,10), (3,10), (4,10)])
+
+# Process — explicit control
+p = Process(target=cpu_task, args=(1_000_000,))
+p.start()
+p.join()
+p.exitcode  # 0 = success
+
+# Queue — inter-process communication
+def producer(q: Queue):
+    for i in range(5):
+        q.put(i)
+    q.put(None)  # sentinel
+
+def consumer(q: Queue):
+    while True:
+        item = q.get()
+        if item is None:
+            break
+        print(item)
+
+q = Queue()
+p1 = Process(target=producer, args=(q,))
+p2 = Process(target=consumer, args=(q,))
+p1.start(); p2.start()
+p1.join(); p2.join()
+
+# ProcessPoolExecutor — cleaner API
+with ProcessPoolExecutor(max_workers=4) as executor:
+    futures = [executor.submit(cpu_task, n) for n in [100_000]*4]
+    results = [f.result() for f in futures]</code></pre>
+
+<!-- ==================== TESTING ==================== -->
+<h2 id="testing">Testing</h2>
+<pre><code class="language-python">import unittest
+from unittest.mock import Mock, MagicMock, patch, call
+
+# unittest
+class TestBankAccount(unittest.TestCase):
+    def setUp(self):
+        self.account = BankAccount("Alice", 1000)
+
+    def tearDown(self):
+        pass
+
+    def test_deposit(self):
+        self.account.deposit(500)
+        self.assertEqual(self.account.balance, 1500)
+
+    def test_withdraw_insufficient(self):
+        result = self.account.withdraw(2000)
+        self.assertFalse(result)
+
+    def test_negative_balance_raises(self):
+        with self.assertRaises(ValueError):
+            self.account.balance = -1
+
+# pytest style (preferred)
+import pytest
+
+class TestUserService:
+    def test_find_user(self, user_service, db_session):
+        user = user_service.find_by_id(1)
+        assert user.name == "Alice"
+        assert user.active is True
+
+    def test_user_not_found_raises(self, user_service):
+        with pytest.raises(NotFoundError, match="User with id=999 not found"):
+            user_service.find_by_id(999)
+
+# Fixtures (conftest.py)
+# @pytest.fixture
+# def db_session():
+#     session = create_session()
+#     yield session
+#     session.rollback()
+#     session.close()
+
+# @pytest.fixture
+# def user_service(db_session):
+#     return UserService(UserRepository(db_session))
+
+# Parametrize
+@pytest.mark.parametrize("input,expected", [
+    (0, "zero"),
+    (1, "positive"),
+    (-1, "negative"),
+    (100, "positive"),
+])
+def test_classify(input, expected):
+    assert classify(input) == expected
+
+# Marks
+@pytest.mark.slow
+@pytest.mark.integration
+def test_full_pipeline():
+    pass
+
+# Mocking
+def test_send_email():
+    with patch("myapp.email.smtplib.SMTP") as mock_smtp:
+        mock_instance = mock_smtp.return_value.__enter__.return_value
+        send_email("alice@example.com", "Hello")
+        mock_instance.sendmail.assert_called_once()
+
+# Mock object
+def test_payment_service():
+    mock_gateway = Mock()
+    mock_gateway.charge.return_value = {"status": "success", "id": "ch_123"}
+    mock_gateway.charge.side_effect = [
+        {"status": "success"},
+        PaymentError("Card declined"),
+    ]
+
+    service = PaymentService(mock_gateway)
+    result = service.process(100.0, "card_token")
+    mock_gateway.charge.assert_called_with(100.0, "card_token")
+    assert result["status"] == "success"
+
+# pytest-mock (mocker fixture)
+def test_with_mocker(mocker):
+    mock_send = mocker.patch("myapp.notifications.send_email")
+    trigger_notification()
+    mock_send.assert_called_once_with("user@example.com", subject="Alert")</code></pre>
+
+<!-- ==================== VIRTUAL ENVIRONMENTS ==================== -->
+<h2 id="envs">Virtual Environments &amp; Packaging</h2>
+<pre><code class="language-bash"># venv — built-in
+python3 -m venv .venv
+source .venv/bin/activate      # Linux/macOS
+.venv\Scripts\activate         # Windows
+deactivate
+
+# pip
+pip install requests
+pip install "fastapi[all]"
+pip install "django>=4.2,<5"
+pip install -r requirements.txt
+pip freeze > requirements.txt
+pip install -e .               # editable install
+
+# pyproject.toml (modern, PEP 517/518)
+# [build-system]
+# requires = ["hatchling"]
+# build-backend = "hatchling.build"
+#
+# [project]
+# name = "my-app"
+# version = "1.0.0"
+# dependencies = ["fastapi>=0.100", "sqlalchemy>=2.0"]
+# requires-python = ">=3.11"
+#
+# [project.optional-dependencies]
+# dev = ["pytest", "ruff", "mypy"]
+
+# poetry — dependency management
+poetry new myproject
+poetry add fastapi
+poetry add --group dev pytest mypy
+poetry install
+poetry run python main.py
+poetry shell
+
+# uv — fast package manager (Astral)
+uv venv
+uv pip install fastapi
+uv run python main.py
+uv add fastapi                  # in pyproject.toml project
+uv sync                         # install from lock file</code></pre>
+
+<!-- ==================== FASTAPI ==================== -->
+<h2 id="fastapi">FastAPI Overview</h2>
+<pre><code class="language-python">from fastapi import FastAPI, HTTPException, Depends, status, Path, Query, Body
+from pydantic import BaseModel, Field, EmailStr
+from typing import Annotated
+
+app = FastAPI(title="My API", version="1.0.0")
+
+# Pydantic model
+class UserCreate(BaseModel):
+    name: str = Field(min_length=1, max_length=100)
+    email: EmailStr
+    age: int = Field(gt=0, le=150)
+
+class UserResponse(BaseModel):
+    id: int
+    name: str
+    email: str
+
+    class Config:
+        from_attributes = True  # Pydantic v2: model_config = ConfigDict(...)
+
+# Path operations
+@app.get("/")
+async def root():
+    return {"message": "Hello World"}
+
+@app.get("/users/{user_id}", response_model=UserResponse)
+async def get_user(
+    user_id: Annotated[int, Path(gt=0)],
+    include_inactive: bool = Query(default=False)
+):
+    user = await user_service.get(user_id)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    return user
+
+@app.post("/users", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
+async def create_user(user: UserCreate):
+    return await user_service.create(user)
+
+@app.put("/users/{user_id}", response_model=UserResponse)
+async def update_user(user_id: int, user: UserCreate):
+    updated = await user_service.update(user_id, user)
+    if not updated:
+        raise HTTPException(status_code=404)
+    return updated
+
+@app.delete("/users/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_user(user_id: int):
+    await user_service.delete(user_id)
+
+# Dependency injection
+async def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        await db.close()
+
+async def get_current_user(token: str = Depends(oauth2_scheme)) -> User:
+    return await verify_token(token)
+
+@app.get("/me")
+async def read_me(current_user: Annotated[User, Depends(get_current_user)]):
+    return current_user
+
+# Background tasks
+from fastapi import BackgroundTasks
+
+@app.post("/send-notification")
+async def send_notification(email: str, background_tasks: BackgroundTasks):
+    background_tasks.add_task(send_email_func, email, "Hello!")
+    return {"message": "Notification queued"}</code></pre>
+
+<!-- ==================== DJANGO ==================== -->
+<h2 id="django">Django Overview</h2>
+<pre><code class="language-python"># MTV pattern: Model — Template — View (like MVC)
+
+# models.py — ORM
+from django.db import models
+
+class Article(models.Model):
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    author = models.ForeignKey("auth.User", on_delete=models.CASCADE,
+                                related_name="articles")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    published = models.BooleanField(default=False)
+    tags = models.ManyToManyField("Tag", blank=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+        indexes = [models.Index(fields=["author", "-created_at"])]
+
+    def __str__(self):
+        return self.title
+
+# ORM queries
+Article.objects.all()
+Article.objects.filter(published=True)
+Article.objects.filter(title__icontains="python")
+Article.objects.filter(author__username="alice")
+Article.objects.select_related("author")      # JOIN (FK)
+Article.objects.prefetch_related("tags")      # separate query (M2M)
+Article.objects.annotate(tag_count=Count("tags"))
+Article.objects.values("title", "author__username")
+Article.objects.order_by("-created_at")[:10]  # LIMIT 10
+
+# Create / update / delete
+article = Article.objects.create(title="Test", content="...", author=user)
+Article.objects.filter(pk=1).update(published=True)
+Article.objects.filter(published=False).delete()
+
+# views.py — Class-based views
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+class ArticleListView(ListView):
+    model = Article
+    template_name = "articles/list.html"
+    context_object_name = "articles"
+    paginate_by = 10
+
+    def get_queryset(self):
+        return Article.objects.filter(published=True).select_related("author")
+
+class ArticleCreateView(LoginRequiredMixin, CreateView):
+    model = Article
+    fields = ["title", "content", "tags"]
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+# Function-based view
+from django.shortcuts import render, get_object_or_404
+
+def article_detail(request, pk):
+    article = get_object_or_404(Article, pk=pk, published=True)
+    return render(request, "articles/detail.html", {"article": article})
+
+# Django REST Framework
+from rest_framework import serializers, viewsets, permissions
+from rest_framework.decorators import action
+from rest_framework.response import Response
+
+class ArticleSerializer(serializers.ModelSerializer):
+    author_name = serializers.CharField(source="author.username", read_only=True)
+
+    class Meta:
+        model = Article
+        fields = ["id", "title", "content", "author_name", "created_at"]
+        read_only_fields = ["created_at"]
+
+class ArticleViewSet(viewsets.ModelViewSet):
+    queryset = Article.objects.select_related("author").filter(published=True)
+    serializer_class = ArticleSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+
+    @action(detail=True, methods=["post"])
+    def publish(self, request, pk=None):
+        article = self.get_object()
+        article.published = True
+        article.save()
+        return Response({"status": "published"})</code></pre>
+
+<!-- ==================== INTERVIEW ==================== -->
+<h2 id="interview">Interview Q&amp;A</h2>
+
+<details>
+<summary>What is the GIL and how does it affect Python concurrency? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p>The <strong>Global Interpreter Lock (GIL)</strong> is a mutex in CPython that ensures only one thread executes Python bytecode at a time. It was introduced to simplify memory management (reference counting is not thread-safe without it).</p>
+<p><strong>Impact</strong>:</p>
+<ul>
+<li>CPU-bound multithreading does NOT speed up execution — threads take turns, never truly parallel on multi-core</li>
+<li>I/O-bound threading works fine — GIL is released during I/O waits, so threads can run concurrently</li>
+<li>multiprocessing bypasses the GIL by using separate processes, each with its own GIL</li>
+</ul>
+<p><strong>Python 3.13</strong> introduced an experimental free-threaded mode (<code>--disable-gil</code>) where the GIL can be disabled. This allows true CPU parallelism with threads but is opt-in and still experimental.</p>
+</div>
+</details>
+
+<details>
+<summary>What is the difference between a list and a tuple? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p><strong>List</strong>: mutable sequence. Can add, remove, modify elements. Stored as dynamic array. Use when you need to change contents.</p>
+<p><strong>Tuple</strong>: immutable sequence. Cannot be modified after creation. Slightly faster and more memory-efficient. Hashable if all elements are hashable (can be dict key or set member).</p>
+<pre><code class="language-python">t = (1, 2, 3)
+hash(t)   # works
+d = {t: "value"}  # tuple as dict key
+
+l = [1, 2, 3]
+hash(l)   # TypeError: unhashable type: 'list'</code></pre>
+<p>Convention: tuples often represent heterogeneous data (a record: name, age, id), lists represent homogeneous sequences.</p>
+</div>
+</details>
+
+<details>
+<summary>Explain Python's is vs == operators. <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p><code>==</code> checks <strong>equality</strong> — calls <code>__eq__</code>, compares values.</p>
+<p><code>is</code> checks <strong>identity</strong> — checks if two names refer to the exact same object in memory (<code>id(a) == id(b)</code>).</p>
+<pre><code class="language-python">a = [1, 2, 3]
+b = [1, 2, 3]
+a == b   # True — same contents
+a is b   # False — different objects
+
+a = b = [1, 2, 3]
+a is b   # True — same object
+
+# Integer interning: CPython caches small ints (-5 to 256)
+x = 256; y = 256
+x is y   # True — cached
+x = 257; y = 257
+x is y   # False in most cases (implementation detail)
+
+# Always use 'is' for None, True, False
+if value is None: ...
+if result is True: ...</code></pre>
+</div>
+</details>
+
+<details>
+<summary>What are Python decorators and how do they work? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>A decorator is a callable that takes a function, wraps it, and returns a new function. It is syntactic sugar:</p>
+<pre><code class="language-python">@my_decorator
+def func(): pass
+# is exactly:
+func = my_decorator(func)</code></pre>
+<p>They work because functions are first-class objects in Python — they can be passed as arguments, returned from functions, and assigned to variables.</p>
+<p>Use <code>@functools.wraps(func)</code> in the wrapper to preserve the original function's <code>__name__</code>, <code>__doc__</code>, <code>__annotations__</code>, etc. Without it, introspection tools and debuggers see the wrapper instead of the original.</p>
+<p>Stacking decorators: applied bottom-up. <code>@a @b def f</code> = <code>f = a(b(f))</code>.</p>
+</div>
+</details>
+
+<details>
+<summary>Explain generators vs regular functions and their memory advantages. <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>Regular functions compute and return all results at once (e.g., returning a list). A generator function uses <code>yield</code> and produces values one at a time, pausing between yields. The generator object is a lazy iterator.</p>
+<p><strong>Memory advantage</strong>: processing a 10GB file line by line with a generator uses constant memory; building a list of all lines would require 10GB of RAM.</p>
+<p><strong>Execution model</strong>: calling a generator function does NOT execute its body. It returns a generator object. Body executes only when iterated (<code>next()</code>). State is preserved between yields (local variables, instruction pointer).</p>
+<pre><code class="language-python">def read_large(path):
+    with open(path) as f:
+        for line in f:
+            yield line.strip()  # one line at a time
+
+for line in read_large("huge.csv"):  # O(1) memory
+    process(line)</code></pre>
+</div>
+</details>
+
+<details>
+<summary>What is the MRO (Method Resolution Order) in Python? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>MRO determines the order in which classes are searched when looking up a method in a multiple-inheritance hierarchy. Python uses the <strong>C3 linearization algorithm</strong>.</p>
+<p>Rules: child before parent, left-to-right among parents, consistent with all local orderings.</p>
+<pre><code class="language-python">class A: pass
+class B(A): pass
+class C(A): pass
+class D(B, C): pass
+
+D.__mro__  # (D, B, C, A, object)
+# When D().method() called: check D, B, C, A, object in order</code></pre>
+<p><code>super()</code> doesn't just mean "parent class" — it means "next in MRO". This enables cooperative multiple inheritance where each class calls <code>super().__init__()</code> to ensure the full chain is called.</p>
+</div>
+</details>
+
+<details>
+<summary>Explain async/await and the event loop model. <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>Python's asyncio uses a <strong>single-threaded cooperative concurrency</strong> model. The event loop runs on one thread. When a coroutine hits <code>await</code>, it suspends and hands control back to the event loop, which can run other coroutines.</p>
+<p><strong>Key distinction</strong>: async/await is NOT parallel — it's concurrent. Multiple coroutines make progress interleaved on one thread. It's ideal for I/O-bound work where most time is spent waiting (network, disk). For CPU-bound, use multiprocessing or ProcessPoolExecutor.</p>
+<pre><code class="language-python">async def main():
+    # Sequential — waits for each in turn
+    r1 = await fetch(url1)
+    r2 = await fetch(url2)
+
+    # Concurrent — both start at once
+    r1, r2 = await asyncio.gather(fetch(url1), fetch(url2))</code></pre>
+<p>asyncio.gather runs coroutines concurrently — while one is waiting on I/O, the other can run.</p>
+</div>
+</details>
+
+<details>
+<summary>What is the difference between __repr__ and __str__? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><code>__repr__</code>: unambiguous representation for developers. Should ideally be an expression that could recreate the object. Used in the REPL, in containers (printing lists), and when <code>!r</code> format spec is used.</p>
+<p><code>__str__</code>: readable, human-friendly string. Used by <code>print()</code>, <code>str()</code>, and <code>f"{obj}"</code>.</p>
+<p>If only <code>__repr__</code> is defined, Python uses it as a fallback for <code>__str__</code>. If only <code>__str__</code> is defined, <code>repr()</code> falls back to the default <code>&lt;ClassName object at 0x...&gt;</code>.</p>
+<pre><code class="language-python">class Point:
+    def __repr__(self): return f"Point({self.x!r}, {self.y!r})"
+    def __str__(self): return f"({self.x}, {self.y})"
+
+p = Point(1, 2)
+repr(p)   # "Point(1, 2)"
+str(p)    # "(1, 2)"
+print(p)  # "(1, 2)"
+[p]       # [Point(1, 2)] — list uses repr</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Explain Python's descriptor protocol. <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>A descriptor is an object that defines <code>__get__</code>, <code>__set__</code>, or <code>__delete__</code>. When a class attribute is a descriptor, attribute access on instances triggers these methods instead of returning the descriptor itself.</p>
+<p><strong>Data descriptors</strong>: define <code>__set__</code> (and usually <code>__get__</code>). Take priority over instance <code>__dict__</code>. Examples: <code>property</code>, <code>classmethod</code>, <code>staticmethod</code>.</p>
+<p><strong>Non-data descriptors</strong>: only <code>__get__</code>. Instance dict takes priority. Example: functions (which become bound methods via <code>__get__</code>).</p>
+<pre><code class="language-python">class TypedAttribute:
+    """Descriptor that validates type"""
+    def __set_name__(self, owner, name):
+        self.name = f"_{name}"
+
+    def __get__(self, obj, objtype=None):
+        if obj is None:
+            return self  # accessed from class
+        return getattr(obj, self.name, None)
+
+    def __set__(self, obj, value):
+        if not isinstance(value, (int, float)):
+            raise TypeError(f"{self.name} must be numeric")
+        setattr(obj, self.name, value)
+
+class Circle:
+    radius = TypedAttribute()
+    def __init__(self, r): self.radius = r
+
+c = Circle(5)     # calls TypedAttribute.__set__
+c.radius          # calls TypedAttribute.__get__
+c.radius = "big"  # raises TypeError</code></pre>
+<p><code>property</code> is implemented as a descriptor. Functions are descriptors — <code>instance.method</code> calls <code>function.__get__(instance, type)</code>, returning a bound method.</p>
+</div>
+</details>
+
+<details>
+<summary>What is structural pattern matching and how does it differ from switch/case in other languages? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>Python's <code>match</code>/<code>case</code> (3.10+) is much more powerful than a simple switch/case. It performs <strong>structural pattern matching</strong> — it can destructure data, match by shape and type, and capture variables.</p>
+<p><strong>Patterns available</strong>:</p>
+<ul>
+<li><strong>Literal</strong>: <code>case 42</code>, <code>case "hello"</code></li>
+<li><strong>Capture</strong>: <code>case x</code> — binds matched value to x</li>
+<li><strong>Wildcard</strong>: <code>case _</code> — matches anything, no binding</li>
+<li><strong>Class</strong>: <code>case Point(x=0, y=y)</code> — matches type and attributes</li>
+<li><strong>Sequence</strong>: <code>case [first, *rest]</code> — destructure sequences</li>
+<li><strong>Mapping</strong>: <code>case {"key": value}</code> — match dict shape</li>
+<li><strong>OR</strong>: <code>case 1 | 2 | 3</code></li>
+<li><strong>Guard</strong>: <code>case x if x &gt; 0</code></li>
+</ul>
+<p>Unlike switch/case: no fallthrough between cases, no need for break, can bind variables, works on any object with <code>__match_args__</code>.</p>
+</div>
+</details>
+
+<details>
+<summary>How do Python's exception groups (ExceptionGroup) work, and when would you use them? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>ExceptionGroup (Python 3.11+) allows raising and handling multiple unrelated exceptions simultaneously. This is particularly useful in concurrent/async code where multiple tasks fail independently.</p>
+<pre><code class="language-python">import asyncio
+
+async def task(n):
+    if n == 1:
+        raise ValueError("Bad value")
+    if n == 2:
+        raise TypeError("Bad type")
+    return n
+
+async def main():
+    async with asyncio.TaskGroup() as tg:
+        # TaskGroup raises ExceptionGroup if any tasks fail
+        t1 = tg.create_task(task(1))
+        t2 = tg.create_task(task(2))
+        t3 = tg.create_task(task(3))
+
+try:
+    asyncio.run(main())
+except* ValueError as eg:     # except* matches subset of group
+    print(f"ValueErrors: {eg.exceptions}")
+except* TypeError as eg:
+    print(f"TypeErrors: {eg.exceptions}")</code></pre>
+<p><code>except*</code> is like <code>except</code> but handles only matching exceptions from the group; non-matching ones are re-raised. This allows partial handling — handle what you can, propagate the rest.</p>
+</div>
+</details>
+
+<details>
+<summary>Explain the difference between multiprocessing and asyncio and when to choose each. <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p><strong>asyncio</strong>: single-threaded, cooperative concurrency. Best for I/O-bound tasks (network calls, file I/O, DB queries). Low overhead — no context switching overhead, very high concurrency possible. Does NOT help with CPU-bound work.</p>
+<p><strong>multiprocessing</strong>: true parallelism using multiple OS processes. Bypasses the GIL. Best for CPU-bound tasks (numerical computation, image processing, ML inference). Higher overhead — process creation, pickling for IPC.</p>
+<p><strong>Decision matrix</strong>:</p>
+<ul>
+<li>Many concurrent network/DB requests → asyncio (+ httpx, asyncpg)</li>
+<li>Heavy CPU computation → multiprocessing (ProcessPoolExecutor)</li>
+<li>Legacy blocking I/O libraries (no async support) → ThreadPoolExecutor</li>
+<li>Mixing async with CPU work → asyncio + run_in_executor(ProcessPoolExecutor)</li>
+</ul>
+<pre><code class="language-python">import asyncio
+from concurrent.futures import ProcessPoolExecutor
+
+async def main():
+    loop = asyncio.get_event_loop()
+    with ProcessPoolExecutor() as pool:
+        # run CPU work in process pool without blocking event loop
+        result = await loop.run_in_executor(pool, cpu_intensive, data)</code></pre>
+</div>
+</details>
+
+<details>
+<summary>What is the free-threaded CPython in Python 3.13 and what are the caveats? <span class="badge very-advanced">Very Advanced</span></summary>
+<div class="answer">
+<p>Python 3.13 introduced an experimental CPython build with the GIL disabled (<code>--disable-gil</code>, PEP 703). This allows true parallelism with threads — all CPU cores can execute Python bytecode simultaneously.</p>
+<p><strong>How it works</strong>: CPython's memory management was traditionally protected by the GIL. Free-threaded mode replaces the GIL with fine-grained locking and biased reference counting (each object has a per-thread reference count to minimize cache-line contention, with a "shared" count for inter-thread references).</p>
+<p><strong>Caveats</strong>:</p>
+<ul>
+<li>Experimental — not the default, requires special build</li>
+<li>Single-threaded performance is ~3-5% slower (biased refcounting overhead)</li>
+<li>C extensions must be audited and updated to be thread-safe (many assume the GIL)</li>
+<li>NumPy, Pandas, and other key packages need updates</li>
+<li>Race conditions now possible in Python code that was previously safe</li>
+<li>The <code>PYTHON_GIL=0</code> env var or <code>-X gil=0</code> flag enables it at runtime (if built with support)</li>
+</ul>
+<p>Expected to become the default in Python 3.15-3.16 after ecosystem stabilization.</p>
+</div>
+</details>
+
+<details>
+<summary>Explain Python's data model — how does __getattr__ differ from __getattribute__? <span class="badge very-advanced">Very Advanced</span></summary>
+<div class="answer">
+<p><code>__getattribute__</code>: called for EVERY attribute access on an instance. Overriding it intercepts all attribute lookups. Very easy to cause infinite recursion (accessing <code>self.x</code> inside calls <code>__getattribute__</code> again). Use <code>object.__getattribute__(self, name)</code> for safe delegation.</p>
+<p><code>__getattr__</code>: called ONLY when normal attribute lookup fails (not found in instance dict, class dict, or any base class). A fallback/hook for missing attributes. Much safer and more commonly overridden.</p>
+<pre><code class="language-python">class LazyLoader:
+    """Load submodules lazily on first access"""
+    def __getattr__(self, name: str):
+        # Only called when name not found normally
+        import importlib
+        module = importlib.import_module(f".{name}", package=__name__)
+        setattr(self, name, module)  # cache for next access
+        return module
+
+class SafeProxy:
+    def __init__(self, target):
+        object.__setattr__(self, "_target", target)  # bypass our __setattr__
+
+    def __getattribute__(self, name: str):
+        if name.startswith("_"):
+            return object.__getattribute__(self, name)
+        target = object.__getattribute__(self, "_target")
+        return getattr(target, name)</code></pre>
+<p>Attribute lookup order: <code>__getattribute__</code> → data descriptors → instance <code>__dict__</code> → class/base <code>__dict__</code> (non-data descriptors here) → <code>__getattr__</code>.</p>
+</div>
+</details>
+
+<footer>Python Comprehensive Reference — covers Python 3.9-3.13 features and core language concepts.</footer>
+</main>
+</div>
+<script>hljs.highlightAll();mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

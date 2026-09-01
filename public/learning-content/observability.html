@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Observability &amp; Monitoring Complete Guide</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6;display:flex;flex-direction:column}.topnav{background:#161b22;padding:10px 24px;border-bottom:1px solid #30363d;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100}.topnav a{color:#58a6ff;text-decoration:none;font-size:13px}.topnav h1{font-size:16px;color:#e6edf3;margin:0}.layout{display:flex;flex:1}.sidebar{width:260px;background:#161b22;border-right:1px solid #30363d;padding:16px;position:sticky;top:41px;height:calc(100vh - 41px);overflow-y:auto;flex-shrink:0}.sidebar a{display:block;padding:4px 8px;color:#8b949e;text-decoration:none;font-size:13px;border-radius:4px;margin-bottom:2px}.sidebar a:hover{background:#21262d;color:#c9d1d9}.sidebar .section-title{color:#58a6ff;font-size:11px;text-transform:uppercase;letter-spacing:.5px;margin:16px 0 6px;padding:0 8px;font-weight:600}main{flex:1;padding:32px 48px;max-width:960px}h1{font-size:2rem;color:#e6edf3;border-bottom:1px solid #30363d;padding-bottom:16px;margin-bottom:24px}h2{font-size:1.5rem;color:#e6edf3;margin:48px 0 16px;border-bottom:1px solid #21262d;padding-bottom:8px}h3{font-size:1.15rem;color:#79c0ff;margin:24px 0 10px}h4{font-size:1rem;color:#d2a8ff;margin:16px 0 8px}p{margin-bottom:12px}ul,ol{margin:0 0 16px 24px}li{margin-bottom:4px}pre{margin:16px 0;border-radius:6px;overflow-x:auto;font-size:13px}code:not(pre code){background:#161b22;padding:2px 6px;border-radius:4px;font-size:13px;color:#f0883e;border:1px solid #30363d}table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}th{background:#161b22;color:#58a6ff;padding:10px 14px;text-align:left;border:1px solid #30363d}td{padding:10px 14px;border:1px solid #30363d;vertical-align:top}tr:nth-child(even) td{background:#0a0d12}.mermaid{background:#161b22;padding:20px;border-radius:6px;margin:16px 0;text-align:center}details{border:1px solid #30363d;border-radius:6px;margin:10px 0;overflow:hidden}summary{padding:12px 16px;cursor:pointer;background:#161b22;color:#79c0ff;font-weight:600;list-style:none}details[open] summary{border-bottom:1px solid #30363d}.answer{padding:16px 20px;background:#0d1117}.badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:700;margin-left:8px}.easy{background:#1a4731;color:#3fb950}.intermediate{background:#2d2b00;color:#e3b341}.advanced{background:#3d1f00;color:#f0883e}.very-advanced{background:#3d0000;color:#ff7b72}.callout{background:#161b22;border-left:4px solid #58a6ff;padding:12px 16px;border-radius:0 6px 6px 0;margin:16px 0}footer{text-align:center;padding:24px;color:#8b949e;font-size:12px;border-top:1px solid #30363d;margin-top:40px}
+</style>
+</head>
+<body>
+<nav class="topnav"><h1>Observability &amp; Monitoring Complete Guide</h1><a href="../index.html">← Back to Index</a></nav>
+<div class="layout">
+<aside class="sidebar">
+  <div class="section-title">Fundamentals</div>
+  <a href="#three-pillars">Three Pillars</a>
+  <a href="#obs-vs-mon">Observability vs Monitoring</a>
+  <div class="section-title">Metrics</div>
+  <a href="#metric-types">Metric Types</a>
+  <a href="#prometheus">Prometheus</a>
+  <a href="#promql">PromQL</a>
+  <a href="#grafana">Grafana</a>
+  <a href="#mimir">Grafana Mimir</a>
+  <div class="section-title">Logs</div>
+  <a href="#structured-logging">Structured Logging</a>
+  <a href="#elk">ELK Stack</a>
+  <a href="#loki">Loki + LogQL</a>
+  <div class="section-title">Traces</div>
+  <a href="#distributed-tracing">Distributed Tracing</a>
+  <a href="#opentelemetry">OpenTelemetry</a>
+  <a href="#sampling">Sampling</a>
+  <a href="#jaeger-tempo">Jaeger vs Tempo</a>
+  <div class="section-title">Architecture</div>
+  <a href="#full-architecture">Full Stack Diagram</a>
+  <a href="#platforms">Platform Comparison</a>
+  <div class="section-title">SRE</div>
+  <a href="#sla-slo-sli">SLA / SLO / SLI</a>
+  <a href="#error-budget">Error Budget</a>
+  <a href="#burn-rate">Burn Rate Alerts</a>
+  <a href="#dora">DORA Metrics</a>
+  <a href="#postmortems">Postmortems</a>
+  <a href="#oncall">On-Call Practices</a>
+  <div class="section-title">Interview Q&amp;A</div>
+  <a href="#interview">20 Interview Questions</a>
+</aside>
+<main>
+<h1>Observability &amp; Monitoring Complete Guide</h1>
+
+<h2 id="three-pillars">The Three Pillars of Observability</h2>
+<table>
+  <tr><th>Pillar</th><th>What it tells you</th><th>Granularity</th><th>When to use</th><th>Storage</th></tr>
+  <tr><td><strong>Metrics</strong></td><td>"How many? How fast? How much?" — Aggregated numerical data over time</td><td>Low (aggregated)</td><td>Alerting, dashboards, capacity planning</td><td>Time-series DB (Prometheus, Mimir)</td></tr>
+  <tr><td><strong>Logs</strong></td><td>"What happened exactly?" — Discrete events with full context</td><td>High (per event)</td><td>Debugging specific errors, audit trails</td><td>Elasticsearch, Loki, CloudWatch Logs</td></tr>
+  <tr><td><strong>Traces</strong></td><td>"Where did the time go?" — Distributed request flow across services</td><td>Per-request</td><td>Performance profiling, finding bottlenecks</td><td>Jaeger, Tempo, Zipkin</td></tr>
+</table>
+<div class="callout">
+  <strong>Correlation via TraceID:</strong> Inject the same traceId into logs, metrics labels, and trace spans. When you find a slow trace, you can immediately pull all logs for that request: <code>grep "traceId=abc123"</code>
+</div>
+
+<h2 id="obs-vs-mon">Observability vs Monitoring</h2>
+<table>
+  <tr><th>Monitoring</th><th>Observability</th></tr>
+  <tr><td>Checks known failure modes against thresholds</td><td>Enables exploration of unknown failure modes</td></tr>
+  <tr><td>"Is CPU &gt; 80%?" — predefined question</td><td>"Why are some users seeing 5s latency?" — arbitrary question</td></tr>
+  <tr><td>Dashboards of known KPIs</td><td>Ad-hoc exploration of system internals</td></tr>
+  <tr><td>Alerts when metrics cross thresholds</td><td>High-cardinality data to debug novel failures</td></tr>
+  <tr><td>Sufficient for simple, predictable systems</td><td>Necessary for distributed, microservice systems</td></tr>
+</table>
+
+<h2 id="metric-types">Metric Types</h2>
+<table>
+  <tr><th>Type</th><th>Behavior</th><th>Example</th><th>Use For</th></tr>
+  <tr><td><strong>Counter</strong></td><td>Monotonically increasing, resets on restart</td><td>http_requests_total, errors_total</td><td>Rate of events: <code>rate(metric[5m])</code></td></tr>
+  <tr><td><strong>Gauge</strong></td><td>Can go up or down, current value</td><td>memory_usage_bytes, active_connections</td><td>Current state, level</td></tr>
+  <tr><td><strong>Histogram</strong></td><td>Bucketed observations + sum + count</td><td>http_request_duration_seconds</td><td>Latency percentiles: <code>histogram_quantile(0.99, ...)</code></td></tr>
+  <tr><td><strong>Summary</strong></td><td>Pre-computed quantiles client-side</td><td>go_gc_duration_seconds</td><td>When you know which quantiles you need</td></tr>
+</table>
+
+<h2 id="prometheus">Prometheus</h2>
+<h3>Data Model</h3>
+<pre><code class="language-yaml"># Metric name + labels = time series
+# metric_name{label1="value1", label2="value2"} value timestamp
+
+http_requests_total{method="GET", status="200", service="api"} 1027.0 1700000000000
+http_requests_total{method="POST", status="500", service="api"} 5.0 1700000000000
+node_memory_MemAvailable_bytes{instance="10.0.1.5:9100", job="node"} 4294967296.0
+
+# Good labels: service, instance, region, version
+# Bad labels: user_id, request_id (high cardinality explodes storage)</code></pre>
+
+<h3>Prometheus Configuration</h3>
+<pre><code class="language-yaml"># prometheus.yml
+global:
+  scrape_interval: 15s    # How often to scrape targets
+  evaluation_interval: 15s # How often to evaluate rules
+
+# Alertmanager integration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: ["alertmanager:9093"]
+
+# Recording and alerting rules files
+rule_files:
+  - "recording_rules.yml"
+  - "alerting_rules.yml"
+
+# Scrape configurations
+scrape_configs:
+  - job_name: "api-service"
+    static_configs:
+      - targets: ["api-1:8080", "api-2:8080"]
+    metrics_path: /metrics  # default
+    scheme: http
+
+  - job_name: "kubernetes-pods"
+    kubernetes_sd_configs:
+      - role: pod
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+        action: keep
+        regex: "true"</code></pre>
+
+<h3>Instrumenting Your Application</h3>
+<pre><code class="language-python">from prometheus_client import Counter, Gauge, Histogram, Summary, start_http_server
+import time
+
+# Counter — track request count
+REQUEST_COUNT = Counter('http_requests_total',
+    'Total HTTP requests', ['method', 'endpoint', 'status'])
+
+# Gauge — track current connections
+ACTIVE_CONNECTIONS = Gauge('active_connections', 'Current active connections')
+
+# Histogram — track latency with buckets
+REQUEST_LATENCY = Histogram('http_request_duration_seconds',
+    'HTTP request duration',
+    ['method', 'endpoint'],
+    buckets=[0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1.0, 2.5, 5.0, 10.0])
+
+# Summary — pre-computed quantiles
+GC_DURATION = Summary('python_gc_duration_seconds', 'GC duration')
+
+# FastAPI middleware example
+from fastapi import FastAPI, Request
+import asyncio
+
+app = FastAPI()
+
+@app.middleware("http")
+async def metrics_middleware(request: Request, call_next):
+    start = time.time()
+    ACTIVE_CONNECTIONS.inc()
+    try:
+        response = await call_next(request)
+        duration = time.time() - start
+        REQUEST_COUNT.labels(
+            method=request.method,
+            endpoint=request.url.path,
+            status=response.status_code
+        ).inc()
+        REQUEST_LATENCY.labels(
+            method=request.method,
+            endpoint=request.url.path
+        ).observe(duration)
+        return response
+    finally:
+        ACTIVE_CONNECTIONS.dec()
+
+# Start metrics server on port 8001
+start_http_server(8001)</code></pre>
+
+<h2 id="promql">PromQL — Prometheus Query Language</h2>
+<pre><code class="language-promql"># --- RATE QUERIES ---
+# Requests per second over last 5 minutes
+rate(http_requests_total[5m])
+
+# Total increase in 1 hour
+increase(http_requests_total[1h])
+
+# Error rate percentage
+sum(rate(http_requests_total{status=~"5.."}[5m]))
+/ sum(rate(http_requests_total[5m])) * 100
+
+# --- LATENCY PERCENTILES from Histograms ---
+# 99th percentile latency
+histogram_quantile(0.99,
+  sum(rate(http_request_duration_seconds_bucket[5m])) by (le, service))
+
+# 50th and 95th percentile together
+histogram_quantile(0.95,
+  sum(rate(http_request_duration_seconds_bucket[5m])) by (le))
+
+# --- AGGREGATIONS ---
+# Sum across all instances, group by service
+sum(rate(http_requests_total[5m])) by (service)
+
+# Average CPU across all nodes
+avg(node_cpu_seconds_total{mode="idle"}) by (instance)
+
+# Top 5 services by request rate
+topk(5, sum(rate(http_requests_total[5m])) by (service))
+
+# --- ABSENT / PREDICT ---
+# Alert if no data (target down)
+absent(up{job="api"})
+
+# Predict disk full in 4 hours using linear regression
+predict_linear(node_filesystem_avail_bytes[6h], 4 * 3600) < 0
+
+# --- RECORDING RULES (precompute expensive queries) ---
+# recording_rules.yml
+groups:
+  - name: api_metrics
+    interval: 30s
+    rules:
+      - record: job:http_requests:rate5m
+        expr: sum(rate(http_requests_total[5m])) by (job)
+      - record: job:http_errors:rate5m
+        expr: sum(rate(http_requests_total{status=~"5.."}[5m])) by (job)
+
+# --- ALERTING RULES ---
+groups:
+  - name: api_alerts
+    rules:
+      - alert: HighErrorRate
+        expr: |
+          sum(rate(http_requests_total{status=~"5.."}[5m])) by (service)
+          / sum(rate(http_requests_total[5m])) by (service) > 0.05
+        for: 5m  # Must be true for 5 min before firing
+        labels:
+          severity: critical
+        annotations:
+          summary: "High error rate on {{ $labels.service }}"
+          description: "Error rate is {{ $value | humanizePercentage }}"
+
+      - alert: HighLatency
+        expr: |
+          histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket[5m])) by (le, service)) > 1.0
+        for: 10m
+        labels:
+          severity: warning</code></pre>
+
+<h2 id="grafana">Grafana</h2>
+<pre><code class="language-json">// Example Grafana dashboard JSON (key concepts)
+{
+  "panels": [
+    {
+      "title": "Request Rate (RPS)",
+      "type": "timeseries",
+      "targets": [{
+        "expr": "sum(rate(http_requests_total{service=~\"$service\"}[5m])) by (service)",
+        "legendFormat": "{{service}}"
+      }]
+    },
+    {
+      "title": "Error Rate %",
+      "type": "stat",
+      "targets": [{
+        "expr": "sum(rate(http_requests_total{status=~\"5..\"}[5m])) / sum(rate(http_requests_total[5m])) * 100"
+      }],
+      "fieldConfig": {
+        "thresholds": {
+          "steps": [
+            {"value": 0, "color": "green"},
+            {"value": 1, "color": "yellow"},
+            {"value": 5, "color": "red"}
+          ]
+        }
+      }
+    },
+    {
+      "title": "P99 Latency",
+      "type": "timeseries",
+      "targets": [{
+        "expr": "histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket[5m])) by (le))",
+        "legendFormat": "p99"
+      }]
+    }
+  ],
+  "templating": {
+    "list": [{
+      "name": "service",
+      "type": "query",
+      "query": "label_values(http_requests_total, service)",
+      "multi": true
+    }]
+  }
+}</code></pre>
+
+<h2 id="mimir">Grafana Mimir</h2>
+<div class="callout">
+  Grafana Mimir is a horizontally scalable, highly available, multi-tenant, long-term storage for Prometheus metrics. It's the backend for Grafana Cloud metrics.
+</div>
+<ul>
+  <li><strong>Components:</strong> Distributor, Ingester, Querier, Store-Gateway, Compactor, Ruler, Alertmanager</li>
+  <li><strong>Storage:</strong> Object storage (S3, GCS, Azure Blob) — much cheaper than SSDs</li>
+  <li><strong>Retention:</strong> Years of metrics at low cost (compaction + downsampling)</li>
+  <li><strong>Multi-tenancy:</strong> X-Scope-OrgID header isolates tenant data</li>
+  <li>Remote write from Prometheus → Mimir (compatible with Prometheus remote_write protocol)</li>
+</ul>
+
+<h2 id="structured-logging">Structured Logging</h2>
+<pre><code class="language-python">import logging
+import json
+import structlog
+import uuid
+from datetime import datetime
+
+# structlog — structured logging for Python
+structlog.configure(
+    processors=[
+        structlog.stdlib.filter_by_level,
+        structlog.stdlib.add_logger_name,
+        structlog.stdlib.add_log_level,
+        structlog.stdlib.PositionalArgumentsFormatter(),
+        structlog.processors.TimeStamper(fmt="iso"),
+        structlog.processors.StackInfoRenderer(),
+        structlog.processors.format_exc_info,
+        structlog.processors.JSONRenderer()  # Output as JSON
+    ],
+    context_class=dict,
+    logger_factory=structlog.stdlib.LoggerFactory(),
+    cache_logger_on_first_use=True,
+)
+
+logger = structlog.get_logger()
+
+# Structured log output example
+logger.info("request_received",
+    method="POST",
+    path="/api/payments",
+    request_id=str(uuid.uuid4()),
+    user_id="usr_123",
+    service="payment-service",
+    version="1.2.3"
+)
+# Output: {"event": "request_received", "method": "POST", "path": "/api/payments",
+#  "request_id": "abc-123", "user_id": "usr_123", "level": "info", "timestamp": "2024-01-15T10:30:00Z"}
+
+# FastAPI middleware for request logging
+@app.middleware("http")
+async def logging_middleware(request: Request, call_next):
+    request_id = str(uuid.uuid4())
+    log = logger.bind(request_id=request_id, method=request.method, path=request.url.path)
+    log.info("request_started")
+    try:
+        response = await call_next(request)
+        log.info("request_completed", status_code=response.status_code)
+        response.headers["X-Request-ID"] = request_id
+        return response
+    except Exception as e:
+        log.error("request_failed", error=str(e), exc_info=True)
+        raise
+
+# Log levels guide
+# DEBUG: detailed diagnostic info (disabled in production)
+# INFO: normal operations, key business events
+# WARNING: unexpected but handled situation
+# ERROR: error that prevented operation completion
+# CRITICAL: system-level failure</code></pre>
+
+<h2 id="elk">ELK Stack</h2>
+<div class="mermaid">
+graph LR
+    App["Applications"] --> Beats["Filebeat/Metricbeat\n(lightweight shippers)"]
+    App2["K8s Pods"] --> Beats
+    Beats --> Logstash["Logstash\n(parse/transform/enrich)"]
+    Logstash --> ES["Elasticsearch\n(index + search)"]
+    ES --> Kibana["Kibana\n(visualize + explore)"]
+    style ES fill:#1f2937
+    style Logstash fill:#2d2b00
+</div>
+<pre><code class="language-yaml"># Logstash pipeline configuration
+input {
+  beats { port => 5044 }
+}
+
+filter {
+  # Parse JSON structured logs
+  if [message] =~ /^\{/ {
+    json { source => "message" }
+  }
+
+  # Add GeoIP from IP address
+  if [client_ip] {
+    geoip { source => "client_ip" field => "geoip" }
+  }
+
+  # Parse request duration to float
+  if [duration_ms] {
+    mutate { convert => { "duration_ms" => "float" } }
+  }
+
+  # Add environment tag
+  mutate { add_field => { "environment" => "production" } }
+}
+
+output {
+  elasticsearch {
+    hosts => ["elasticsearch:9200"]
+    index => "app-logs-%{+YYYY.MM.dd}"  # Daily indices
+    user => "elastic"
+    password => "${ES_PASSWORD}"
+  }
+}</code></pre>
+<pre><code class="language-json">// Kibana KQL (Kibana Query Language) examples
+// Find errors in last 15 minutes
+level: "error" AND @timestamp > now-15m
+
+// Search by service and status
+service: "payment-api" AND http.status_code >= 500
+
+// User-specific errors
+user_id: "usr_123" AND level: "error"
+
+// Response time outliers
+duration_ms > 1000</code></pre>
+
+<h2 id="loki">Loki + LogQL</h2>
+<table>
+  <tr><th>Feature</th><th>ELK (Elasticsearch)</th><th>Loki</th></tr>
+  <tr><td>Indexing</td><td>Full-text indexing (all fields)</td><td>Only labels indexed (like Prometheus)</td></tr>
+  <tr><td>Storage cost</td><td>High (index size = 20-30% of data)</td><td>Low (just object storage + small index)</td></tr>
+  <tr><td>Query speed</td><td>Very fast on indexed fields</td><td>Slower (grep over compressed chunks)</td></tr>
+  <tr><td>Schema</td><td>Defined upfront</td><td>Schema-free (any log format)</td></tr>
+  <tr><td>Integration</td><td>Separate stack</td><td>Native Grafana, same as Prometheus</td></tr>
+</table>
+<pre><code class="language-logql"># LogQL — Prometheus-like query language for logs
+
+# Stream selector (like Prometheus labels)
+{service="api", environment="production"}
+
+# Line filter — grep within streams
+{service="api"} |= "error"             # contains "error"
+{service="api"} != "health"            # excludes "health"
+{service="api"} |~ "user_id=\\d+"      # regex match
+
+# Log pipeline — parse and filter structured logs
+{service="api"}
+  | json                               # parse JSON fields
+  | level = "error"                    # filter parsed fields
+  | line_format "{{.user_id}}: {{.message}}"  # format output
+
+# Metric queries — extract metrics from logs
+# Request rate from logs
+sum(rate({service="api"} |= "request_received" [5m])) by (service)
+
+# P99 latency from log fields
+quantile_over_time(0.99,
+  {service="api"}
+    | json
+    | unwrap duration_ms [5m]
+) by (service)
+
+# Error rate
+sum(rate({service="api"} | json | level="error" [5m]))
+/ sum(rate({service="api"} [5m])) * 100</code></pre>
+
+<h2 id="distributed-tracing">Distributed Tracing Concepts</h2>
+<div class="mermaid">
+graph TB
+    Client["Browser/Client"] --> GW["API Gateway\nSpan 1: 250ms"]
+    GW --> Auth["Auth Service\nSpan 2: 45ms"]
+    GW --> Order["Order Service\nSpan 3: 190ms"]
+    Order --> DB["Database\nSpan 4: 120ms"]
+    Order --> Inventory["Inventory\nSpan 5: 60ms"]
+    Order --> Payment["Payment\nSpan 6: 80ms"]
+    style GW fill:#1f3d5c
+    style Order fill:#2d2b00
+</div>
+<table>
+  <tr><th>Concept</th><th>Description</th></tr>
+  <tr><td><strong>Trace</strong></td><td>Complete record of a request across all services. Has a unique TraceID.</td></tr>
+  <tr><td><strong>Span</strong></td><td>Single unit of work (one service operation). Has SpanID, parent SpanID, start/end time, attributes, events.</td></tr>
+  <tr><td><strong>Context Propagation</strong></td><td>Passing TraceID + SpanID in HTTP headers (traceparent) across service calls so spans can be linked.</td></tr>
+  <tr><td><strong>Root Span</strong></td><td>The first span in a trace (no parent). Total trace duration = root span duration.</td></tr>
+  <tr><td><strong>Parent-Child Relationship</strong></td><td>Spans form a tree — child span is work done within a parent operation.</td></tr>
+</table>
+
+<h2 id="opentelemetry">OpenTelemetry (OTel)</h2>
+<div class="callout">
+  OpenTelemetry is the CNCF standard for instrumentation. Vendor-neutral — instrument once, export anywhere (Jaeger, Tempo, Datadog, New Relic, OTLP).
+</div>
+<pre><code class="language-python">from opentelemetry import trace
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.sdk.trace.export import BatchSpanProcessor
+from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
+from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
+from opentelemetry.instrumentation.sqlalchemy import SQLAlchemyInstrumentor
+from opentelemetry.instrumentation.httpx import HTTPXClientInstrumentor
+
+# Setup TracerProvider
+provider = TracerProvider()
+exporter = OTLPSpanExporter(endpoint="http://otel-collector:4317", insecure=True)
+provider.add_span_processor(BatchSpanProcessor(exporter))
+trace.set_tracer_provider(provider)
+
+tracer = trace.get_tracer("my-service", "1.0.0")
+
+# Auto-instrumentation — instruments all FastAPI routes automatically
+FastAPIInstrumentor.instrument_app(app)
+SQLAlchemyInstrumentor().instrument(engine=engine)  # DB queries traced
+HTTPXClientInstrumentor().instrument()               # HTTP client calls traced
+
+# Manual instrumentation
+@app.get("/orders/{order_id}")
+async def get_order(order_id: str):
+    with tracer.start_as_current_span("get_order") as span:
+        span.set_attribute("order.id", order_id)
+        span.set_attribute("user.id", current_user.id)
+        span.add_event("Fetching order from DB")
+
+        order = await db.get_order(order_id)
+        if not order:
+            span.set_status(trace.StatusCode.ERROR, "Order not found")
+            raise HTTPException(404)
+
+        span.set_attribute("order.total", float(order.total))
+        span.add_event("Order fetched successfully")
+        return order</code></pre>
+
+<h3>OTel Collector</h3>
+<pre><code class="language-yaml"># otel-collector-config.yaml
+receivers:
+  otlp:
+    protocols:
+      grpc:  # port 4317
+        endpoint: 0.0.0.0:4317
+      http:  # port 4318
+        endpoint: 0.0.0.0:4318
+  prometheus:
+    config:
+      scrape_configs:
+        - job_name: 'my-service'
+          static_configs:
+            - targets: ['app:8080']
+
+processors:
+  batch:
+    timeout: 1s
+    send_batch_size: 1024
+  memory_limiter:
+    limit_mib: 512
+  resource:
+    attributes:
+      - key: environment
+        value: production
+        action: insert
+
+exporters:
+  jaeger:
+    endpoint: jaeger:14250
+    tls:
+      insecure: true
+  prometheus:
+    endpoint: "0.0.0.0:8889"
+  loki:
+    endpoint: http://loki:3100/loki/api/v1/push
+  otlphttp/tempo:
+    endpoint: http://tempo:4318
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [memory_limiter, batch, resource]
+      exporters: [jaeger, otlphttp/tempo]
+    metrics:
+      receivers: [otlp, prometheus]
+      processors: [memory_limiter, batch]
+      exporters: [prometheus]
+    logs:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [loki]</code></pre>
+
+<h3>W3C TraceContext (Context Propagation)</h3>
+<pre><code class="language-text"># W3C traceparent header format:
+# version-traceId-parentSpanId-flags
+traceparent: 00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01
+# 00 = version
+# 4bf92f3577b34da6a3ce929d0e0e4736 = 128-bit traceId
+# 00f067aa0ba902b7 = 64-bit parent spanId
+# 01 = sampled flag</code></pre>
+
+<h2 id="sampling">Sampling Strategies</h2>
+<table>
+  <tr><th>Strategy</th><th>How</th><th>Pros</th><th>Cons</th></tr>
+  <tr><td><strong>Head-based (probabilistic)</strong></td><td>Decision at trace start. Sample 10% → first span sets sampled=true/false.</td><td>Simple, low overhead</td><td>May miss rare errors (&lt;1% of traffic)</td></tr>
+  <tr><td><strong>Tail-based</strong></td><td>Decision at end of trace based on outcome (errors, latency). Only keep traces with errors or slow P99+.</td><td>Captures 100% of errors</td><td>Higher memory (buffer all spans), complex setup</td></tr>
+  <tr><td><strong>Rate limiting</strong></td><td>N traces per second per service</td><td>Predictable volume</td><td>Misses bursty errors</td></tr>
+  <tr><td><strong>Adaptive</strong></td><td>Dynamic rate based on load</td><td>Best of all worlds</td><td>Most complex</td></tr>
+</table>
+
+<h2 id="jaeger-tempo">Jaeger vs Tempo</h2>
+<table>
+  <tr><th>Feature</th><th>Jaeger</th><th>Grafana Tempo</th></tr>
+  <tr><td>Storage</td><td>Elasticsearch, Cassandra, Badger</td><td>Object storage (S3, GCS) — much cheaper</td></tr>
+  <tr><td>Query</td><td>Jaeger UI + API</td><td>TraceQL + Grafana explore</td></tr>
+  <tr><td>Integration</td><td>Standalone</td><td>Native Grafana (unified with metrics/logs)</td></tr>
+  <tr><td>Sampling</td><td>Adaptive sampling in all-in-one</td><td>Configurable, tail-based via pipeline</td></tr>
+  <tr><td>Cost at scale</td><td>Higher (Elasticsearch storage)</td><td>Lower (object storage)</td></tr>
+  <tr><td>TraceQL</td><td>No</td><td>Yes — span-level filtering and aggregation</td></tr>
+</table>
+<pre><code class="language-traceql"># TraceQL (Tempo) — query language for traces
+# Find all traces with errors
+{ status = error }
+
+# Find slow database spans
+{ span.db.type = "sql" } | duration > 500ms
+
+# Find traces for specific user
+{ resource.user.id = "usr_123" && status = error }
+
+# Aggregate: P99 latency by service
+{ resource.service.name != "" } | select(resource.service.name, duration)
+| quantile(duration, .99) by (resource.service.name)</code></pre>
+
+<h2 id="full-architecture">Full Observability Stack Architecture</h2>
+<div class="mermaid">
+graph TB
+    subgraph Services
+        App1["Service A"]
+        App2["Service B"]
+        App3["Service C"]
+    end
+
+    subgraph OTel Layer
+        SDK["OTel SDK\n(auto-instrumentation)"]
+        Collector["OTel Collector\n(receivers→processors→exporters)"]
+    end
+
+    subgraph Metrics
+        Prometheus["Prometheus\n(scrape + store)"]
+        Mimir["Grafana Mimir\n(long-term)"]
+    end
+
+    subgraph Logs
+        Loki["Grafana Loki\n(log aggregation)"]
+    end
+
+    subgraph Traces
+        Tempo["Grafana Tempo\n(trace storage)"]
+    end
+
+    subgraph Visualization
+        Grafana["Grafana\n(unified dashboard)"]
+        Alertmanager["Alertmanager\n(routing alerts)"]
+    end
+
+    App1 --> SDK
+    App2 --> SDK
+    App3 --> SDK
+    SDK --> Collector
+    Collector --> Prometheus
+    Collector --> Loki
+    Collector --> Tempo
+    Prometheus --> Mimir
+    Mimir --> Grafana
+    Loki --> Grafana
+    Tempo --> Grafana
+    Prometheus --> Alertmanager
+    Alertmanager --> PagerDuty["PagerDuty/Slack"]
+</div>
+
+<h2 id="platforms">Observability Platforms Comparison</h2>
+<table>
+  <tr><th>Platform</th><th>Strengths</th><th>Weaknesses</th><th>Best For</th><th>Pricing Model</th></tr>
+  <tr><td><strong>Datadog</strong></td><td>Best-in-class APM, AI insights, ML anomaly detection, 600+ integrations</td><td>Expensive at scale, vendor lock-in</td><td>Enterprises wanting all-in-one</td><td>Per host + per indexed log</td></tr>
+  <tr><td><strong>New Relic</strong></td><td>Full-stack observability, good pricing, strong NRQL</td><td>Complex pricing, learning curve</td><td>Dev teams wanting full observability</td><td>Per GB ingested</td></tr>
+  <tr><td><strong>Dynatrace</strong></td><td>Auto-discovery, Davis AI root cause, great for Java/.NET</td><td>Most expensive, complex</td><td>Large enterprises, legacy Java apps</td><td>Per monitored entity</td></tr>
+  <tr><td><strong>AWS CloudWatch + X-Ray</strong></td><td>Native AWS integration, no extra agent for AWS services</td><td>Limited cross-cloud, expensive at scale</td><td>AWS-only deployments</td><td>Per metric/log GB/trace</td></tr>
+  <tr><td><strong>Grafana Cloud</strong></td><td>Open source stack, flexible, cost-effective</td><td>More setup/expertise required</td><td>Teams wanting OSS control</td><td>Per metric/log/trace volume</td></tr>
+</table>
+
+<h2 id="sla-slo-sli">SLA / SLO / SLI</h2>
+<table>
+  <tr><th>Term</th><th>Definition</th><th>Who cares</th><th>Example</th></tr>
+  <tr><td><strong>SLI</strong> (Service Level Indicator)</td><td>Quantitative measure of service behavior</td><td>Engineers</td><td>Request success rate = successful_requests / total_requests</td></tr>
+  <tr><td><strong>SLO</strong> (Service Level Objective)</td><td>Target value for an SLI</td><td>Product + Engineering</td><td>SLI &gt; 99.9% over 30-day rolling window</td></tr>
+  <tr><td><strong>SLA</strong> (Service Level Agreement)</td><td>Legal contract with customers; SLO + consequences</td><td>Legal + Business</td><td>"99.5% uptime or 10% service credit"</td></tr>
+</table>
+<pre><code class="language-yaml"># SLO definition example
+slo:
+  name: "api-availability"
+  description: "API success rate for checkout flow"
+
+  # SLI: ratio of good events to total events
+  sli:
+    metric: http_requests_total
+    good: 'http_requests_total{status!~"5..", service="checkout"}'
+    total: 'http_requests_total{service="checkout"}'
+
+  # Objective: 99.9% success rate over 30 days
+  objectives:
+    - window: 30d
+      target: 0.999  # 99.9%
+
+  # Consequences: 0.1% error budget = 43.8 min/month
+  # 30 days * 24h * 60min * 0.001 = 43.2 minutes of allowed downtime</code></pre>
+
+<h2 id="error-budget">Error Budget</h2>
+<div class="callout">
+  <strong>Error Budget = 1 - SLO target</strong><br>
+  99.9% SLO → 0.1% error budget → 43.2 min/month of allowed bad events.<br>
+  When error budget is consumed, teams pause features and focus on reliability.
+</div>
+<pre><code class="language-promql"># Error budget consumed (%) in current 30d window
+(
+  1 - (
+    sum(increase(http_requests_total{status!~"5.."}[30d]))
+    / sum(increase(http_requests_total[30d]))
+  )
+) / 0.001 * 100  # 0.001 = error budget (1 - 0.999)</code></pre>
+
+<h2 id="burn-rate">Burn Rate Alerts</h2>
+<div class="callout">
+  <strong>Burn Rate</strong> = how fast you're consuming error budget relative to normal rate.<br>
+  Burn rate 1 = consuming at exactly the rate that would exhaust budget over the SLO window.<br>
+  Burn rate 14.4 over 1 hour = would exhaust 30-day budget in 2 days.
+</div>
+<pre><code class="language-yaml"># Multi-window burn rate alerting (Google SRE Book)
+groups:
+  - name: slo_burn_rate
+    rules:
+      # Fast burn: 2% of budget in 1 hour (burn rate 14.4x)
+      - alert: FastBurnHighSeverity
+        expr: |
+          (
+            job:http_requests:error_rate1h > (14.4 * 0.001)
+            and
+            job:http_requests:error_rate5m > (14.4 * 0.001)
+          )
+        labels:
+          severity: critical
+          page: "yes"
+
+      # Medium burn: 5% of budget in 6 hours (burn rate 6x)
+      - alert: MediumBurnHighSeverity
+        expr: |
+          (
+            job:http_requests:error_rate6h > (6 * 0.001)
+            and
+            job:http_requests:error_rate30m > (6 * 0.001)
+          )
+        labels:
+          severity: warning
+
+      # Slow burn: 10% budget in 3 days (burn rate 1x)
+      - alert: SlowBurn
+        expr: job:http_requests:error_rate3d > (1 * 0.001)
+        labels:
+          severity: info</code></pre>
+
+<h2 id="dora">DORA Metrics</h2>
+<table>
+  <tr><th>Metric</th><th>Definition</th><th>Elite</th><th>High</th><th>Medium</th><th>Low</th></tr>
+  <tr><td><strong>Deployment Frequency</strong></td><td>How often to prod</td><td>Multiple/day</td><td>Weekly</td><td>Monthly</td><td>6+ months</td></tr>
+  <tr><td><strong>Lead Time for Changes</strong></td><td>Commit to production</td><td>&lt;1 hour</td><td>&lt;1 day</td><td>1-7 days</td><td>&gt;6 months</td></tr>
+  <tr><td><strong>Change Failure Rate</strong></td><td>% deploys causing incidents</td><td>0-15%</td><td>16-30%</td><td>16-30%</td><td>16-30%</td></tr>
+  <tr><td><strong>MTTR (Time to Restore)</strong></td><td>Incident detection to resolution</td><td>&lt;1 hour</td><td>&lt;1 day</td><td>&lt;7 days</td><td>&gt;6 months</td></tr>
+</table>
+<pre><code class="language-python"># Calculate DORA metrics from deployment events (Prometheus example)
+# Deployment frequency
+rate(deployments_total{environment="production"}[7d]) * 86400  # per day
+
+# Lead time — requires CI/CD data
+histogram_quantile(0.5, rate(deployment_lead_time_seconds_bucket[30d]))
+
+# MTTR — from incident data
+histogram_quantile(0.5, rate(incident_duration_seconds_bucket[30d]))
+
+# Change failure rate
+sum(rate(deployments_total{result="failure"}[30d]))
+/ sum(rate(deployments_total[30d])) * 100</code></pre>
+
+<h2 id="postmortems">Blameless Postmortems</h2>
+<div class="callout">
+  Postmortems focus on <strong>system and process failures</strong>, not individual mistakes. The goal is learning, not punishment.
+</div>
+<h4>Postmortem Template</h4>
+<table>
+  <tr><th>Section</th><th>Content</th></tr>
+  <tr><td><strong>Summary</strong></td><td>1-2 sentence TL;DR: what broke, impact, duration</td></tr>
+  <tr><td><strong>Timeline</strong></td><td>Chronological events: detection, diagnosis, mitigation, resolution</td></tr>
+  <tr><td><strong>Root Cause Analysis</strong></td><td>5 Whys technique. The actual technical cause (not "human error")</td></tr>
+  <tr><td><strong>Impact</strong></td><td>Users affected, revenue impact, SLO consumption, error budget spent</td></tr>
+  <tr><td><strong>Action Items</strong></td><td>Concrete tasks with owners and due dates: prevent, detect, mitigate faster</td></tr>
+  <tr><td><strong>Lessons Learned</strong></td><td>What went well? What went poorly? What surprised us?</td></tr>
+</table>
+
+<h2 id="oncall">On-Call Best Practices</h2>
+<ul>
+  <li><strong>Runbooks:</strong> Link every alert to a runbook with step-by-step debugging instructions</li>
+  <li><strong>Alert fatigue:</strong> Every alert should be actionable. Delete or reduce severity of alerts that don't require action</li>
+  <li><strong>Toil reduction:</strong> Automate repetitive on-call tasks (auto-scaling, automated rollbacks)</li>
+  <li><strong>Shadowing:</strong> New engineers shadow experienced on-call before taking primary</li>
+  <li><strong>Rotation:</strong> Fair rotation with escalation paths. No single person on call for a service permanently</li>
+  <li><strong>Handoff:</strong> Explicit handoff at shift change — ongoing incidents, recent changes</li>
+  <li><strong>Alert hierarchy:</strong> P1 (wake up) → P2 (respond ASAP) → P3 (next business day)</li>
+</ul>
+
+<h2 id="interview">Interview Questions &amp; Answers</h2>
+
+<details>
+<summary>Q1: What is the difference between monitoring and observability? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p><strong>Monitoring</strong> answers pre-defined questions: "Is CPU &gt; 80%?" "Is error rate &gt; 1%?" It checks known failure modes against thresholds. Works well for simple systems with predictable failure patterns.</p>
+<p><strong>Observability</strong> enables you to ask arbitrary questions about a system's behavior — including questions you didn't anticipate when you built the system. You can explore "Why are users in the EU experiencing high latency?" without having pre-built that specific dashboard.</p>
+<p>Key property: a system is observable if you can understand its internal state from external outputs (metrics, logs, traces). Modern distributed systems require observability because failure modes are too numerous and complex to monitor exhaustively.</p>
+</div>
+</details>
+
+<details>
+<summary>Q2: Explain the difference between a Counter, Gauge, and Histogram in Prometheus. <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<ul>
+  <li><strong>Counter:</strong> Only goes up (and resets to 0 on restart). Tracks total count of events. Use <code>rate()</code> to get per-second rate. Example: <code>http_requests_total</code>. Never use gauge for something that only increases.</li>
+  <li><strong>Gauge:</strong> Goes up and down. Current value at this moment. Example: <code>memory_usage_bytes</code>, <code>queue_depth</code>. Use <code>max_over_time()</code>, <code>avg_over_time()</code>.</li>
+  <li><strong>Histogram:</strong> Samples observations into configurable buckets. Stores: bucket counts, sum, count. Use <code>histogram_quantile()</code> to calculate percentiles. Server-side aggregation. Example: <code>http_request_duration_seconds{le="0.1"}</code>.</li>
+</ul>
+</div>
+</details>
+
+<details>
+<summary>Q3: How do you calculate the 99th percentile latency in PromQL? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<pre><code class="language-promql">histogram_quantile(0.99,
+  sum(rate(http_request_duration_seconds_bucket[5m])) by (le, service)
+)</code></pre>
+<p>The <code>le</code> label is the histogram bucket upper bound ("less than or equal"). You must keep it in the <code>by()</code> clause. The <code>rate()</code> converts counters to rates before summing. If you want P50, P95, P99 together, run 3 queries with 0.50, 0.95, 0.99.</p>
+<p><strong>Common mistake:</strong> Not including <code>le</code> in the <code>by()</code> clause — this causes histogram_quantile to fail.</p>
+</div>
+</details>
+
+<details>
+<summary>Q4: What is the difference between ELK and Loki for log management? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>ELK (Elasticsearch-based):</strong> Full-text indexes all log fields. Very fast queries on any field. High storage cost (~30% index overhead). Complex to operate (Elasticsearch tuning). Schema changes require reindexing.</p>
+<p><strong>Loki:</strong> Only indexes labels (like Prometheus). Stores log lines compressed in object storage. 10x cheaper storage. Slower queries (grep over compressed chunks). Integrated with Grafana/Prometheus ecosystem. Schema-free.</p>
+<p><strong>Choose ELK when:</strong> Complex full-text search, large team expects fast ad-hoc queries on any field, security/compliance log analysis.</p>
+<p><strong>Choose Loki when:</strong> Already using Grafana, cost matters, simple label-based filtering is sufficient, Kubernetes native logging.</p>
+</div>
+</details>
+
+<details>
+<summary>Q5: Explain distributed tracing and context propagation. <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>In a microservices system, a single request flows through multiple services. Distributed tracing captures the full journey as a tree of spans.</p>
+<p><strong>Context propagation:</strong> The TraceID and SpanID must be passed from service to service in HTTP headers. Without this, you can't connect spans across services into a single trace.</p>
+<p>W3C TraceContext standard: <code>traceparent: 00-{traceId}-{parentSpanId}-{flags}</code></p>
+<p>OpenTelemetry SDKs automatically inject/extract this header in HTTP clients/servers. For message queues, inject into message metadata. For gRPC, use gRPC metadata.</p>
+<p><strong>Most common bug:</strong> Forgetting to propagate context in async code — e.g., when putting work on a queue, the queue consumer doesn't get the trace context.</p>
+</div>
+</details>
+
+<details>
+<summary>Q6: What is the OTel Collector and why use it instead of exporting directly from applications? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>The OTel Collector is a proxy/agent that receives, processes, and exports telemetry data.</p>
+<p><strong>Benefits over direct export:</strong></p>
+<ul>
+  <li><strong>Decoupling:</strong> Change backend (Jaeger → Tempo) without redeploying apps</li>
+  <li><strong>Processing:</strong> Filter sensitive data, add environment labels, batch for efficiency</li>
+  <li><strong>Fan-out:</strong> Send to multiple backends simultaneously (Datadog + internal Grafana)</li>
+  <li><strong>Buffering:</strong> Handle backend unavailability gracefully</li>
+  <li><strong>Resource efficiency:</strong> App SDKs export immediately; Collector batches for efficiency</li>
+</ul>
+<p>Typical deployment: OTel SDK in app → OTel Collector (sidecar or DaemonSet) → multiple backends.</p>
+</div>
+</details>
+
+<details>
+<summary>Q7: What is SLO burn rate alerting and how does it improve on threshold alerting? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>Problem with threshold alerting:</strong> "Alert if error rate &gt; 1%" fires on brief spikes that don't consume much error budget, causing alert fatigue. It also doesn't tell you how quickly you're consuming your budget.</p>
+<p><strong>Burn rate alerting:</strong> Alerts based on how fast you're consuming your error budget.</p>
+<ul>
+  <li>Burn rate 1 = consuming at the rate that would exhaust budget exactly over the SLO window (normal)</li>
+  <li>Burn rate 14.4 = would exhaust 30-day budget in 2 days → page on-call immediately</li>
+  <li>Uses two windows: short (detect fast spikes) AND long (confirm ongoing issue)</li>
+</ul>
+<p>Result: fewer false positives (brief spikes don't page), better signal (know urgency by burn rate), customer-centric (alerts tied to SLOs).</p>
+</div>
+</details>
+
+<details>
+<summary>Q8: Explain the difference between head-based and tail-based sampling for traces. <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>Head-based sampling:</strong> Decision made at the START of the trace (first span). Every subsequent span in the trace follows the same decision. Simple, low overhead. Problem: 1% sample rate means you might miss that 0.5% of requests that are errors.</p>
+<p><strong>Tail-based sampling:</strong> Buffer ALL spans until the trace completes. THEN decide to keep based on trace outcome (error, high latency, specific attributes). Keep 100% of error traces, 100% of slow traces, 1% of normal traces.</p>
+<p><strong>Implementation:</strong> Tail-based requires the OTel Collector with tail-sampling processor. All spans for a trace must route to the same collector (or use consistent hashing). Higher memory usage (buffering all spans).</p>
+</div>
+</details>
+
+<details>
+<summary>Q9: What are DORA metrics and how do you improve them? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>DORA metrics measure software delivery performance:</p>
+<ul>
+  <li><strong>Deployment Frequency:</strong> Improve via trunk-based development, feature flags, CI/CD pipelines, smaller PRs</li>
+  <li><strong>Lead Time:</strong> Improve via parallel testing, automated deployments, removing manual approval gates</li>
+  <li><strong>Change Failure Rate:</strong> Improve via automated testing, canary deployments, feature flags for safe rollout</li>
+  <li><strong>MTTR:</strong> Improve via better alerting (burn rate), runbooks, automated rollback, on-call tooling</li>
+</ul>
+<p><strong>Key insight:</strong> High performers excel at ALL four metrics simultaneously. They achieve high deployment frequency AND low failure rate — quality and speed reinforce each other with good CI/CD practices.</p>
+</div>
+</details>
+
+<details>
+<summary>Q10: How do you define SLIs for different types of services? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p><strong>For request-based services (APIs):</strong></p>
+<ul>
+  <li>Availability: % of requests that succeed (status &lt; 500)</li>
+  <li>Latency: % of requests served within N ms (e.g., 99% &lt; 500ms)</li>
+</ul>
+<p><strong>For data pipelines:</strong></p>
+<ul>
+  <li>Freshness: data is no more than N minutes old</li>
+  <li>Completeness: % of expected records processed</li>
+  <li>Correctness: % of outputs that match expected values</li>
+</ul>
+<p><strong>For storage systems:</strong></p>
+<ul>
+  <li>Durability: % of data that persists as expected</li>
+  <li>Throughput: operations per second achieved</li>
+</ul>
+<p><strong>Critical SLI design question:</strong> "What do USERS care about?" Avoid measuring what's easy to measure (CPU%) vs what matters to users (request success rate).</p>
+</div>
+</details>
+
+<details>
+<summary>Q11: What is the cardinality problem in Prometheus and how do you handle it? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>Each unique combination of metric_name + label values = one time series. High-cardinality labels create millions of series, exhausting memory.</p>
+<p><strong>Bad labels (high cardinality):</strong></p>
+<ul>
+  <li>user_id — millions of unique values</li>
+  <li>request_id — unique per request</li>
+  <li>email — unbounded</li>
+  <li>error_message — unique long strings</li>
+</ul>
+<p><strong>Good labels (low cardinality):</strong></p>
+<ul>
+  <li>status_code — ~10 values</li>
+  <li>method — GET/POST/PUT (~5)</li>
+  <li>service — ~100 services</li>
+  <li>region — ~10 regions</li>
+</ul>
+<p><strong>Rule of thumb:</strong> &lt;100 unique values per label. Total active series &lt; 1M per Prometheus instance.</p>
+<p><strong>Handling high-cardinality data:</strong> Use logs or traces for per-user/per-request data. Use metrics only for aggregate signals.</p>
+</div>
+</details>
+
+<details>
+<summary>Q12: How do you implement distributed tracing in a Kafka-based event-driven system? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<pre><code class="language-python">from opentelemetry import trace, propagate
+from opentelemetry.instrumentation.confluent_kafka import ConfluentKafkaInstrumentor
+
+# Auto-instrumentation handles most Kafka tracing
+ConfluentKafkaInstrumentor().instrument()
+
+# Manual propagation for producer
+from opentelemetry.propagators.textmap import DefaultSetter
+
+class KafkaHeaderSetter(DefaultSetter):
+    def set(self, carrier, key, value):
+        carrier.append((key, value))  # Kafka headers format
+
+tracer = trace.get_tracer("producer-service")
+
+def produce_event(producer, topic: str, key: str, value: dict):
+    headers = []
+    with tracer.start_as_current_span("produce_event") as span:
+        span.set_attribute("messaging.system", "kafka")
+        span.set_attribute("messaging.destination", topic)
+        # Inject trace context into Kafka headers
+        propagate.inject(headers, setter=KafkaHeaderSetter())
+        producer.produce(topic, key=key, value=json.dumps(value), headers=headers)
+
+# Consumer — extract context from headers
+def consume_event(message):
+    headers = dict(message.headers())
+    ctx = propagate.extract(headers)
+    with tracer.start_as_current_span("consume_event", context=ctx) as span:
+        span.set_attribute("messaging.system", "kafka")
+        # This span is now linked to the producer's trace
+        process_event(json.loads(message.value()))</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q13: Explain the concept of Toil in SRE. How do you measure and reduce it? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>Toil:</strong> Manual, repetitive, automatable operational work that scales linearly with service growth. Properties: manual, repetitive, no enduring value, grows with traffic.</p>
+<p>Examples: manually restarting pods, manual capacity provisioning, manual certificate renewal, manually ACKing PagerDuty alerts without fixing root cause.</p>
+<p><strong>Why reduce:</strong> SRE teams aim to keep toil &lt;50% of time. Toil crowds out engineering work that improves reliability long-term.</p>
+<p><strong>Measurement:</strong> Track time spent on each category of work. Toil = time on repetitive operational tasks. Target: reduce by 50% each quarter through automation.</p>
+<p><strong>Reduction strategies:</strong></p>
+<ul>
+  <li>Auto-scaling instead of manual capacity management</li>
+  <li>Self-healing systems (Kubernetes restartPolicy)</li>
+  <li>Automated rollbacks on high error rate</li>
+  <li>Certificate auto-renewal (cert-manager)</li>
+</ul>
+</div>
+</details>
+
+<details>
+<summary>Q14: How would you set up alerting for a service with 99.9% SLO to minimize false positives? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>Use multi-window burn rate alerting (Google SRE Book approach):</p>
+<ol>
+  <li><strong>Fast burn (P1):</strong> 2% budget consumed in 1 hour → burn rate 14.4x. Use 1-hour and 5-minute windows. Page immediately. This catches major outages.</li>
+  <li><strong>Medium burn (P2):</strong> 5% budget in 6 hours → burn rate 6x. Use 6-hour and 30-minute windows. Ticket immediately, may page.</li>
+  <li><strong>Slow burn (P3):</strong> 10% budget in 3 days → burn rate 1x. Use 3-day window. Create ticket, investigate next business day.</li>
+</ol>
+<p>Two-window requirement prevents false positives from brief spikes: both the long AND short window must exceed threshold simultaneously.</p>
+<p>Result: Only truly significant events page on-call. Brief error bursts (sub-minute) don't create pages unless they're severe enough to matter for the SLO.</p>
+</div>
+</details>
+
+<details>
+<summary>Q15: What is exemplar data and how does it connect metrics to traces? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p><strong>Exemplar:</strong> A sample of a specific trace/span ID attached to a metric observation. Allows you to jump from a metric anomaly directly to a real trace that caused it.</p>
+<p>Example: P99 latency spikes at 2:05 PM → click the spike → exemplar shows traceId → open that exact trace in Tempo → see which service was slow.</p>
+<pre><code class="language-python">from opentelemetry import trace
+from prometheus_client import Histogram
+
+REQUEST_LATENCY = Histogram('http_request_duration_seconds', 'Latency', ['service'])
+
+def handle_request(service: str):
+    with tracer.start_as_current_span("request") as span:
+        start = time.time()
+        # ... process request
+        duration = time.time() - start
+        # Attach exemplar with trace context
+        ctx = trace.get_current_span().get_span_context()
+        REQUEST_LATENCY.labels(service=service).observe(
+            duration,
+            exemplar={"traceID": format(ctx.trace_id, '032x')}
+        )</code></pre>
+<p>Supported in Prometheus 2.26+, Grafana, and Tempo. Provides the crucial link between the three pillars: metric → exemplar → trace → logs.</p>
+</div>
+</details>
+
+<details>
+<summary>Q16: How do you handle log correlation across microservices? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<pre><code class="language-python">import structlog
+from opentelemetry import trace
+
+def get_trace_context() -> dict:
+    """Extract current OTel context for log correlation"""
+    ctx = trace.get_current_span().get_span_context()
+    if ctx.is_valid:
+        return {
+            "trace_id": format(ctx.trace_id, '032x'),
+            "span_id": format(ctx.span_id, '016x'),
+            "trace_sampled": ctx.trace_flags.sampled
+        }
+    return {}
+
+# Middleware: inject trace context into every log
+@app.middleware("http")
+async def trace_context_middleware(request: Request, call_next):
+    log = structlog.get_logger().bind(**get_trace_context())
+    structlog.contextvars.bind_contextvars(**get_trace_context())
+    return await call_next(request)
+</code></pre>
+<p>Every log line now contains the same traceId as the distributed trace. In Grafana:</p>
+<ol>
+  <li>Find slow trace in Tempo</li>
+  <li>Copy traceId</li>
+  <li>Search Loki: <code>{service="order-api"} | json | trace_id="abc123"</code></li>
+  <li>See all logs for that specific request across all services</li>
+</ol>
+</div>
+</details>
+
+<details>
+<summary>Q17: What is a recording rule in Prometheus and when should you use it? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>A recording rule pre-computes expensive PromQL expressions and stores results as a new metric. Evaluated at a regular interval (default: every evaluation_interval).</p>
+<p><strong>When to use:</strong></p>
+<ul>
+  <li>Dashboard queries that take &gt;1 second to compute</li>
+  <li>Queries used in multiple dashboards/alerts (compute once, query many)</li>
+  <li>Long lookback windows (<code>rate(metric[30d])</code>) that are expensive at query time</li>
+  <li>Reducing cardinality: aggregate high-cardinality metrics to lower-cardinality</li>
+</ul>
+<pre><code class="language-yaml">groups:
+  - name: precomputed_metrics
+    rules:
+      # Precompute error rate — expensive query done once
+      - record: job:http_errors:rate5m
+        expr: sum(rate(http_requests_total{status=~"5.."}[5m])) by (job)
+
+      # Precompute p99 latency for all services
+      - record: job:http_latency_p99:rate5m
+        expr: histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket[5m])) by (le, job))</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q18: How does structured logging improve incident response compared to plain-text logs? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p><strong>Plain text log:</strong> <code>2024-01-15 ERROR Failed to process payment for user 123 amount 99.99 retry 3</code></p>
+<p><strong>Structured JSON log:</strong> <code>{"level":"error","event":"payment_failed","user_id":"123","amount":99.99,"retry":3,"error":"timeout","service":"payment","timestamp":"2024-01-15T10:30:00Z"}</code></p>
+<p><strong>Benefits:</strong></p>
+<ul>
+  <li>Query by specific field: <code>level="error" AND user_id="123"</code></li>
+  <li>Build metrics from logs: count(payment_failed) by retry count</li>
+  <li>Machine parsing for alerting and monitoring</li>
+  <li>Consistent format enables automated log analysis</li>
+  <li>Easier to join with trace data (same field names)</li>
+</ul>
+</div>
+</details>
+
+<details>
+<summary>Q19: Explain the difference between white-box and black-box monitoring. <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>White-box monitoring:</strong> Monitoring from the inside — using internal metrics, logs, and traces that the service emits. Tells you WHY something is failing (which DB query, which code path).</p>
+<p>Example: Prometheus scraping /metrics endpoint of your service.</p>
+<p><strong>Black-box monitoring:</strong> Monitoring from the outside — testing the service as a user would, without knowledge of internals. Detects problems users actually experience.</p>
+<p>Example: Synthetic probes hitting your API from external locations (Grafana Blackbox Exporter, PingDom).</p>
+<p><strong>Best practice:</strong> Use both. Black-box monitoring catches what users see (detect problems). White-box monitoring explains why (diagnose and fix). A service can pass all black-box checks while having internal problems that will eventually manifest.</p>
+</div>
+</details>
+
+<details>
+<summary>Q20: Design an observability strategy for a payment processing microservice. <span class="badge very-advanced">Very Advanced</span></summary>
+<div class="answer">
+<p><strong>SLOs (customer-facing):</strong></p>
+<ul>
+  <li>Payment success rate: &gt;99.95% over 30 days</li>
+  <li>P99 latency: &lt;2 seconds over 30 days</li>
+</ul>
+<p><strong>SLIs:</strong></p>
+<ul>
+  <li>Availability: <code>rate(payment_requests_total{status="success"}[5m]) / rate(payment_requests_total[5m])</code></li>
+  <li>Latency: <code>histogram_quantile(0.99, rate(payment_duration_seconds_bucket[5m]))</code></li>
+</ul>
+<p><strong>Critical metrics:</strong> payment_attempts_total by {status, payment_method, gateway}, fraud_checks_total by {result}, payment_amount_sum (gauge), retry_count histogram</p>
+<p><strong>Critical logs:</strong> Every payment attempt with payment_id, user_id, amount, gateway, trace_id. All errors with full context. Fraud check decisions.</p>
+<p><strong>Critical traces:</strong> Full trace per payment: API → fraud check → card processor → DB → notification. Tail-based sampling: keep 100% of failed payments.</p>
+<p><strong>Alerting:</strong> Burn rate alerts on both SLOs. PagerDuty for P1 (fast burn), ticket for P2/P3. Alert on: payment gateway circuit breaker open, fraud model latency &gt;100ms, DB connection pool exhaustion.</p>
+</div>
+</details>
+
+</main>
+</div>
+<footer>Dinesh Kumar's Learning Hub | 2024-2025</footer>
+<script>hljs.highlightAll();mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

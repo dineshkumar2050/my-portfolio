@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI & Machine Learning Complete Guide</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6;display:flex;flex-direction:column}.topnav{background:#161b22;padding:10px 24px;border-bottom:1px solid #30363d;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100}.topnav a{color:#58a6ff;text-decoration:none;font-size:13px}.topnav h1{font-size:16px;color:#e6edf3;margin:0}.layout{display:flex;flex:1}.sidebar{width:260px;background:#161b22;border-right:1px solid #30363d;padding:16px;position:sticky;top:41px;height:calc(100vh - 41px);overflow-y:auto;flex-shrink:0}.sidebar a{display:block;padding:4px 8px;color:#8b949e;text-decoration:none;font-size:13px;border-radius:4px;margin-bottom:2px}.sidebar a:hover{background:#21262d;color:#c9d1d9}.sidebar .section-title{color:#58a6ff;font-size:11px;text-transform:uppercase;letter-spacing:.5px;margin:16px 0 6px;padding:0 8px;font-weight:600}main{flex:1;padding:32px 48px;max-width:960px}h1{font-size:2rem;color:#e6edf3;border-bottom:1px solid #30363d;padding-bottom:16px;margin-bottom:24px}h2{font-size:1.5rem;color:#e6edf3;margin:48px 0 16px;border-bottom:1px solid #21262d;padding-bottom:8px}h3{font-size:1.15rem;color:#79c0ff;margin:24px 0 10px}h4{font-size:1rem;color:#d2a8ff;margin:16px 0 8px}p{margin-bottom:12px}ul,ol{margin:0 0 16px 24px}li{margin-bottom:4px}pre{margin:16px 0;border-radius:6px;overflow-x:auto;font-size:13px}code:not(pre code){background:#161b22;padding:2px 6px;border-radius:4px;font-size:13px;color:#f0883e;border:1px solid #30363d}table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}th{background:#161b22;color:#58a6ff;padding:10px 14px;text-align:left;border:1px solid #30363d}td{padding:10px 14px;border:1px solid #30363d;vertical-align:top}tr:nth-child(even) td{background:#0a0d12}.mermaid{background:#161b22;padding:20px;border-radius:6px;margin:16px 0;text-align:center}details{border:1px solid #30363d;border-radius:6px;margin:10px 0;overflow:hidden}summary{padding:12px 16px;cursor:pointer;background:#161b22;color:#79c0ff;font-weight:600;list-style:none}details[open] summary{border-bottom:1px solid #30363d}.answer{padding:16px 20px;background:#0d1117}.badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:700;margin-left:8px}.easy{background:#1a4731;color:#3fb950}.intermediate{background:#2d2b00;color:#e3b341}.advanced{background:#3d1f00;color:#f0883e}.very-advanced{background:#3d0000;color:#ff7b72}.callout{background:#161b22;border-left:4px solid #58a6ff;padding:12px 16px;border-radius:0 6px 6px 0;margin:16px 0}footer{text-align:center;padding:24px;color:#8b949e;font-size:12px;border-top:1px solid #30363d;margin-top:40px}
+</style>
+</head>
+<body>
+<nav class="topnav"><h1>AI &amp; Machine Learning Complete Guide</h1><a href="../index.html">← Back to Index</a></nav>
+<div class="layout">
+<aside class="sidebar">
+  <div class="section-title">ML Fundamentals</div>
+  <a href="#learning-types">Learning Types</a>
+  <a href="#train-val-test">Train/Val/Test Split</a>
+  <a href="#overfitting">Overfitting &amp; Underfitting</a>
+  <a href="#metrics">Evaluation Metrics</a>
+  <div class="section-title">Algorithms</div>
+  <a href="#linear-regression">Linear Regression</a>
+  <a href="#logistic-regression">Logistic Regression</a>
+  <a href="#tree-models">Tree Models</a>
+  <a href="#boosting">Boosting Frameworks</a>
+  <a href="#svm-knn">SVM &amp; KNN</a>
+  <a href="#clustering">Clustering</a>
+  <div class="section-title">Deep Learning</div>
+  <a href="#perceptron-mlp">Perceptron &amp; MLP</a>
+  <a href="#activations">Activation Functions</a>
+  <a href="#backprop">Backpropagation</a>
+  <a href="#optimizers">Optimizers</a>
+  <a href="#cnn">CNN Architectures</a>
+  <a href="#rnn-lstm">RNN / LSTM / GRU</a>
+  <div class="section-title">Transformers &amp; LLMs</div>
+  <a href="#attention">Attention Mechanism</a>
+  <a href="#bert-gpt">BERT vs GPT vs T5</a>
+  <a href="#tokenization">Tokenization</a>
+  <a href="#llm-params">LLM Parameters</a>
+  <a href="#rlhf">RLHF &amp; Fine-tuning</a>
+  <a href="#prompt-eng">Prompt Engineering</a>
+  <div class="section-title">MLOps &amp; Tools</div>
+  <a href="#mlops">MLOps</a>
+  <a href="#python-tools">Python Tools</a>
+  <a href="#pytorch-versions">PyTorch Versions</a>
+  <div class="section-title">Interview Q&amp;A</div>
+  <a href="#interview">20 Interview Questions</a>
+</aside>
+<main>
+<h1>AI &amp; Machine Learning Complete Guide</h1>
+
+<h2 id="learning-types">Learning Types</h2>
+<table>
+  <tr><th>Type</th><th>Definition</th><th>Examples</th><th>Use Cases</th></tr>
+  <tr><td><strong>Supervised</strong></td><td>Learn from labeled (X, y) pairs</td><td>Linear Regression, SVM, Neural Networks</td><td>Classification, Regression</td></tr>
+  <tr><td><strong>Unsupervised</strong></td><td>Find patterns in unlabeled data</td><td>K-Means, PCA, Autoencoders</td><td>Clustering, Dimensionality Reduction</td></tr>
+  <tr><td><strong>Reinforcement</strong></td><td>Agent learns via reward/penalty</td><td>Q-Learning, PPO, A3C</td><td>Games, Robotics, Trading</td></tr>
+  <tr><td><strong>Self-Supervised</strong></td><td>Labels derived from data itself</td><td>GPT (next-token), BERT (masked LM)</td><td>LLMs, Vision pretraining</td></tr>
+  <tr><td><strong>Semi-Supervised</strong></td><td>Small labeled + large unlabeled</td><td>Label Propagation, Co-training</td><td>NLP when labeling is expensive</td></tr>
+</table>
+
+<h2 id="train-val-test">Train / Validation / Test Split</h2>
+<p>The standard split ensures models generalize to unseen data:</p>
+<ul>
+  <li><strong>Training set (~70-80%)</strong>: Model learns parameters</li>
+  <li><strong>Validation set (~10-15%)</strong>: Hyperparameter tuning, model selection</li>
+  <li><strong>Test set (~10-15%)</strong>: Final unbiased evaluation — use ONCE</li>
+</ul>
+<pre><code class="language-python">from sklearn.model_selection import train_test_split
+
+X_train, X_temp, y_train, y_temp = train_test_split(X, y, test_size=0.3, random_state=42)
+X_val, X_test, y_val, y_test = train_test_split(X_temp, y_temp, test_size=0.5, random_state=42)
+
+# K-Fold Cross-Validation
+from sklearn.model_selection import KFold, cross_val_score
+kf = KFold(n_splits=5, shuffle=True, random_state=42)
+scores = cross_val_score(model, X, y, cv=kf, scoring='accuracy')
+print(f"CV Accuracy: {scores.mean():.4f} ± {scores.std():.4f}")</code></pre>
+
+<h2 id="overfitting">Overfitting, Underfitting &amp; Bias-Variance Tradeoff</h2>
+<div class="mermaid">
+graph LR
+    A[High Bias<br/>Underfitting] --> B[Sweet Spot<br/>Good Generalization]
+    B --> C[High Variance<br/>Overfitting]
+    style A fill:#3d1f00,stroke:#f0883e,color:#f0883e
+    style B fill:#1a4731,stroke:#3fb950,color:#3fb950
+    style C fill:#3d0000,stroke:#ff7b72,color:#ff7b72
+</div>
+<table>
+  <tr><th>Problem</th><th>Train Error</th><th>Val Error</th><th>Solution</th></tr>
+  <tr><td>Underfitting (High Bias)</td><td>High</td><td>High</td><td>More features, complex model, less regularization</td></tr>
+  <tr><td>Overfitting (High Variance)</td><td>Low</td><td>High</td><td>More data, regularization, dropout, early stopping</td></tr>
+  <tr><td>Good Fit</td><td>Low</td><td>Low (~train)</td><td>—</td></tr>
+</table>
+
+<h3>Regularization</h3>
+<table>
+  <tr><th>Type</th><th>Penalty</th><th>Effect</th><th>Use When</th></tr>
+  <tr><td><strong>L1 (Lasso)</strong></td><td>λΣ|wᵢ|</td><td>Sparse weights, feature selection</td><td>Many irrelevant features</td></tr>
+  <tr><td><strong>L2 (Ridge)</strong></td><td>λΣwᵢ²</td><td>Small weights, distributed</td><td>Correlated features</td></tr>
+  <tr><td><strong>ElasticNet</strong></td><td>αL1 + (1-α)L2</td><td>Balance of both</td><td>High-dimensional data</td></tr>
+</table>
+<pre><code class="language-python">from sklearn.linear_model import Ridge, Lasso, ElasticNet
+
+ridge = Ridge(alpha=1.0)
+lasso = Lasso(alpha=0.1)
+elastic = ElasticNet(alpha=0.1, l1_ratio=0.5)  # l1_ratio=0: Ridge, l1_ratio=1: Lasso</code></pre>
+
+<h2 id="metrics">Evaluation Metrics</h2>
+<h3>Classification Metrics</h3>
+<pre><code class="language-python">from sklearn.metrics import (accuracy_score, precision_score, recall_score,
+                              f1_score, roc_auc_score, confusion_matrix,
+                              classification_report)
+
+y_pred = model.predict(X_test)
+y_prob = model.predict_proba(X_test)[:, 1]
+
+print(f"Accuracy:  {accuracy_score(y_test, y_pred):.4f}")
+print(f"Precision: {precision_score(y_test, y_pred):.4f}")  # TP/(TP+FP)
+print(f"Recall:    {recall_score(y_test, y_pred):.4f}")     # TP/(TP+FN)
+print(f"F1 Score:  {f1_score(y_test, y_pred):.4f}")         # 2*P*R/(P+R)
+print(f"AUC-ROC:   {roc_auc_score(y_test, y_prob):.4f}")
+print(confusion_matrix(y_test, y_pred))</code></pre>
+<table>
+  <tr><th>Metric</th><th>Formula</th><th>Best When</th></tr>
+  <tr><td>Accuracy</td><td>(TP+TN)/(TP+TN+FP+FN)</td><td>Balanced classes</td></tr>
+  <tr><td>Precision</td><td>TP/(TP+FP)</td><td>Cost of false positives is high (spam)</td></tr>
+  <tr><td>Recall</td><td>TP/(TP+FN)</td><td>Cost of false negatives is high (cancer)</td></tr>
+  <tr><td>F1</td><td>2·P·R/(P+R)</td><td>Imbalanced classes, need balance</td></tr>
+  <tr><td>AUC-ROC</td><td>Area under ROC curve</td><td>Ranking quality, threshold-agnostic</td></tr>
+</table>
+
+<h3>Regression Metrics</h3>
+<pre><code class="language-python">from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+import numpy as np
+
+mse  = mean_squared_error(y_test, y_pred)
+rmse = np.sqrt(mse)
+mae  = mean_absolute_error(y_test, y_pred)
+r2   = r2_score(y_test, y_pred)  # 1.0 = perfect, 0 = mean baseline, <0 = worse than mean
+print(f"RMSE: {rmse:.4f}, MAE: {mae:.4f}, R²: {r2:.4f}")</code></pre>
+
+<h2 id="linear-regression">Linear Regression</h2>
+<pre><code class="language-python">from sklearn.linear_model import LinearRegression, SGDRegressor
+import numpy as np
+
+# Closed-form solution: w = (XᵀX)⁻¹Xᵀy
+model = LinearRegression()
+model.fit(X_train, y_train)
+print(f"Coefficients: {model.coef_}")
+print(f"Intercept: {model.intercept_}")
+
+# Polynomial features
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.pipeline import Pipeline
+
+poly_model = Pipeline([
+    ('poly', PolynomialFeatures(degree=2)),
+    ('linear', LinearRegression())
+])
+poly_model.fit(X_train, y_train)</code></pre>
+
+<h2 id="logistic-regression">Logistic Regression</h2>
+<pre><code class="language-python">from sklearn.linear_model import LogisticRegression
+from sklearn.preprocessing import StandardScaler
+from sklearn.pipeline import Pipeline
+
+# Sigmoid: σ(z) = 1 / (1 + e^(-z))
+# Decision boundary: P(y=1|x) = σ(wᵀx + b) > 0.5
+
+pipeline = Pipeline([
+    ('scaler', StandardScaler()),
+    ('classifier', LogisticRegression(C=1.0, solver='lbfgs', max_iter=1000))
+])
+pipeline.fit(X_train, y_train)
+
+# Multi-class: softmax activation
+multi_model = LogisticRegression(multi_class='multinomial', solver='lbfgs')</code></pre>
+
+<h2 id="tree-models">Decision Trees &amp; Random Forest</h2>
+<pre><code class="language-python">from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
+
+# Decision Tree — splits on information gain (entropy) or gini impurity
+dt = DecisionTreeClassifier(max_depth=5, min_samples_split=10, criterion='gini')
+dt.fit(X_train, y_train)
+
+# Random Forest — bagging + feature randomness
+rf = RandomForestClassifier(
+    n_estimators=100,     # number of trees
+    max_depth=10,
+    max_features='sqrt',  # sqrt(n_features) per split
+    min_samples_leaf=5,
+    n_jobs=-1,
+    random_state=42
+)
+rf.fit(X_train, y_train)
+importances = rf.feature_importances_  # Gini importance</code></pre>
+
+<h2 id="boosting">Boosting Frameworks Comparison</h2>
+<table>
+  <tr><th>Framework</th><th>Algorithm</th><th>Speed</th><th>Regularization</th><th>Categorical</th><th>Best For</th></tr>
+  <tr><td><strong>XGBoost</strong></td><td>Gradient Boosting + 2nd order</td><td>Fast</td><td>L1+L2 (reg_alpha/lambda)</td><td>Manual encode</td><td>Tabular, Kaggle</td></tr>
+  <tr><td><strong>LightGBM</strong></td><td>Gradient-based One-Side Sampling</td><td>Fastest</td><td>L1+L2 + depth</td><td>Native support</td><td>Large datasets</td></tr>
+  <tr><td><strong>CatBoost</strong></td><td>Ordered boosting, symmetric trees</td><td>Moderate</td><td>L2 + depth</td><td>Best native</td><td>Categorical-heavy</td></tr>
+</table>
+<pre><code class="language-python">import xgboost as xgb
+import lightgbm as lgb
+from catboost import CatBoostClassifier
+
+# XGBoost
+xgb_model = xgb.XGBClassifier(n_estimators=300, learning_rate=0.05,
+    max_depth=6, reg_alpha=0.1, reg_lambda=1.0, use_label_encoder=False)
+xgb_model.fit(X_train, y_train, eval_set=[(X_val, y_val)], early_stopping_rounds=50)
+
+# LightGBM
+lgb_model = lgb.LGBMClassifier(n_estimators=300, learning_rate=0.05,
+    num_leaves=31, min_data_in_leaf=20, reg_alpha=0.1)
+lgb_model.fit(X_train, y_train, eval_set=[(X_val, y_val)],
+    callbacks=[lgb.early_stopping(50)])
+
+# CatBoost
+cat_model = CatBoostClassifier(iterations=300, learning_rate=0.05,
+    depth=6, cat_features=[0,1,3], verbose=False)
+cat_model.fit(X_train, y_train, eval_set=(X_val, y_val), early_stopping_rounds=50)</code></pre>
+
+<h2 id="svm-knn">SVM &amp; KNN</h2>
+<pre><code class="language-python">from sklearn.svm import SVC
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.preprocessing import StandardScaler
+
+# SVM — finds max-margin hyperplane, kernel trick for non-linear
+svm = SVC(C=1.0, kernel='rbf', gamma='scale', probability=True)
+# Kernels: 'linear', 'poly', 'rbf', 'sigmoid'
+
+# KNN — lazy learner, distance-based
+knn = KNeighborsClassifier(n_neighbors=5, metric='minkowski', p=2)
+# Always scale features for KNN and SVM!
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X_train)</code></pre>
+
+<h2 id="clustering">Clustering: K-Means &amp; DBSCAN</h2>
+<pre><code class="language-python">from sklearn.cluster import KMeans, DBSCAN
+from sklearn.metrics import silhouette_score
+
+# K-Means — centroid-based, need to choose k
+kmeans = KMeans(n_clusters=4, init='k-means++', n_init=10, random_state=42)
+labels = kmeans.fit_predict(X)
+sil_score = silhouette_score(X, labels)
+
+# Elbow method
+inertias = [KMeans(n_clusters=k, random_state=42).fit(X).inertia_ for k in range(2, 11)]
+
+# DBSCAN — density-based, finds arbitrary shapes, auto-detects noise
+# eps: neighborhood radius, min_samples: core point threshold
+dbscan = DBSCAN(eps=0.5, min_samples=5)
+labels = dbscan.fit_predict(X)
+# labels == -1 are noise points</code></pre>
+
+<h2 id="perceptron-mlp">Perceptron &amp; Multi-Layer Perceptron</h2>
+<pre><code class="language-python">import torch
+import torch.nn as nn
+
+class MLP(nn.Module):
+    def __init__(self, input_dim, hidden_dims, output_dim, dropout=0.3):
+        super().__init__()
+        layers = []
+        prev_dim = input_dim
+        for h in hidden_dims:
+            layers += [nn.Linear(prev_dim, h), nn.BatchNorm1d(h),
+                       nn.ReLU(), nn.Dropout(dropout)]
+            prev_dim = h
+        layers.append(nn.Linear(prev_dim, output_dim))
+        self.net = nn.Sequential(*layers)
+
+    def forward(self, x):
+        return self.net(x)
+
+model = MLP(input_dim=784, hidden_dims=[256, 128, 64], output_dim=10)</code></pre>
+
+<h2 id="activations">Activation Functions</h2>
+<table>
+  <tr><th>Function</th><th>Formula</th><th>Range</th><th>Use Case</th><th>Issue</th></tr>
+  <tr><td>Sigmoid</td><td>1/(1+e⁻ˣ)</td><td>(0,1)</td><td>Binary output layer</td><td>Vanishing gradient</td></tr>
+  <tr><td>Tanh</td><td>(eˣ-e⁻ˣ)/(eˣ+e⁻ˣ)</td><td>(-1,1)</td><td>Hidden layers (RNN)</td><td>Vanishing gradient</td></tr>
+  <tr><td><strong>ReLU</strong></td><td>max(0,x)</td><td>[0,∞)</td><td>Default hidden layers</td><td>Dying ReLU</td></tr>
+  <tr><td>Leaky ReLU</td><td>max(0.01x,x)</td><td>(-∞,∞)</td><td>Fix dying ReLU</td><td>Hyperparameter α</td></tr>
+  <tr><td><strong>GELU</strong></td><td>x·Φ(x)</td><td>(-∞,∞)</td><td>Transformers (BERT/GPT)</td><td>Expensive compute</td></tr>
+  <tr><td>Softmax</td><td>eˣⁱ/Σeˣʲ</td><td>(0,1), sum=1</td><td>Multi-class output</td><td>Numerically unstable (use LogSoftmax)</td></tr>
+  <tr><td>SiLU/Swish</td><td>x·sigmoid(x)</td><td>(-∞,∞)</td><td>EfficientNet, LLaMA</td><td>—</td></tr>
+</table>
+
+<h2 id="backprop">Backpropagation &amp; Chain Rule</h2>
+<div class="callout">
+  <strong>Chain Rule:</strong> For L = f(g(x)), dL/dx = (dL/df) · (df/dg) · (dg/dx)<br>
+  Backprop applies chain rule to compute gradients through each layer.
+</div>
+<pre><code class="language-python">import torch
+import torch.nn as nn
+
+# PyTorch auto-differentiation example
+x = torch.tensor([[1.0, 2.0, 3.0]], requires_grad=False)
+y = torch.tensor([[1.0]])
+
+model = nn.Linear(3, 1)
+criterion = nn.MSELoss()
+optimizer = torch.optim.Adam(model.parameters(), lr=0.01)
+
+# Forward pass
+pred = model(x)
+loss = criterion(pred, y)
+
+# Backward pass — computes all gradients
+optimizer.zero_grad()  # Clear previous gradients
+loss.backward()        # Compute dL/dW via chain rule
+optimizer.step()       # Update: W = W - lr * dL/dW
+
+# Gradient flow example
+# L = MSE(y_hat, y) where y_hat = W*x + b
+# dL/dW = (2/n) * Xᵀ * (y_hat - y)
+# dL/db = (2/n) * sum(y_hat - y)</code></pre>
+
+<h2 id="optimizers">Optimizers</h2>
+<table>
+  <tr><th>Optimizer</th><th>Update Rule</th><th>Pros</th><th>Cons</th></tr>
+  <tr><td>SGD</td><td>w -= lr * g</td><td>Simple, generalizes well</td><td>Slow convergence, sensitive to lr</td></tr>
+  <tr><td>Momentum</td><td>v = βv + g; w -= lr*v</td><td>Faster convergence</td><td>Extra hyperparameter β</td></tr>
+  <tr><td>RMSprop</td><td>w -= lr*g/√(E[g²]+ε)</td><td>Adaptive lr</td><td>No momentum</td></tr>
+  <tr><td><strong>Adam</strong></td><td>Momentum + RMSprop</td><td>Fast, robust default</td><td>Can overfit, poor generalization</td></tr>
+  <tr><td><strong>AdamW</strong></td><td>Adam + weight decay decoupled</td><td>Better regularization</td><td>More hyperparameters</td></tr>
+</table>
+<pre><code class="language-python">from torch.optim import Adam, AdamW, SGD
+from torch.optim.lr_scheduler import CosineAnnealingLR, OneCycleLR, ReduceLROnPlateau
+
+optimizer = AdamW(model.parameters(), lr=1e-3, weight_decay=1e-4)
+
+# Cosine annealing — smoothly decreases lr
+scheduler = CosineAnnealingLR(optimizer, T_max=100, eta_min=1e-6)
+
+# OneCycleLR — best for training from scratch
+scheduler = OneCycleLR(optimizer, max_lr=1e-2, steps_per_epoch=len(loader), epochs=30)
+
+# ReduceLROnPlateau — reduce when val loss plateaus
+scheduler = ReduceLROnPlateau(optimizer, mode='min', factor=0.5, patience=5)
+
+# Training loop
+for epoch in range(epochs):
+    for batch in loader:
+        optimizer.zero_grad()
+        loss = criterion(model(batch['x']), batch['y'])
+        loss.backward()
+        torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)  # gradient clipping
+        optimizer.step()
+    scheduler.step()</code></pre>
+
+<h2 id="cnn">CNN Architectures</h2>
+<pre><code class="language-python">import torch.nn as nn
+import torchvision.models as models
+
+# Building blocks
+class ConvBlock(nn.Module):
+    def __init__(self, in_ch, out_ch, kernel=3, stride=1):
+        super().__init__()
+        self.block = nn.Sequential(
+            nn.Conv2d(in_ch, out_ch, kernel, stride=stride, padding=kernel//2),
+            nn.BatchNorm2d(out_ch),
+            nn.ReLU(inplace=True)
+        )
+    def forward(self, x): return self.block(x)
+
+# ResNet skip connection
+class ResidualBlock(nn.Module):
+    def __init__(self, channels):
+        super().__init__()
+        self.conv1 = ConvBlock(channels, channels)
+        self.conv2 = nn.Sequential(
+            nn.Conv2d(channels, channels, 3, padding=1),
+            nn.BatchNorm2d(channels)
+        )
+        self.relu = nn.ReLU(inplace=True)
+
+    def forward(self, x):
+        return self.relu(x + self.conv2(self.conv1(x)))  # skip connection: F(x) + x
+
+# Pretrained models
+resnet50      = models.resnet50(weights='IMAGENET1K_V2')
+efficientnet  = models.efficientnet_b4(weights='IMAGENET1K_V1')
+vit           = models.vit_b_16(weights='IMAGENET1K_V1')
+
+# Transfer learning — fine-tune last layer
+for param in resnet50.parameters():
+    param.requires_grad = False
+resnet50.fc = nn.Linear(2048, num_classes)  # replace head</code></pre>
+<table>
+  <tr><th>Architecture</th><th>Year</th><th>Key Innovation</th><th>Params</th><th>Top-1 Acc</th></tr>
+  <tr><td>VGG-16</td><td>2014</td><td>Deep 3×3 convs</td><td>138M</td><td>71.6%</td></tr>
+  <tr><td>ResNet-50</td><td>2015</td><td>Skip connections</td><td>25M</td><td>76.1%</td></tr>
+  <tr><td>EfficientNet-B4</td><td>2019</td><td>Compound scaling</td><td>19M</td><td>83.4%</td></tr>
+  <tr><td>ViT-B/16</td><td>2020</td><td>Pure attention patches</td><td>86M</td><td>81.1%</td></tr>
+  <tr><td>ConvNeXt-B</td><td>2022</td><td>Modernized ConvNet</td><td>89M</td><td>85.8%</td></tr>
+</table>
+
+<h2 id="rnn-lstm">RNN / LSTM / GRU</h2>
+<div class="callout">
+  <strong>Vanishing Gradient Problem:</strong> In deep RNNs, gradients shrink exponentially through time via backprop-through-time (BPTT), making the model forget long-term dependencies. LSTM solves this with gated cell state.
+</div>
+<pre><code class="language-python">import torch.nn as nn
+
+# Vanilla RNN
+rnn = nn.RNN(input_size=128, hidden_size=256, num_layers=2,
+             batch_first=True, dropout=0.3, bidirectional=True)
+
+# LSTM — 4 gates: forget, input, gate, output
+# Cell state (Cₜ) carries long-term memory
+# hₜ = oₜ ⊙ tanh(Cₜ)  where Cₜ = fₜ⊙Cₜ₋₁ + iₜ⊙g̃ₜ
+lstm = nn.LSTM(input_size=128, hidden_size=256, num_layers=2,
+               batch_first=True, dropout=0.3, bidirectional=True)
+
+# GRU — 2 gates: reset, update (simpler than LSTM, often comparable)
+gru = nn.GRU(input_size=128, hidden_size=256, num_layers=2,
+             batch_first=True, dropout=0.3)
+
+# Usage
+x = torch.randn(32, 50, 128)   # (batch, seq_len, input_size)
+out, (h_n, c_n) = lstm(x)      # out: (32, 50, 512) with bidirectional</code></pre>
+<table>
+  <tr><th></th><th>RNN</th><th>LSTM</th><th>GRU</th></tr>
+  <tr><td>Gates</td><td>0</td><td>3 (forget/input/output)</td><td>2 (reset/update)</td></tr>
+  <tr><td>Long-term memory</td><td>Poor</td><td>Excellent (cell state)</td><td>Good</td></tr>
+  <tr><td>Parameters</td><td>Few</td><td>Most</td><td>Moderate</td></tr>
+  <tr><td>Training speed</td><td>Fastest</td><td>Slowest</td><td>Faster than LSTM</td></tr>
+</table>
+
+<h2 id="attention">Transformer Attention Mechanism</h2>
+<div class="callout">
+  <strong>Scaled Dot-Product Attention:</strong><br>
+  Attention(Q, K, V) = softmax(QKᵀ / √dₖ) · V<br>
+  The √dₖ scaling prevents softmax saturation in high dimensions.
+</div>
+<pre><code class="language-python">import torch
+import torch.nn.functional as F
+import math
+
+def scaled_dot_product_attention(Q, K, V, mask=None):
+    d_k = Q.size(-1)
+    # (batch, heads, seq, seq)
+    scores = torch.matmul(Q, K.transpose(-2, -1)) / math.sqrt(d_k)
+    if mask is not None:
+        scores = scores.masked_fill(mask == 0, float('-inf'))
+    attn_weights = F.softmax(scores, dim=-1)
+    return torch.matmul(attn_weights, V), attn_weights
+
+class MultiHeadAttention(torch.nn.Module):
+    def __init__(self, d_model=512, n_heads=8):
+        super().__init__()
+        self.d_k = d_model // n_heads
+        self.n_heads = n_heads
+        self.W_q = torch.nn.Linear(d_model, d_model)
+        self.W_k = torch.nn.Linear(d_model, d_model)
+        self.W_v = torch.nn.Linear(d_model, d_model)
+        self.W_o = torch.nn.Linear(d_model, d_model)
+
+    def forward(self, q, k, v, mask=None):
+        B = q.size(0)
+        Q = self.W_q(q).view(B, -1, self.n_heads, self.d_k).transpose(1,2)
+        K = self.W_k(k).view(B, -1, self.n_heads, self.d_k).transpose(1,2)
+        V = self.W_v(v).view(B, -1, self.n_heads, self.d_k).transpose(1,2)
+        x, _ = scaled_dot_product_attention(Q, K, V, mask)
+        x = x.transpose(1,2).contiguous().view(B, -1, self.n_heads * self.d_k)
+        return self.W_o(x)</code></pre>
+
+<div class="mermaid">
+graph TB
+    Input["Input Tokens"] --> Embed["Token Embedding + Positional Encoding"]
+    Embed --> MHA["Multi-Head Self-Attention"]
+    MHA --> Add1["Add & Norm (Residual)"]
+    Add1 --> FFN["Feed-Forward Network (d_ff = 4×d_model)"]
+    FFN --> Add2["Add & Norm (Residual)"]
+    Add2 --> Output["N × Encoder Layers"]
+    style Input fill:#1f2937
+    style Output fill:#1f2937
+</div>
+
+<h2 id="bert-gpt">BERT vs GPT vs T5</h2>
+<table>
+  <tr><th>Model</th><th>Architecture</th><th>Training</th><th>Direction</th><th>Best For</th></tr>
+  <tr><td><strong>BERT</strong></td><td>Encoder-only</td><td>Masked LM + NSP</td><td>Bidirectional</td><td>Classification, NER, QA</td></tr>
+  <tr><td><strong>GPT</strong></td><td>Decoder-only</td><td>Causal LM (next token)</td><td>Left-to-right</td><td>Text generation, chat</td></tr>
+  <tr><td><strong>T5</strong></td><td>Encoder-Decoder</td><td>Span denoising</td><td>Bidirectional encoder</td><td>Seq2seq: translation, summarization</td></tr>
+  <tr><td><strong>RoBERTa</strong></td><td>Encoder-only</td><td>Better BERT training</td><td>Bidirectional</td><td>Better BERT tasks</td></tr>
+</table>
+
+<h2 id="tokenization">Tokenization</h2>
+<table>
+  <tr><th>Method</th><th>How</th><th>Vocab Size</th><th>Used By</th></tr>
+  <tr><td><strong>BPE</strong> (Byte-Pair Encoding)</td><td>Merge frequent byte pairs iteratively</td><td>32K-100K</td><td>GPT-2/3/4, RoBERTa</td></tr>
+  <tr><td><strong>WordPiece</strong></td><td>Maximize language model likelihood</td><td>30K</td><td>BERT, DistilBERT</td></tr>
+  <tr><td><strong>SentencePiece</strong></td><td>Language-agnostic subword BPE/Unigram</td><td>32K</td><td>LLaMA, T5, Gemma</td></tr>
+  <tr><td><strong>Tiktoken</strong></td><td>Byte-level BPE, OpenAI implementation</td><td>100K</td><td>GPT-4, Claude</td></tr>
+</table>
+
+<h2 id="llm-params">LLM Parameters: Temperature, Top-p, Top-k</h2>
+<table>
+  <tr><th>Parameter</th><th>Effect</th><th>Range</th><th>Use Case</th></tr>
+  <tr><td><strong>Temperature</strong></td><td>Controls randomness — divides logits before softmax</td><td>0-2</td><td>0=greedy, 1=normal, &gt;1=creative</td></tr>
+  <tr><td><strong>Top-k</strong></td><td>Sample from top k tokens only</td><td>1-∞</td><td>k=1=greedy, k=40 common</td></tr>
+  <tr><td><strong>Top-p (Nucleus)</strong></td><td>Sample from smallest set with prob &gt; p</td><td>0-1</td><td>p=0.9 common default</td></tr>
+</table>
+
+<h2 id="rlhf">RLHF, Fine-tuning vs RAG vs Prompting</h2>
+<h3>RLHF (Reinforcement Learning from Human Feedback)</h3>
+<ol>
+  <li>Supervised Fine-Tuning (SFT) — train on curated demonstrations</li>
+  <li>Reward Model — train on human preference comparisons</li>
+  <li>PPO/GRPO — optimize policy against reward model with KL penalty</li>
+</ol>
+<table>
+  <tr><th>Approach</th><th>Cost</th><th>Latency</th><th>Data Needed</th><th>Knowledge Update</th><th>Best For</th></tr>
+  <tr><td><strong>Prompt Engineering</strong></td><td>Zero</td><td>None extra</td><td>None</td><td>Context only</td><td>Quick prototyping</td></tr>
+  <tr><td><strong>RAG</strong></td><td>Low-Medium</td><td>Retrieval add (+100ms)</td><td>Documents</td><td>Real-time (any)</td><td>Large knowledge bases</td></tr>
+  <tr><td><strong>Fine-tuning</strong></td><td>High</td><td>None (baked in)</td><td>100s-1000s labeled</td><td>Static (retrain)</td><td>Consistent style/format</td></tr>
+  <tr><td><strong>RLHF</strong></td><td>Very High</td><td>None</td><td>Preference pairs</td><td>Static</td><td>Alignment, safety</td></tr>
+</table>
+
+<h3>Hallucination: Causes &amp; Mitigation</h3>
+<table>
+  <tr><th>Cause</th><th>Mitigation</th></tr>
+  <tr><td>Training data gaps</td><td>RAG — retrieve ground truth context</td></tr>
+  <tr><td>Over-confident generation</td><td>Ask model to cite sources, "I don't know" prompting</td></tr>
+  <tr><td>High temperature</td><td>Lower temperature for factual tasks</td></tr>
+  <tr><td>Long context drift</td><td>Structured prompts, summarization, chunking</td></tr>
+  <tr><td>Sycophancy</td><td>RLHF with adversarial prompts, Constitutional AI</td></tr>
+</table>
+
+<h2 id="prompt-eng">Prompt Engineering Techniques</h2>
+<table>
+  <tr><th>Technique</th><th>Description</th><th>Example</th></tr>
+  <tr><td><strong>Zero-Shot</strong></td><td>No examples, rely on instruction</td><td>"Classify sentiment: 'I love this!'"</td></tr>
+  <tr><td><strong>Few-Shot</strong></td><td>2-5 examples in prompt</td><td>Input-Output pairs before target</td></tr>
+  <tr><td><strong>Chain-of-Thought (CoT)</strong></td><td>"Let's think step by step"</td><td>Improves math &amp; reasoning</td></tr>
+  <tr><td><strong>Tree-of-Thought (ToT)</strong></td><td>Explore multiple reasoning branches</td><td>BFS/DFS over thought tree</td></tr>
+  <tr><td><strong>ReAct</strong></td><td>Reason + Act cycles with tools</td><td>Thought → Action → Observation</td></tr>
+  <tr><td><strong>Self-Consistency</strong></td><td>Sample N CoT paths, majority vote</td><td>Temperature &gt; 0, vote on answers</td></tr>
+</table>
+<pre><code class="language-python">from transformers import pipeline
+
+# Few-shot with HuggingFace
+classifier = pipeline("text-classification", model="distilbert-base-uncased-finetuned-sst-2-english")
+result = classifier("This movie was fantastic!")
+
+# Chain-of-Thought prompt
+cot_prompt = """
+Q: Roger has 5 tennis balls. He buys 2 more cans of tennis balls. Each can has 3 balls. How many total?
+A: Roger started with 5 balls. 2 cans × 3 balls = 6 more balls. Total = 5 + 6 = 11 balls. Answer: 11
+
+Q: The cafeteria had 23 apples. If they used 20 for lunch and bought 6 more, how many do they have?
+A: Let's think step by step."""</code></pre>
+
+<h2 id="mlops">MLOps</h2>
+<pre><code class="language-python">import mlflow
+import mlflow.sklearn
+from mlflow.tracking import MlflowClient
+
+# MLflow experiment tracking
+mlflow.set_experiment("my-ml-experiment")
+with mlflow.start_run():
+    mlflow.log_params({"n_estimators": 100, "max_depth": 5, "lr": 0.01})
+    mlflow.log_metrics({"accuracy": 0.92, "f1": 0.89})
+    mlflow.log_artifact("feature_importance.png")
+    mlflow.sklearn.log_model(model, "model", registered_model_name="rf_classifier")
+
+# Model Registry — transition stages
+client = MlflowClient()
+client.transition_model_version_stage(name="rf_classifier", version=1, stage="Production")
+
+# Data drift detection with Evidently
+from evidently.report import Report
+from evidently.metric_preset import DataDriftPreset
+
+report = Report(metrics=[DataDriftPreset()])
+report.run(reference_data=X_train, current_data=X_prod)
+report.save_html("drift_report.html")</code></pre>
+
+<h2 id="python-tools">Python ML Tools</h2>
+<pre><code class="language-python">import numpy as np
+import pandas as pd
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.compose import ColumnTransformer
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
+import torch
+
+# NumPy fundamentals
+a = np.array([[1, 2], [3, 4]])
+print(a @ a.T)                     # matrix multiply
+print(np.linalg.eig(a))            # eigenvalues
+print(np.random.randn(100, 10))    # normal distribution
+
+# Pandas preprocessing
+df = pd.read_csv("data.csv")
+df.dropna(inplace=True)
+df['feature'] = df['feature'].fillna(df['feature'].median())
+
+# Sklearn Column Transformer
+numeric_features = ['age', 'salary']
+categorical_features = ['city', 'department']
+
+preprocessor = ColumnTransformer([
+    ('num', StandardScaler(), numeric_features),
+    ('cat', OneHotEncoder(drop='first', sparse_output=False), categorical_features)
+])
+
+pipeline = Pipeline([('preprocess', preprocessor), ('model', RandomForestClassifier())])
+
+# HuggingFace Transformers
+model_name = "distilbert-base-uncased"
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+model = AutoModelForSequenceClassification.from_pretrained(model_name, num_labels=2)
+
+inputs = tokenizer("Hello, how are you?", return_tensors="pt", padding=True, truncation=True)
+outputs = model(**inputs)
+logits = outputs.logits</code></pre>
+
+<h2 id="pytorch-versions">PyTorch Version History (Key Features)</h2>
+<table>
+  <tr><th>Version</th><th>Release</th><th>Key Features</th></tr>
+  <tr><td><strong>PyTorch 2.0</strong></td><td>Mar 2023</td><td><code>torch.compile()</code> — 2x speedup via TorchDynamo+TorchInductor</td></tr>
+  <tr><td><strong>PyTorch 2.1</strong></td><td>Oct 2023</td><td>torch.compile() stable, FlashAttention-2, torch.export()</td></tr>
+  <tr><td><strong>PyTorch 2.2</strong></td><td>Jan 2024</td><td>FlashAttention-2 integrated in SDPA, AOTInductor for C++ deploy</td></tr>
+  <tr><td><strong>PyTorch 2.3</strong></td><td>Apr 2024</td><td>Tensor Parallelism, torchtune for LLM fine-tuning</td></tr>
+  <tr><td><strong>PyTorch 2.4</strong></td><td>Jul 2024</td><td>TorchAO quantization, improved Python 3.12 support, FSDP2</td></tr>
+</table>
+<pre><code class="language-python">import torch
+
+# PyTorch 2.0+ torch.compile
+model = MyModel()
+compiled_model = torch.compile(model, mode='max-autotune')  # modes: default, reduce-overhead, max-autotune
+
+# torch.amp — Automatic Mixed Precision
+scaler = torch.cuda.amp.GradScaler()
+with torch.autocast(device_type='cuda', dtype=torch.float16):
+    output = model(input)
+    loss = criterion(output, target)
+scaler.scale(loss).backward()
+scaler.step(optimizer)
+scaler.update()</code></pre>
+
+<h2 id="interview">Interview Questions &amp; Answers</h2>
+
+<details>
+<summary>Q1: What is the difference between L1 and L2 regularization? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p><strong>L1 (Lasso):</strong> Adds sum of absolute values of weights as penalty (λΣ|wᵢ|). Produces sparse solutions — many weights become exactly zero, acting as feature selection. Useful when you believe few features are truly relevant.</p>
+<p><strong>L2 (Ridge):</strong> Adds sum of squared weights (λΣwᵢ²). Distributes penalty across all weights, making them small but rarely zero. Better when all features contribute.</p>
+<p><strong>Geometric intuition:</strong> L1 constraint is a diamond (corners on axes = sparsity), L2 is a circle (smooth shrinkage).</p>
+</div>
+</details>
+
+<details>
+<summary>Q2: Explain the bias-variance tradeoff. <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p><strong>Expected Error = Bias² + Variance + Irreducible Noise</strong></p>
+<ul>
+  <li><strong>Bias:</strong> Error from wrong assumptions — underfitting. High bias = model too simple.</li>
+  <li><strong>Variance:</strong> Error from sensitivity to training data noise — overfitting. High variance = model too complex.</li>
+  <li><strong>Tradeoff:</strong> Reducing bias (more complex model) increases variance and vice versa.</li>
+  <li><strong>Sweet spot:</strong> Cross-validation to find the right model complexity.</li>
+</ul>
+</div>
+</details>
+
+<details>
+<summary>Q3: Why use cross-validation instead of a single train/test split? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p>A single split can give misleading estimates due to data variability. K-Fold CV:</p>
+<ul>
+  <li>Divides data into k folds, trains k times each with different validation fold</li>
+  <li>Provides mean ± std of performance — more reliable estimate</li>
+  <li>Uses all data for both training and validation (important for small datasets)</li>
+  <li>Helps detect overfitting to a particular split</li>
+</ul>
+<p>Use Stratified K-Fold for imbalanced classification to preserve class ratios in each fold.</p>
+</div>
+</details>
+
+<details>
+<summary>Q4: How does Random Forest reduce overfitting compared to a single Decision Tree? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p>Two mechanisms: <strong>Bagging</strong> (Bootstrap Aggregation) + <strong>Feature Randomness</strong></p>
+<ul>
+  <li><strong>Bagging:</strong> Each tree trains on a bootstrap sample (random sample with replacement). Different trees overfit to different parts → averaging reduces variance.</li>
+  <li><strong>Feature Randomness:</strong> At each split, only √n_features are considered. Decorrelates trees, preventing dominant features from appearing in all trees.</li>
+  <li>Out-of-Bag (OOB) error: ~37% of samples not in each bootstrap → free validation set.</li>
+</ul>
+</div>
+</details>
+
+<details>
+<summary>Q5: What is the vanishing gradient problem and how does LSTM solve it? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>Vanishing Gradient:</strong> During BPTT, gradients are multiplied through many time steps. If weights &lt; 1, gradients shrink exponentially → early time steps get nearly zero gradient → model can't learn long-range dependencies.</p>
+<p><strong>LSTM Solution:</strong> The cell state (Cₜ) acts as a highway for gradients:</p>
+<ul>
+  <li>Forget gate (fₜ = σ(W_f·[h_{t-1},x_t])) — learns what to discard</li>
+  <li>Input gate (iₜ) — learns what new info to add</li>
+  <li>Cell update: Cₜ = fₜ⊙C_{t-1} + iₜ⊙g̃ₜ — additive update, not multiplicative</li>
+  <li>The + (addition) in cell state update means gradients can flow back unchanged</li>
+</ul>
+</div>
+</details>
+
+<details>
+<summary>Q6: Explain Attention mechanism — what problem does it solve? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>Problem with Seq2Seq:</strong> Encoder compresses entire input into fixed-size vector → information bottleneck for long sequences.</p>
+<p><strong>Attention Solution:</strong> At each decoder step, attend to all encoder hidden states with learned weights.</p>
+<ul>
+  <li><strong>Query (Q):</strong> "What I'm looking for" — current decoder state</li>
+  <li><strong>Key (K):</strong> "What I have" — all encoder states</li>
+  <li><strong>Value (V):</strong> "What to extract" — encoder states (often = Keys)</li>
+  <li>Score = QKᵀ/√dₖ → softmax → weighted sum of Values</li>
+  <li>Scaled by √dₖ to prevent softmax from saturating in high-dim spaces</li>
+</ul>
+</div>
+</details>
+
+<details>
+<summary>Q7: What is the difference between batch normalization and layer normalization? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>Batch Norm:</strong> Normalizes across batch dimension (mean/var over batch for each feature). Depends on batch size — problematic for small batches, RNNs, online inference.</p>
+<p><strong>Layer Norm:</strong> Normalizes across feature dimension (mean/var over all features for each sample). Independent of batch size — preferred for Transformers, NLP, small batch training.</p>
+<p><strong>Group Norm:</strong> Normalizes within groups of channels — good for vision with small batches.</p>
+</div>
+</details>
+
+<details>
+<summary>Q8: How does XGBoost handle missing values? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>XGBoost has a built-in sparsity-aware split finding algorithm:</p>
+<ul>
+  <li>During training, for each feature with missing values, XGBoost tries routing missing samples to both left and right children</li>
+  <li>Picks the direction that gives the best gain — learns the "default direction"</li>
+  <li>At inference, missing values follow the learned default direction</li>
+  <li>No imputation needed — this is a key advantage over other algorithms</li>
+</ul>
+</div>
+</details>
+
+<details>
+<summary>Q9: Explain how BPE tokenization works. <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>Byte-Pair Encoding algorithm:</strong></p>
+<ol>
+  <li>Start with character-level vocabulary</li>
+  <li>Count all adjacent symbol pairs in corpus</li>
+  <li>Merge the most frequent pair into a new token</li>
+  <li>Repeat until vocabulary size is reached (e.g., 50K)</li>
+</ol>
+<p>Result: Frequent words → single tokens, rare words → subword pieces, unknown words → byte fallback. Balances vocabulary size with coverage — no true OOV problem unlike word-level tokenization.</p>
+</div>
+</details>
+
+<details>
+<summary>Q10: What are the LSTM gates and what does each learn? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<ul>
+  <li><strong>Forget Gate (fₜ):</strong> σ(W_f·[h_{t-1},xₜ]+b_f) — decides what to erase from cell state. e.g., forget subject gender after subject changes in text.</li>
+  <li><strong>Input Gate (iₜ):</strong> σ(W_i·[h_{t-1},xₜ]+b_i) — decides which new values to store.</li>
+  <li><strong>Candidate (g̃ₜ):</strong> tanh(W_c·[h_{t-1},xₜ]+b_c) — creates new candidate values.</li>
+  <li><strong>Cell Update:</strong> Cₜ = fₜ⊙C_{t-1} + iₜ⊙g̃ₜ — selective forget + selective add</li>
+  <li><strong>Output Gate (oₜ):</strong> σ(W_o·[h_{t-1},xₜ]+b_o) — decides which cell state to expose as output hₜ.</li>
+</ul>
+</div>
+</details>
+
+<details>
+<summary>Q11: What is the computational complexity of self-attention and why does it matter? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>Self-attention is O(n²·d) in both time and memory where n = sequence length, d = dimension.</p>
+<p>The n² term comes from computing all pairwise attention scores (n tokens × n tokens).</p>
+<p><strong>Why it matters:</strong> For a 128K context window, the attention matrix is 128K × 128K = 16 billion entries. This is why techniques like FlashAttention (tile-based kernel fusion) and sparse attention (Longformer, BigBird) are critical.</p>
+<p><strong>FlashAttention:</strong> Doesn't materialize the full attention matrix in HBM memory — computes in SRAM tiles → 3-8x speedup.</p>
+</div>
+</details>
+
+<details>
+<summary>Q12: Explain RLHF — what are the failure modes? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p><strong>RLHF Pipeline:</strong> SFT → Reward Model (from preference pairs) → PPO optimization with KL penalty against SFT.</p>
+<p><strong>Failure Modes:</strong></p>
+<ul>
+  <li><strong>Reward Hacking:</strong> LLM finds outputs that score high with reward model but don't reflect true human preference. e.g., verbose responses that seem thorough but are actually repetitive.</li>
+  <li><strong>Sycophancy:</strong> Model learns to agree with user rather than be correct — from human raters preferring confident-sounding answers.</li>
+  <li><strong>KL Penalty Tuning:</strong> Too high = model barely changes (stays near SFT); too low = collapses to reward hacking.</li>
+  <li><strong>Annotation Inconsistency:</strong> Human raters disagree, especially on nuanced content.</li>
+</ul>
+<p><strong>Alternatives:</strong> DPO (Direct Preference Optimization) — bypass RL, directly optimize on preference pairs with a log-ratio objective.</p>
+</div>
+</details>
+
+<details>
+<summary>Q13: How does gradient clipping work and why is it necessary? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p><strong>Exploding Gradient Problem:</strong> In deep networks or RNNs, gradients can grow exponentially during backprop → huge weight updates → training diverges (loss becomes NaN).</p>
+<p><strong>Gradient Clipping:</strong></p>
+<ul>
+  <li><strong>By value:</strong> Clip each gradient: g = clip(g, -c, c)</li>
+  <li><strong>By norm:</strong> If ||g||₂ > c, scale g = g * c / ||g||₂ — preserves direction</li>
+</ul>
+<p>Norm clipping is preferred. Typical threshold: 1.0-5.0. Essential for RNNs and Transformers with large learning rates.</p>
+<pre><code class="language-python">torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q14: What is the difference between model calibration and accuracy? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p><strong>Accuracy:</strong> Fraction of correct predictions — doesn't tell you if probabilities are meaningful.</p>
+<p><strong>Calibration:</strong> When a model says P=0.7, it should be correct 70% of the time. A perfectly calibrated model's predicted probabilities match empirical frequencies.</p>
+<p><strong>Measuring:</strong> Reliability diagram, Expected Calibration Error (ECE), Brier Score.</p>
+<p><strong>Fixing Miscalibration:</strong></p>
+<ul>
+  <li><strong>Temperature Scaling:</strong> Divide logits by T &gt; 1 to soften probabilities (post-hoc)</li>
+  <li><strong>Platt Scaling:</strong> Fit a sigmoid on top of model outputs</li>
+  <li><strong>Isotonic Regression:</strong> Non-parametric calibration</li>
+</ul>
+</div>
+</details>
+
+<details>
+<summary>Q15: Explain the Transformer positional encoding — why is it necessary? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>Attention is permutation-invariant — shuffling tokens gives the same attention scores. Without positional encoding, the model can't distinguish "dog bites man" from "man bites dog".</p>
+<p><strong>Sinusoidal PE:</strong> PE(pos, 2i) = sin(pos/10000^(2i/d)), PE(pos, 2i+1) = cos(pos/10000^(2i/d))</p>
+<ul>
+  <li>Each position gets a unique vector</li>
+  <li>PE(pos+k) can be expressed as linear function of PE(pos) → relative distances encoded</li>
+  <li>Generalizes beyond training length</li>
+</ul>
+<p><strong>Learned PE (GPT, BERT):</strong> Trainable embedding per position — better performance but fixed max length.</p>
+<p><strong>RoPE (LLaMA, GPT-NeoX):</strong> Rotary Position Embedding — encodes relative positions via rotation matrices. Better extrapolation.</p>
+</div>
+</details>
+
+<details>
+<summary>Q16: What is flash attention and how does it improve training? <span class="badge very-advanced">Very Advanced</span></summary>
+<div class="answer">
+<p>Standard attention materializes the full N×N attention matrix in GPU HBM (High Bandwidth Memory) — O(N²) memory and O(N²/M) memory I/O where M = SRAM size.</p>
+<p><strong>FlashAttention (Dao et al. 2022):</strong> Tile-based kernel that keeps attention computation in fast SRAM:</p>
+<ul>
+  <li>Splits Q, K, V into blocks that fit in SRAM (~100KB)</li>
+  <li>Computes attention output incrementally using online softmax</li>
+  <li>Never materializes the full N×N matrix in HBM</li>
+  <li>Stores only softmax normalization factors for backward pass</li>
+</ul>
+<p><strong>Results:</strong> 3-8x faster than PyTorch standard attention, ~10x memory reduction for long sequences. FlashAttention-2 adds better parallelism (occupancy). Now integrated in PyTorch's <code>F.scaled_dot_product_attention()</code>.</p>
+</div>
+</details>
+
+<details>
+<summary>Q17: How do you handle class imbalance in a dataset? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>Data-level methods:</strong></p>
+<ul>
+  <li><strong>Oversampling minority:</strong> SMOTE (synthetic minority oversampling), random oversampling</li>
+  <li><strong>Undersampling majority:</strong> Random, Tomek links, NearMiss</li>
+</ul>
+<p><strong>Algorithm-level methods:</strong></p>
+<ul>
+  <li><strong>Class weights:</strong> <code>class_weight='balanced'</code> in sklearn — weights inversely proportional to class frequency</li>
+  <li><strong>Focal Loss:</strong> (1-pₜ)^γ · CE(p,y) — reduces loss for well-classified (easy) examples, focuses on hard examples</li>
+  <li><strong>Threshold tuning:</strong> Instead of 0.5, tune threshold on validation set for best F1/recall</li>
+</ul>
+<p><strong>Evaluation:</strong> Use F1, PR-AUC (better than ROC-AUC for imbalanced), balanced accuracy.</p>
+</div>
+</details>
+
+<details>
+<summary>Q18: What is knowledge distillation? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>Training a small "student" model to mimic a large "teacher" model's soft predictions (not just hard labels).</p>
+<p><strong>Loss:</strong> L = α·CE(y, y_hard) + (1-α)·KL(σ(z_student/T) || σ(z_teacher/T))</p>
+<ul>
+  <li>Soft labels (teacher probabilities) carry more information than one-hot labels (dark knowledge)</li>
+  <li>Temperature T &gt; 1 softens the distributions, revealing more inter-class structure</li>
+</ul>
+<p><strong>Examples:</strong> DistilBERT (40% smaller, 97% of BERT performance), TinyBERT, DistilGPT2.</p>
+<p><strong>Feature distillation:</strong> Match intermediate layer representations too, not just output.</p>
+</div>
+</details>
+
+<details>
+<summary>Q19: Explain data drift vs concept drift in production ML. <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p><strong>Data Drift (Covariate Shift):</strong> P(X) changes but P(Y|X) stays same. e.g., new user demographics, seasonal patterns. Detect via PSI (Population Stability Index), KS test on features.</p>
+<p><strong>Concept Drift:</strong> P(Y|X) changes — the relationship between features and labels shifts. e.g., fraud patterns change as fraudsters adapt. Much harder to detect — requires monitoring model performance.</p>
+<p><strong>Label Drift:</strong> P(Y) changes — class distribution shifts.</p>
+<p><strong>Detection:</strong> Monitor feature distributions, prediction distributions, and (with delayed labels) actual accuracy over time. Use control charts, CUSUM, ADWIN algorithm.</p>
+<p><strong>Response:</strong> Trigger retraining, sliding window retraining, online learning.</p>
+</div>
+</details>
+
+<details>
+<summary>Q20: What is the difference between Mixture of Experts (MoE) and dense models? <span class="badge very-advanced">Very Advanced</span></summary>
+<div class="answer">
+<p><strong>Dense Model:</strong> All parameters activated for every token. GPT-4 (estimated 1.8T params) would be impossible to run if all params were activated per token.</p>
+<p><strong>MoE:</strong> Multiple "expert" FFN layers — a learned router selects top-k experts per token. Mixtral-8x7B: 8 experts, top-2 active per token → 47B total params but only ~14B active per token.</p>
+<p><strong>Router:</strong> Linear layer + softmax → select top-k experts → weighted sum of expert outputs.</p>
+<p><strong>Pros:</strong> Larger model capacity at same compute cost.</p>
+<p><strong>Cons:</strong> Load balancing (some experts overloaded), expert collapse, higher memory (all experts must fit in VRAM), more complex distributed training.</p>
+<p><strong>Load Balancing Loss:</strong> Added auxiliary loss to encourage equal expert utilization.</p>
+</div>
+</details>
+
+</main>
+</div>
+<footer>Dinesh Kumar's Learning Hub | 2024-2025</footer>
+<script>hljs.highlightAll();mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

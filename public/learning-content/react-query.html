@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>React Query (TanStack Query) Complete Guide</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0d1117;
+      --bg-secondary: #161b22;
+      --bg-tertiary: #21262d;
+      --border: #30363d;
+      --text: #c9d1d9;
+      --text-muted: #8b949e;
+      --text-bright: #f0f6fc;
+      --accent: #58a6ff;
+      --accent-green: #3fb950;
+      --accent-orange: #d29922;
+      --accent-red: #f85149;
+      --accent-purple: #bc8cff;
+      --accent-teal: #39d353;
+      --badge-easy: #238636;
+      --badge-easy-text: #7ee787;
+      --badge-inter: #9e6a03;
+      --badge-inter-text: #f0c84a;
+      --badge-adv: #b62324;
+      --badge-adv-text: #ff7b72;
+      --badge-vadv: #6e40c9;
+      --badge-vadv-text: #d2a8ff;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* Layout */
+    .page-wrapper { display: flex; min-height: 100vh; }
+    nav.sidebar {
+      width: 260px;
+      min-width: 260px;
+      background: var(--bg-secondary);
+      border-right: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      padding: 20px 0;
+    }
+    nav.sidebar h2 {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--text-muted);
+      padding: 0 16px 8px;
+    }
+    nav.sidebar a {
+      display: block;
+      padding: 5px 16px;
+      font-size: 13px;
+      color: var(--text-muted);
+      border-left: 2px solid transparent;
+      transition: all .15s;
+    }
+    nav.sidebar a:hover { color: var(--text-bright); background: var(--bg-tertiary); border-left-color: var(--accent); text-decoration: none; }
+    main { flex: 1; max-width: 960px; padding: 40px 48px; }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #1c2128 100%);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 40px;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+    .hero h1 { font-size: 2rem; color: var(--text-bright); margin-bottom: 8px; }
+    .hero .subtitle { color: var(--text-muted); font-size: 1rem; }
+    .hero .tags { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 16px; }
+    .tag {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2px 12px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Sections */
+    section { margin-bottom: 48px; }
+    h2.section-title {
+      font-size: 1.4rem;
+      color: var(--text-bright);
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 10px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    h2.section-title .sec-icon {
+      width: 28px;
+      height: 28px;
+      background: var(--accent);
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      color: #000;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    h3 { color: var(--accent); font-size: 1.05rem; margin: 24px 0 10px; }
+    p { margin-bottom: 12px; }
+
+    /* Code blocks */
+    pre {
+      background: var(--bg-secondary) !important;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      overflow-x: auto;
+      margin: 16px 0;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    code:not(pre code) {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-size: 12.5px;
+      color: var(--accent-orange);
+      font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+    }
+
+    /* Info boxes */
+    .info-box {
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 16px 0;
+      border-left: 4px solid;
+      font-size: 14px;
+    }
+    .info-box.tip { background: rgba(63,185,80,.07); border-color: var(--accent-green); }
+    .info-box.warn { background: rgba(210,153,34,.07); border-color: var(--accent-orange); }
+    .info-box.note { background: rgba(88,166,255,.07); border-color: var(--accent); }
+    .info-box.danger { background: rgba(248,81,73,.07); border-color: var(--accent-red); }
+    .info-box strong { display: block; margin-bottom: 4px; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
+
+    /* Comparison table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 13.5px;
+    }
+    th {
+      background: var(--bg-tertiary);
+      color: var(--text-bright);
+      padding: 10px 14px;
+      text-align: left;
+      border: 1px solid var(--border);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+    td {
+      padding: 9px 14px;
+      border: 1px solid var(--border);
+      color: var(--text);
+      vertical-align: top;
+    }
+    tr:nth-child(even) td { background: rgba(255,255,255,.02); }
+
+    /* Details / Q&A */
+    details.qa {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin: 10px 0;
+      transition: box-shadow .2s;
+    }
+    details.qa[open] { box-shadow: 0 0 0 2px var(--accent); }
+    details.qa summary {
+      padding: 14px 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+      color: var(--text-bright);
+      list-style: none;
+      user-select: none;
+      font-size: 14px;
+    }
+    details.qa summary::-webkit-details-marker { display: none; }
+    details.qa summary::before {
+      content: '▶';
+      font-size: 10px;
+      color: var(--text-muted);
+      transition: transform .2s;
+      flex-shrink: 0;
+    }
+    details.qa[open] summary::before { transform: rotate(90deg); }
+    .qa-body { padding: 0 18px 18px; border-top: 1px solid var(--border); margin-top: 0; }
+    .qa-body p:first-child { margin-top: 14px; }
+
+    /* Difficulty badges */
+    .badge {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 10px;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      flex-shrink: 0;
+    }
+    .badge.easy { background: var(--badge-easy); color: var(--badge-easy-text); }
+    .badge.intermediate { background: var(--badge-inter); color: var(--badge-inter-text); }
+    .badge.advanced { background: var(--badge-adv); color: var(--badge-adv-text); }
+    .badge.very-advanced { background: var(--badge-vadv); color: var(--badge-vadv-text); }
+
+    /* Mermaid */
+    .mermaid { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin: 16px 0; text-align: center; }
+
+    /* Grid */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+    .card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .card h4 { color: var(--accent); margin-bottom: 8px; font-size: 13px; }
+
+    /* Status dots */
+    .status-row { display: flex; gap: 12px; flex-wrap: wrap; margin: 12px 0; }
+    .status-chip {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 12px;
+    }
+    .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .dot.pending { background: var(--accent-orange); }
+    .dot.error { background: var(--accent-red); }
+    .dot.success { background: var(--accent-green); }
+    .dot.fetching { background: var(--accent); }
+    .dot.stale { background: var(--accent-purple); }
+
+    @media (max-width: 900px) {
+      nav.sidebar { display: none; }
+      main { padding: 20px 20px; }
+      .grid-2 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="page-wrapper">
+  <nav class="sidebar">
+    <h2>Sections</h2>
+    <a href="#what-is">1. What is TanStack Query</a>
+    <a href="#core-concepts">2. Core Concepts</a>
+    <a href="#usequery">3. useQuery Hook</a>
+    <a href="#querykey-design">4. QueryKey Design</a>
+    <a href="#usemutation">5. useMutation Hook</a>
+    <a href="#optimistic">6. Optimistic Updates</a>
+    <a href="#cache-invalidation">7. Cache Invalidation</a>
+    <a href="#prefetching">8. Prefetching</a>
+    <a href="#pagination">9. Pagination &amp; Infinite</a>
+    <a href="#dependent">10. Dependent Queries</a>
+    <a href="#background-refetch">11. Background Refetch</a>
+    <a href="#global-config">12. Global Config</a>
+    <a href="#devtools">13. Devtools</a>
+    <a href="#v4-v5">14. v4 vs v5 Differences</a>
+    <a href="#qna">15. Q&amp;A (15 questions)</a>
+  </nav>
+
+  <main>
+    <div class="hero">
+      <h1>React Query (TanStack Query)</h1>
+      <p class="subtitle">Complete Reference Guide — Server State Management for React</p>
+      <div class="tags">
+        <span class="tag">TanStack Query v5</span>
+        <span class="tag">React 18+</span>
+        <span class="tag">Server State</span>
+        <span class="tag">Caching</span>
+        <span class="tag">Data Fetching</span>
+        <span class="tag">Optimistic Updates</span>
+      </div>
+    </div>
+
+    <!-- ===== SECTION 1 ===== -->
+    <section id="what-is">
+      <h2 class="section-title"><span class="sec-icon">1</span>What is TanStack Query?</h2>
+
+      <p>TanStack Query (formerly React Query) is a powerful asynchronous state management library for React (and other frameworks). It handles <strong>server state</strong> — data that lives on a remote server and must be fetched, cached, synchronized, and updated.</p>
+
+      <h3>Server State vs Client State</h3>
+      <table>
+        <thead>
+          <tr><th>Attribute</th><th>Client State</th><th>Server State</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Location</td><td>Browser memory (Redux, Zustand)</td><td>Remote server/database</td></tr>
+          <tr><td>Ownership</td><td>You own it</td><td>Many clients share it</td></tr>
+          <tr><td>Persistence</td><td>Resets on refresh (unless stored)</td><td>Persists on server</td></tr>
+          <tr><td>Staling</td><td>Never stale</td><td>Can become stale at any time</td></tr>
+          <tr><td>Async operations</td><td>Synchronous</td><td>Asynchronous (loading/error states)</td></tr>
+          <tr><td>Sharing</td><td>Local to session</td><td>Shared — others can mutate it</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Why Not useEffect + useState?</h3>
+      <pre><code class="language-jsx">// ❌ The naive approach — full of problems
+function UserList() {
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    setLoading(true);
+    fetch('/api/users')
+      .then(r => r.json())
+      .then(data => setUsers(data))
+      .catch(e => setError(e))
+      .finally(() => setLoading(false));
+  }, []);
+  // Problems: no caching, no deduplication, race conditions,
+  // no background refetch, no stale detection, no retry logic...
+}</code></pre>
+
+      <div class="info-box warn">
+        <strong>Problems with useEffect + useState for async data</strong>
+        No caching (same data fetched on every mount), no request deduplication (multiple components trigger multiple identical requests), race conditions (if component unmounts before fetch resolves), no background synchronisation, no retry logic, manual loading/error state management in every component.
+      </div>
+
+      <h3>What TanStack Query Solves</h3>
+      <div class="grid-2">
+        <div class="card"><h4>Automatic Caching</h4><p>Results cached by query key. Same query from multiple components shares one request and one cache entry.</p></div>
+        <div class="card"><h4>Background Refetching</h4><p>Stale data shown immediately; fresh data fetched in background and UI updated seamlessly.</p></div>
+        <div class="card"><h4>Request Deduplication</h4><p>Multiple components requesting the same query key at the same time only fire one network request.</p></div>
+        <div class="card"><h4>Automatic Retries</h4><p>Failed requests are retried automatically (3 times by default) with exponential backoff.</p></div>
+        <div class="card"><h4>Window Focus Refetch</h4><p>Data automatically refreshed when user returns to the tab, keeping UI up-to-date.</p></div>
+        <div class="card"><h4>Pagination &amp; Infinite Scroll</h4><p>Built-in primitives for paginated and infinite queries including cursor-based pagination.</p></div>
+      </div>
+    </section>
+
+    <!-- ===== SECTION 2 ===== -->
+    <section id="core-concepts">
+      <h2 class="section-title"><span class="sec-icon">2</span>Core Concepts</h2>
+
+      <h3>QueryClient</h3>
+      <p>The <code>QueryClient</code> is the central store — it manages the query cache, default options, and provides imperative methods to interact with the cache.</p>
+      <pre><code class="language-jsx">import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
+// Create once — outside component to avoid re-creation on renders
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5,   // 5 minutes
+      gcTime: 1000 * 60 * 10,     // 10 minutes (v5 name; was cacheTime in v4)
+      retry: 3,
+      refetchOnWindowFocus: true,
+    },
+  },
+})
+
+function App() {
+  return (
+    &lt;QueryClientProvider client={queryClient}&gt;
+      &lt;Router /&gt;
+    &lt;/QueryClientProvider&gt;
+  )
+}</code></pre>
+
+      <h3>Stale Time vs GC Time (Cache Time)</h3>
+      <div class="grid-2">
+        <div class="card">
+          <h4>staleTime</h4>
+          <p>Duration (ms) for which cached data is considered <em>fresh</em>. While fresh, TanStack Query will NOT refetch — it serves cached data immediately. Default: <code>0</code> (always stale).</p>
+        </div>
+        <div class="card">
+          <h4>gcTime (was cacheTime)</h4>
+          <p>Duration (ms) that <em>inactive</em> query data stays in cache before garbage collection. An inactive query has no active subscribers (no component mounted). Default: <code>5 * 60 * 1000</code> (5 min).</p>
+        </div>
+      </div>
+
+      <div class="mermaid">
+graph LR
+    A[Query fired] --> B{In cache?}
+    B -- No --> C[Fetch from server]
+    B -- Yes --> D{Fresh?}
+    D -- Yes staleTime not exceeded --> E[Return cached data — NO fetch]
+    D -- No stale --> F[Return cached data immediately + refetch in background]
+    C --> G[Store in cache]
+    F --> H[Update UI with fresh data]
+      </div>
+
+      <h3>Background Refetching</h3>
+      <p>When data is stale and a query is re-observed (e.g., component mounts, window refocuses), TanStack Query serves the stale cached data <em>immediately</em> to avoid UI flicker, then fetches fresh data in the background and updates the UI when it arrives. The <code>isFetching</code> flag (distinct from <code>isLoading</code>) indicates this background activity.</p>
+
+      <div class="info-box tip">
+        <strong>Key insight</strong>
+        <code>isLoading</code> is true only when there is NO cached data AND a fetch is in progress (true "loading" state). <code>isFetching</code> is true any time a fetch is in flight — including background refetches. Always show a subtle spinner when <code>isFetching</code> is true, not just <code>isLoading</code>.
+      </div>
+    </section>
+
+    <!-- ===== SECTION 3 ===== -->
+    <section id="usequery">
+      <h2 class="section-title"><span class="sec-icon">3</span>useQuery Hook</h2>
+
+      <pre><code class="language-tsx">import { useQuery } from '@tanstack/react-query'
+
+function TodoList() {
+  const {
+    data,           // resolved data from queryFn
+    error,          // error object if status === 'error'
+    status,         // 'pending' | 'error' | 'success'
+    isLoading,      // shorthand: status === 'pending' && isFetching
+    isError,        // shorthand: status === 'error'
+    isSuccess,      // shorthand: status === 'success'
+    isFetching,     // true any time a fetch is in progress (including background)
+    isPending,      // no data in cache yet (v5 replaces isLoading in some cases)
+    refetch,        // manual trigger function
+  } = useQuery({
+    queryKey: ['todos'],           // unique cache key — MUST be serializable
+    queryFn: () => fetchTodos(),   // async function returning data
+    staleTime: 1000 * 60 * 2,     // override global default
+    gcTime: 1000 * 60 * 10,
+    enabled: true,                 // set to false to disable auto-fetching
+    retry: 2,                      // override retry count
+  })
+
+  if (isLoading) return &lt;Spinner /&gt;
+  if (isError)   return &lt;Error message={error.message} /&gt;
+  return &lt;ul&gt;{data.map(t =&gt; &lt;li key={t.id}&gt;{t.title}&lt;/li&gt;)}&lt;/ul&gt;
+}</code></pre>
+
+      <h3>Query Status States</h3>
+      <div class="status-row">
+        <div class="status-chip"><div class="dot pending"></div> pending — no data, no error</div>
+        <div class="status-chip"><div class="dot success"></div> success — data available</div>
+        <div class="status-chip"><div class="dot error"></div> error — fetch failed</div>
+        <div class="status-chip"><div class="dot fetching"></div> isFetching — any active fetch</div>
+        <div class="status-chip"><div class="dot stale"></div> stale — data past staleTime</div>
+      </div>
+
+      <h3>select Transformer</h3>
+      <p>The <code>select</code> option transforms or selects a subset of data. The selected result is memoized — re-renders only when the selected value changes, not the entire raw data.</p>
+      <pre><code class="language-tsx">const { data: todoCount } = useQuery({
+  queryKey: ['todos'],
+  queryFn: fetchTodos,
+  select: (data) => data.length,   // component only re-renders when count changes
+})
+
+const { data: firstTodo } = useQuery({
+  queryKey: ['todos'],
+  queryFn: fetchTodos,
+  select: (data) => data[0],       // same cache, different derived slice
+})</code></pre>
+
+      <h3>placeholderData vs initialData</h3>
+      <table>
+        <thead><tr><th>Option</th><th>Purpose</th><th>Treated as Cache?</th><th>Triggers Fetch?</th></tr></thead>
+        <tbody>
+          <tr><td><code>initialData</code></td><td>Pre-populate cache with known data (e.g., from SSR)</td><td>Yes — stored in cache</td><td>Only if stale</td></tr>
+          <tr><td><code>placeholderData</code></td><td>Show temporary UI data while fetching; NOT persisted</td><td>No — transient only</td><td>Always fetches</td></tr>
+        </tbody>
+      </table>
+
+      <pre><code class="language-tsx">// placeholderData: use previous page data while next page loads
+const { data } = useQuery({
+  queryKey: ['todos', page],
+  queryFn: () => fetchPage(page),
+  placeholderData: keepPreviousData,  // v5 helper — shows last page while fetching
+})
+
+// initialData: use pre-fetched SSR data
+const { data } = useQuery({
+  queryKey: ['user', userId],
+  queryFn: () => fetchUser(userId),
+  initialData: ssrUserData,           // cached immediately; fetched if stale
+  initialDataUpdatedAt: Date.now(),   // tell RQ when initialData was fetched
+})</code></pre>
+
+      <h3>enabled Flag — Conditional Queries</h3>
+      <pre><code class="language-tsx">const { data: user } = useQuery({
+  queryKey: ['user', userId],
+  queryFn: () => fetchUser(userId),
+  enabled: !!userId,  // only run when userId is truthy
+})</code></pre>
+    </section>
+
+    <!-- ===== SECTION 4 ===== -->
+    <section id="querykey-design">
+      <h2 class="section-title"><span class="sec-icon">4</span>QueryKey Design</h2>
+
+      <p>Query keys are the cornerstone of TanStack Query's caching. Every unique key represents a separate cache entry. Keys must be <strong>serializable arrays</strong>.</p>
+
+      <h3>Key Hierarchy</h3>
+      <pre><code class="language-ts">// Scalar — all todos
+['todos']
+
+// With identifier — specific todo
+['todos', 42]
+['todos', todoId]
+
+// With nested object — filtered/sorted list
+['todos', { status: 'done', page: 1 }]
+
+// Scoped under a resource
+['users', userId, 'todos']
+['users', userId, 'profile']
+
+// Multi-level with filters
+['search', 'users', { query: 'john', role: 'admin' }]</code></pre>
+
+      <div class="info-box note">
+        <strong>Automatic Refetch on Key Change</strong>
+        When a key's content changes (e.g., <code>userId</code> changes), TanStack Query automatically treats the new key as a different cache entry and fires a new fetch. This is how you make data reactive to URL params or filter state — just include the variable in the key.
+      </div>
+
+      <h3>Key Factory Pattern</h3>
+      <pre><code class="language-ts">// Recommended pattern: centralize key definitions
+export const todoKeys = {
+  all: ['todos'] as const,
+  lists: () => [...todoKeys.all, 'list'] as const,
+  list: (filters: TodoFilters) => [...todoKeys.lists(), filters] as const,
+  details: () => [...todoKeys.all, 'detail'] as const,
+  detail: (id: number) => [...todoKeys.details(), id] as const,
+}
+
+// Usage
+useQuery({ queryKey: todoKeys.detail(id), queryFn: () => fetchTodo(id) })
+queryClient.invalidateQueries({ queryKey: todoKeys.lists() }) // invalidate all lists</code></pre>
+
+      <h3>How Keys Affect Invalidation</h3>
+      <pre><code class="language-ts">// Exact match — only invalidates ['todos', 1]
+queryClient.invalidateQueries({ queryKey: ['todos', 1], exact: true })
+
+// Prefix match (default) — invalidates all keys starting with ['todos']
+queryClient.invalidateQueries({ queryKey: ['todos'] })
+// This invalidates: ['todos'], ['todos', 1], ['todos', {filter}], etc.</code></pre>
+    </section>
+
+    <!-- ===== SECTION 5 ===== -->
+    <section id="usemutation">
+      <h2 class="section-title"><span class="sec-icon">5</span>useMutation Hook</h2>
+
+      <p>Mutations handle data <em>writes</em> — POST, PUT, PATCH, DELETE. Unlike queries, mutations do NOT run automatically; you call <code>mutate()</code> or <code>mutateAsync()</code>.</p>
+
+      <pre><code class="language-tsx">import { useMutation, useQueryClient } from '@tanstack/react-query'
+
+function CreateTodo() {
+  const queryClient = useQueryClient()
+
+  const createTodo = useMutation({
+    mutationFn: (newTodo: NewTodo) => api.post('/todos', newTodo),
+
+    onMutate: async (variables) => {
+      // Fires BEFORE mutationFn — use for optimistic updates (see Section 6)
+      console.log('About to create:', variables)
+    },
+
+    onSuccess: (data, variables, context) => {
+      // data: server response, variables: what you passed to mutate()
+      queryClient.invalidateQueries({ queryKey: ['todos'] })
+    },
+
+    onError: (error, variables, context) => {
+      console.error('Mutation failed:', error)
+    },
+
+    onSettled: (data, error, variables, context) => {
+      // Always fires — whether success or error
+      // Good place for cleanup / final invalidation
+    },
+  })
+
+  return (
+    &lt;form onSubmit={e => {
+      e.preventDefault()
+      createTodo.mutate({ title: e.target.title.value })
+    }}&gt;
+      &lt;input name="title" /&gt;
+      &lt;button disabled={createTodo.isPending}&gt;
+        {createTodo.isPending ? 'Creating...' : 'Create'}
+      &lt;/button&gt;
+    &lt;/form&gt;
+  )
+}</code></pre>
+
+      <h3>mutate vs mutateAsync</h3>
+      <table>
+        <thead><tr><th></th><th>mutate(vars)</th><th>mutateAsync(vars)</th></tr></thead>
+        <tbody>
+          <tr><td>Return type</td><td>void</td><td>Promise&lt;TData&gt;</td></tr>
+          <tr><td>Error handling</td><td>onError callback</td><td>Must catch (throws on error)</td></tr>
+          <tr><td>Use case</td><td>Fire-and-forget; callbacks handle result</td><td>Need to await result (e.g., chained mutations)</td></tr>
+        </tbody>
+      </table>
+
+      <pre><code class="language-tsx">// mutateAsync — use when you need to await the result
+const handleSubmit = async () => {
+  try {
+    const newUser = await createUser.mutateAsync({ name: 'Alice' })
+    await assignRole.mutateAsync({ userId: newUser.id, role: 'admin' })
+    navigate(`/users/${newUser.id}`)
+  } catch (err) {
+    // Handle error here
+  }
+}</code></pre>
+    </section>
+
+    <!-- ===== SECTION 6 ===== -->
+    <section id="optimistic">
+      <h2 class="section-title"><span class="sec-icon">6</span>Optimistic Updates</h2>
+
+      <p>Optimistic updates immediately reflect the intended change in the UI before the server responds, creating a snappy experience. If the server rejects the mutation, you roll back to the snapshot.</p>
+
+      <div class="mermaid">
+sequenceDiagram
+    participant UI
+    participant Cache
+    participant Server
+    UI->>Cache: onMutate: save snapshot, apply optimistic update
+    UI->>Server: mutationFn fires (async)
+    Note over UI,Cache: UI shows updated data immediately
+    alt Success
+        Server-->>UI: 200 OK
+        UI->>Cache: onSuccess: invalidate to sync server truth
+    else Error
+        Server-->>UI: 4xx/5xx
+        UI->>Cache: onError: restore snapshot (rollback)
+    end
+      </div>
+
+      <pre><code class="language-tsx">const updateTodo = useMutation({
+  mutationFn: (todo: Todo) => api.patch(`/todos/${todo.id}`, todo),
+
+  onMutate: async (updatedTodo) => {
+    // 1. Cancel any in-flight queries to avoid overwriting optimistic update
+    await queryClient.cancelQueries({ queryKey: ['todos'] })
+
+    // 2. Snapshot the current cache value
+    const previousTodos = queryClient.getQueryData(['todos'])
+
+    // 3. Optimistically update the cache
+    queryClient.setQueryData(['todos'], (old: Todo[]) =>
+      old.map(t => t.id === updatedTodo.id ? { ...t, ...updatedTodo } : t)
+    )
+
+    // 4. Return context with the snapshot for rollback
+    return { previousTodos }
+  },
+
+  onError: (err, updatedTodo, context) => {
+    // 5. Rollback to snapshot on error
+    queryClient.setQueryData(['todos'], context?.previousTodos)
+  },
+
+  onSettled: () => {
+    // 6. Always refetch to sync with server truth
+    queryClient.invalidateQueries({ queryKey: ['todos'] })
+  },
+})</code></pre>
+
+      <div class="info-box tip">
+        <strong>Why cancelQueries in onMutate?</strong>
+        If a background refetch is in progress when you apply an optimistic update, the refetch result (old data) could overwrite your optimistic update. Cancelling ensures the optimistic data sticks until the mutation resolves.
+      </div>
+    </section>
+
+    <!-- ===== SECTION 7 ===== -->
+    <section id="cache-invalidation">
+      <h2 class="section-title"><span class="sec-icon">7</span>Cache Invalidation</h2>
+
+      <h3>invalidateQueries</h3>
+      <pre><code class="language-ts">// Invalidate all queries starting with ['todos'] (prefix match by default)
+queryClient.invalidateQueries({ queryKey: ['todos'] })
+
+// Exact match only
+queryClient.invalidateQueries({ queryKey: ['todos', 1], exact: true })
+
+// Invalidate all queries in the cache
+queryClient.invalidateQueries()
+
+// Invalidate with a predicate function
+queryClient.invalidateQueries({
+  predicate: (query) =>
+    query.queryKey[0] === 'todos' && query.queryKey[1] === userId,
+})</code></pre>
+
+      <h3>setQueryData — Manual Cache Update</h3>
+      <p>Directly write data into the cache — useful after mutations when you already have the updated data from the server response, avoiding an extra round-trip.</p>
+      <pre><code class="language-ts">// Replace the entire cache entry
+queryClient.setQueryData(['todos', todoId], updatedTodo)
+
+// Functional update — safer when current value matters
+queryClient.setQueryData(['todos'], (old: Todo[] | undefined) =>
+  old ? [...old, newTodo] : [newTodo]
+)</code></pre>
+
+      <h3>removeQueries</h3>
+      <pre><code class="language-ts">// Remove from cache entirely (useful on logout to clear user data)
+queryClient.removeQueries({ queryKey: ['user'] })
+
+// Or clear everything
+queryClient.clear()</code></pre>
+
+      <h3>Fetching vs Invalidating</h3>
+      <table>
+        <thead><tr><th>Method</th><th>Behaviour</th><th>When to Use</th></tr></thead>
+        <tbody>
+          <tr><td><code>invalidateQueries</code></td><td>Marks queries stale; refetches if active observer</td><td>After mutations — standard choice</td></tr>
+          <tr><td><code>setQueryData</code></td><td>Writes to cache immediately without fetch</td><td>When server response contains updated data</td></tr>
+          <tr><td><code>refetchQueries</code></td><td>Forces immediate refetch regardless of staleTime</td><td>Pull-to-refresh, manual sync</td></tr>
+          <tr><td><code>resetQueries</code></td><td>Resets to initial state (clears data + error)</td><td>Reset after logout / hard reset</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ===== SECTION 8 ===== -->
+    <section id="prefetching">
+      <h2 class="section-title"><span class="sec-icon">8</span>Prefetching</h2>
+
+      <p>Prefetching populates the cache <em>before</em> the component that needs the data is rendered, eliminating loading states.</p>
+
+      <h3>prefetchQuery</h3>
+      <pre><code class="language-ts">// Prefetch in a router loader (e.g., TanStack Router or React Router v6.4+)
+export async function loader({ params }) {
+  await queryClient.prefetchQuery({
+    queryKey: ['user', params.userId],
+    queryFn: () => fetchUser(params.userId),
+    staleTime: 1000 * 60 * 5,   // don't prefetch if data is fresh
+  })
+  return null
+}
+
+// In the component — data is already in cache, no loading state!
+function UserProfile({ userId }) {
+  const { data } = useQuery({
+    queryKey: ['user', userId],
+    queryFn: () => fetchUser(userId),
+  })
+  return &lt;div&gt;{data.name}&lt;/div&gt;  // renders immediately
+}</code></pre>
+
+      <h3>Prefetch on Hover</h3>
+      <pre><code class="language-tsx">function TodoItem({ todo }) {
+  const queryClient = useQueryClient()
+
+  const prefetchTodo = () => {
+    queryClient.prefetchQuery({
+      queryKey: ['todos', todo.id],
+      queryFn: () => fetchTodo(todo.id),
+      staleTime: 10_000,  // don't spam if already fresh
+    })
+  }
+
+  return (
+    &lt;li onMouseEnter={prefetchTodo}&gt;
+      &lt;Link to={`/todos/${todo.id}`}&gt;{todo.title}&lt;/Link&gt;
+    &lt;/li&gt;
+  )
+}</code></pre>
+
+      <div class="info-box note">
+        <strong>prefetchQuery vs fetchQuery</strong>
+        <code>prefetchQuery</code> silently populates the cache and returns <code>void</code>. <code>fetchQuery</code> populates the cache AND returns the data (throws on error) — use it in loaders where you need the data directly.
+      </div>
+    </section>
+
+    <!-- ===== SECTION 9 ===== -->
+    <section id="pagination">
+      <h2 class="section-title"><span class="sec-icon">9</span>Pagination &amp; Infinite Queries</h2>
+
+      <h3>Standard Pagination with keepPreviousData</h3>
+      <pre><code class="language-tsx">import { keepPreviousData } from '@tanstack/react-query'
+
+function PaginatedTodos() {
+  const [page, setPage] = useState(1)
+
+  const { data, isPlaceholderData } = useQuery({
+    queryKey: ['todos', page],
+    queryFn: () => fetchTodosPage(page),
+    placeholderData: keepPreviousData,  // v5: show previous page while next loads
+  })
+
+  return (
+    &lt;&gt;
+      {data?.todos.map(t =&gt; &lt;TodoRow key={t.id} todo={t} /&gt;)}
+      &lt;button
+        onClick={() =&gt; setPage(p =&gt; p - 1)}
+        disabled={page === 1}
+      &gt;Previous&lt;/button&gt;
+      &lt;button
+        onClick={() =&gt; setPage(p =&gt; p + 1)}
+        disabled={isPlaceholderData || !data?.hasNextPage}
+      &gt;Next&lt;/button&gt;
+    &lt;/&gt;
+  )
+}</code></pre>
+
+      <h3>useInfiniteQuery — Infinite Scroll</h3>
+      <pre><code class="language-tsx">import { useInfiniteQuery } from '@tanstack/react-query'
+
+function InfiniteTodos() {
+  const {
+    data,               // { pages: Page[][], pageParams: any[] }
+    fetchNextPage,      // trigger to load next page
+    fetchPreviousPage,
+    hasNextPage,        // true if getNextPageParam returns non-undefined
+    hasPreviousPage,
+    isFetchingNextPage,
+    isFetchingPreviousPage,
+    status,
+  } = useInfiniteQuery({
+    queryKey: ['todos', 'infinite'],
+    queryFn: ({ pageParam }) => fetchTodosPage(pageParam),
+    initialPageParam: 1,                         // v5: required
+    getNextPageParam: (lastPage, allPages) => {  // return undefined to stop
+      return lastPage.hasMore ? lastPage.nextCursor : undefined
+    },
+    getPreviousPageParam: (firstPage) => firstPage.previousCursor,
+  })
+
+  // All pages flattened
+  const allTodos = data?.pages.flatMap(page =&gt; page.todos) ?? []
+
+  return (
+    &lt;&gt;
+      {allTodos.map(t =&gt; &lt;TodoRow key={t.id} todo={t} /&gt;)}
+      &lt;button
+        onClick={() =&gt; fetchNextPage()}
+        disabled={!hasNextPage || isFetchingNextPage}
+      &gt;
+        {isFetchingNextPage ? 'Loading more...' : hasNextPage ? 'Load More' : 'No more todos'}
+      &lt;/button&gt;
+    &lt;/&gt;
+  )
+}</code></pre>
+
+      <div class="info-box tip">
+        <strong>Intersection Observer for infinite scroll</strong>
+        Combine <code>useInfiniteQuery</code> with an Intersection Observer to automatically call <code>fetchNextPage()</code> when the user scrolls to a sentinel element at the bottom of the list.
+      </div>
+    </section>
+
+    <!-- ===== SECTION 10 ===== -->
+    <section id="dependent">
+      <h2 class="section-title"><span class="sec-icon">10</span>Dependent Queries</h2>
+
+      <h3>Sequential Dependent Query</h3>
+      <pre><code class="language-tsx">// Query 2 depends on result of Query 1
+function UserPosts({ username }) {
+  // Step 1: fetch user to get their ID
+  const { data: user } = useQuery({
+    queryKey: ['user', username],
+    queryFn: () => fetchUserByName(username),
+  })
+
+  // Step 2: only fetch posts when user.id is available
+  const { data: posts } = useQuery({
+    queryKey: ['posts', user?.id],
+    queryFn: () => fetchUserPosts(user.id),
+    enabled: !!user?.id,  // 🔑 the key pattern for dependent queries
+  })
+
+  return &lt;PostList posts={posts} /&gt;
+}</code></pre>
+
+      <h3>Parallel Queries</h3>
+      <pre><code class="language-tsx">// Static parallel — both fire simultaneously
+function Dashboard() {
+  const usersQuery = useQuery({ queryKey: ['users'], queryFn: fetchUsers })
+  const postsQuery = useQuery({ queryKey: ['posts'], queryFn: fetchPosts })
+  const statsQuery = useQuery({ queryKey: ['stats'], queryFn: fetchStats })
+  // All three fire at the same time
+}</code></pre>
+
+      <h3>useQueries — Dynamic Parallel Queries</h3>
+      <pre><code class="language-tsx">import { useQueries } from '@tanstack/react-query'
+
+function TodoDetails({ ids }: { ids: number[] }) {
+  // Fire one query per ID dynamically
+  const todoQueries = useQueries({
+    queries: ids.map(id =&gt; ({
+      queryKey: ['todos', id],
+      queryFn: () => fetchTodo(id),
+      staleTime: 1000 * 60,
+    })),
+    combine: (results) =&gt; ({       // v5: optional combiner
+      data: results.map(r =&gt; r.data),
+      isPending: results.some(r =&gt; r.isPending),
+    }),
+  })
+
+  if (todoQueries.isPending) return &lt;Spinner /&gt;
+  return &lt;TodoGrid todos={todoQueries.data} /&gt;
+}</code></pre>
+    </section>
+
+    <!-- ===== SECTION 11 ===== -->
+    <section id="background-refetch">
+      <h2 class="section-title"><span class="sec-icon">11</span>Background Refetch Triggers</h2>
+
+      <pre><code class="language-ts">const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: true,     // default: true — refetch when tab regains focus
+      refetchOnMount: true,           // default: true — refetch when component mounts (if stale)
+      refetchOnReconnect: true,       // default: true — refetch when network reconnects
+      refetchInterval: false,         // polling: set to ms number for auto-polling
+      refetchIntervalInBackground: false, // poll even when window not focused
+      staleTime: 0,                   // default: 0 — data is immediately stale
+    },
+  },
+})</code></pre>
+
+      <h3>Polling Example</h3>
+      <pre><code class="language-tsx">// Poll server every 5 seconds for live data
+const { data: jobStatus } = useQuery({
+  queryKey: ['job', jobId],
+  queryFn: () => fetchJobStatus(jobId),
+  refetchInterval: (query) => {
+    // Stop polling when job is complete
+    return query.state.data?.status === 'complete' ? false : 5000
+  },
+})</code></pre>
+
+      <h3>Static Data — Disable All Refetching</h3>
+      <pre><code class="language-tsx">// For data that never changes (e.g., country list, constants)
+const { data: countries } = useQuery({
+  queryKey: ['countries'],
+  queryFn: fetchCountries,
+  staleTime: Infinity,          // never considered stale
+  gcTime: Infinity,             // never garbage collected
+  refetchOnWindowFocus: false,
+  refetchOnMount: false,
+  refetchOnReconnect: false,
+})</code></pre>
+
+      <table>
+        <thead><tr><th>Option</th><th>Default</th><th>Effect</th></tr></thead>
+        <tbody>
+          <tr><td><code>refetchOnWindowFocus</code></td><td>true</td><td>Refetch when user returns to tab</td></tr>
+          <tr><td><code>refetchOnMount</code></td><td>true</td><td>Refetch stale data when component mounts</td></tr>
+          <tr><td><code>refetchOnReconnect</code></td><td>true</td><td>Refetch when network reconnects</td></tr>
+          <tr><td><code>refetchInterval</code></td><td>false</td><td>Auto-poll at interval (ms)</td></tr>
+          <tr><td><code>staleTime</code></td><td>0</td><td>0 = always stale, Infinity = never stale</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ===== SECTION 12 ===== -->
+    <section id="global-config">
+      <h2 class="section-title"><span class="sec-icon">12</span>Global Config, Retry &amp; Backoff</h2>
+
+      <pre><code class="language-ts">const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      // Retry config
+      retry: 3,                    // default: 3 attempts total
+      retryDelay: attemptIndex =>  // default: exponential, capped at 30s
+        Math.min(1000 * 2 ** attemptIndex, 30_000),
+      // [attempt 0] = 1000ms, [1] = 2000ms, [2] = 4000ms
+
+      // Custom retry logic — e.g., don't retry on 4xx errors
+      retry: (failureCount, error) => {
+        if (error.status === 404 || error.status === 403) return false
+        return failureCount &lt; 3
+      },
+    },
+    mutations: {
+      retry: 0,    // Don't retry mutations by default (could double-submit)
+      onError: (error) =&gt; toast.error(error.message),  // global mutation error handler
+    },
+  },
+})</code></pre>
+
+      <div class="info-box warn">
+        <strong>Mutations and retry</strong>
+        Unlike queries, mutations default to <code>retry: 0</code>. Retrying a POST/PUT/DELETE could cause duplicate submissions or side-effects. Only enable mutation retries when your API is idempotent (e.g., PUT with the same data).
+      </div>
+
+      <h3>Per-Query Override</h3>
+      <pre><code class="language-tsx">// Override defaults at query level
+useQuery({
+  queryKey: ['critical-data'],
+  queryFn: fetchCriticalData,
+  retry: 5,
+  retryDelay: 500,  // flat 500ms between all retries
+})</code></pre>
+    </section>
+
+    <!-- ===== SECTION 13 ===== -->
+    <section id="devtools">
+      <h2 class="section-title"><span class="sec-icon">13</span>Devtools</h2>
+
+      <pre><code class="language-bash">npm install @tanstack/react-query-devtools</code></pre>
+
+      <pre><code class="language-tsx">import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+
+function App() {
+  return (
+    &lt;QueryClientProvider client={queryClient}&gt;
+      &lt;Router /&gt;
+      {/* Only renders in development — automatically stripped in production build */}
+      &lt;ReactQueryDevtools
+        initialIsOpen={false}
+        buttonPosition="bottom-right"   // 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
+        position="bottom"               // panel position
+      /&gt;
+    &lt;/QueryClientProvider&gt;
+  )
+}</code></pre>
+
+      <div class="info-box tip">
+        <strong>What the Devtools show</strong>
+        All queries in the cache with their status (fresh/stale/fetching/inactive/paused), query keys, data payload, observers count, last fetch time, and error details. You can manually trigger refetches, invalidate queries, or remove them from the devtools panel.
+      </div>
+
+      <h3>Query States in Devtools</h3>
+      <table>
+        <thead><tr><th>State Color</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td>🟢 Fresh</td><td>Data is within staleTime — will not be refetched</td></tr>
+          <tr><td>🟡 Stale</td><td>Past staleTime — will refetch on next trigger</td></tr>
+          <tr><td>🔵 Fetching</td><td>Active network request in progress</td></tr>
+          <tr><td>⚪ Inactive</td><td>No active observers; subject to gcTime garbage collection</td></tr>
+          <tr><td>🔴 Error</td><td>Last fetch returned an error</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ===== SECTION 14 ===== -->
+    <section id="v4-v5">
+      <h2 class="section-title"><span class="sec-icon">14</span>TanStack Query v4 vs v5</h2>
+
+      <table>
+        <thead><tr><th>Change</th><th>v4</th><th>v5</th></tr></thead>
+        <tbody>
+          <tr><td>Cache time option name</td><td><code>cacheTime</code></td><td><code>gcTime</code> (garbage collect time)</td></tr>
+          <tr><td>Loading status</td><td><code>isLoading</code> = pending + fetching</td><td><code>isPending</code> = no data yet; <code>isLoading</code> = isPending AND isFetching</td></tr>
+          <tr><td>keepPreviousData option</td><td><code>keepPreviousData: true</code></td><td><code>placeholderData: keepPreviousData</code> (import from package)</td></tr>
+          <tr><td>Callbacks in useQuery</td><td><code>onSuccess</code>, <code>onError</code>, <code>onSettled</code> in useQuery</td><td>Removed from useQuery — use mutation callbacks or <code>useEffect</code></td></tr>
+          <tr><td>useInfiniteQuery initialPage</td><td>Automatic</td><td>Requires explicit <code>initialPageParam</code></td></tr>
+          <tr><td>Object syntax for functions</td><td>Both overloads supported</td><td>Object-only syntax enforced</td></tr>
+          <tr><td>TypeScript</td><td>Good</td><td>Improved generics, better inference</td></tr>
+          <tr><td>Streamlined API</td><td>Multiple ways to configure</td><td>Single idiomatic way per feature</td></tr>
+          <tr><td>suspense option</td><td>Experimental boolean flag</td><td><code>useSuspenseQuery</code> hook</td></tr>
+          <tr><td>Bundle size</td><td>~12KB gz</td><td>Similar, tree-shakeable</td></tr>
+        </tbody>
+      </table>
+
+      <div class="info-box note">
+        <strong>Migration key point</strong>
+        The removal of <code>onSuccess</code>/<code>onError</code>/<code>onSettled</code> callbacks from <code>useQuery</code> in v5 is the most impactful breaking change. These callbacks had confusing semantics (fired per observer, not per fetch). In v5, handle side effects from query results in <code>useEffect</code> watching <code>data</code>/<code>error</code>, or use mutation callbacks exclusively.
+      </div>
+    </section>
+
+    <!-- ===== SECTION 15: Q&A ===== -->
+    <section id="qna">
+      <h2 class="section-title"><span class="sec-icon">15</span>Q&amp;A — 15 Questions</h2>
+
+      <!-- Easy -->
+      <details class="qa">
+        <summary><span class="badge easy">Easy</span> What is the difference between <code>isLoading</code> and <code>isFetching</code>?</summary>
+        <div class="qa-body">
+          <p><code>isLoading</code> (or more precisely in v5, the combination <code>isPending &amp;&amp; isFetching</code>) is true only when the query has <strong>no cached data</strong> and is fetching for the first time — the true "loading spinner" state where there is nothing to show the user.</p>
+          <p><code>isFetching</code> is true <strong>any time</strong> a network request is in flight for this query, including background refetches when stale cached data is already displayed. Always show a subtle indicator (e.g., a small spinner in the corner) when <code>isFetching</code> is true, reserving the full loading skeleton for <code>isLoading</code>.</p>
+        </div>
+      </details>
+
+      <details class="qa">
+        <summary><span class="badge easy">Easy</span> What happens when <code>staleTime</code> is set to <code>Infinity</code>?</summary>
+        <div class="qa-body">
+          <p>Data cached with <code>staleTime: Infinity</code> is considered <strong>permanently fresh</strong>. TanStack Query will never automatically refetch it due to window focus, mount, or reconnect triggers. It will serve the cached value indefinitely until the cache is manually invalidated (via <code>invalidateQueries</code>) or the entry is garbage-collected (<code>gcTime</code> expires after all observers unmount).</p>
+          <p>This is ideal for static reference data like country lists, configuration constants, or any data that is known to never change during a session.</p>
+        </div>
+      </details>
+
+      <details class="qa">
+        <summary><span class="badge easy">Easy</span> How do you conditionally run a query?</summary>
+        <div class="qa-body">
+          <p>Use the <code>enabled</code> option. When <code>enabled</code> is <code>false</code>, the query will not automatically fetch. The standard pattern for dependent queries is <code>enabled: !!someValue</code> — the double-bang coerces a potentially undefined/null value to a boolean.</p>
+          <pre><code class="language-tsx">const { data: profile } = useQuery({
+  queryKey: ['profile', userId],
+  queryFn: () => fetchProfile(userId),
+  enabled: !!userId,  // won't run until userId is truthy
+})</code></pre>
+          <p>While <code>enabled</code> is false, the query stays in <code>pending</code> status with <code>fetchStatus: 'idle'</code>.</p>
+        </div>
+      </details>
+
+      <!-- Intermediate -->
+      <details class="qa">
+        <summary><span class="badge intermediate">Intermediate</span> Explain query key design best practices and why key structure matters.</summary>
+        <div class="qa-body">
+          <p>Query keys are the fundamental unit of cache identity. Every unique serialized key maps to exactly one cache entry. Key structure matters because:</p>
+          <p><strong>1. Hierarchical invalidation:</strong> By using nested arrays (e.g., <code>['todos']</code>, <code>['todos', id]</code>, <code>['todos', {filter}]</code>), you can invalidate an entire resource family with a single prefix invalidation: <code>invalidateQueries({queryKey: ['todos']})</code> invalidates all of them.</p>
+          <p><strong>2. Automatic reactivity:</strong> Including filter/sort/search variables in the key means TanStack Query automatically detects when the "parameters" of the query change and fires a new fetch — no manual <code>useEffect</code> dependency array needed.</p>
+          <p><strong>3. The factory pattern</strong> (centralized key objects) prevents typos and makes refactoring safe by providing a single source of truth for all key shapes.</p>
+        </div>
+      </details>
+
+      <details class="qa">
+        <summary><span class="badge intermediate">Intermediate</span> What is the purpose of <code>select</code> in useQuery and how does it optimize performance?</summary>
+        <div class="qa-body">
+          <p>The <code>select</code> option is a transformation function applied to the raw data returned by <code>queryFn</code> before it reaches the component. Its result is <strong>memoized</strong> — the component only re-renders when the <em>selected/transformed value</em> changes, not when the entire raw data object changes reference.</p>
+          <p>This means multiple components can subscribe to the same query (sharing the cache and network request), but each can select a different slice of data and only re-render when their specific slice changes. For example, <code>select: data =&gt; data.length</code> means the component never re-renders when a todo's title changes — only when the count changes.</p>
+          <p><code>select</code> also accepts a stable function reference (or use with <code>useCallback</code>) to prevent unnecessary re-computation on every render.</p>
+        </div>
+      </details>
+
+      <details class="qa">
+        <summary><span class="badge intermediate">Intermediate</span> When should you use <code>initialData</code> vs <code>placeholderData</code>?</summary>
+        <div class="qa-body">
+          <p><strong>initialData</strong> is used to pre-populate the cache with real data — typically from Server-Side Rendering or a parent component that already fetched the data. It is persisted in the cache and treated as actual data. Combined with <code>initialDataUpdatedAt</code>, TanStack Query can determine whether to immediately refetch (if the data is older than staleTime) or serve it as fresh.</p>
+          <p><strong>placeholderData</strong> provides temporary UI-only data while the real fetch is in progress. It is NOT stored in the cache and is never persisted. The query always fires a network request immediately. The most common usage is <code>placeholderData: keepPreviousData</code> — while navigating between paginated pages, the previous page's data fills the UI so there's no flash of empty content.</p>
+        </div>
+      </details>
+
+      <details class="qa">
+        <summary><span class="badge intermediate">Intermediate</span> How does request deduplication work in TanStack Query?</summary>
+        <div class="qa-body">
+          <p>When multiple components mount simultaneously (or within the same synchronous render cycle) and all call <code>useQuery</code> with the <strong>same query key</strong>, TanStack Query fires only <strong>one</strong> network request. All observers share the same cache entry and the same in-flight promise. When the request resolves, all subscribed components update simultaneously.</p>
+          <p>This is implemented via an internal <code>QueryObserver</code> reference-counting system. As long as at least one observer subscribes to a key, the query is "active." The deduplication is automatic — no special configuration is needed. This is one of the main advantages over <code>useEffect</code> approaches, where each component independently fires its own fetch.</p>
+        </div>
+      </details>
+
+      <!-- Advanced -->
+      <details class="qa">
+        <summary><span class="badge advanced">Advanced</span> Walk through a complete optimistic update implementation with rollback.</summary>
+        <div class="qa-body">
+          <p>An optimistic update follows a 5-step pattern in <code>useMutation</code> callbacks:</p>
+          <p><strong>1. onMutate — Cancel + snapshot + optimistic write:</strong> Cancel any in-flight refetches for the affected query (to prevent overwrites), snapshot the current cache value for rollback, and write the expected result directly into the cache with <code>setQueryData</code>. Return the snapshot as context.</p>
+          <p><strong>2. mutationFn — Fire the real request</strong> in the background while the UI already shows the update.</p>
+          <p><strong>3. onSuccess (optional) — Update with server truth:</strong> If the server returns the canonical updated object (e.g., with server-generated fields like <code>updatedAt</code>), call <code>setQueryData</code> again with the precise server value.</p>
+          <p><strong>4. onError — Rollback:</strong> Restore the snapshot saved in context using <code>setQueryData</code>.</p>
+          <p><strong>5. onSettled — Final invalidation:</strong> Always invalidate to sync with server truth regardless of success/error, ensuring eventual consistency even if the optimistic data was slightly wrong.</p>
+          <p>The <code>cancelQueries</code> step in <code>onMutate</code> is critical — without it, a concurrent background refetch could overwrite the optimistic update before the mutation resolves.</p>
+        </div>
+      </details>
+
+      <details class="qa">
+        <summary><span class="badge advanced">Advanced</span> Explain how <code>useInfiniteQuery</code> manages pages and how <code>getNextPageParam</code> works.</summary>
+        <div class="qa-body">
+          <p><code>useInfiniteQuery</code> stores data as <code>{ pages: PageData[][], pageParams: PageParam[] }</code>. Each call to <code>fetchNextPage()</code> appends a new page to the <code>pages</code> array.</p>
+          <p><strong>getNextPageParam(lastPage, allPages)</strong> is called after each page loads. Its return value becomes the <code>pageParam</code> passed to the next <code>queryFn</code> call. Returning <code>undefined</code> signals that there are no more pages, setting <code>hasNextPage</code> to <code>false</code>.</p>
+          <p>The function receives the most recently fetched page as <code>lastPage</code> and the full array of all fetched pages as <code>allPages</code>. This gives you flexibility to implement cursor-based (<code>return lastPage.nextCursor</code>), page-number (<code>return lastPage.page + 1</code>), or offset-based (<code>return allPages.flat().length</code>) pagination strategies.</p>
+          <p>In v5, <code>initialPageParam</code> is required (was auto-inferred in v4) and must match the type expected by <code>queryFn</code>'s <code>pageParam</code> argument.</p>
+        </div>
+      </details>
+
+      <details class="qa">
+        <summary><span class="badge advanced">Advanced</span> How would you integrate TanStack Query with SSR (Next.js)?</summary>
+        <div class="qa-body">
+          <p>The recommended approach uses <code>HydrationBoundary</code> (v5) to serialize server-fetched query data and hydrate it into the client cache on first render, avoiding double-fetches.</p>
+          <p><strong>Server-side (in a Server Component or getServerSideProps):</strong> Create a <code>QueryClient</code>, call <code>await queryClient.prefetchQuery()</code> for all needed queries, then serialize with <code>dehydrate(queryClient)</code>.</p>
+          <p><strong>Client-side:</strong> Wrap the component tree in <code>&lt;HydrationBoundary state={dehydratedState}&gt;</code>. On first render, TanStack Query finds the pre-populated data in the dehydrated state and injects it into the client <code>QueryClient</code>. Components using <code>useQuery</code> find the data already in cache and render without a loading state.</p>
+          <p>Key nuance: set <code>staleTime</code> appropriately. With default <code>staleTime: 0</code>, the hydrated data is immediately stale and a client-side refetch fires on mount. Set <code>staleTime</code> to a reasonable value (e.g., 60 seconds) to avoid this immediate refetch while still keeping the data fresh on the client.</p>
+        </div>
+      </details>
+
+      <!-- Very Advanced -->
+      <details class="qa">
+        <summary><span class="badge very-advanced">Very Advanced</span> What is the <code>gcTime</code> vs <code>staleTime</code> distinction and what are the memory implications of misconfiguring them?</summary>
+        <div class="qa-body">
+          <p>These two timers operate on completely different axes:</p>
+          <p><strong>staleTime</strong> governs when data is considered "fresh" vs "stale." It affects whether TanStack Query will refetch in the background. It has zero impact on memory — stale data stays in the cache.</p>
+          <p><strong>gcTime</strong> governs memory — how long <em>inactive</em> cache entries are kept after the last observer unmounts. An inactive query is one with zero active subscribers (all components using it have unmounted).</p>
+          <p><strong>Common misconfiguration:</strong> Setting <code>gcTime</code> to zero causes cache entries to be immediately garbage-collected as soon as their component unmounts. This breaks the "instant back navigation" feature — navigating back to a page that previously had data will show a full loading spinner again because the cache was cleared. Setting <code>gcTime</code> very high (or <code>Infinity</code>) risks memory leaks in large apps with many distinct query keys.</p>
+          <p><strong>Important constraint:</strong> <code>gcTime</code> must always be greater than or equal to <code>staleTime</code>. If <code>gcTime &lt; staleTime</code>, the data could be garbage-collected while it's still considered "fresh" — a logical contradiction that TanStack Query does not protect against automatically.</p>
+        </div>
+      </details>
+
+      <details class="qa">
+        <summary><span class="badge very-advanced">Very Advanced</span> Describe the v5 change of removing <code>onSuccess</code>/<code>onError</code> callbacks from <code>useQuery</code> and the correct migration pattern.</summary>
+        <div class="qa-body">
+          <p>In v4, <code>useQuery</code> accepted <code>onSuccess</code>, <code>onError</code>, and <code>onSettled</code> callbacks. These had <strong>confusing semantics</strong>: they fired per observer (component), not per fetch — so if 3 components subscribed to the same query and the query refetched, all 3 <code>onSuccess</code> callbacks fired. If a component mounted after the data was already cached, its <code>onSuccess</code> fired immediately. This caused bugs like duplicate toast notifications or redundant API calls.</p>
+          <p><strong>v5 migration pattern:</strong></p>
+          <p>1. For <strong>mutation side effects</strong> (toast notifications, navigations after create/update/delete): use <code>onSuccess</code>/<code>onError</code> on <code>useMutation</code> — these fire per mutation, which is the correct semantics.</p>
+          <p>2. For <strong>derived state or side effects based on query data changing</strong>: use <code>useEffect</code> watching <code>data</code>:<br />
+          <code>useEffect(() =&gt; { if (data) doSomething(data) }, [data])</code></p>
+          <p>3. For <strong>global error notifications</strong>: configure a <code>QueryCache</code> with an <code>onError</code> callback at the <code>QueryClient</code> level — fires once per failed query fetch, not per observer.</p>
+          <pre><code class="language-ts">const queryClient = new QueryClient({
+  queryCache: new QueryCache({
+    onError: (error) => toast.error(`Query failed: ${error.message}`),
+  }),
+})</code></pre>
+        </div>
+      </details>
+
+      <details class="qa">
+        <summary><span class="badge very-advanced">Very Advanced</span> How does TanStack Query handle window focus refetching and how would you customize it for different environments?</summary>
+        <div class="qa-body">
+          <p>By default, TanStack Query listens for the <code>visibilitychange</code> DOM event. When the document visibility changes from hidden to visible (user returns to the tab), all stale queries with active observers are refetched in the background.</p>
+          <p><strong>Custom focus manager</strong> — useful in non-browser environments (React Native, Electron, Web Workers) or when you want different focus semantics:</p>
+          <pre><code class="language-ts">import { focusManager } from '@tanstack/react-query'
+
+// React Native — use AppState
+import { AppState } from 'react-native'
+focusManager.setEventListener((handleFocus) => {
+  const subscription = AppState.addEventListener('change', state => {
+    handleFocus(state === 'active')
+  })
+  return () => subscription.remove()  // cleanup
+})
+
+// Disable focus refetching entirely
+focusManager.setFocused(true)  // always "focused" — no focus-triggered refetches
+focusManager.setFocused(undefined)  // restore default browser detection</code></pre>
+          <p>Similarly, the <code>onlineManager</code> controls network-status detection for <code>refetchOnReconnect</code> and can be customized for React Native's <code>NetInfo</code> API.</p>
+        </div>
+      </details>
+
+      <details class="qa">
+        <summary><span class="badge very-advanced">Very Advanced</span> Explain the <code>fetchStatus</code> dimension in v5 and how it interacts with <code>status</code>.</summary>
+        <div class="qa-body">
+          <p>In v5, query state has two independent dimensions that combine to describe the full state:</p>
+          <p><strong>status</strong> — describes the data dimension: <code>'pending'</code> (no data), <code>'success'</code> (has data), <code>'error'</code> (last fetch errored). Once data is fetched, status stays <code>'success'</code> even during background refetches.</p>
+          <p><strong>fetchStatus</strong> — describes the fetch dimension: <code>'fetching'</code> (request in flight), <code>'paused'</code> (request queued but paused, e.g., offline), <code>'idle'</code> (no fetch happening).</p>
+          <p>Combining these gives you precise states:</p>
+          <ul style="margin: 8px 0 8px 20px;">
+            <li><code>status: 'pending', fetchStatus: 'fetching'</code> — Initial load (the old <code>isLoading</code>)</li>
+            <li><code>status: 'success', fetchStatus: 'fetching'</code> — Background refetch with cached data shown</li>
+            <li><code>status: 'pending', fetchStatus: 'paused'</code> — Offline; query waiting for network</li>
+            <li><code>status: 'success', fetchStatus: 'idle'</code> — Fully loaded, no active fetch</li>
+          </ul>
+          <p>This two-dimension model eliminates the ambiguity in v4 where <code>isLoading</code> had confusing behavior (it could be false even with no data when <code>enabled: false</code>).</p>
+        </div>
+      </details>
+
+      <details class="qa">
+        <summary><span class="badge very-advanced">Very Advanced</span> How would you implement a cache persistence layer (persist cache to localStorage across page refreshes)?</summary>
+        <div class="qa-body">
+          <p>TanStack Query provides the <code>@tanstack/query-persist-client-core</code> and <code>@tanstack/react-query-persist-client</code> packages for this pattern.</p>
+          <pre><code class="language-tsx">import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client'
+import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister'
+
+const persister = createSyncStoragePersister({
+  storage: window.localStorage,
+  key: 'REACT_QUERY_CACHE',
+  throttleTime: 1000,  // debounce writes to avoid thrashing
+})
+
+function App() {
+  return (
+    &lt;PersistQueryClientProvider
+      client={queryClient}
+      persistOptions={{
+        persister,
+        maxAge: 1000 * 60 * 60 * 24,  // 24 hours — discard cache older than this
+        buster: process.env.APP_VERSION,  // change to bust cache on deploy
+        dehydrateOptions: {
+          shouldDehydrateQuery: (query) =&gt;
+            query.state.status === 'success',  // only persist successful queries
+        },
+      }}
+    &gt;
+      &lt;Router /&gt;
+    &lt;/PersistQueryClientProvider&gt;
+  )
+}</code></pre>
+          <p><strong>Key considerations:</strong> The <code>buster</code> string (e.g., app version or build hash) invalidates the entire persisted cache when changed, preventing stale data from a previous deployment from being loaded. For async storage (IndexedDB, AsyncStorage), use <code>createAsyncStoragePersister</code> from <code>@tanstack/query-async-storage-persister</code>.</p>
+        </div>
+      </details>
+
+    </section>
+  </main>
+</div>
+
+<script>
+  hljs.highlightAll()
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'dark',
+    themeVariables: {
+      primaryColor: '#161b22',
+      primaryTextColor: '#c9d1d9',
+      primaryBorderColor: '#30363d',
+      lineColor: '#58a6ff',
+      secondaryColor: '#21262d',
+      tertiaryColor: '#0d1117',
+      background: '#0d1117',
+    },
+  })
+</script>
+</body>
+</html>

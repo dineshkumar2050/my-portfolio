@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>GoF Design Patterns Reference</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/typescript.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+  :root {
+    --bg: #0d1117;
+    --bg2: #161b22;
+    --bg3: #21262d;
+    --border: #30363d;
+    --text: #c9d1d9;
+    --text-muted: #8b949e;
+    --accent: #58a6ff;
+    --accent2: #3fb950;
+    --accent3: #f78166;
+    --accent4: #d2a8ff;
+    --accent5: #ffa657;
+    --tag-creational: #1f6feb;
+    --tag-structural: #388bfd22;
+    --tag-behavioral: #3fb95022;
+    --radius: 8px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 15px;
+    line-height: 1.65;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* Layout */
+  .page-wrap { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  /* Header */
+  .site-header {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 28px 24px;
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  .site-header h1 { font-size: 2rem; color: var(--accent); margin-bottom: 6px; }
+  .site-header p { color: var(--text-muted); font-size: 0.95rem; }
+
+  /* Section headings */
+  h2 {
+    font-size: 1.35rem;
+    color: var(--accent4);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 8px;
+    margin: 48px 0 20px;
+  }
+  h3 { font-size: 1.05rem; color: var(--accent5); margin: 0 0 6px; }
+
+  /* Category label */
+  .category-label {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+  .label-creational { background: #1f6feb33; color: #58a6ff; border: 1px solid #1f6feb66; }
+  .label-structural  { background: #388bfd18; color: #79c0ff; border: 1px solid #388bfd44; }
+  .label-behavioral  { background: #3fb95018; color: #56d364; border: 1px solid #3fb95044; }
+
+  /* Pattern card */
+  .pattern-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    margin-bottom: 18px;
+  }
+  .pattern-card .meta {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+  }
+  .pattern-card .definition {
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+  .pattern-card .when {
+    background: var(--bg3);
+    border-left: 3px solid var(--accent);
+    padding: 8px 12px;
+    font-size: 0.87rem;
+    color: var(--text-muted);
+    border-radius: 0 4px 4px 0;
+    margin-bottom: 12px;
+  }
+  .pattern-card .when strong { color: var(--text); }
+
+  /* Collapsible code */
+  .code-toggle { cursor: pointer; user-select: none; }
+  .code-toggle summary {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.82rem;
+    color: var(--accent);
+    padding: 4px 0;
+    list-style: none;
+  }
+  .code-toggle summary::-webkit-details-marker { display: none; }
+  .code-toggle summary::before {
+    content: '▶';
+    font-size: 0.65rem;
+    transition: transform 0.2s;
+  }
+  .code-toggle[open] summary::before { transform: rotate(90deg); }
+  .code-toggle pre { margin-top: 10px; border-radius: 6px; font-size: 0.8rem; }
+
+  /* Q&A */
+  .qa-item {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+  .qa-item summary {
+    padding: 14px 18px;
+    cursor: pointer;
+    font-weight: 600;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .qa-item summary::-webkit-details-marker { display: none; }
+  .qa-item summary::before {
+    content: 'Q';
+    background: var(--accent);
+    color: var(--bg);
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+  .qa-item .answer {
+    padding: 0 18px 16px 42px;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.7;
+    border-top: 1px solid var(--border);
+    padding-top: 12px;
+  }
+  .qa-item .answer code {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 0.82rem;
+    color: var(--accent5);
+  }
+
+  /* Comparison table */
+  .table-wrap { overflow-x: auto; margin-top: 16px; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.86rem;
+  }
+  th {
+    background: var(--bg3);
+    color: var(--accent4);
+    text-align: left;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  td {
+    padding: 9px 14px;
+    border: 1px solid var(--border);
+    color: var(--text);
+    vertical-align: top;
+  }
+  tr:nth-child(even) td { background: var(--bg2); }
+  tr:nth-child(odd) td  { background: var(--bg); }
+
+  /* Anti-pattern card */
+  .antipattern-card {
+    background: var(--bg2);
+    border: 1px solid #f7816633;
+    border-left: 4px solid var(--accent3);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    margin-bottom: 14px;
+  }
+  .antipattern-card h3 { color: var(--accent3); margin-bottom: 6px; }
+  .antipattern-card p { color: var(--text-muted); font-size: 0.88rem; }
+  .antipattern-card .fix { color: var(--accent2); font-size: 0.85rem; margin-top: 6px; }
+
+  /* Mermaid */
+  .mermaid-wrap {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin: 16px 0;
+    overflow-x: auto;
+    text-align: center;
+  }
+  .mermaid { font-size: 0.85rem; }
+
+  /* TOC */
+  .toc {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 22px;
+    margin-bottom: 36px;
+    columns: 3;
+    column-gap: 24px;
+  }
+  .toc h4 { color: var(--text-muted); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; column-span: all; }
+  .toc a { display: block; font-size: 0.85rem; padding: 2px 0; }
+
+  @media (max-width: 700px) {
+    .toc { columns: 2; }
+    h2 { font-size: 1.15rem; }
+  }
+  @media (max-width: 480px) {
+    .toc { columns: 1; }
+  }
+</style>
+</head>
+<body>
+
+<div class="site-header">
+  <h1>GoF Design Patterns Reference</h1>
+  <p>All 23 Gang of Four patterns — TypeScript examples, diagrams, comparisons, anti-patterns &amp; Q&amp;A</p>
+</div>
+
+<div class="page-wrap">
+
+  <!-- TABLE OF CONTENTS -->
+  <nav class="toc">
+    <h4>Quick Navigation</h4>
+    <a href="#creational">Creational Patterns</a>
+    <a href="#singleton">Singleton</a>
+    <a href="#factory">Factory Method</a>
+    <a href="#abstractfactory">Abstract Factory</a>
+    <a href="#builder">Builder</a>
+    <a href="#prototype">Prototype</a>
+    <a href="#structural">Structural Patterns</a>
+    <a href="#adapter">Adapter</a>
+    <a href="#bridge">Bridge</a>
+    <a href="#composite">Composite</a>
+    <a href="#decorator">Decorator</a>
+    <a href="#facade">Facade</a>
+    <a href="#flyweight">Flyweight</a>
+    <a href="#proxy">Proxy</a>
+    <a href="#behavioral">Behavioral Patterns</a>
+    <a href="#chain">Chain of Responsibility</a>
+    <a href="#command">Command</a>
+    <a href="#iterator">Iterator</a>
+    <a href="#mediator">Mediator</a>
+    <a href="#memento">Memento</a>
+    <a href="#observer">Observer</a>
+    <a href="#state">State</a>
+    <a href="#strategy">Strategy</a>
+    <a href="#template">Template Method</a>
+    <a href="#visitor">Visitor</a>
+    <a href="#interpreter">Interpreter</a>
+    <a href="#comparison">Comparison Table</a>
+    <a href="#antipatterns">Anti-Patterns</a>
+    <a href="#qa">Q &amp; A</a>
+  </nav>
+
+  <!-- ===================== CREATIONAL ===================== -->
+  <h2 id="creational">Creational Patterns</h2>
+  <span class="category-label label-creational">Creational</span>
+
+  <!-- SINGLETON -->
+  <div class="pattern-card" id="singleton">
+    <h3>1. Singleton</h3>
+    <p class="definition">Ensures a class has only one instance and provides a global access point to it.</p>
+    <div class="when"><strong>When to use:</strong> Configuration managers, connection pools, logging services — anything where exactly one object must coordinate actions across the system.</div>
+    <details class="code-toggle">
+      <summary>TypeScript Example</summary>
+      <pre><code class="language-typescript">class DatabaseConnection {
+  private static instance: DatabaseConnection;
+  private constructor(private url: string) {}
+
+  static getInstance(): DatabaseConnection {
+    if (!DatabaseConnection.instance) {
+      DatabaseConnection.instance = new DatabaseConnection('postgres://localhost/db');
+    }
+    return DatabaseConnection.instance;
+  }
+
+  query(sql: string): string {
+    return `[${this.url}] Running: ${sql}`;
+  }
+}
+
+const db1 = DatabaseConnection.getInstance();
+const db2 = DatabaseConnection.getInstance();
+console.log(db1 === db2); // true</code></pre>
+    </details>
+  </div>
+
+  <!-- FACTORY METHOD -->
+  <div class="pattern-card" id="factory">
+    <h3>2. Factory Method</h3>
+    <p class="definition">Defines an interface for creating an object but lets subclasses decide which class to instantiate.</p>
+    <div class="when"><strong>When to use:</strong> When the exact type of object to create is determined at runtime or when subclasses should control instantiation logic.</div>
+    <details class="code-toggle">
+      <summary>TypeScript Example</summary>
+      <pre><code class="language-typescript">interface Button { render(): void; }
+
+class WindowsButton implements Button {
+  render() { console.log('Render Windows button'); }
+}
+class MacButton implements Button {
+  render() { console.log('Render Mac button'); }
+}
+
+abstract class Dialog {
+  abstract createButton(): Button;
+  open() { this.createButton().render(); }
+}
+
+class WindowsDialog extends Dialog {
+  createButton(): Button { return new WindowsButton(); }
+}
+class MacDialog extends Dialog {
+  createButton(): Button { return new MacButton(); }
+}
+
+const dialog: Dialog = new MacDialog();
+dialog.open(); // Render Mac button</code></pre>
+    </details>
+  </div>
+
+  <!-- ABSTRACT FACTORY -->
+  <div class="pattern-card" id="abstractfactory">
+    <h3>3. Abstract Factory</h3>
+    <p class="definition">Provides an interface for creating families of related objects without specifying concrete classes.</p>
+    <div class="when"><strong>When to use:</strong> When the system must be independent of how its products are created and when you need to enforce product family consistency (e.g. UI themes).</div>
+    <details class="code-toggle">
+      <summary>TypeScript Example</summary>
+      <pre><code class="language-typescript">interface UIFactory {
+  createButton(): Button;
+  createCheckbox(): Checkbox;
+}
+interface Checkbox { check(): void; }
+
+class DarkFactory implements UIFactory {
+  createButton(): Button { return { render: () => console.log('Dark Button') }; }
+  createCheckbox(): Checkbox { return { check: () => console.log('Dark Checkbox') }; }
+}
+class LightFactory implements UIFactory {
+  createButton(): Button { return { render: () => console.log('Light Button') }; }
+  createCheckbox(): Checkbox { return { check: () => console.log('Light Checkbox') }; }
+}
+
+function buildUI(factory: UIFactory) {
+  factory.createButton().render();
+  factory.createCheckbox().check();
+}
+buildUI(new DarkFactory());</code></pre>
+    </details>
+  </div>
+
+  <!-- BUILDER -->
+  <div class="pattern-card" id="builder">
+    <h3>4. Builder</h3>
+    <p class="definition">Separates the construction of a complex object from its representation so the same process can create different representations.</p>
+    <div class="when"><strong>When to use:</strong> When constructing complex objects step-by-step, especially when many optional parameters would lead to a telescoping constructor.</div>
+    <details class="code-toggle">
+      <summary>TypeScript Example</summary>
+      <pre><code class="language-typescript">class QueryBuilder {
+  private table = '';
+  private conditions: string[] = [];
+  private limitVal = 100;
+
+  from(table: string) { this.table = table; return this; }
+  where(cond: string) { this.conditions.push(cond); return this; }
+  limit(n: number) { this.limitVal = n; return this; }
+
+  build(): string {
+    const where = this.conditions.length
+      ? ` WHERE ${this.conditions.join(' AND ')}` : '';
+    return `SELECT * FROM ${this.table}${where} LIMIT ${this.limitVal}`;
+  }
+}
+
+const sql = new QueryBuilder()
+  .from('users')
+  .where('age > 18')
+  .where('active = true')
+  .limit(50)
+  .build();
+console.log(sql);</code></pre>
+    </details>
+  </div>
+
+  <!-- PROTOTYPE -->
+  <div class="pattern-card" id="prototype">
+    <h3>5. Prototype</h3>
+    <p class="definition">Creates new objects by copying an existing object (the prototype), avoiding the cost of re-initialization.</p>
+    <div class="when"><strong>When to use:</strong> When object creation is expensive and a similar object already exists, or when the class to instantiate is specified at run-time.</div>
+    <details class="code-toggle">
+      <summary>TypeScript Example</summary>
+      <pre><code class="language-typescript">interface Cloneable<T> { clone(): T; }
+
+class Shape implements Cloneable<Shape> {
+  constructor(
+    public type: string,
+    public color: string,
+    public x: number,
+    public y: number
+  ) {}
+  clone(): Shape {
+    return new Shape(this.type, this.color, this.x, this.y);
+  }
+}
+
+const original = new Shape('circle', 'red', 0, 0);
+const copy = original.clone();
+copy.color = 'blue';
+console.log(original.color); // red
+console.log(copy.color);     // blue</code></pre>
+    </details>
+  </div>
+
+  <!-- ===================== STRUCTURAL ===================== -->
+  <h2 id="structural">Structural Patterns</h2>
+  <span class="category-label label-structural">Structural</span>
+
+  <!-- ADAPTER -->
+  <div class="pattern-card" id="adapter">
+    <h3>6. Adapter</h3>
+    <p class="definition">Converts the interface of a class into another interface clients expect, enabling incompatible interfaces to work together.</p>
+    <div class="when"><strong>When to use:</strong> Integrating a third-party library whose interface doesn't match yours, or when reusing existing code with an incompatible interface.</div>
+    <details class="code-toggle">
+      <summary>TypeScript Example</summary>
+      <pre><code class="language-typescript">// Legacy logger with old interface
+class LegacyLogger {
+  logMessage(severity: string, msg: string) {
+    console.log(`[${severity.toUpperCase()}] ${msg}`);
+  }
+}
+
+// New interface our code expects
+interface Logger {
+  info(msg: string): void;
+  error(msg: string): void;
+}
+
+class LoggerAdapter implements Logger {
+  constructor(private legacy: LegacyLogger) {}
+  info(msg: string) { this.legacy.logMessage('info', msg); }
+  error(msg: string) { this.legacy.logMessage('error', msg); }
+}
+
+const logger: Logger = new LoggerAdapter(new LegacyLogger());
+logger.info('Service started');
+logger.error('Connection refused');</code></pre>
+    </details>
+  </div>
+
+  <!-- BRIDGE -->
+  <div class="pattern-card" id="bridge">
+    <h3>7. Bridge</h3>
+    <p class="definition">Decouples an abstraction from its implementation so the two can vary independently.</p>
+    <div class="when"><strong>When to use:</strong> When you want to avoid a permanent binding between abstraction and implementation, or when both should be extensible via subclassing.</div>
+    <details class="code-toggle">
+      <summary>TypeScript Example</summary>
+      <pre><code class="language-typescript">interface Renderer { renderShape(shape: string): void; }
+
+class SVGRenderer implements Renderer {
+  renderShape(s: string) { console.log(`SVG: <${s} />`); }
+}
+class CanvasRenderer implements Renderer {
+  renderShape(s: string) { console.log(`Canvas: draw(${s})`); }
+}
+
+abstract class Shape2 {
+  constructor(protected renderer: Renderer) {}
+  abstract draw(): void;
+}
+class Circle2 extends Shape2 {
+  draw() { this.renderer.renderShape('circle'); }
+}
+class Square extends Shape2 {
+  draw() { this.renderer.renderShape('rect'); }
+}
+
+new Circle2(new SVGRenderer()).draw();   // SVG: <circle />
+new Square(new CanvasRenderer()).draw(); // Canvas: draw(rect)</code></pre>
+    </details>
+  </div>
+
+  <!-- COMPOSITE -->
+  <div class="pattern-card" id="composite">
+    <h3>8. Composite</h3>
+    <p class="definition">Composes objects into tree structures to represent part-whole hierarchies, letting clients treat individual objects and compositions uniformly.</p>
+    <div class="when"><strong>When to use:</strong> File systems, UI component trees, org charts — any scenario with nested structures that must be treated uniformly.</div>
+    <details class="code-toggle">
+      <summary>TypeScript Example</summary>
+      <pre><code class="language-typescript">interface FileSystemNode {
+  name: string;
+  size(): number;
+}
+
+class File implements FileSystemNode {
+  constructor(public name: string, private bytes: number) {}
+  size() { return this.bytes; }
+}
+
+class Directory implements FileSystemNode {
+  private children: FileSystemNode[] = [];
+  constructor(public name: string) {}
+  add(node: FileSystemNode) { this.children.push(node); }
+  size() { return this.children.reduce((s, c) => s + c.size(), 0); }
+}
+
+const root = new Directory('root');
+root.add(new File('readme.txt', 1024));
+const src = new Directory('src');
+src.add(new File('index.ts', 4096));
+root.add(src);
+console.log(root.size()); // 5120</code></pre>
+    </details>
+  </div>
+
+  <!-- DECORATOR -->
+  <div class="pattern-card" id="decorator">
+    <h3>9. Decorator</h3>
+    <p class="definition">Attaches additional responsibilities to an object dynamically, providing a flexible alternative to subclassing for extending functionality.</p>
+    <div class="when"><strong>When to use:</strong> Adding features like logging, caching, encryption, or compression to objects without modifying their class.</div>
+    <details class="code-toggle">
+      <summary>TypeScript Example</summary>
+      <pre><code class="language-typescript">interface TextProcessor { process(text: string): string; }
+
+class PlainText implements TextProcessor {
+  process(text: string) { return text; }
+}
+
+class UpperCaseDecorator implements TextProcessor {
+  constructor(private wrapped: TextProcessor) {}
+  process(text: string) { return this.wrapped.process(text).toUpperCase(); }
+}
+class TrimDecorator implements TextProcessor {
+  constructor(private wrapped: TextProcessor) {}
+  process(text: string) { return this.wrapped.process(text).trim(); }
+}
+
+const processor = new UpperCaseDecorator(new TrimDecorator(new PlainText()));
+console.log(processor.process('  hello world  ')); // HELLO WORLD</code></pre>
+    </details>
+  </div>
+
+  <!-- FACADE -->
+  <div class="pattern-card" id="facade">
+    <h3>10. Facade</h3>
+    <p class="definition">Provides a simplified interface to a complex subsystem, hiding its complexity from clients.</p>
+    <div class="when"><strong>When to use:</strong> When you want to provide a simple interface to a complex body of code, e.g. wrapping a complex library or a set of subsystems.</div>
+    <details class="code-toggle">
+      <summary>TypeScript Example</summary>
+      <pre><code class="language-typescript">class AudioDecoder { decode(file: string) { return `decoded(${file})`; } }
+class VideoDecoder { decode(file: string) { return `video(${file})`; } }
+class Renderer3D { render(v: string, a: string) { console.log(`Rendering ${v} + ${a}`); } }
+
+class MediaPlayerFacade {
+  private audio = new AudioDecoder();
+  private video = new VideoDecoder();
+  private renderer = new Renderer3D();
+
+  play(file: string) {
+    const audio = this.audio.decode(file);
+    const video = this.video.decode(file);
+    this.renderer.render(video, audio);
+  }
+}
+
+const player = new MediaPlayerFacade();
+player.play('movie.mp4'); // Rendering video(movie.mp4) + decoded(movie.mp4)</code></pre>
+    </details>
+  </div>
+
+  <!-- FLYWEIGHT -->
+  <div class="pattern-card" id="flyweight">
+    <h3>11. Flyweight</h3>
+    <p class="definition">Uses sharing to support large numbers of fine-grained objects efficiently by separating intrinsic (shared) state from extrinsic (unique) state.</p>
+    <div class="when"><strong>When to use:</strong> Rendering large numbers of similar objects (particles, characters in a text editor, map tiles) where memory is a concern.</div>
+    <details class="code-toggle">
+      <summary>TypeScript Example</summary>
+      <pre><code class="language-typescript">class TreeType {
+  constructor(public name: string, public texture: string) {}
+  draw(x: number, y: number) {
+    console.log(`Draw ${this.name} at (${x},${y}) texture:${this.texture}`);
+  }
+}
+
+class TreeFactory {
+  private static types = new Map<string, TreeType>();
+  static getType(name: string, texture: string): TreeType {
+    const key = `${name}_${texture}`;
+    if (!this.types.has(key)) this.types.set(key, new TreeType(name, texture));
+    return this.types.get(key)!;
+  }
+  static count() { return this.types.size; }
+}
+
+for (let i = 0; i < 1000; i++) {
+  TreeFactory.getType('oak', 'oak.png').draw(i, i * 2);
+}
+console.log(TreeFactory.count()); // 1 — only one TreeType created</code></pre>
+    </details>
+  </div>
+
+  <!-- PROXY -->
+  <div class="pattern-card" id="proxy">
+    <h3>12. Proxy</h3>
+    <p class="definition">Provides a surrogate or placeholder for another object to control access, add lazy initialization, logging, or caching.</p>
+    <div class="when"><strong>When to use:</strong> Lazy loading expensive resources, access control, logging requests, or remote object communication.</div>
+    <details class="code-toggle">
+      <summary>TypeScript Example</summary>
+      <pre><code class="language-typescript">interface Image { display(): void; }
+
+class RealImage implements Image {
+  constructor(private path: string) {
+    console.log(`Loading image from disk: ${path}`); // expensive
+  }
+  display() { console.log(`Displaying: ${this.path}`); }
+}
+
+class LazyImageProxy implements Image {
+  private real: RealImage | null = null;
+  constructor(private path: string) {}
+  display() {
+    if (!this.real) this.real = new RealImage(this.path); // load on demand
+    this.real.display();
+  }
+}
+
+const img: Image = new LazyImageProxy('photo.jpg');
+// Image not loaded yet
+img.display(); // loads then displays
+img.display(); // only displays (cached)</code></pre>
+    </details>
+  </div>
+
+  <!-- ===================== BEHAVIORAL ===================== -->
+  <h2 id="behavioral">Behavioral Patterns</h2>
+  <span class="category-label label-behavioral">Behavioral</span>
+
+  <!-- CHAIN OF RESPONSIBILITY -->
+  <div class="pattern-card" id="chain">
+    <h3>13. Chain of Responsibility</h3>
+    <p class="definition">Passes a request along a chain of handlers, each deciding to process it or pass it to the next handler.</p>
+    <div class="when"><strong>When to use:</strong> Middleware pipelines, event bubbling, approval workflows where multiple handlers may process a request.</div>
+    <details class="code-toggle">
+      <summary>TypeScript Example</summary>
+      <pre><code class="language-typescript">abstract class Handler {
+  private next: Handler | null = null;
+  setNext(h: Handler): Handler { this.next = h; return h; }
+  handle(level: number): string {
+    if (this.next) return this.next.handle(level);
+    return 'Unhandled';
+  }
+}
+class InfoHandler extends Handler {
+  handle(level: number) {
+    if (level <= 1) return 'INFO handler processed';
+    return super.handle(level);
+  }
+}
+class WarnHandler extends Handler {
+  handle(level: number) {
+    if (level === 2) return 'WARN handler processed';
+    return super.handle(level);
+  }
+}
+class ErrorHandler extends Handler {
+  handle(level: number) { return `ERROR handler processed level ${level}`; }
+}
+
+const info = new InfoHandler();
+info.setNext(new WarnHandler()).setNext(new ErrorHandler());
+console.log(info.handle(3)); // ERROR handler processed level 3</code></pre>
+    </details>
+  </div>
+
+  <!-- COMMAND -->
+  <div class="pattern-card" id="command">
+    <h3>14. Command</h3>
+    <p class="definition">Encapsulates a request as an object, allowing parameterization, queuing, logging, and undoable operations.</p>
+    <div class="when"><strong>When to use:</strong> Undo/redo functionality, task queues, transactional operations, macro recording.</div>
+    <details class="code-toggle">
+      <summary>TypeScript Example</summary>
+      <pre><code class="language-typescript">interface Command { execute(): void; undo(): void; }
+
+class TextEditor {
+  private text = '';
+  insert(s: string) { this.text += s; }
+  delete(n: number) { this.text = this.text.slice(0, -n); }
+  getText() { return this.text; }
+}
+
+class InsertCommand implements Command {
+  constructor(private editor: TextEditor, private text: string) {}
+  execute() { this.editor.insert(this.text); }
+  undo() { this.editor.delete(this.text.length); }
+}
+
+const editor = new TextEditor();
+const cmd = new InsertCommand(editor, 'Hello');
+cmd.execute(); console.log(editor.getText()); // Hello
+cmd.undo();   console.log(editor.getText()); // (empty)</code></pre>
+    </details>
+  </div>
+
+  <!-- ITERATOR -->
+  <div class="pattern-card" id="iterator">
+    <h3>15. Iterator</h3>
+    <p class="definition">Provides a way to sequentially access elements of a collection without exposing its underlying representation.</p>
+    <div class="when"><strong>When to use:</strong> Custom traversal logic, lazy iteration over large/infinite sequences, unified traversal of different collections.</div>
+    <details class="code-toggle">
+      <summary>TypeScript Example</summary>
+      <pre><code class="language-typescript">class Range implements Iterable<number> {
+  constructor(
+    private start: number,
+    private end: number,
+    private step = 1
+  ) {}
+
+  [Symbol.iterator](): Iterator<number> {
+    let current = this.start;
+    const { end, step } = this;
+    return {
+      next(): IteratorResult<number> {
+        if (current <= end) {
+          const value = current;
+          current += step;
+          return { value, done: false };
+        }
+        return { value: undefined as any, done: true };
+      }
+    };
+  }
+}
+
+for (const n of new Range(1, 10, 2)) process.stdout.write(n + ' ');
+// 1 3 5 7 9</code></pre>
+    </details>
+  </div>
+
+  <!-- MEDIATOR -->
+  <div class="pattern-card" id="mediator">
+    <h3>16. Mediator</h3>
+    <p class="definition">Defines an object that encapsulates how a set of objects interact, promoting loose coupling by preventing direct references between them.</p>
+    <div class="when"><strong>When to use:</strong> Chat rooms, air traffic control, form validation where many components need to communicate without tight coupling.</div>
+    <details class="code-toggle">
+      <summary>TypeScript Example</summary>
+      <pre><code class="language-typescript">interface ChatMediator { send(msg: string, from: User): void; }
+
+class ChatRoom implements ChatMediator {
+  private users: User[] = [];
+  register(u: User) { this.users.push(u); }
+  send(msg: string, from: User) {
+    this.users.filter(u => u !== from).forEach(u => u.receive(msg, from.name));
+  }
+}
+
+class User {
+  constructor(public name: string, private mediator: ChatMediator) {}
+  send(msg: string) { this.mediator.send(msg, this); }
+  receive(msg: string, from: string) { console.log(`${this.name} received from ${from}: ${msg}`); }
+}
+
+const room = new ChatRoom();
+const alice = new User('Alice', room);
+const bob   = new User('Bob', room);
+room.register(alice); room.register(bob);
+alice.send('Hi Bob!'); // Bob received from Alice: Hi Bob!</code></pre>
+    </details>
+  </div>
+
+  <!-- MEMENTO -->
+  <div class="pattern-card" id="memento">
+    <h3>17. Memento</h3>
+    <p class="definition">Captures and externalizes an object's internal state so the object can be restored to that state later, without violating encapsulation.</p>
+    <div class="when"><strong>When to use:</strong> Undo/redo systems, game save states, transactional rollback.</div>
+    <details class="code-toggle">
+      <summary>TypeScript Example</summary>
+      <pre><code class="language-typescript">class EditorMemento {
+  constructor(private state: string) {}
+  getState() { return this.state; }
+}
+
+class Document {
+  private content = '';
+  write(text: string) { this.content += text; }
+  save(): EditorMemento { return new EditorMemento(this.content); }
+  restore(m: EditorMemento) { this.content = m.getState(); }
+  getContent() { return this.content; }
+}
+
+const doc = new Document();
+doc.write('Hello');
+const saved = doc.save();
+doc.write(' World');
+console.log(doc.getContent()); // Hello World
+doc.restore(saved);
+console.log(doc.getContent()); // Hello</code></pre>
+    </details>
+  </div>
+
+  <!-- OBSERVER -->
+  <div class="pattern-card" id="observer">
+    <h3>18. Observer</h3>
+    <p class="definition">Defines a one-to-many dependency so that when one object changes state, all dependents are notified and updated automatically.</p>
+    <div class="when"><strong>When to use:</strong> Event systems, MVC pattern (model notifying views), reactive programming, pub-sub systems.</div>
+    <details class="code-toggle">
+      <summary>TypeScript Example</summary>
+      <pre><code class="language-typescript">type Listener<T> = (data: T) => void;
+
+class EventEmitter<T> {
+  private listeners: Listener<T>[] = [];
+  subscribe(fn: Listener<T>) { this.listeners.push(fn); }
+  unsubscribe(fn: Listener<T>) {
+    this.listeners = this.listeners.filter(l => l !== fn);
+  }
+  emit(data: T) { this.listeners.forEach(l => l(data)); }
+}
+
+const store = new EventEmitter<{ count: number }>();
+store.subscribe(({ count }) => console.log(`View A: count=${count}`));
+store.subscribe(({ count }) => console.log(`View B: count=${count}`));
+store.emit({ count: 1 });
+// View A: count=1  |  View B: count=1</code></pre>
+    </details>
+  </div>
+
+  <!-- STATE -->
+  <div class="pattern-card" id="state">
+    <h3>19. State</h3>
+    <p class="definition">Allows an object to alter its behavior when its internal state changes; the object will appear to change its class.</p>
+    <div class="when"><strong>When to use:</strong> Traffic lights, vending machines, order processing workflows — anything with distinct modes that change behavior.</div>
+    <details class="code-toggle">
+      <summary>TypeScript Example</summary>
+      <pre><code class="language-typescript">interface TrafficState { next(): TrafficState; color(): string; }
+
+class Red    implements TrafficState { next() { return new Green(); }  color() { return 'RED'; } }
+class Green  implements TrafficState { next() { return new Yellow(); } color() { return 'GREEN'; } }
+class Yellow implements TrafficState { next() { return new Red(); }   color() { return 'YELLOW'; } }
+
+class TrafficLight {
+  private state: TrafficState = new Red();
+  tick() { this.state = this.state.next(); }
+  signal() { console.log(this.state.color()); }
+}
+
+const light = new TrafficLight();
+light.signal(); // RED
+light.tick(); light.signal(); // GREEN
+light.tick(); light.signal(); // YELLOW</code></pre>
+    </details>
+  </div>
+
+  <!-- STRATEGY -->
+  <div class="pattern-card" id="strategy">
+    <h3>20. Strategy</h3>
+    <p class="definition">Defines a family of algorithms, encapsulates each one, and makes them interchangeable so the algorithm can vary independently from clients that use it.</p>
+    <div class="when"><strong>When to use:</strong> Sorting algorithms, payment methods, compression strategies — when you need to switch algorithms at runtime.</div>
+    <details class="code-toggle">
+      <summary>TypeScript Example</summary>
+      <pre><code class="language-typescript">type SortStrategy = (arr: number[]) => number[];
+
+const bubbleSort: SortStrategy = (arr) => {
+  const a = [...arr];
+  for (let i = 0; i < a.length; i++)
+    for (let j = 0; j < a.length - i - 1; j++)
+      if (a[j] > a[j+1]) [a[j], a[j+1]] = [a[j+1], a[j]];
+  return a;
+};
+
+const nativeSort: SortStrategy = (arr) => [...arr].sort((a, b) => a - b);
+
+class Sorter {
+  constructor(private strategy: SortStrategy) {}
+  setStrategy(s: SortStrategy) { this.strategy = s; }
+  sort(arr: number[]) { return this.strategy(arr); }
+}
+
+const sorter = new Sorter(bubbleSort);
+console.log(sorter.sort([3, 1, 4, 1, 5])); // [1,1,3,4,5]
+sorter.setStrategy(nativeSort);
+console.log(sorter.sort([3, 1, 4, 1, 5])); // [1,1,3,4,5]</code></pre>
+    </details>
+  </div>
+
+  <!-- TEMPLATE METHOD -->
+  <div class="pattern-card" id="template">
+    <h3>21. Template Method</h3>
+    <p class="definition">Defines the skeleton of an algorithm in a base class, deferring some steps to subclasses without changing the algorithm's structure.</p>
+    <div class="when"><strong>When to use:</strong> Data parsing pipelines, game loops, report generation — when steps are fixed but some details vary by subclass.</div>
+    <details class="code-toggle">
+      <summary>TypeScript Example</summary>
+      <pre><code class="language-typescript">abstract class DataImporter {
+  // Template method — fixed algorithm skeleton
+  import(file: string): void {
+    const raw = this.readFile(file);
+    const data = this.parse(raw);
+    this.validate(data);
+    this.save(data);
+  }
+  protected readFile(f: string): string { return `raw:${f}`; }
+  protected abstract parse(raw: string): object[];
+  protected validate(data: object[]) { console.log(`Validating ${data.length} rows`); }
+  protected abstract save(data: object[]): void;
+}
+
+class CsvImporter extends DataImporter {
+  protected parse(raw: string) { return [{ type: 'csv', raw }]; }
+  protected save(data: object[]) { console.log('Saved CSV data', data); }
+}
+
+new CsvImporter().import('data.csv');</code></pre>
+    </details>
+  </div>
+
+  <!-- VISITOR -->
+  <div class="pattern-card" id="visitor">
+    <h3>22. Visitor</h3>
+    <p class="definition">Lets you add further operations to objects without modifying them by separating an algorithm from the object structure on which it operates.</p>
+    <div class="when"><strong>When to use:</strong> AST traversal, document export in multiple formats, adding operations to a stable object hierarchy.</div>
+    <details class="code-toggle">
+      <summary>TypeScript Example</summary>
+      <pre><code class="language-typescript">interface ASTNode { accept(v: Visitor): number; }
+interface Visitor { visitNum(n: Num): number; visitAdd(n: Add): number; }
+
+class Num implements ASTNode {
+  constructor(public val: number) {}
+  accept(v: Visitor) { return v.visitNum(this); }
+}
+class Add implements ASTNode {
+  constructor(public left: ASTNode, public right: ASTNode) {}
+  accept(v: Visitor) { return v.visitAdd(this); }
+}
+
+class Evaluator implements Visitor {
+  visitNum(n: Num) { return n.val; }
+  visitAdd(n: Add) { return n.left.accept(this) + n.right.accept(this); }
+}
+
+// 3 + (4 + 5) = 12
+const ast = new Add(new Num(3), new Add(new Num(4), new Num(5)));
+console.log(ast.accept(new Evaluator())); // 12</code></pre>
+    </details>
+  </div>
+
+  <!-- INTERPRETER -->
+  <div class="pattern-card" id="interpreter">
+    <h3>23. Interpreter</h3>
+    <p class="definition">Defines a grammar for a language and an interpreter that uses the representation to interpret sentences in the language.</p>
+    <div class="when"><strong>When to use:</strong> SQL parsers, expression evaluators, scripting engines, DSL implementations — when you need to interpret domain-specific expressions.</div>
+    <details class="code-toggle">
+      <summary>TypeScript Example</summary>
+      <pre><code class="language-typescript">interface Expression { interpret(ctx: Map<string, boolean>): boolean; }
+
+class Variable implements Expression {
+  constructor(private name: string) {}
+  interpret(ctx: Map<string, boolean>) { return ctx.get(this.name) ?? false; }
+}
+class AndExpression implements Expression {
+  constructor(private left: Expression, private right: Expression) {}
+  interpret(ctx: Map<string, boolean>) {
+    return this.left.interpret(ctx) && this.right.interpret(ctx);
+  }
+}
+class NotExpression implements Expression {
+  constructor(private expr: Expression) {}
+  interpret(ctx: Map<string, boolean>) { return !this.expr.interpret(ctx); }
+}
+
+const ctx = new Map([['A', true], ['B', false]]);
+const expr = new AndExpression(new Variable('A'), new NotExpression(new Variable('B')));
+console.log(expr.interpret(ctx)); // true  (A AND NOT B)</code></pre>
+    </details>
+  </div>
+
+  <!-- ===================== MERMAID DIAGRAM ===================== -->
+  <h2>Pattern Relationships Overview</h2>
+  <div class="mermaid-wrap">
+    <div class="mermaid">
+graph TD
+  GoF["GoF Design Patterns"]
+  GoF --> C["Creational"]
+  GoF --> S["Structural"]
+  GoF --> B["Behavioral"]
+  C --> C1["Singleton"]
+  C --> C2["Factory Method"]
+  C --> C3["Abstract Factory"]
+  C --> C4["Builder"]
+  C --> C5["Prototype"]
+  S --> S1["Adapter"]
+  S --> S2["Bridge"]
+  S --> S3["Composite"]
+  S --> S4["Decorator"]
+  S --> S5["Facade"]
+  S --> S6["Flyweight"]
+  S --> S7["Proxy"]
+  B --> B1["Chain of Resp."]
+  B --> B2["Command"]
+  B --> B3["Iterator"]
+  B --> B4["Mediator"]
+  B --> B5["Memento"]
+  B --> B6["Observer"]
+  B --> B7["State"]
+  B --> B8["Strategy"]
+  B --> B9["Template Method"]
+  B --> B10["Visitor"]
+  B --> B11["Interpreter"]
+    </div>
+  </div>
+
+  <!-- ===================== COMPARISON TABLE ===================== -->
+  <h2 id="comparison">Patterns Comparison Table</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Pattern</th>
+          <th>Category</th>
+          <th>Intent</th>
+          <th>Key Participants</th>
+          <th>Common Use Case</th>
+          <th>Complexity</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Singleton</td><td>Creational</td><td>Single instance</td><td>Singleton</td><td>Config, Logger, DB Pool</td><td>Low</td></tr>
+        <tr><td>Factory Method</td><td>Creational</td><td>Delegate creation to subclass</td><td>Creator, Product</td><td>Plugin systems</td><td>Medium</td></tr>
+        <tr><td>Abstract Factory</td><td>Creational</td><td>Families of objects</td><td>Factory, Products</td><td>UI themes, OS widgets</td><td>High</td></tr>
+        <tr><td>Builder</td><td>Creational</td><td>Step-by-step construction</td><td>Builder, Director</td><td>Query builders, DOM</td><td>Medium</td></tr>
+        <tr><td>Prototype</td><td>Creational</td><td>Clone existing objects</td><td>Prototype</td><td>Game objects, config copy</td><td>Low</td></tr>
+        <tr><td>Adapter</td><td>Structural</td><td>Interface compatibility</td><td>Adapter, Adaptee</td><td>Third-party libs</td><td>Low</td></tr>
+        <tr><td>Bridge</td><td>Structural</td><td>Decouple abstraction/impl</td><td>Abstraction, Impl</td><td>Cross-platform rendering</td><td>High</td></tr>
+        <tr><td>Composite</td><td>Structural</td><td>Part-whole hierarchy</td><td>Component, Leaf, Composite</td><td>File system, UI tree</td><td>Medium</td></tr>
+        <tr><td>Decorator</td><td>Structural</td><td>Dynamic behavior extension</td><td>Component, Decorator</td><td>Middleware, streams</td><td>Medium</td></tr>
+        <tr><td>Facade</td><td>Structural</td><td>Simplified interface</td><td>Facade, Subsystems</td><td>SDK wrappers, APIs</td><td>Low</td></tr>
+        <tr><td>Flyweight</td><td>Structural</td><td>Shared fine-grained objects</td><td>Flyweight, Factory</td><td>Game particles, fonts</td><td>High</td></tr>
+        <tr><td>Proxy</td><td>Structural</td><td>Controlled access</td><td>Proxy, RealSubject</td><td>Lazy load, auth, cache</td><td>Medium</td></tr>
+        <tr><td>Chain of Resp.</td><td>Behavioral</td><td>Pass request along chain</td><td>Handler, ConcreteHandler</td><td>Middleware, logging</td><td>Medium</td></tr>
+        <tr><td>Command</td><td>Behavioral</td><td>Encapsulate request as object</td><td>Command, Invoker, Receiver</td><td>Undo/redo, queues</td><td>Medium</td></tr>
+        <tr><td>Iterator</td><td>Behavioral</td><td>Sequential access</td><td>Iterator, Aggregate</td><td>Collection traversal</td><td>Low</td></tr>
+        <tr><td>Mediator</td><td>Behavioral</td><td>Centralize communication</td><td>Mediator, Colleague</td><td>Chat, MVC controller</td><td>Medium</td></tr>
+        <tr><td>Memento</td><td>Behavioral</td><td>Capture &amp; restore state</td><td>Originator, Memento, Caretaker</td><td>Undo, save game</td><td>Medium</td></tr>
+        <tr><td>Observer</td><td>Behavioral</td><td>Event notification</td><td>Subject, Observer</td><td>Pub/Sub, React state</td><td>Low</td></tr>
+        <tr><td>State</td><td>Behavioral</td><td>Behavior varies by state</td><td>Context, State</td><td>State machines, workflow</td><td>Medium</td></tr>
+        <tr><td>Strategy</td><td>Behavioral</td><td>Interchangeable algorithms</td><td>Context, Strategy</td><td>Sorting, payment, routing</td><td>Low</td></tr>
+        <tr><td>Template Method</td><td>Behavioral</td><td>Algorithm skeleton</td><td>AbstractClass, ConcreteClass</td><td>Data pipelines, reports</td><td>Low</td></tr>
+        <tr><td>Visitor</td><td>Behavioral</td><td>Operations on object structure</td><td>Visitor, Element</td><td>AST, export formats</td><td>High</td></tr>
+        <tr><td>Interpreter</td><td>Behavioral</td><td>Grammar &amp; evaluation</td><td>Expression, Terminal, Non-Terminal</td><td>DSL, expression parser</td><td>High</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===================== ANTI-PATTERNS ===================== -->
+  <h2 id="antipatterns">Common Anti-Patterns</h2>
+
+  <div class="antipattern-card">
+    <h3>God Class</h3>
+    <p>A single class that knows too much or does too much — absorbing responsibilities from across the system into one monolithic blob. It has dozens of methods, hundreds of lines, and direct knowledge of every subsystem.</p>
+    <p class="fix">Fix: Apply Single Responsibility Principle (SRP). Break the class into focused, cohesive classes. Use patterns like Facade (to coordinate), Strategy (to separate algorithms), and Observer (to decouple notifications).</p>
+  </div>
+
+  <div class="antipattern-card">
+    <h3>Spaghetti Code</h3>
+    <p>Code with a tangled, unstructured control flow — deeply nested conditionals, global state mutations, long functions that do many things, and no clear separation of concerns. Hard to read, test, or modify.</p>
+    <p class="fix">Fix: Refactor into small functions with single responsibilities. Introduce Chain of Responsibility for sequential checks, State pattern for conditional branches on object mode, and Command pattern to encapsulate actions.</p>
+  </div>
+
+  <div class="antipattern-card">
+    <h3>Golden Hammer</h3>
+    <p>"If all you have is a hammer, everything looks like a nail." Over-applying a familiar pattern (e.g. Singleton for every service, Observer for all communication, Factory everywhere) to problems where simpler solutions suffice.</p>
+    <p class="fix">Fix: Understand the intent and trade-offs of each pattern before applying. Evaluate simpler alternatives first. Patterns add indirection — apply them only when they solve a real problem you are currently facing.</p>
+  </div>
+
+  <div class="antipattern-card">
+    <h3>Lava Flow</h3>
+    <p>Dead code, vestigial structures, or design decisions from early prototypes that nobody dares to remove because the code path is poorly understood. The system accrues "lava" that has hardened in place.</p>
+    <p class="fix">Fix: Write tests to characterise existing behaviour, then refactor and delete dead paths. Use version control to recover anything accidentally removed.</p>
+  </div>
+
+  <div class="antipattern-card">
+    <h3>Premature Optimization</h3>
+    <p>Applying Flyweight, object pooling, or caching before profiling has proven a bottleneck. The added complexity harms readability and maintainability for no measurable gain.</p>
+    <p class="fix">Fix: Write clear, correct code first. Profile before optimizing. Apply structural patterns like Flyweight only when memory profiling confirms object proliferation is the bottleneck.</p>
+  </div>
+
+  <!-- ===================== Q&A ===================== -->
+  <h2 id="qa">Q &amp; A — 15 Key Questions</h2>
+
+  <details class="qa-item">
+    <summary>What is the difference between Factory Method and Abstract Factory?</summary>
+    <div class="answer">
+      <strong>Factory Method</strong> uses inheritance — a single factory method in a base class is overridden by subclasses to create one product type. The client code calls the method and gets the object; subclasses decide the concrete type.<br /><br />
+      <strong>Abstract Factory</strong> uses composition — a factory interface declares multiple creation methods (one per product in a family). Concrete factories implement the interface to produce a consistent family of related products (e.g. DarkButton + DarkCheckbox). Choose Abstract Factory when products must be used together and you want to enforce family consistency.
+    </div>
+  </details>
+
+  <details class="qa-item">
+    <summary>When should you avoid the Singleton pattern?</summary>
+    <div class="answer">
+      Avoid Singleton when: (1) It carries mutable global state that makes tests order-dependent and hard to isolate. (2) The class needs to be subclassed or mocked in tests — <code>static getInstance()</code> prevents constructor injection. (3) The "one instance" constraint is not a true business requirement but a convenience shortcut. Prefer dependency injection of a shared instance over a static global reference; this preserves testability while still sharing a single object.
+    </div>
+  </details>
+
+  <details class="qa-item">
+    <summary>What is the difference between Decorator and Proxy?</summary>
+    <div class="answer">
+      Both wrap a subject object and implement the same interface, but their <em>intent</em> differs:<br /><br />
+      <strong>Decorator</strong> adds behaviour (e.g. logging, validation, compression). The caller typically builds the chain consciously — <code>new LoggingDecorator(new CachingDecorator(realService))</code>.<br /><br />
+      <strong>Proxy</strong> controls access to the real object (lazy init, auth, remote call). The caller is often unaware a proxy is present; it looks identical to the real subject. Use Decorator to enrich, Proxy to gate.
+    </div>
+  </details>
+
+  <details class="qa-item">
+    <summary>How does Strategy differ from State?</summary>
+    <div class="answer">
+      <strong>Strategy</strong> is set by the client and represents an interchangeable algorithm. The context doesn't decide which strategy to use — the client injects it. Strategies rarely know about each other.<br /><br />
+      <strong>State</strong> represents an object's current mode and governs behaviour transitions. States are often aware of each other (a state returns the next state). The context follows the state's lead — it doesn't choose the next state externally. Both involve encapsulated behaviour objects, but State transitions are internal while Strategy swaps are external.
+    </div>
+  </details>
+
+  <details class="qa-item">
+    <summary>What problem does the Bridge pattern solve that inheritance alone cannot?</summary>
+    <div class="answer">
+      Inheritance causes a Cartesian product explosion. If you have 3 shapes (Circle, Rectangle, Triangle) and 3 renderers (SVG, Canvas, WebGL), you'd need 9 subclasses. Bridge separates the two hierarchies: shapes hold a reference to a renderer. Adding a new renderer requires one new class, not <em>n</em> new subclasses. The key insight is to "prefer composition over inheritance" when two independent dimensions need to vary.
+    </div>
+  </details>
+
+  <details class="qa-item">
+    <summary>When is the Builder pattern preferable to a constructor with many optional parameters?</summary>
+    <div class="answer">
+      When a class has more than ~4 optional parameters, a single constructor becomes hard to read (<code>new Query(null, null, 'users', null, 50)</code>). Builder solves this by naming each step: <code>.from('users').limit(50).build()</code>. It also enables validation in <code>build()</code> before the object is created, enforces logical ordering of steps (Director pattern), and allows immutable product objects while keeping the build process mutable.
+    </div>
+  </details>
+
+  <details class="qa-item">
+    <summary>How does Observer relate to the pub-sub pattern?</summary>
+    <div class="answer">
+      Classic Observer is a direct, synchronous in-process coupling: the subject holds references to observer objects and calls them directly. Pub-Sub introduces an event bus / message broker between publisher and subscriber so they never reference each other. Pub-Sub is Observer with an intermediary. Benefits of pub-sub: decoupling across modules, async delivery, filtering by topic. Downside: harder to trace the flow of data.
+    </div>
+  </details>
+
+  <details class="qa-item">
+    <summary>What is the difference between Composite and Decorator?</summary>
+    <div class="answer">
+      <strong>Composite</strong> is about <em>structure</em> — it organises objects into a tree and lets clients treat nodes and leaves uniformly. Each node can have multiple children.<br /><br />
+      <strong>Decorator</strong> is about <em>responsibility</em> — it wraps exactly one object to add behaviour. There's always one inner subject. Decorator adds functionality; Composite aggregates and delegates to many children. A Decorator is a Composite with exactly one child.
+    </div>
+  </details>
+
+  <details class="qa-item">
+    <summary>Why is the Flyweight pattern memory-efficient?</summary>
+    <div class="answer">
+      Flyweight separates <em>intrinsic</em> state (shared, immutable, stored in the flyweight — e.g. glyph bitmap, tree texture) from <em>extrinsic</em> state (context-specific, passed at render time — e.g. position, color). By caching and sharing flyweight instances via a factory, you store the intrinsic data once regardless of how many objects "use" it. A game with 10 000 trees of 5 types stores 5 TreeType objects, not 10 000.
+    </div>
+  </details>
+
+  <details class="qa-item">
+    <summary>What is the Command pattern's role in undo/redo?</summary>
+    <div class="answer">
+      Each user action is encapsulated as a <code>Command</code> object with <code>execute()</code> and <code>undo()</code> methods. The application maintains two stacks: an <em>undo stack</em> and a <em>redo stack</em>. On action: execute the command and push it onto the undo stack. On undo: pop from undo stack, call <code>undo()</code>, push onto redo stack. On redo: pop from redo stack, call <code>execute()</code> again. This design also supports macro recording (replaying a list of commands) and transactional rollback.
+    </div>
+  </details>
+
+  <details class="qa-item">
+    <summary>When would you choose Mediator over direct Observer relationships?</summary>
+    <div class="answer">
+      Observer creates a many-to-many web: if 5 components each observe several others, tracking which component reacts to which event becomes complex. Mediator centralises all inter-component communication. Components only know the mediator, not each other. Use Mediator when the interaction logic is complex enough that it deserves its own class (e.g. a form where changing one field enables/disables others, or a chat room routing messages). Use Observer for simpler one-to-many event broadcasting with well-defined event types.
+    </div>
+  </details>
+
+  <details class="qa-item">
+    <summary>How does the Interpreter pattern differ from the Visitor pattern?</summary>
+    <div class="answer">
+      <strong>Interpreter</strong> defines a grammar and embeds evaluation logic inside the expression nodes themselves. Each node knows how to interpret itself — adding a new operation means modifying all node classes.<br /><br />
+      <strong>Visitor</strong> externalises operations: nodes just call <code>accept(visitor)</code>; the visitor holds all the logic. Adding a new operation = one new Visitor class; adding a new node type = update all Visitor classes. Visitor is preferable when the node hierarchy is stable but operations vary; Interpreter is simpler for small, self-contained grammars.
+    </div>
+  </details>
+
+  <details class="qa-item">
+    <summary>What distinguishes Template Method from Strategy?</summary>
+    <div class="answer">
+      Both handle algorithm variation, but via different mechanisms:<br /><br />
+      <strong>Template Method</strong> uses <em>inheritance</em>: the base class defines the algorithm skeleton with abstract hook methods; subclasses fill in the blanks. The algorithm structure is fixed at compile time.<br /><br />
+      <strong>Strategy</strong> uses <em>composition</em>: the algorithm is encapsulated in an interchangeable strategy object injected at runtime. Strategy is more flexible (you can swap at runtime) and more testable (mock the strategy). Template Method is simpler when subclassing is acceptable and behaviour doesn't need to change at runtime.
+    </div>
+  </details>
+
+  <details class="qa-item">
+    <summary>Why can the Singleton pattern be considered an anti-pattern?</summary>
+    <div class="answer">
+      Singleton's global mutable state introduces several problems: (1) <strong>Tight coupling</strong> — any code can reach <code>getInstance()</code> creating hidden dependencies. (2) <strong>Testing difficulty</strong> — state bleeds between tests; you can't inject a mock without modifying the class. (3) <strong>Violation of SRP</strong> — the class manages both its own logic and its own lifecycle. (4) <strong>Concurrency bugs</strong> — naive implementations are not thread-safe. Prefer registering a single instance in a DI container — you get one instance without the global-state drawbacks.
+    </div>
+  </details>
+
+  <details class="qa-item">
+    <summary>How do you decide which creational pattern to use?</summary>
+    <div class="answer">
+      Use this heuristic:<br />
+      - Need <strong>exactly one instance</strong>? → Singleton (carefully).<br />
+      - Need to create an object but the <strong>subclass decides the type</strong>? → Factory Method.<br />
+      - Need to create <strong>families of related objects</strong> consistently? → Abstract Factory.<br />
+      - Need to create a <strong>complex object step by step</strong> with many optional parts? → Builder.<br />
+      - Need to create objects by <strong>copying an existing instance</strong> cheaply? → Prototype.<br /><br />
+      Factory Method and Abstract Factory both defer instantiation; the key differentiator is whether you need one product type (Factory Method) or a coordinated family (Abstract Factory).
+    </div>
+  </details>
+
+</div><!-- /page-wrap -->
+
+<script>
+  // Initialize highlight.js
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('pre code').forEach(el => {
+      hljs.highlightElement(el);
+    });
+  });
+
+  // Initialize Mermaid
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'dark',
+    themeVariables: {
+      background: '#161b22',
+      primaryColor: '#1f6feb',
+      primaryTextColor: '#c9d1d9',
+      lineColor: '#58a6ff',
+      fontSize: '13px'
+    }
+  });
+</script>
+</body>
+</html>

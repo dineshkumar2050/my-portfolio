@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LangChain &amp; LangGraph Complete Guide</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6;display:flex;flex-direction:column}.topnav{background:#161b22;padding:10px 24px;border-bottom:1px solid #30363d;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100}.topnav a{color:#58a6ff;text-decoration:none;font-size:13px}.topnav h1{font-size:16px;color:#e6edf3;margin:0}.layout{display:flex;flex:1}.sidebar{width:260px;background:#161b22;border-right:1px solid #30363d;padding:16px;position:sticky;top:41px;height:calc(100vh - 41px);overflow-y:auto;flex-shrink:0}.sidebar a{display:block;padding:4px 8px;color:#8b949e;text-decoration:none;font-size:13px;border-radius:4px;margin-bottom:2px}.sidebar a:hover{background:#21262d;color:#c9d1d9}.sidebar .section-title{color:#58a6ff;font-size:11px;text-transform:uppercase;letter-spacing:.5px;margin:16px 0 6px;padding:0 8px;font-weight:600}main{flex:1;padding:32px 48px;max-width:960px}h1{font-size:2rem;color:#e6edf3;border-bottom:1px solid #30363d;padding-bottom:16px;margin-bottom:24px}h2{font-size:1.5rem;color:#e6edf3;margin:48px 0 16px;border-bottom:1px solid #21262d;padding-bottom:8px}h3{font-size:1.15rem;color:#79c0ff;margin:24px 0 10px}h4{font-size:1rem;color:#d2a8ff;margin:16px 0 8px}p{margin-bottom:12px}ul,ol{margin:0 0 16px 24px}li{margin-bottom:4px}pre{margin:16px 0;border-radius:6px;overflow-x:auto;font-size:13px}code:not(pre code){background:#161b22;padding:2px 6px;border-radius:4px;font-size:13px;color:#f0883e;border:1px solid #30363d}table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}th{background:#161b22;color:#58a6ff;padding:10px 14px;text-align:left;border:1px solid #30363d}td{padding:10px 14px;border:1px solid #30363d;vertical-align:top}tr:nth-child(even) td{background:#0a0d12}.mermaid{background:#161b22;padding:20px;border-radius:6px;margin:16px 0;text-align:center}details{border:1px solid #30363d;border-radius:6px;margin:10px 0;overflow:hidden}summary{padding:12px 16px;cursor:pointer;background:#161b22;color:#79c0ff;font-weight:600;list-style:none}details[open] summary{border-bottom:1px solid #30363d}.answer{padding:16px 20px;background:#0d1117}.badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:700;margin-left:8px}.easy{background:#1a4731;color:#3fb950}.intermediate{background:#2d2b00;color:#e3b341}.advanced{background:#3d1f00;color:#f0883e}.very-advanced{background:#3d0000;color:#ff7b72}.callout{background:#161b22;border-left:4px solid #58a6ff;padding:12px 16px;border-radius:0 6px 6px 0;margin:16px 0}footer{text-align:center;padding:24px;color:#8b949e;font-size:12px;border-top:1px solid #30363d;margin-top:40px}
+</style>
+</head>
+<body>
+<nav class="topnav"><h1>LangChain &amp; LangGraph Complete Guide</h1><a href="../index.html">← Back to Index</a></nav>
+<div class="layout">
+<aside class="sidebar">
+  <div class="section-title">LangChain Core</div>
+  <a href="#models">Models</a>
+  <a href="#prompts">Prompts</a>
+  <a href="#lcel">LCEL (Pipe Operator)</a>
+  <a href="#output-parsers">Output Parsers</a>
+  <a href="#memory">Memory</a>
+  <a href="#tools">Tools</a>
+  <a href="#agents-lc">Agents</a>
+  <div class="section-title">RAG Pipeline</div>
+  <a href="#loaders">Document Loaders</a>
+  <a href="#splitters">Text Splitters</a>
+  <a href="#embeddings">Embeddings</a>
+  <a href="#vectorstores">Vector Stores</a>
+  <a href="#retrievers">Retrievers</a>
+  <a href="#rag-pipeline">Full RAG Pipeline</a>
+  <div class="section-title">LangSmith</div>
+  <a href="#langsmith">LangSmith Tracing</a>
+  <div class="section-title">LangGraph</div>
+  <a href="#lg-state">State &amp; Reducers</a>
+  <a href="#lg-graph">StateGraph API</a>
+  <a href="#lg-checkpoints">Checkpointers</a>
+  <a href="#lg-interrupt">Interruptions</a>
+  <a href="#lg-streaming">Streaming Modes</a>
+  <a href="#lg-multiagent">Multi-Agent Supervisor</a>
+  <a href="#lg-subgraphs">Subgraphs</a>
+  <div class="section-title">Complete Examples</div>
+  <a href="#ex-chatbot">Basic Chatbot</a>
+  <a href="#ex-react">ReAct Agent</a>
+  <a href="#ex-rag-agent">RAG Agent</a>
+  <a href="#lg-cloud">LangGraph Cloud</a>
+  <div class="section-title">Interview Q&amp;A</div>
+  <a href="#interview">20 Interview Questions</a>
+</aside>
+<main>
+<h1>LangChain &amp; LangGraph Complete Guide</h1>
+
+<h2 id="models">Models</h2>
+<pre><code class="language-python">from langchain_anthropic import ChatAnthropic
+from langchain_openai import ChatOpenAI
+from langchain_community.llms import Ollama
+from langchain_core.messages import HumanMessage, SystemMessage, AIMessage
+
+# Claude (Anthropic)
+claude = ChatAnthropic(
+    model="claude-3-5-sonnet-20241022",
+    temperature=0.1,
+    max_tokens=4096
+)
+
+# OpenAI
+gpt4 = ChatOpenAI(model="gpt-4o", temperature=0, streaming=True)
+
+# Ollama (local)
+llama = Ollama(model="llama3.1", temperature=0.7)
+
+# Basic invocation
+response = claude.invoke([
+    SystemMessage("You are a helpful assistant."),
+    HumanMessage("Explain gradient descent in 2 sentences.")
+])
+print(response.content)
+
+# Batch invocation
+responses = claude.batch([
+    [HumanMessage("Translate 'Hello' to French")],
+    [HumanMessage("Translate 'Hello' to Spanish")]
+])
+
+# Async
+import asyncio
+async def main():
+    response = await claude.ainvoke([HumanMessage("What is 2+2?")])
+    return response.content
+asyncio.run(main())</code></pre>
+
+<h2 id="prompts">Prompts</h2>
+<pre><code class="language-python">from langchain_core.prompts import (
+    ChatPromptTemplate, PromptTemplate, FewShotPromptTemplate,
+    MessagesPlaceholder
+)
+
+# Basic ChatPromptTemplate
+prompt = ChatPromptTemplate.from_messages([
+    ("system", "You are a {role} expert. Always respond in {language}."),
+    ("human", "{question}")
+])
+formatted = prompt.invoke({"role": "Python", "language": "English",
+                           "question": "What is a decorator?"})
+
+# With message history placeholder (for chatbots)
+chat_prompt = ChatPromptTemplate.from_messages([
+    ("system", "You are a helpful assistant."),
+    MessagesPlaceholder(variable_name="history"),  # Will be filled with past messages
+    ("human", "{input}")
+])
+
+# Few-Shot Prompt
+examples = [
+    {"input": "happy", "output": "sad"},
+    {"input": "tall", "output": "short"},
+]
+example_prompt = PromptTemplate.from_template("Input: {input}\nOutput: {output}")
+few_shot = FewShotPromptTemplate(
+    examples=examples,
+    example_prompt=example_prompt,
+    prefix="Give the antonym of every input.",
+    suffix="Input: {adjective}\nOutput:",
+    input_variables=["adjective"]
+)
+print(few_shot.format(adjective="beautiful"))</code></pre>
+
+<h2 id="lcel">LCEL — LangChain Expression Language</h2>
+<div class="callout">
+  LCEL uses the <code>|</code> (pipe) operator to chain components. Every component implements <code>Runnable</code> with <code>invoke()</code>, <code>stream()</code>, <code>batch()</code>, <code>ainvoke()</code>, etc.
+</div>
+<pre><code class="language-python">from langchain_core.runnables import (
+    RunnableParallel, RunnablePassthrough, RunnableBranch, RunnableLambda
+)
+from langchain_core.output_parsers import StrOutputParser
+
+llm = ChatAnthropic(model="claude-3-5-sonnet-20241022")
+parser = StrOutputParser()
+
+# Basic chain
+chain = prompt | llm | parser
+result = chain.invoke({"role": "Python", "language": "English", "question": "What is a list?"})
+
+# RunnableParallel — run multiple chains in parallel
+parallel_chain = RunnableParallel({
+    "answer": prompt | llm | parser,
+    "topic": RunnablePassthrough()  # passes input through unchanged
+})
+result = parallel_chain.invoke({"question": "What is OOP?"})
+# result = {"answer": "...", "topic": {"question": "..."}}
+
+# RunnablePassthrough — pass data through while also processing it
+rag_chain = (
+    {"context": retriever, "question": RunnablePassthrough()}
+    | prompt
+    | llm
+    | parser
+)
+
+# RunnableBranch — conditional routing
+def classify_question(question: str) -> str:
+    if "code" in question.lower(): return "technical"
+    if "price" in question.lower(): return "billing"
+    return "general"
+
+branch = RunnableBranch(
+    (lambda x: classify_question(x["question"]) == "technical", technical_chain),
+    (lambda x: classify_question(x["question"]) == "billing", billing_chain),
+    general_chain  # default
+)
+
+# RunnableLambda — wrap any Python function
+def add_timestamp(output: str) -> str:
+    from datetime import datetime
+    return f"[{datetime.now().isoformat()}] {output}"
+
+chain_with_timestamp = chain | RunnableLambda(add_timestamp)
+
+# Streaming LCEL chain
+for chunk in chain.stream({"question": "Explain async/await"}):
+    print(chunk, end="", flush=True)</code></pre>
+
+<h2 id="output-parsers">Output Parsers</h2>
+<pre><code class="language-python">from langchain_core.output_parsers import StrOutputParser, JsonOutputParser
+from langchain_core.output_parsers import PydanticOutputParser
+from pydantic import BaseModel, Field
+from typing import List
+
+# StrOutputParser — extract .content from AIMessage
+str_parser = StrOutputParser()
+
+# JsonOutputParser — parse JSON from LLM output
+json_parser = JsonOutputParser()
+chain = prompt | llm | json_parser
+
+# PydanticOutputParser — structured output with validation
+class MovieReview(BaseModel):
+    title: str = Field(description="Movie title")
+    rating: float = Field(description="Rating out of 10")
+    pros: List[str] = Field(description="List of positive aspects")
+    cons: List[str] = Field(description="List of negative aspects")
+
+pydantic_parser = PydanticOutputParser(pydantic_object=MovieReview)
+
+# Get format instructions to inject into prompt
+format_instructions = pydantic_parser.get_format_instructions()
+
+prompt = ChatPromptTemplate.from_template(
+    "Review this movie: {movie}\n\n{format_instructions}"
+)
+chain = prompt | llm | pydantic_parser
+review: MovieReview = chain.invoke({
+    "movie": "Inception",
+    "format_instructions": format_instructions
+})
+print(review.title, review.rating)
+
+# with_structured_output (preferred for modern models)
+llm_structured = ChatAnthropic(model="claude-3-5-sonnet-20241022")
+structured_llm = llm_structured.with_structured_output(MovieReview)
+review = structured_llm.invoke("Review the movie Interstellar")</code></pre>
+
+<h2 id="memory">Memory Types in LangChain</h2>
+<pre><code class="language-python">from langchain_community.chat_message_histories import ChatMessageHistory, RedisChatMessageHistory
+from langchain_core.chat_history import BaseChatMessageHistory
+from langchain_core.runnables.history import RunnableWithMessageHistory
+
+# In-memory message history
+store = {}  # thread_id -> ChatMessageHistory
+
+def get_session_history(session_id: str) -> BaseChatMessageHistory:
+    if session_id not in store:
+        store[session_id] = ChatMessageHistory()
+    return store[session_id]
+
+# Wrap chain with message history
+chain_with_history = RunnableWithMessageHistory(
+    chain,
+    get_session_history,
+    input_messages_key="input",
+    history_messages_key="history"
+)
+
+# Invoke with session
+config = {"configurable": {"session_id": "user-123"}}
+response1 = chain_with_history.invoke({"input": "My name is Alice."}, config=config)
+response2 = chain_with_history.invoke({"input": "What is my name?"}, config=config)
+# Response2 will say "Alice" — history preserved
+
+# Redis-backed history (persistent)
+redis_history = RedisChatMessageHistory(
+    session_id="user-123",
+    url="redis://localhost:6379",
+    ttl=3600  # 1 hour TTL
+)</code></pre>
+
+<h2 id="tools">Tools</h2>
+<pre><code class="language-python">from langchain.tools import tool, StructuredTool
+from langchain_community.tools import DuckDuckGoSearchRun, WikipediaQueryRun
+from langchain_community.tools.tavily_search import TavilySearchResults
+from langchain.tools import MoveFileTool, ReadFileTool, WriteFileTool
+from pydantic import BaseModel, Field
+from typing import Optional
+
+# Simple tool
+@tool
+def get_word_length(word: str) -> int:
+    """Returns the length of a word."""
+    return len(word)
+
+# Tool with Pydantic schema
+class MultiplyInput(BaseModel):
+    a: float = Field(description="First number")
+    b: float = Field(description="Second number")
+
+@tool(args_schema=MultiplyInput)
+def multiply(a: float, b: float) -> float:
+    """Multiply two numbers together."""
+    return a * b
+
+# StructuredTool from function
+def search_database(query: str, table: str = "users", limit: int = 10) -> list:
+    """Search the database with SQL-like filtering."""
+    return [{"id": 1, "name": "Alice"}]  # mock
+
+db_tool = StructuredTool.from_function(
+    func=search_database,
+    name="search_database",
+    description="Search company database. Specify table: users, orders, products"
+)
+
+# Community tools
+search_tool = TavilySearchResults(max_results=5)
+wiki_tool = WikipediaQueryRun(api_wrapper=WikipediaAPIWrapper())
+
+# Toolkit — bundle of related tools
+from langchain_community.agent_toolkits import SQLDatabaseToolkit
+from langchain_community.utilities import SQLDatabase
+
+db = SQLDatabase.from_uri("sqlite:///data.db")
+toolkit = SQLDatabaseToolkit(db=db, llm=llm)
+sql_tools = toolkit.get_tools()</code></pre>
+
+<h2 id="agents-lc">LangChain Agents</h2>
+<pre><code class="language-python">from langchain.agents import create_react_agent, create_openai_tools_agent, AgentExecutor
+from langchain import hub
+
+# ReAct Agent
+react_prompt = hub.pull("hwchase17/react")
+react_agent = create_react_agent(llm, tools, react_prompt)
+react_executor = AgentExecutor(
+    agent=react_agent, tools=tools,
+    verbose=True, max_iterations=10, handle_parsing_errors=True
+)
+result = react_executor.invoke({"input": "What's the capital of Japan?"})
+
+# OpenAI Tools Agent (works with Claude too via function calling)
+tools_prompt = hub.pull("hwchase17/openai-tools-agent")
+tools_agent = create_openai_tools_agent(llm, tools, tools_prompt)
+tools_executor = AgentExecutor(agent=tools_agent, tools=tools, verbose=True)
+
+# Streaming agent output
+for step in tools_executor.stream({"input": "Search for LangChain tutorials"}):
+    if "actions" in step:
+        for action in step["actions"]:
+            print(f"Tool: {action.tool}, Input: {action.tool_input}")
+    elif "output" in step:
+        print(f"Final: {step['output']}")</code></pre>
+
+<h2 id="loaders">Document Loaders</h2>
+<pre><code class="language-python">from langchain_community.document_loaders import (
+    PyPDFLoader, TextLoader, WebBaseLoader,
+    UnstructuredMarkdownLoader, JSONLoader,
+    DirectoryLoader, CSVLoader
+)
+
+# PDF
+pdf_loader = PyPDFLoader("document.pdf")
+pages = pdf_loader.load()  # List[Document], one per page
+pages = pdf_loader.load_and_split()  # Also split large pages
+
+# Web page
+web_loader = WebBaseLoader("https://docs.langchain.com")
+docs = web_loader.load()
+
+# Directory (load all .txt files)
+dir_loader = DirectoryLoader("./docs/", glob="**/*.txt", loader_cls=TextLoader)
+all_docs = dir_loader.load()
+
+# CSV
+csv_loader = CSVLoader("data.csv", source_column="url")
+
+# JSON with jq schema
+json_loader = JSONLoader("data.json", jq_schema=".messages[].content", text_content=True)
+
+# Document has .page_content and .metadata
+print(docs[0].page_content[:500])
+print(docs[0].metadata)  # {"source": "...", "page": 0, ...}</code></pre>
+
+<h2 id="splitters">Text Splitters</h2>
+<pre><code class="language-python">from langchain.text_splitter import (
+    RecursiveCharacterTextSplitter, CharacterTextSplitter,
+    TokenTextSplitter, MarkdownHeaderTextSplitter
+)
+from langchain_experimental.text_splitter import SemanticChunker
+from langchain_openai import OpenAIEmbeddings
+
+# RecursiveCharacterTextSplitter — preferred general-purpose
+splitter = RecursiveCharacterTextSplitter(
+    chunk_size=1000,      # target chunk size in characters
+    chunk_overlap=200,    # overlap between chunks
+    separators=["\n\n", "\n", " ", ""]  # try these in order
+)
+chunks = splitter.split_documents(docs)
+
+# Token-based splitter (use for token-sensitive models)
+token_splitter = TokenTextSplitter(chunk_size=500, chunk_overlap=50)
+
+# Markdown-aware splitter (preserves header context)
+md_splitter = MarkdownHeaderTextSplitter(headers_to_split_on=[
+    ("#", "Header 1"), ("##", "Header 2"), ("###", "Header 3")
+])
+md_docs = md_splitter.split_text(markdown_content)
+
+# SemanticChunker — uses embedding similarity to find natural boundaries
+semantic_splitter = SemanticChunker(
+    embeddings=OpenAIEmbeddings(),
+    breakpoint_threshold_type="percentile",
+    breakpoint_threshold_amount=95  # split at 95th percentile similarity drops
+)
+semantic_chunks = semantic_splitter.split_documents(docs)</code></pre>
+
+<h2 id="embeddings">Embeddings</h2>
+<pre><code class="language-python">from langchain_openai import OpenAIEmbeddings
+from langchain_anthropic import AnthropicEmbeddings  # doesn't exist — use OpenAI/Cohere
+from langchain_community.embeddings import HuggingFaceEmbeddings, OllamaEmbeddings
+
+# OpenAI embeddings
+embeddings = OpenAIEmbeddings(model="text-embedding-3-small")  # 1536-dim
+large_embeddings = OpenAIEmbeddings(model="text-embedding-3-large")  # 3072-dim
+
+# HuggingFace (free, local)
+hf_embeddings = HuggingFaceEmbeddings(
+    model_name="BAAI/bge-small-en-v1.5",
+    model_kwargs={"device": "cuda"},
+    encode_kwargs={"normalize_embeddings": True}
+)
+
+# Embedding single text
+vector = embeddings.embed_query("What is machine learning?")
+print(f"Dimension: {len(vector)}")  # 1536
+
+# Embedding documents (batch)
+vectors = embeddings.embed_documents(["doc 1", "doc 2", "doc 3"])</code></pre>
+
+<h2 id="vectorstores">Vector Stores</h2>
+<pre><code class="language-python">from langchain_community.vectorstores import Chroma, FAISS
+from langchain_pinecone import PineconeVectorStore
+
+# Chroma (local, persistent)
+vectorstore = Chroma.from_documents(
+    documents=chunks,
+    embedding=embeddings,
+    persist_directory="./chroma_db",
+    collection_name="my_collection"
+)
+# Load existing
+vectorstore = Chroma(persist_directory="./chroma_db", embedding_function=embeddings)
+
+# FAISS (in-memory, fast, no server needed)
+vectorstore = FAISS.from_documents(chunks, embeddings)
+vectorstore.save_local("./faiss_index")
+vectorstore = FAISS.load_local("./faiss_index", embeddings)
+
+# Pinecone (cloud, scalable)
+import pinecone
+pc = pinecone.Pinecone(api_key="YOUR_API_KEY")
+index = pc.Index("my-index")
+vectorstore = PineconeVectorStore(index=index, embedding=embeddings)
+
+# Similarity search
+docs = vectorstore.similarity_search("machine learning", k=4)
+docs_with_score = vectorstore.similarity_search_with_score("ML", k=4)
+# Score is L2 distance (lower = more similar for FAISS, 0-1 for Chroma cosine)
+
+# Add documents incrementally
+vectorstore.add_documents(new_chunks)
+
+# Delete documents
+vectorstore.delete(ids=["doc_id_1", "doc_id_2"])</code></pre>
+
+<h2 id="retrievers">Retrievers</h2>
+<pre><code class="language-python">from langchain.retrievers import (
+    MultiQueryRetriever, ContextualCompressionRetriever,
+    EnsembleRetriever, BM25Retriever
+)
+from langchain.retrievers.document_compressors import LLMChainExtractor
+
+# Basic VectorStoreRetriever
+retriever = vectorstore.as_retriever(
+    search_type="mmr",  # "similarity" | "mmr" | "similarity_score_threshold"
+    search_kwargs={"k": 5, "fetch_k": 20, "lambda_mult": 0.5}
+)
+
+# MultiQueryRetriever — generate multiple query variants, merge results
+multi_retriever = MultiQueryRetriever.from_llm(
+    retriever=retriever,
+    llm=llm,
+    include_original=True  # include original query too
+)
+
+# ContextualCompressionRetriever — compress chunks to relevant parts only
+compressor = LLMChainExtractor.from_llm(llm)
+compression_retriever = ContextualCompressionRetriever(
+    base_compressor=compressor,
+    base_retriever=retriever
+)
+
+# EnsembleRetriever — combine BM25 (keyword) + vector (semantic)
+bm25_retriever = BM25Retriever.from_documents(chunks)
+bm25_retriever.k = 5
+ensemble_retriever = EnsembleRetriever(
+    retrievers=[bm25_retriever, retriever],
+    weights=[0.3, 0.7]  # 30% BM25, 70% semantic
+)
+
+# Retrieve
+relevant_docs = ensemble_retriever.invoke("What is RAG?")</code></pre>
+
+<h2 id="rag-pipeline">Full RAG Pipeline with LCEL</h2>
+<pre><code class="language-python">from langchain_core.runnables import RunnablePassthrough
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_anthropic import ChatAnthropic
+from langchain_openai import OpenAIEmbeddings
+from langchain_community.vectorstores import Chroma
+from langchain_community.document_loaders import WebBaseLoader
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+
+# --- INDEXING PIPELINE ---
+loader = WebBaseLoader("https://docs.langchain.com/docs/concepts")
+docs = loader.load()
+
+splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+chunks = splitter.split_documents(docs)
+
+embeddings = OpenAIEmbeddings()
+vectorstore = Chroma.from_documents(chunks, embeddings, persist_directory="./rag_db")
+
+# --- RETRIEVAL & GENERATION PIPELINE ---
+retriever = vectorstore.as_retriever(search_type="mmr", search_kwargs={"k": 5})
+llm = ChatAnthropic(model="claude-3-5-sonnet-20241022")
+
+rag_prompt = ChatPromptTemplate.from_template("""
+You are an assistant for question-answering tasks.
+Use the following retrieved context to answer the question.
+If you don't know the answer, say "I don't know."
+Always cite which documents you used.
+
+<context>
+{context}
+</context>
+
+Question: {question}
+""")
+
+def format_docs(docs):
+    return "\n\n".join(f"Source [{i+1}]: {doc.page_content}" for i, doc in enumerate(docs))
+
+rag_chain = (
+    {"context": retriever | format_docs, "question": RunnablePassthrough()}
+    | rag_prompt
+    | llm
+    | StrOutputParser()
+)
+
+# Invoke
+answer = rag_chain.invoke("What is LCEL?")
+print(answer)
+
+# Streaming RAG
+for chunk in rag_chain.stream("How does memory work in LangChain?"):
+    print(chunk, end="", flush=True)
+
+# With citations — return source docs too
+from langchain_core.runnables import RunnableParallel
+rag_chain_with_sources = RunnableParallel(
+    {"context": retriever | format_docs, "question": RunnablePassthrough()}
+).assign(answer=rag_prompt | llm | StrOutputParser())
+result = rag_chain_with_sources.invoke("What is RAG?")
+print(result["answer"])</code></pre>
+
+<h2 id="langsmith">LangSmith Tracing</h2>
+<pre><code class="language-python">import os
+# Enable LangSmith tracing via environment variables
+os.environ["LANGCHAIN_TRACING_V2"] = "true"
+os.environ["LANGCHAIN_API_KEY"] = "your-langsmith-api-key"
+os.environ["LANGCHAIN_PROJECT"] = "my-rag-project"  # optional project name
+os.environ["LANGCHAIN_ENDPOINT"] = "https://api.smith.langchain.com"
+
+# All LangChain/LangGraph calls are now automatically traced
+result = rag_chain.invoke("What is LangGraph?")
+# View at: https://smith.langchain.com/
+
+# Manual tracing with @traceable
+from langsmith import traceable
+
+@traceable(name="Custom Processing Step")
+def preprocess_query(query: str) -> str:
+    return query.strip().lower()
+
+# Add custom metadata to traces
+from langchain_core.callbacks import LangChainTracer
+tracer = LangChainTracer(project_name="production-v2")
+result = rag_chain.invoke("question", config={"callbacks": [tracer]})
+
+# Evaluate with LangSmith
+from langsmith.evaluation import evaluate, LangChainStringEvaluator
+
+def my_app(input_dict):
+    return {"output": rag_chain.invoke(input_dict["question"])}
+
+evaluators = [LangChainStringEvaluator("qa", config={"llm": llm})]
+results = evaluate(my_app, data="my-eval-dataset", evaluators=evaluators)</code></pre>
+
+<h2 id="lg-state">LangGraph State &amp; Reducers</h2>
+<pre><code class="language-python">from langgraph.graph import StateGraph, END
+from langgraph.graph.message import add_messages
+from typing import TypedDict, Annotated, Optional, List
+from langchain_core.messages import BaseMessage
+import operator
+
+# State with different reducer strategies
+class AgentState(TypedDict):
+    # add_messages reducer: appends new messages to existing list
+    messages: Annotated[List[BaseMessage], add_messages]
+
+    # operator.add reducer: concatenates lists
+    retrieved_docs: Annotated[List[str], operator.add]
+
+    # No reducer (default): last write wins
+    current_task: str
+    iteration_count: int
+    is_complete: bool
+
+    # Custom reducer
+    def custom_reducer(existing: dict, new: dict) -> dict:
+        return {**existing, **new}  # merge dicts
+
+# State channels with default values
+from langgraph.graph import StateGraph
+from langgraph.channels import EphemeralValue
+
+# TypedDict for simple state, or dataclass
+from dataclasses import dataclass, field
+
+@dataclass
+class DataclassState:
+    messages: List[BaseMessage] = field(default_factory=list)
+    step: int = 0</code></pre>
+
+<h2 id="lg-graph">StateGraph API</h2>
+<pre><code class="language-python">from langgraph.graph import StateGraph, END, START
+from langchain_anthropic import ChatAnthropic
+from langchain_core.messages import HumanMessage, AIMessage
+from typing import TypedDict, Annotated
+from langgraph.graph.message import add_messages
+
+class State(TypedDict):
+    messages: Annotated[list, add_messages]
+
+llm = ChatAnthropic(model="claude-3-5-sonnet-20241022")
+
+def call_llm(state: State) -> dict:
+    """Node function: receives state, returns partial update"""
+    response = llm.invoke(state["messages"])
+    return {"messages": [response]}  # add_messages appends this
+
+def should_continue(state: State) -> str:
+    """Conditional edge function: returns next node name"""
+    last_message = state["messages"][-1]
+    if hasattr(last_message, "tool_calls") and last_message.tool_calls:
+        return "tools"
+    return END
+
+# Build graph
+graph = StateGraph(State)
+
+# Add nodes
+graph.add_node("llm", call_llm)
+graph.add_node("tools", tool_node)
+
+# Set entry point (or use START constant)
+graph.set_entry_point("llm")  # equiv: graph.add_edge(START, "llm")
+
+# Add edges
+graph.add_edge("tools", "llm")  # after tools, go back to llm
+
+# Conditional edges: (source, router_fn, mapping)
+graph.add_conditional_edges(
+    "llm",
+    should_continue,
+    {
+        "tools": "tools",  # if router returns "tools", go to "tools" node
+        END: END           # if returns END, finish
+    }
+)
+
+# Compile
+app = graph.compile()
+
+# Visualize
+print(app.get_graph().draw_mermaid())  # Mermaid diagram
+app.get_graph().print_ascii()</code></pre>
+
+<h2 id="lg-checkpoints">Checkpointers</h2>
+<pre><code class="language-python">from langgraph.checkpoint.memory import MemorySaver
+from langgraph.checkpoint.sqlite import SqliteSaver
+from langgraph.checkpoint.postgres import PostgresSaver
+
+# In-memory (development only — lost on restart)
+memory_checkpointer = MemorySaver()
+
+# SQLite (persistent, file-based, great for local dev)
+sqlite_checkpointer = SqliteSaver.from_conn_string("checkpoints.db")
+
+# PostgreSQL (production, scalable)
+pg_checkpointer = PostgresSaver.from_conn_string(
+    "postgresql://user:pass@localhost:5432/agentdb"
+)
+pg_checkpointer.setup()  # Create tables on first run
+
+# Compile with checkpointer
+app = graph.compile(checkpointer=sqlite_checkpointer)
+
+# Each thread_id = independent conversation
+config_1 = {"configurable": {"thread_id": "user-alice"}}
+config_2 = {"configurable": {"thread_id": "user-bob"}}
+
+# Turn 1
+app.invoke({"messages": [HumanMessage("My name is Alice")]}, config=config_1)
+
+# Turn 2 — state is automatically restored from checkpoint
+result = app.invoke({"messages": [HumanMessage("What is my name?")]}, config=config_1)
+# Returns: "Your name is Alice."
+
+# Inspect state at any point
+snapshot = app.get_state(config_1)
+print(snapshot.values)    # current state
+print(snapshot.next)      # next nodes to execute
+print(snapshot.config)    # config used
+
+# Get full history
+for state in app.get_state_history(config_1):
+    print(state.values["messages"])</code></pre>
+
+<h2 id="lg-interrupt">Interruptions for Human-in-the-Loop</h2>
+<pre><code class="language-python">from langgraph.types import interrupt, Command
+
+# interrupt_before: pause BEFORE specified nodes run
+app = graph.compile(
+    checkpointer=SqliteSaver.from_conn_string(":memory:"),
+    interrupt_before=["tools"],  # Pause before any tool execution
+    interrupt_after=["llm"]      # Or pause after specific nodes
+)
+
+config = {"configurable": {"thread_id": "hitl-session"}}
+
+# First invoke — runs until interrupt
+result = app.invoke({"messages": [HumanMessage("Search for the stock price of AAPL")]}, config)
+# Execution paused before "tools" node
+
+# Inspect what's pending
+state = app.get_state(config)
+print("Pending actions:", state.values["messages"][-1].tool_calls)
+
+# Option 1: Approve — resume execution
+result = app.invoke(None, config)  # None = just resume
+
+# Option 2: Reject — update state and resume
+app.update_state(config, {"messages": [HumanMessage("Actually, look up GOOGL instead")]})
+result = app.invoke(None, config)
+
+# interrupt() function inside a node (dynamic interrupt)
+def human_review_node(state):
+    decision = interrupt({
+        "question": "Should I proceed?",
+        "context": state["messages"][-1].content
+    })
+    return {"approved": decision["approved"]}
+
+# Resume with Command
+result = app.invoke(Command(resume={"approved": True}), config)</code></pre>
+
+<h2 id="lg-streaming">Streaming Modes</h2>
+<pre><code class="language-python">from langchain_core.messages import HumanMessage
+
+config = {"configurable": {"thread_id": "stream-test"}}
+input_msg = {"messages": [HumanMessage("Explain Transformers")]}
+
+# stream_mode="values" — full state after each node
+print("=== VALUES MODE ===")
+for state in app.stream(input_msg, config, stream_mode="values"):
+    print(state["messages"][-1].content)
+
+# stream_mode="updates" — partial state returned by each node
+print("=== UPDATES MODE ===")
+for node_name, update in app.stream(input_msg, config, stream_mode="updates"):
+    print(f"Node '{node_name}' returned: {update}")
+
+# stream_mode="messages" — token-by-token LLM output
+print("=== MESSAGES MODE (token streaming) ===")
+for msg, metadata in app.stream(input_msg, config, stream_mode="messages"):
+    if metadata["langgraph_node"] == "llm":  # filter to LLM node
+        print(msg.content, end="", flush=True)
+
+# Async streaming
+async def stream_async():
+    async for chunk in app.astream(input_msg, config, stream_mode="messages"):
+        msg, metadata = chunk
+        print(msg.content, end="", flush=True)</code></pre>
+
+<h2 id="lg-multiagent">Multi-Agent Supervisor with Full Code</h2>
+<pre><code class="language-python">from langgraph.graph import StateGraph, END
+from langchain_anthropic import ChatAnthropic
+from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
+from langchain.tools import tool
+from langgraph.prebuilt import ToolNode
+from typing import TypedDict, Annotated, Literal
+from langgraph.graph.message import add_messages
+import operator
+
+# --- State ---
+class SupervisorState(TypedDict):
+    messages: Annotated[list, add_messages]
+    next_worker: str
+
+# --- Tools for workers ---
+@tool
+def web_search(query: str) -> str:
+    """Search the web for current information."""
+    return f"[Web Results for '{query}']: Found relevant articles..."
+
+@tool
+def write_code(description: str, language: str = "python") -> str:
+    """Write code based on description."""
+    return f"```{language}\n# {description}\nprint('Hello')\n```"
+
+@tool
+def analyze_data(data: str) -> str:
+    """Analyze data and return statistics."""
+    return f"Analysis of '{data}': Mean=5.2, StdDev=1.3, Trend=Increasing"
+
+# --- Worker factory ---
+def make_worker(name: str, tools: list, system_prompt: str):
+    llm = ChatAnthropic(model="claude-3-5-sonnet-20241022").bind_tools(tools)
+    tool_node = ToolNode(tools)
+
+    def worker_fn(state: SupervisorState) -> dict:
+        msgs = [SystemMessage(system_prompt)] + state["messages"]
+        response = llm.invoke(msgs)
+        return {"messages": [AIMessage(content=f"[{name}]: {response.content}")]}
+
+    return worker_fn
+
+research_worker = make_worker("Researcher", [web_search],
+    "You are a research specialist. Always search for information before answering.")
+coder_worker = make_worker("Coder", [write_code],
+    "You are a coding expert. Write clean, well-documented code.")
+analyst_worker = make_worker("Analyst", [analyze_data],
+    "You are a data analyst. Provide quantitative insights.")
+
+# --- Supervisor ---
+WORKERS = ["Researcher", "Coder", "Analyst", "FINISH"]
+
+def supervisor(state: SupervisorState) -> dict:
+    from pydantic import BaseModel
+
+    class Route(BaseModel):
+        next: Literal["Researcher", "Coder", "Analyst", "FINISH"]
+        reason: str
+
+    llm = ChatAnthropic(model="claude-3-5-sonnet-20241022")
+    structured = llm.with_structured_output(Route)
+
+    system = f"""You are a supervisor managing: {WORKERS}.
+    Route to the best worker, or FINISH if done.
+    Current task: {state['messages'][0].content if state['messages'] else ''}"""
+
+    route = structured.invoke([SystemMessage(system)] + state["messages"])
+    return {"next_worker": route.next}
+
+# --- Build graph ---
+workflow = StateGraph(SupervisorState)
+workflow.add_node("supervisor", supervisor)
+workflow.add_node("Researcher", research_worker)
+workflow.add_node("Coder", coder_worker)
+workflow.add_node("Analyst", analyst_worker)
+
+workflow.set_entry_point("supervisor")
+workflow.add_conditional_edges("supervisor",
+    lambda s: s["next_worker"],
+    {"Researcher": "Researcher", "Coder": "Coder",
+     "Analyst": "Analyst", "FINISH": END})
+
+for worker in ["Researcher", "Coder", "Analyst"]:
+    workflow.add_edge(worker, "supervisor")
+
+app = workflow.compile(checkpointer=MemorySaver())
+
+# Run
+config = {"configurable": {"thread_id": "multi-agent-1"}}
+result = app.invoke({
+    "messages": [HumanMessage("Research current LLM benchmarks and write a Python script to visualize them")]
+}, config=config)
+print(result["messages"][-1].content)</code></pre>
+
+<h2 id="lg-subgraphs">Subgraphs</h2>
+<pre><code class="language-python">from langgraph.graph import StateGraph, END
+from typing import TypedDict
+
+# Subgraph state — can be different from parent
+class SubState(TypedDict):
+    query: str
+    results: list
+    refined_query: str
+
+def refine_query(state: SubState) -> dict:
+    return {"refined_query": state["query"] + " (with context)"}
+
+def retrieve(state: SubState) -> dict:
+    return {"results": ["doc1", "doc2"]}
+
+# Build subgraph
+sub_workflow = StateGraph(SubState)
+sub_workflow.add_node("refine", refine_query)
+sub_workflow.add_node("retrieve", retrieve)
+sub_workflow.set_entry_point("refine")
+sub_workflow.add_edge("refine", "retrieve")
+sub_graph = sub_workflow.compile()
+
+# Parent graph
+class ParentState(TypedDict):
+    question: str
+    context: list
+    answer: str
+
+def prepare_input(state: ParentState) -> SubState:
+    return {"query": state["question"], "results": [], "refined_query": ""}
+
+def extract_output(sub_result: SubState) -> dict:
+    return {"context": sub_result["results"]}
+
+def generate_answer(state: ParentState) -> dict:
+    return {"answer": f"Based on {len(state['context'])} docs: answer here"}
+
+parent_workflow = StateGraph(ParentState)
+parent_workflow.add_node("retrieval_subgraph", sub_graph)  # Subgraph as node!
+parent_workflow.add_node("answer", generate_answer)
+parent_workflow.set_entry_point("retrieval_subgraph")
+parent_workflow.add_edge("retrieval_subgraph", "answer")
+parent_app = parent_workflow.compile()</code></pre>
+
+<h2 id="ex-chatbot">Example: Basic Chatbot</h2>
+<pre><code class="language-python">from langgraph.graph import StateGraph, END
+from langgraph.graph.message import add_messages
+from langgraph.checkpoint.sqlite import SqliteSaver
+from langchain_anthropic import ChatAnthropic
+from langchain_core.messages import HumanMessage, SystemMessage
+from typing import TypedDict, Annotated
+
+class ChatState(TypedDict):
+    messages: Annotated[list, add_messages]
+
+llm = ChatAnthropic(model="claude-3-5-haiku-20241022")
+
+def chatbot(state: ChatState) -> dict:
+    system = SystemMessage("You are a helpful assistant named Claude.")
+    response = llm.invoke([system] + state["messages"])
+    return {"messages": [response]}
+
+graph = StateGraph(ChatState)
+graph.add_node("chatbot", chatbot)
+graph.set_entry_point("chatbot")
+graph.add_edge("chatbot", END)
+
+checkpointer = SqliteSaver.from_conn_string("chatbot.db")
+app = graph.compile(checkpointer=checkpointer)
+
+def chat(session_id: str, user_input: str) -> str:
+    config = {"configurable": {"thread_id": session_id}}
+    result = app.invoke({"messages": [HumanMessage(user_input)]}, config=config)
+    return result["messages"][-1].content
+
+# Multi-turn conversation
+print(chat("session-1", "My name is Dinesh"))
+print(chat("session-1", "What is my name?"))  # Remembers "Dinesh"</code></pre>
+
+<h2 id="ex-react">Example: ReAct Agent with LangGraph</h2>
+<pre><code class="language-python">from langgraph.prebuilt import create_react_agent
+from langchain_anthropic import ChatAnthropic
+from langchain.tools import tool
+from langgraph.checkpoint.memory import MemorySaver
+
+@tool
+def search(query: str) -> str:
+    """Search the web."""
+    return f"Results for '{query}': [simulated search results]"
+
+@tool
+def calculator(expression: str) -> str:
+    """Evaluate math expression."""
+    try: return str(eval(expression))
+    except: return "Error in expression"
+
+llm = ChatAnthropic(model="claude-3-5-sonnet-20241022")
+tools = [search, calculator]
+
+# create_react_agent is LangGraph's prebuilt ReAct agent
+agent = create_react_agent(llm, tools, checkpointer=MemorySaver())
+
+config = {"configurable": {"thread_id": "react-1"}}
+result = agent.invoke(
+    {"messages": [HumanMessage("What is 15% of the GDP of France in 2023?")]},
+    config=config
+)
+print(result["messages"][-1].content)</code></pre>
+
+<h2 id="ex-rag-agent">Example: RAG Agent</h2>
+<pre><code class="language-python">from langgraph.graph import StateGraph, END
+from langgraph.prebuilt import ToolNode, tools_condition
+from langchain_anthropic import ChatAnthropic
+from langchain_core.tools import tool
+from langchain_community.vectorstores import Chroma
+from langchain_openai import OpenAIEmbeddings
+from typing import TypedDict, Annotated
+from langgraph.graph.message import add_messages
+
+# Setup vector store
+vectorstore = Chroma(persist_directory="./rag_db", embedding_function=OpenAIEmbeddings())
+retriever = vectorstore.as_retriever(search_kwargs={"k": 5})
+
+@tool
+def retrieve_documents(query: str) -> str:
+    """Retrieve relevant documents from the knowledge base."""
+    docs = retriever.invoke(query)
+    return "\n\n".join(doc.page_content for doc in docs)
+
+@tool
+def search_web(query: str) -> str:
+    """Search the web for recent information not in the knowledge base."""
+    return f"Web results for '{query}': [recent news and articles]"
+
+class RAGState(TypedDict):
+    messages: Annotated[list, add_messages]
+
+llm = ChatAnthropic(model="claude-3-5-sonnet-20241022")
+tools = [retrieve_documents, search_web]
+llm_with_tools = llm.bind_tools(tools)
+tool_node = ToolNode(tools)
+
+def agent_node(state: RAGState) -> dict:
+    system = """You are a knowledgeable assistant with access to a knowledge base.
+    Always retrieve relevant documents before answering questions.
+    If documents don't contain the answer, use web search."""
+    from langchain_core.messages import SystemMessage
+    msgs = [SystemMessage(system)] + state["messages"]
+    return {"messages": [llm_with_tools.invoke(msgs)]}
+
+graph = StateGraph(RAGState)
+graph.add_node("agent", agent_node)
+graph.add_node("tools", tool_node)
+graph.set_entry_point("agent")
+graph.add_conditional_edges("agent", tools_condition)
+graph.add_edge("tools", "agent")
+
+app = graph.compile()
+result = app.invoke({"messages": [HumanMessage("What is the latest on LangGraph?")]})
+print(result["messages"][-1].content)</code></pre>
+
+<h2 id="lg-cloud">LangGraph Cloud Deployment</h2>
+<pre><code class="language-yaml"># langgraph.json — deployment configuration
+{
+  "dependencies": ["./"],
+  "graphs": {
+    "agent": "./my_agent/graph.py:app"
+  },
+  "env": ".env"
+}
+</code></pre>
+<pre><code class="language-python"># Deploy to LangGraph Cloud via LangSmith
+# CLI: langgraph build && langgraph deploy
+
+# Using LangGraph Cloud API
+from langgraph_sdk import get_client
+
+client = get_client(url="https://your-deployment.api.langchain.com",
+                    api_key="your-langsmith-key")
+
+# Create a thread
+thread = await client.threads.create()
+
+# Run agent
+run = await client.runs.create(
+    thread_id=thread["thread_id"],
+    assistant_id="agent",
+    input={"messages": [{"role": "user", "content": "Hello!"}]}
+)
+
+# Stream output
+async for chunk in client.runs.stream(
+    thread_id=thread["thread_id"],
+    assistant_id="agent",
+    input={"messages": [{"role": "user", "content": "Hello!"}]},
+    stream_mode="messages"
+):
+    print(chunk)
+
+# Background runs
+run = await client.runs.create(
+    thread_id=thread["thread_id"],
+    assistant_id="agent",
+    input={...},
+    multitask_strategy="rollback"  # "interrupt" | "rollback" | "enqueue"
+)</code></pre>
+
+<h2 id="interview">Interview Questions &amp; Answers</h2>
+
+<details>
+<summary>Q1: What is LCEL and why was it introduced? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p>LCEL (LangChain Expression Language) is a declarative way to compose LangChain components using the <code>|</code> pipe operator. Every component is a <code>Runnable</code> with a consistent interface: <code>invoke()</code>, <code>stream()</code>, <code>batch()</code>, <code>ainvoke()</code>.</p>
+<p><strong>Why introduced:</strong></p>
+<ul>
+  <li>Eliminates boilerplate from chaining components manually</li>
+  <li>Automatic async, streaming, batch support — write once, works everywhere</li>
+  <li>Automatic LangSmith tracing for every step</li>
+  <li>Parallel execution via RunnableParallel</li>
+  <li>Easy to swap components (change model, parser, retriever)</li>
+</ul>
+</div>
+</details>
+
+<details>
+<summary>Q2: Explain the difference between invoke(), stream(), and batch() in LCEL. <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<ul>
+  <li><strong>invoke(input)</strong>: Runs the chain once synchronously, returns complete output.</li>
+  <li><strong>stream(input)</strong>: Returns a generator that yields partial outputs as they're generated (token streaming). Essential for chat UI.</li>
+  <li><strong>batch([input1, input2])</strong>: Processes multiple inputs in parallel (with configurable max_concurrency). Much faster than sequential invokes.</li>
+  <li><strong>ainvoke/astream/abatch</strong>: Async versions for use in async contexts (FastAPI, etc.)</li>
+</ul>
+<p>All chains built with LCEL automatically support all these methods, even if the underlying components only implement invoke.</p>
+</div>
+</details>
+
+<details>
+<summary>Q3: What is the difference between RecursiveCharacterTextSplitter and SemanticChunker? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p><strong>RecursiveCharacterTextSplitter:</strong> Rule-based — splits at character boundaries (newlines, spaces) with a target chunk_size and overlap. Fast, no LLM needed. Can break semantic units arbitrarily if they exceed chunk_size.</p>
+<p><strong>SemanticChunker:</strong> Embedding-based — computes sentence embeddings, finds places where semantic similarity drops sharply (topic change), splits there. Preserves semantic coherence. Slower (needs embedding for every sentence). Better for documents with clear topic shifts.</p>
+<p><strong>Recommendation:</strong> Use RecursiveCharacterTextSplitter as default, switch to SemanticChunker when topic coherence matters more than speed.</p>
+</div>
+</details>
+
+<details>
+<summary>Q4: How does MMR (Maximal Marginal Relevance) retrieval differ from simple similarity search? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>Similarity search:</strong> Returns the k most similar documents to the query. Problem: if several chunks come from the same section, they'll all be similar to each other AND the query → redundant results.</p>
+<p><strong>MMR:</strong> Iteratively selects documents that are: (1) relevant to the query AND (2) different from already selected documents. Formula: <code>λ·sim(doc, query) - (1-λ)·max_sim(doc, selected)</code></p>
+<p><code>lambda_mult=1.0</code> = pure similarity, <code>lambda_mult=0.0</code> = pure diversity. Default ~0.5 balances both.</p>
+<p>Best for: when your knowledge base has many similar chunks and you want diverse coverage.</p>
+</div>
+</details>
+
+<details>
+<summary>Q5: What are the advantages of EnsembleRetriever combining BM25 and vector search? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>BM25 (keyword/sparse retrieval):</strong> Excellent for exact keyword matches, proper nouns, IDs. Doesn't understand semantics.</p>
+<p><strong>Vector search (dense retrieval):</strong> Understands semantics and synonyms. Struggles with exact keyword matching and rare terms.</p>
+<p><strong>Hybrid (EnsembleRetriever):</strong> Combines both using reciprocal rank fusion. Gets both semantic understanding AND precise keyword matching. Consistently outperforms either alone on diverse query types.</p>
+<p>Typical weights: 0.3 BM25 + 0.7 semantic, or tune on eval set.</p>
+</div>
+</details>
+
+<details>
+<summary>Q6: How do you add custom metadata to vector store documents and use it for filtering? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<pre><code class="language-python">from langchain_core.documents import Document
+
+docs = [
+    Document(page_content="Q1 revenue was $1.2B",
+             metadata={"source": "annual_report", "year": 2023, "quarter": "Q1"}),
+    Document(page_content="Q2 revenue was $1.5B",
+             metadata={"source": "annual_report", "year": 2023, "quarter": "Q2"}),
+]
+vectorstore.add_documents(docs)
+
+# Filter by metadata during retrieval
+retriever = vectorstore.as_retriever(
+    search_kwargs={"k": 5, "filter": {"year": 2023, "quarter": "Q1"}}
+)
+
+# Self-querying retriever — LLM parses filters from natural language
+from langchain.retrievers.self_query.base import SelfQueryRetriever
+from langchain.chains.query_constructor.base import AttributeInfo
+
+metadata_field_info = [
+    AttributeInfo(name="year", description="Report year", type="integer"),
+    AttributeInfo(name="quarter", description="Q1-Q4", type="string"),
+]
+self_query_retriever = SelfQueryRetriever.from_llm(
+    llm, vectorstore, "Financial reports", metadata_field_info, verbose=True
+)
+# Now "show me Q1 2023 data" automatically adds the filter</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q7: What is the difference between add_messages reducer and operator.add in LangGraph state? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>Both append new items to a list, but <code>add_messages</code> is specifically designed for LangChain messages:</p>
+<ul>
+  <li><strong>operator.add</strong>: Simple list concatenation: <code>[1,2] + [3] = [1,2,3]</code></li>
+  <li><strong>add_messages</strong>: Also concatenates, but has special handling:
+    <ul>
+      <li>If a message with the same <code>id</code> already exists, it UPDATES it (not duplicates)</li>
+      <li>Useful for streaming — same message gets updated chunks</li>
+      <li>Handles ToolMessage pairing with ToolCall IDs</li>
+    </ul>
+  </li>
+</ul>
+<p>Use <code>add_messages</code> for the messages field, <code>operator.add</code> for other lists like retrieved documents.</p>
+</div>
+</details>
+
+<details>
+<summary>Q8: How do you implement retry logic in LCEL chains? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<pre><code class="language-python">from langchain_core.runnables import RunnableRetry, RunnableWithFallbacks
+
+# .with_retry() — retry on exceptions
+chain_with_retry = chain.with_retry(
+    stop_after_attempt=3,
+    wait_exponential_jitter=True,
+    retry_if_exception_type=(Exception,)
+)
+
+# .with_fallbacks() — try alternatives on failure
+fast_model = ChatAnthropic(model="claude-3-5-haiku-20241022")
+smart_model = ChatAnthropic(model="claude-3-5-sonnet-20241022")
+
+chain_with_fallback = (smart_model | parser).with_fallbacks(
+    [fast_model | parser],
+    exceptions_to_handle=(Exception,)
+)
+
+# Combined: try smart model 3x, then fall back to fast model
+robust_chain = (smart_model | parser).with_retry(stop_after_attempt=3)\
+    .with_fallbacks([fast_model | parser])</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q9: Explain how to implement a streaming response in a FastAPI application with LangGraph. <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<pre><code class="language-python">from fastapi import FastAPI
+from fastapi.responses import StreamingResponse
+from langchain_core.messages import HumanMessage
+import json
+
+app_api = FastAPI()
+
+@app_api.post("/chat/stream")
+async def chat_stream(request: dict):
+    thread_id = request.get("thread_id", "default")
+    message = request["message"]
+    config = {"configurable": {"thread_id": thread_id}}
+
+    async def generate():
+        async for msg, metadata in lg_app.astream(
+            {"messages": [HumanMessage(message)]},
+            config=config,
+            stream_mode="messages"
+        ):
+            # Only stream LLM output, not tool results
+            if metadata.get("langgraph_node") in ("chatbot", "agent"):
+                if hasattr(msg, 'content') and msg.content:
+                    yield f"data: {json.dumps({'content': msg.content})}\n\n"
+        yield "data: [DONE]\n\n"
+
+    return StreamingResponse(generate(), media_type="text/event-stream",
+        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"})</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q10: How does LangSmith help debug LangGraph applications? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>LangSmith provides distributed tracing for every LangGraph execution:</p>
+<ul>
+  <li><strong>Trace view:</strong> See every node that executed, inputs/outputs, latency, token counts</li>
+  <li><strong>Nested spans:</strong> Tool calls, LLM invocations nested under their parent node</li>
+  <li><strong>Replay:</strong> Re-run any trace with the same inputs for debugging</li>
+  <li><strong>Comparison:</strong> A/B compare two runs side by side</li>
+  <li><strong>Feedback:</strong> Annotate traces with thumbs up/down, use as evaluation dataset</li>
+  <li><strong>Filtering:</strong> Search traces by metadata, latency, error type</li>
+</ul>
+<p>Enable with <code>LANGCHAIN_TRACING_V2=true</code>. Zero code changes needed for LangGraph — all execution is automatically traced.</p>
+</div>
+</details>
+
+<details>
+<summary>Q11: How do you implement a RAG pipeline that can gracefully handle cases where retrieved context is insufficient? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<pre><code class="language-python">from langgraph.graph import StateGraph, END
+from typing import Literal
+
+class AdaptiveRAGState(TypedDict):
+    question: str
+    documents: list
+    answer: str
+    grade: str  # "relevant" | "not_relevant"
+
+def retrieve(state):
+    docs = retriever.invoke(state["question"])
+    return {"documents": docs}
+
+def grade_documents(state):
+    grader_llm = ChatAnthropic(model="claude-3-5-haiku-20241022")
+    docs_text = "\n".join(d.page_content[:200] for d in state["documents"])
+    grade_prompt = f"Question: {state['question']}\nDocuments: {docs_text}\nAre documents relevant? Answer 'relevant' or 'not_relevant'."
+    grade = grader_llm.invoke([HumanMessage(grade_prompt)]).content.strip().lower()
+    return {"grade": grade}
+
+def route_based_on_grade(state) -> Literal["generate", "web_search"]:
+    return "generate" if "relevant" in state["grade"] else "web_search"
+
+def web_search_fallback(state):
+    results = search_tool.invoke(state["question"])
+    from langchain_core.documents import Document
+    return {"documents": [Document(page_content=results)]}
+
+def generate(state):
+    context = "\n\n".join(d.page_content for d in state["documents"])
+    response = llm.invoke([HumanMessage(f"Context: {context}\n\nQuestion: {state['question']}")])
+    return {"answer": response.content}
+
+workflow = StateGraph(AdaptiveRAGState)
+workflow.add_node("retrieve", retrieve)
+workflow.add_node("grade", grade_documents)
+workflow.add_node("generate", generate)
+workflow.add_node("web_search", web_search_fallback)
+workflow.set_entry_point("retrieve")
+workflow.add_edge("retrieve", "grade")
+workflow.add_conditional_edges("grade", route_based_on_grade)
+workflow.add_edge("web_search", "generate")
+workflow.add_edge("generate", END)</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q12: What are the streaming modes in LangGraph and when to use each? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<table>
+  <tr><th>Mode</th><th>What you get</th><th>Use when</th></tr>
+  <tr><td><code>values</code></td><td>Full state snapshot after each node</td><td>Monitoring progress, debugging state changes</td></tr>
+  <tr><td><code>updates</code></td><td>(node_name, partial_update) pairs</td><td>Knowing which node ran and what changed</td></tr>
+  <tr><td><code>messages</code></td><td>Individual message tokens as generated</td><td>Live chat UI, token-by-token display</td></tr>
+  <tr><td><code>debug</code></td><td>All internal events including checkpoints</td><td>Deep debugging, building replay tools</td></tr>
+</table>
+<p>For production chat apps: use <code>messages</code> mode with SSE. For monitoring pipelines: use <code>updates</code>. For debugging complex multi-agent flows: use <code>debug</code>.</p>
+</div>
+</details>
+
+<details>
+<summary>Q13: How do you handle very long conversations that exceed the context window in a LangGraph chatbot? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<pre><code class="language-python">from langchain_core.messages import trim_messages, RemoveMessage
+
+def trim_conversation(state: ChatState) -> dict:
+    """Keep recent messages within token limit"""
+    trimmed = trim_messages(
+        state["messages"],
+        strategy="last",          # keep last N tokens
+        token_counter=llm,        # use model's tokenizer
+        max_tokens=4000,
+        start_on="human",         # don't cut mid-human message
+        end_on=("human", "tool"),
+        include_system=True       # always keep system message
+    )
+    # If messages were trimmed, remove old ones from state
+    if len(trimmed) < len(state["messages"]):
+        to_remove = [RemoveMessage(id=m.id) for m in state["messages"][:-len(trimmed)]]
+        return {"messages": to_remove}
+    return {}
+
+# Summarization approach
+def summarize_history(state: ChatState) -> dict:
+    if len(state["messages"]) > 20:
+        summary_prompt = "Summarize this conversation in 3-4 sentences: " + \
+            "\n".join(f"{m.type}: {m.content}" for m in state["messages"][:-6])
+        summary = llm.invoke([HumanMessage(summary_prompt)]).content
+        to_delete = [RemoveMessage(id=m.id) for m in state["messages"][:-6]]
+        summary_msg = SystemMessage(f"Previous conversation summary: {summary}")
+        return {"messages": to_delete + [summary_msg]}
+    return {}</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q14: What is a ContextualCompressionRetriever and when should you use it? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>ContextualCompressionRetriever wraps another retriever and post-processes retrieved documents to extract only the parts relevant to the query.</p>
+<p><strong>Problem it solves:</strong> Retrieved chunks often contain irrelevant sections — e.g., a chunk retrieved for "Python decorators" might include paragraphs about unrelated topics. This wastes context window space and confuses the LLM.</p>
+<p><strong>How it works:</strong></p>
+<ol>
+  <li>Base retriever fetches top-k documents</li>
+  <li>Compressor (LLMChainExtractor or EmbeddingsFilter) extracts/scores the relevant parts</li>
+  <li>Returns compressed, relevant-only content</li>
+</ol>
+<p><strong>When to use:</strong> When chunks are large and queries are specific. Trade-off: adds LLM call overhead. Use EmbeddingsFilter for faster compression without extra LLM call.</p>
+</div>
+</details>
+
+<details>
+<summary>Q15: Explain the PydanticOutputParser vs with_structured_output — when to use each? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>PydanticOutputParser:</strong> Prompt-based — injects format instructions into the prompt asking LLM to output JSON, then parses it. Works with any model. Fragile if LLM doesn't follow format exactly (use OutputFixingParser as fallback). More customizable prompt.</p>
+<p><strong>with_structured_output:</strong> Uses model's native function calling / tool use / JSON mode. Much more reliable — the model is constrained to output valid JSON matching the schema at the API level. Preferred for newer models (GPT-4, Claude 3+).</p>
+<p><strong>Rule of thumb:</strong> Use <code>with_structured_output</code> if your model supports it (Claude 3+, GPT-4+). Fall back to PydanticOutputParser for older models or when you need more control over the prompt.</p>
+</div>
+</details>
+
+<details>
+<summary>Q16: How does LangGraph's interrupt differ from interrupt_before? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p><strong>interrupt_before=["node_name"]</strong>: Compile-time configuration — always pauses BEFORE the specified node runs. Good for approval gates you always want. The node hasn't executed when paused.</p>
+<p><strong>interrupt(value)</strong>: Runtime, inside a node's function — pause mid-execution with arbitrary context. The node starts executing but pauses at the interrupt call. Can pass rich context about why pausing.</p>
+<pre><code class="language-python">def review_node(state):
+    proposed = generate_proposal(state)
+    # Dynamic interrupt with context
+    human_response = interrupt({
+        "proposed_action": proposed,
+        "confidence": 0.7,
+        "reason": "High-value action requiring review"
+    })
+    if human_response["approved"]:
+        return execute(proposed)
+    return {"rejected": True}</code></pre>
+<p>Use <code>interrupt_before</code> for simple pre-node gates. Use <code>interrupt()</code> when the decision to pause depends on runtime data computed inside the node.</p>
+</div>
+</details>
+
+<details>
+<summary>Q17: What is MultiQueryRetriever and what problem does it solve? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>Problem:</strong> A single query may not capture all relevant documents. Embedding search is sensitive to phrasing — "ML models" and "AI algorithms" mean similar things but might retrieve different documents.</p>
+<p><strong>MultiQueryRetriever:</strong> Uses an LLM to generate multiple alternative phrasings of the query (typically 3-5), retrieves documents for each, then unions the results (deduplicating by content).</p>
+<p>Example for "What is LangGraph?" might generate: "How does LangGraph work?", "LangGraph state management", "LangGraph vs LangChain agents".</p>
+<p><strong>Trade-off:</strong> N queries = N embedding searches + 1 LLM call. Best for complex, ambiguous queries where recall matters more than latency.</p>
+</div>
+</details>
+
+<details>
+<summary>Q18: How does the RunnableParallel enable performance optimization in RAG? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<pre><code class="language-python"># Without parallel: sequential — takes sum of all times
+result = {
+    "docs": retriever.invoke(query),       # 200ms
+    "web": search.invoke(query),           # 300ms
+    "context": db.invoke(query)            # 150ms
+}  # Total: ~650ms
+
+# With RunnableParallel: concurrent — takes max of all times
+parallel = RunnableParallel({
+    "docs": retriever,
+    "web": search,
+    "context": db
+})
+result = parallel.invoke(query)  # Total: ~300ms (max)
+</code></pre>
+<p>RunnableParallel runs all branches concurrently using asyncio.gather under the hood. Each branch is an independent Runnable that can be any chain, retriever, or tool. This is particularly powerful for multi-source retrieval where you want documents from different knowledge bases simultaneously.</p>
+</div>
+</details>
+
+<details>
+<summary>Q19: Explain how to test a LangGraph application. <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<pre><code class="language-python">import pytest
+from unittest.mock import patch, MagicMock
+from langgraph.checkpoint.memory import MemorySaver
+
+# Unit test individual nodes
+def test_classify_node():
+    state = {"messages": [HumanMessage("I have a billing question")]}
+    result = classify_node(state)
+    assert result["category"] == "billing"
+
+# Integration test with mocked LLM
+def test_full_graph_flow():
+    with patch('langchain_anthropic.ChatAnthropic') as mock_llm:
+        mock_llm.return_value.invoke.return_value = AIMessage("Paris")
+        app = build_graph().compile(checkpointer=MemorySaver())
+        config = {"configurable": {"thread_id": "test-1"}}
+        result = app.invoke({"messages": [HumanMessage("Capital of France?")]}, config)
+        assert "Paris" in result["messages"][-1].content
+
+# Test with real model, evaluate output quality
+def test_rag_faithfulness():
+    result = rag_app.invoke({"messages": [HumanMessage("What year was LangChain founded?")]})
+    answer = result["messages"][-1].content
+    # Check answer is based on retrieved context (faithfulness)
+    assert "2022" in answer  # Known ground truth</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q20: What is a subgraph and when should you use it over a flat graph? <span class="badge very-advanced">Very Advanced</span></summary>
+<div class="answer">
+<p><strong>Subgraph:</strong> A compiled LangGraph used as a node within a parent graph. Has its own state schema, nodes, edges, and (optionally) checkpointer.</p>
+<p><strong>Use subgraphs when:</strong></p>
+<ul>
+  <li><strong>Reusability:</strong> The same workflow component is used in multiple parent graphs (authentication, retrieval pipeline)</li>
+  <li><strong>Different state schemas:</strong> A sub-workflow needs different state fields than the parent</li>
+  <li><strong>Team boundaries:</strong> Different teams own different subgraphs</li>
+  <li><strong>Isolation:</strong> Want to test a component independently</li>
+  <li><strong>Complexity:</strong> Parent graph is getting too complex — decompose into subgraphs</li>
+</ul>
+<p><strong>State compatibility:</strong> Parent and subgraph states must have compatible I/O — the parent node receives the subgraph's final state as its output. Use <code>input_schema</code> and <code>output_schema</code> on the subgraph to define the interface.</p>
+</div>
+</details>
+
+</main>
+</div>
+<footer>Dinesh Kumar's Learning Hub | 2024-2025</footer>
+<script>hljs.highlightAll();mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

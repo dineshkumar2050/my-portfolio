@@ -1,0 +1,34 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build output
+.next/
+out/
+dist/
+build/
+output/
+tmp/
+index-old.html
+Dinesh_kumar_resume(aug_2026).pdf
+
+# Environment — NEVER commit these
+.env
+.env.local
+.env.*.local
+
+# Runtime/generated app data
+/data/
+
+# Logs
+npm-debug.log*
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/

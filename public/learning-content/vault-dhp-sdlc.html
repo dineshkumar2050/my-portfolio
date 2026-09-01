@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vault, DHP & SDLC – Learning Reference</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6;display:flex;flex-direction:column}.topnav{background:#161b22;padding:10px 24px;border-bottom:1px solid #30363d;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100}.topnav a{color:#58a6ff;text-decoration:none;font-size:13px}.topnav h1{font-size:16px;color:#e6edf3;margin:0}.layout{display:flex;flex:1}.sidebar{width:260px;background:#161b22;border-right:1px solid #30363d;padding:16px;position:sticky;top:41px;height:calc(100vh - 41px);overflow-y:auto;flex-shrink:0}.sidebar a{display:block;padding:4px 8px;color:#8b949e;text-decoration:none;font-size:13px;border-radius:4px;margin-bottom:2px}.sidebar a:hover{background:#21262d;color:#c9d1d9}.sidebar .section-title{color:#58a6ff;font-size:11px;text-transform:uppercase;letter-spacing:.5px;margin:16px 0 6px;padding:0 8px;font-weight:600}main{flex:1;padding:32px 48px;max-width:960px}h1{font-size:2rem;color:#e6edf3;border-bottom:1px solid #30363d;padding-bottom:16px;margin-bottom:24px}h2{font-size:1.5rem;color:#e6edf3;margin:48px 0 16px;border-bottom:1px solid #21262d;padding-bottom:8px}h3{font-size:1.15rem;color:#79c0ff;margin:24px 0 10px}h4{font-size:1rem;color:#d2a8ff;margin:16px 0 8px}p{margin-bottom:12px}ul,ol{margin:0 0 16px 24px}li{margin-bottom:4px}pre{margin:16px 0;border-radius:6px;overflow-x:auto;font-size:13px}code:not(pre code){background:#161b22;padding:2px 6px;border-radius:4px;font-size:13px;color:#f0883e;border:1px solid #30363d}table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}th{background:#161b22;color:#58a6ff;padding:10px 14px;text-align:left;border:1px solid #30363d}td{padding:10px 14px;border:1px solid #30363d;vertical-align:top}tr:nth-child(even) td{background:#0a0d12}.mermaid{background:#161b22;padding:20px;border-radius:6px;margin:16px 0;text-align:center}details{border:1px solid #30363d;border-radius:6px;margin:10px 0;overflow:hidden}summary{padding:12px 16px;cursor:pointer;background:#161b22;color:#79c0ff;font-weight:600;list-style:none}details[open] summary{border-bottom:1px solid #30363d}.answer{padding:16px 20px;background:#0d1117}.badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:700;margin-left:8px}.easy{background:#1a4731;color:#3fb950}.intermediate{background:#2d2b00;color:#e3b341}.advanced{background:#3d1f00;color:#f0883e}.very-advanced{background:#3d0000;color:#ff7b72}.callout{background:#161b22;border-left:4px solid #58a6ff;padding:12px 16px;border-radius:0 6px 6px 0;margin:16px 0}footer{text-align:center;padding:24px;color:#8b949e;font-size:12px;border-top:1px solid #30363d;margin-top:40px}
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <h1>Vault, DHP &amp; SDLC</h1>
+  <a href="index.html">← Hub</a>
+  <a href="career-interviews.html">Career</a>
+  <a href="manager-architect-qa.html">Manager/Architect Q&amp;A</a>
+</nav>
+<div class="layout">
+<aside class="sidebar">
+  <div class="section-title">HashiCorp Vault</div>
+  <a href="#vault-intro">What is Vault</a>
+  <a href="#vault-arch">Architecture</a>
+  <a href="#secret-engines">Secret Engines</a>
+  <a href="#auth-methods">Auth Methods</a>
+  <a href="#policies">Policies</a>
+  <a href="#leases">Leases</a>
+  <a href="#vault-agent">Vault Agent &amp; Injector</a>
+  <a href="#vault-ha">High Availability</a>
+  <a href="#seal-unseal">Seal / Unseal</a>
+  <a href="#vault-qa">Vault Interview Q&amp;A</a>
+  <div class="section-title">DHP Platform</div>
+  <a href="#dhp-intro">What is DHP</a>
+  <a href="#dhp-arch">Platform Architecture</a>
+  <a href="#swimlanes">Swimlanes</a>
+  <a href="#env-definitions">Environment Definitions</a>
+  <a href="#dhp-temporal">Temporal on DHP</a>
+  <a href="#dhp-onboarding">Onboarding</a>
+  <a href="#dhp-qa">DHP Interview Q&amp;A</a>
+  <div class="section-title">SDLC</div>
+  <a href="#sdlc-phases">SDLC Phases</a>
+  <a href="#methodologies">Methodologies</a>
+  <a href="#scrum-deep">Scrum Deep Dive</a>
+  <a href="#tech-practices">Technical Practices</a>
+  <a href="#devops-culture">DevOps Culture</a>
+  <a href="#sdlc-qa">SDLC Interview Q&amp;A</a>
+</aside>
+<main>
+<h1>HashiCorp Vault, DHP &amp; SDLC</h1>
+
+<!-- ===== VAULT ===== -->
+<h2 id="vault-intro">What is HashiCorp Vault</h2>
+<p>HashiCorp Vault is an identity-based secrets and encryption management system. It provides a unified interface to any secret while providing tight access control and recording a detailed audit log. Vault solves the problem of how to securely store, access, and distribute secrets (API keys, passwords, certificates, encryption keys) across distributed systems.</p>
+<div class="callout">
+  <strong>Core capabilities:</strong> Secrets management · Encryption as a service · Identity-based access · Dynamic secrets · Key management · PKI/certificate management
+</div>
+<h3>Key Concepts</h3>
+<ul>
+  <li><strong>Secret:</strong> Anything that you want to tightly control access to — API keys, passwords, certificates, encryption keys</li>
+  <li><strong>Dynamic secrets:</strong> Generated on-demand, short-lived credentials (never reused)</li>
+  <li><strong>Encryption as a service (EaaS):</strong> Apps encrypt/decrypt data without ever handling the encryption key</li>
+  <li><strong>Lease:</strong> Time-to-live (TTL) associated with a secret; Vault revokes it when the lease expires</li>
+</ul>
+
+<h2 id="vault-arch">Vault Architecture</h2>
+<div class="mermaid">
+graph TB
+  Client["Client (App / CLI / Agent)"]
+  subgraph Vault["Vault Server"]
+    API["HTTP API Layer<br/>(port 8200)"]
+    Auth["Auth Layer<br/>(Token / AppRole / K8s / AWS)"]
+    Barrier["Barrier (AES-256-GCM)<br/>Encrypts everything to storage"]
+    SE["Secret Engines Layer<br/>(KV / DB / PKI / Transit / AWS)"]
+    Audit["Audit Layer<br/>(File / Syslog / Socket)"]
+    Core["Vault Core"]
+  end
+  Storage["Storage Backend<br/>(Raft / Consul / S3 / DynamoDB)"]
+  Client --> API
+  API --> Auth
+  Auth --> Core
+  Core --> Barrier
+  Core --> SE
+  Core --> Audit
+  Barrier --> Storage
+</div>
+
+<h3>Storage Backends</h3>
+<table>
+  <tr><th>Backend</th><th>Use Case</th><th>Notes</th></tr>
+  <tr><td>Integrated Raft</td><td>Recommended default</td><td>Built-in HA, no external dependency, WAL-based</td></tr>
+  <tr><td>Consul</td><td>Legacy HA setup</td><td>Requires Consul cluster, strong consistency</td></tr>
+  <tr><td>S3</td><td>Single-node / dev</td><td>No built-in HA, cheap storage</td></tr>
+  <tr><td>DynamoDB</td><td>AWS-native</td><td>HA via DynamoDB locks, higher latency</td></tr>
+</table>
+
+<h3>Barrier: AES-256-GCM Encryption</h3>
+<p>The barrier is Vault's encryption layer. All data stored in the backend is encrypted using AES-256-GCM (authenticated encryption). The barrier key is derived from the master key during unseal. Even if someone gains access to the storage backend, all data is encrypted and unreadable without the unseal keys.</p>
+
+<h2 id="secret-engines">Secret Engines</h2>
+
+<h3>KV (Key-Value) – v1 vs v2</h3>
+<table>
+  <tr><th>Feature</th><th>KV v1</th><th>KV v2</th></tr>
+  <tr><td>Versioning</td><td>No</td><td>Yes – stores up to N versions</td></tr>
+  <tr><td>Metadata</td><td>No</td><td>Yes – custom metadata per path</td></tr>
+  <tr><td>Soft delete</td><td>No</td><td>Yes – <code>vault kv delete</code> marks deleted</td></tr>
+  <tr><td>Hard destroy</td><td>Delete = destroy</td><td><code>vault kv destroy</code> removes version data</td></tr>
+  <tr><td>Check-and-Set</td><td>No</td><td>Yes – <code>cas</code> parameter prevents races</td></tr>
+  <tr><td>Path prefix</td><td><code>secret/</code></td><td><code>secret/data/</code>, <code>secret/metadata/</code></td></tr>
+</table>
+<pre><code class="language-bash"># KV v2 operations
+vault kv put secret/myapp/config username=admin password=s3cr3t
+vault kv get secret/myapp/config
+vault kv get -version=2 secret/myapp/config   # get specific version
+vault kv delete secret/myapp/config           # soft delete (latest)
+vault kv undelete -versions=2 secret/myapp/config
+vault kv destroy -versions=2 secret/myapp/config  # permanent
+vault kv metadata get secret/myapp/config
+vault kv metadata put -max-versions=5 secret/myapp/config</code></pre>
+
+<h3>Database Secret Engine</h3>
+<p>Generates dynamic, short-lived credentials for databases. Vault creates a new user on each request, with a configurable TTL. The credential is automatically revoked when the lease expires.</p>
+<pre><code class="language-bash"># Enable and configure database engine
+vault secrets enable database
+vault write database/config/my-postgresql-database \
+  plugin_name=postgresql-database-plugin \
+  allowed_roles="readonly" \
+  connection_url="postgresql://{{username}}:{{password}}@localhost:5432/mydb" \
+  username="vault-admin" password="vault-pass"
+
+# Create a role with SQL to run on credential creation
+vault write database/roles/readonly \
+  db_name=my-postgresql-database \
+  creation_statements="CREATE ROLE '{{name}}' WITH LOGIN PASSWORD '{{password}}' \
+    VALID UNTIL '{{expiration}}'; GRANT SELECT ON ALL TABLES IN SCHEMA public TO '{{name}}';" \
+  default_ttl="1h" max_ttl="24h"
+
+# Generate credentials
+vault read database/creds/readonly
+# Returns: username (vault-readonly-xxxx), password (dynamic), lease_duration 1h</code></pre>
+<p>Supported databases: PostgreSQL, MySQL/MariaDB, MongoDB, MSSQL, Oracle, Cassandra, Redis, Elasticsearch, Snowflake.</p>
+
+<h3>PKI Secret Engine</h3>
+<p>Vault acts as a Certificate Authority (CA). It can issue X.509 certificates, sign CSRs, and manage certificate revocation.</p>
+<pre><code class="language-bash"># Enable PKI engine
+vault secrets enable pki
+vault secrets tune -max-lease-ttl=87600h pki  # 10 years
+
+# Generate root CA
+vault write pki/root/generate/internal \
+  common_name="example.com" ttl="87600h"
+
+# Configure URLs (CRL, OCSP)
+vault write pki/config/urls \
+  issuing_certificates="http://vault.example.com:8200/v1/pki/ca" \
+  crl_distribution_points="http://vault.example.com:8200/v1/pki/crl" \
+  ocsp_servers="http://vault.example.com:8200/v1/pki/ocsp"
+
+# Create intermediate CA (recommended pattern)
+vault secrets enable -path=pki_int pki
+vault write pki_int/intermediate/generate/internal common_name="example.com Intermediate"
+# Sign with root, then set signed cert in pki_int/intermediate/set-signed
+
+# Create role for issuing certs
+vault write pki_int/roles/example-dot-com \
+  allowed_domains="example.com" allow_subdomains=true \
+  max_ttl="720h"
+
+# Issue certificate
+vault write pki_int/issue/example-dot-com \
+  common_name="app.example.com" ttl="24h"
+
+# Revoke a certificate
+vault write pki/revoke serial_number="39:dd:2e:..."</code></pre>
+
+<h3>AWS Secret Engine</h3>
+<p>Generates dynamic AWS IAM credentials (access key + secret key) or STS credentials on demand.</p>
+<pre><code class="language-bash">vault secrets enable aws
+vault write aws/config/root access_key=AKIAIOSFODNN7 secret_key=... region=ap-southeast-2
+
+# Create role (IAM user with inline policy)
+vault write aws/roles/s3-readonly \
+  credential_type=iam_user \
+  policy_document='{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Action":["s3:GetObject"],"Resource":"*"}]}'
+
+# Or using STS assumed role
+vault write aws/roles/deploy \
+  credential_type=assumed_role \
+  role_arns="arn:aws:iam::123456789012:role/my-role"
+
+vault read aws/creds/s3-readonly  # returns access_key, secret_key, lease_duration</code></pre>
+
+<h3>Transit Secret Engine (Encryption as a Service)</h3>
+<p>Provides cryptographic operations without storing data. Applications encrypt/decrypt data using Vault's API — the plaintext never leaves the app, only ciphertext is stored in your database.</p>
+<pre><code class="language-bash">vault secrets enable transit
+
+# Create an encryption key
+vault write -f transit/keys/my-app-key  # AES-256-GCM96 default
+# Or specify type: aes128-gcm96, chacha20-poly1305, ed25519, ecdsa-p256, rsa-2048, rsa-4096
+
+# Encrypt data (plaintext must be base64-encoded)
+vault write transit/encrypt/my-app-key \
+  plaintext=$(echo -n "sensitive-data" | base64)
+# Returns: ciphertext: vault:v1:8SDd3WHDOjf7mq6...
+
+# Decrypt data
+vault write transit/decrypt/my-app-key \
+  ciphertext="vault:v1:8SDd3WHDOjf7mq6..."
+# Returns: plaintext (base64-encoded)
+
+# Key rotation (new ciphertext uses v2, old still decryptable)
+vault write -f transit/keys/my-app-key/rotate
+
+# Rewrap old ciphertext to use latest key version
+vault write transit/rewrap/my-app-key ciphertext="vault:v1:..."
+
+# Signing (ed25519/ECDSA keys)
+vault write transit/sign/my-signing-key input=$(echo -n "message" | base64)
+vault write transit/verify/my-signing-key input=... signature=...</code></pre>
+
+<h3>SSH Secret Engine</h3>
+<p>Two modes: <strong>OTP</strong> (one-time password per session) and <strong>Signed Certificates</strong> (CA-signed SSH keys).</p>
+<pre><code class="language-bash"># Signed certificates mode (preferred)
+vault secrets enable ssh
+vault write ssh/config/ca generate_signing_key=true
+# Add Vault's public key to SSH servers: TrustedUserCAKeys /etc/ssh/trusted-user-ca-keys.pem
+
+vault write ssh/roles/my-role \
+  key_type=ca \
+  allowed_users="ubuntu,ec2-user" \
+  default_extensions='{"permit-pty":""}' \
+  ttl="30m"
+
+# Sign a public key
+vault write ssh/sign/my-role public_key=@~/.ssh/id_rsa.pub
+# SSH using signed cert: ssh -i vault-signed-cert.pub -i ~/.ssh/id_rsa ubuntu@host</code></pre>
+
+<h2 id="auth-methods">Auth Methods</h2>
+
+<h3>Token Auth (Default)</h3>
+<p>Every auth method generates a token. Tokens are Vault's native auth mechanism. The root token is created at initialization and should be revoked after initial setup.</p>
+<pre><code class="language-bash"># Token properties
+vault token create -policy="my-policy" -ttl=24h -use-limit=5
+vault token lookup &lt;token&gt;
+vault token renew &lt;token&gt;
+vault token revoke &lt;token&gt;
+
+# Periodic tokens (no TTL expiry but must be renewed)
+vault token create -policy="worker" -period=24h
+
+# Token roles (templates for creating tokens)
+vault write auth/token/roles/worker \
+  allowed_policies="worker-policy" period=24h orphan=true</code></pre>
+
+<h3>AppRole Auth (Machine-to-Machine)</h3>
+<p>The recommended method for applications. The app knows its <code>RoleID</code> (public, like a username) and must fetch a <code>SecretID</code> (private, like a password). Response wrapping adds an extra layer of security.</p>
+<pre><code class="language-bash">vault auth enable approle
+vault write auth/approle/role/my-app \
+  secret_id_ttl=10m \
+  secret_id_num_uses=1 \
+  token_ttl=20m \
+  token_max_ttl=4h \
+  policies="my-app-policy"
+
+# Get RoleID (embed in app config/image)
+vault read auth/approle/role/my-app/role-id
+
+# Get SecretID via response wrapping (CI/CD passes wrapped token)
+vault write -wrap-ttl=120s -f auth/approle/role/my-app/secret-id
+# Returns: wrapping_token (valid 120s, single-use)
+
+# App unwraps to get SecretID
+vault unwrap &lt;wrapping_token&gt;
+
+# App logs in
+vault write auth/approle/login role_id="..." secret_id="..."</code></pre>
+
+<h3>AWS IAM Auth</h3>
+<p>EC2 instances or Lambda functions authenticate using AWS-signed API calls or instance identity documents.</p>
+<pre><code class="language-bash">vault auth enable aws
+vault write auth/aws/config/client \
+  access_key=AKIA... secret_key=...
+
+# IAM method: iam auth type (recommended for ECS/Lambda)
+vault write auth/aws/role/my-ecs-role \
+  auth_type=iam \
+  bound_iam_principal_arn="arn:aws:iam::123456789:role/my-ecs-task-role" \
+  policies="my-policy" ttl=1h
+
+# EC2 method: uses PKCS7-signed instance identity document
+vault write auth/aws/role/my-ec2-role \
+  auth_type=ec2 \
+  bound_ami_id="ami-12345678" \
+  bound_account_id="123456789012" \
+  policies="my-policy" ttl=1h</code></pre>
+
+<h3>Kubernetes Auth</h3>
+<p>Pods authenticate using their ServiceAccount JWT token. The vault-agent injector uses this method automatically.</p>
+<pre><code class="language-bash">vault auth enable kubernetes
+vault write auth/kubernetes/config \
+  token_reviewer_jwt="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" \
+  kubernetes_host="https://kubernetes.default.svc:443" \
+  kubernetes_ca_cert=@/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+
+vault write auth/kubernetes/role/my-app \
+  bound_service_account_names="my-app-sa" \
+  bound_service_account_namespaces="production" \
+  policies="my-app-policy" \
+  ttl=1h</code></pre>
+
+<h3>LDAP / OIDC (Human Users)</h3>
+<pre><code class="language-bash"># OIDC (SSO via Okta, Google, Azure AD)
+vault auth enable oidc
+vault write auth/oidc/config \
+  oidc_discovery_url="https://accounts.google.com" \
+  oidc_client_id="..." oidc_client_secret="..." \
+  default_role="reader"
+vault write auth/oidc/role/reader \
+  user_claim="email" \
+  bound_audiences="..." \
+  allowed_redirect_uris="http://localhost:8250/oidc/callback" \
+  policies="reader-policy"</code></pre>
+
+<h2 id="policies">Policies</h2>
+<p>Policies are written in HCL (HashiCorp Configuration Language) and control access to paths in Vault. Every token has one or more policies attached.</p>
+<pre><code class="language-hcl"># Capabilities: create, read, update, delete, list, sudo, deny
+path "secret/data/myapp/*" {
+  capabilities = ["create", "read", "update", "delete", "list"]
+}
+
+path "secret/data/myapp/shared" {
+  capabilities = ["read"]
+}
+
+# Deny overrides all other capabilities
+path "secret/data/myapp/admin-only" {
+  capabilities = ["deny"]
+}
+
+# Database dynamic credentials
+path "database/creds/readonly" {
+  capabilities = ["read"]
+}
+
+# Allow renewing own token
+path "auth/token/renew-self" {
+  capabilities = ["update"]
+}
+
+# Policy templating with identity
+path "secret/data/users/{{identity.entity.name}}/*" {
+  capabilities = ["create", "read", "update", "delete"]
+}
+
+# Group-based templating
+path "secret/data/teams/{{identity.groups.names.engineering.id}}/*" {
+  capabilities = ["read", "list"]
+}</code></pre>
+
+<pre><code class="language-bash"># CRUD policy operations
+vault policy write my-policy policy.hcl
+vault policy read my-policy
+vault policy list
+vault policy delete my-policy
+
+# Token with multiple policies
+vault token create -policy=read-only -policy=kv-writer</code></pre>
+
+<h3>Sentinel Policies (Enterprise)</h3>
+<p>Endpoint Governing Policies (EGP) and Role Governing Policies (RGP) allow fine-grained control using Sentinel language — e.g., restrict access to business hours, require MFA, enforce IP-based access.</p>
+
+<h2 id="leases">Leases &amp; Dynamic Secrets Lifecycle</h2>
+<div class="mermaid">
+sequenceDiagram
+  participant App
+  participant Vault
+  participant DB as Database
+  App->>Vault: Request credentials (auth token required)
+  Vault->>DB: CREATE USER vault-xxxx (TTL=1h)
+  Vault-->>App: {username, password, lease_id, lease_duration=1h}
+  Note over App,Vault: App uses credentials for up to 1h
+  App->>Vault: vault lease renew &lt;lease_id&gt; (before expiry)
+  Vault-->>App: Lease extended (up to max_ttl)
+  Note over Vault,DB: On lease expiry or revocation
+  Vault->>DB: DROP USER vault-xxxx
+</div>
+<pre><code class="language-bash">vault lease renew database/creds/readonly/&lt;lease-id&gt;
+vault lease revoke database/creds/readonly/&lt;lease-id&gt;
+vault lease revoke -prefix database/creds/readonly/  # revoke all
+vault lease lookup &lt;lease-id&gt;</code></pre>
+
+<h2 id="vault-agent">Vault Agent &amp; Vault Injector</h2>
+
+<h3>Vault Agent</h3>
+<p>A client-side daemon that handles auto-auth, secret rendering to files, and response wrapping. Runs alongside your application.</p>
+<pre><code class="language-hcl"># vault-agent-config.hcl
+vault {
+  address = "https://vault.example.com:8200"
+}
+
+auto_auth {
+  method "aws" {
+    mount_path = "auth/aws"
+    config = {
+      type = "iam"
+      role = "my-role"
+    }
+  }
+  sink "file" {
+    config = { path = "/tmp/vault-token" }
+  }
+}
+
+template {
+  source      = "/etc/vault/templates/db-config.ctmpl"
+  destination = "/etc/app/db-config.yaml"
+  perms       = 0640
+}
+
+cache {
+  use_auto_auth_token = true
+}</code></pre>
+<pre><code class="language-bash"># db-config.ctmpl (Consul Template syntax)
+{{- with secret "database/creds/readonly" -}}
+DB_USERNAME={{ .Data.username }}
+DB_PASSWORD={{ .Data.password }}
+{{- end }}</code></pre>
+
+<h3>Vault Injector (Kubernetes)</h3>
+<p>A Kubernetes mutating admission webhook that automatically injects Vault secrets into pods via annotations. Creates an init container (fetch secrets at startup) and a sidecar (keep secrets up-to-date).</p>
+<pre><code class="language-yaml">apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+spec:
+  template:
+    metadata:
+      annotations:
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/role: "my-app"
+        vault.hashicorp.com/agent-inject-secret-config.yaml: "secret/data/myapp/config"
+        vault.hashicorp.com/agent-inject-template-config.yaml: |
+          {{- with secret "secret/data/myapp/config" -}}
+          DB_URL: {{ .Data.data.db_url }}
+          API_KEY: {{ .Data.data.api_key }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-secret-db-creds.yaml: "database/creds/readonly"
+        vault.hashicorp.com/agent-pre-populate-only: "false"  # keep sidecar running
+        vault.hashicorp.com/agent-cache-enable: "true"</code></pre>
+
+<h2 id="vault-ha">High Availability with Integrated Raft</h2>
+<div class="mermaid">
+graph LR
+  subgraph VaultCluster["Vault Cluster (Raft)"]
+    L["Leader Node<br/>(Active)"]
+    F1["Follower 1<br/>(Standby)"]
+    F2["Follower 2<br/>(Standby)"]
+  end
+  LB["Load Balancer"] --> L
+  LB -.->|"redirect"| F1
+  LB -.->|"redirect"| F2
+  L <-->|"Raft Replication"| F1
+  L <-->|"Raft Replication"| F2
+  F1 <-.->|"auto leader election<br/>on failure"| F2
+</div>
+<ul>
+  <li><strong>Leader election:</strong> Raft consensus algorithm — majority quorum required (3-node: tolerate 1 failure, 5-node: tolerate 2)</li>
+  <li><strong>Standby nodes:</strong> Forward requests to the active leader by default</li>
+  <li><strong>Performance standbys (Enterprise):</strong> Can serve read requests directly without forwarding</li>
+  <li><strong>Vault Namespaces (Enterprise):</strong> Multi-tenancy within a single Vault cluster — each namespace has its own policies, auth methods, secret engines, and audit logs</li>
+</ul>
+
+<h2 id="seal-unseal">Seal / Unseal</h2>
+<p>When Vault starts, it is <strong>sealed</strong> — it knows where to find storage but cannot read any of it (barrier key not in memory). Unsealing loads the barrier key into memory.</p>
+<h3>Shamir's Secret Sharing (Default)</h3>
+<p>The master key is split into N shares, requiring K shares to reconstruct (e.g., 5 shares, threshold 3). Key holders each hold one share. On restart, K holders must provide their share to unseal.</p>
+<pre><code class="language-bash">vault operator init -key-shares=5 -key-threshold=3
+# Saves 5 unseal keys + 1 initial root token
+
+vault operator unseal &lt;key-1&gt;  # run 3 times with different keys
+vault status  # shows sealed: false once unsealed</code></pre>
+<h3>Auto-Unseal</h3>
+<pre><code class="language-hcl"># AWS KMS auto-unseal
+seal "awskms" {
+  region     = "ap-southeast-2"
+  kms_key_id = "arn:aws:kms:ap-southeast-2:123456789:key/abc123"
+}
+# Azure Key Vault, GCP Cloud KMS also supported</code></pre>
+
+<h3>DR vs Performance Replication (Enterprise)</h3>
+<table>
+  <tr><th>Feature</th><th>DR Replication</th><th>Performance Replication</th></tr>
+  <tr><td>Purpose</td><td>Disaster recovery — failover only</td><td>Scale read performance across regions</td></tr>
+  <tr><td>Secondary serves requests?</td><td>No (until promoted)</td><td>Yes (read-only)</td></tr>
+  <tr><td>Tokens valid on secondary?</td><td>Only after promotion</td><td>Yes (replicated)</td></tr>
+  <tr><td>Use case</td><td>RPO/RTO compliance</td><td>Global applications</td></tr>
+</table>
+
+<h2 id="vault-qa">Vault Interview Q&amp;A</h2>
+
+<details>
+<summary>Q1: Explain Vault's architecture and how the barrier works. <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p><strong>Answer:</strong> Vault has a layered architecture: the HTTP API layer receives requests, which pass through the auth layer for identity verification, then the core coordinates with secret engines to serve data. All persistent data goes through the barrier — a cryptographic seal implemented with AES-256-GCM. The barrier key is derived from the master key during the unseal process and is only ever held in memory (never written to disk). Even if an attacker gets the storage backend (Raft, Consul, S3), all data is encrypted ciphertext they cannot read without the barrier key. This is why Vault must be explicitly unsealed on every restart — the process reconstitutes the barrier key in memory from unseal key shares.</p>
+</div>
+</details>
+
+<details>
+<summary>Q2: What is the difference between KV v1 and KV v2, and when would you use each? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>Answer:</strong> KV v1 is a simple key-value store — write overwrites, delete destroys. KV v2 adds versioning (up to N versions stored, configurable via max-versions), metadata, soft-delete (marking a version deleted without destroying data), hard destroy (permanent removal), and check-and-set for atomic updates. In practice, always use KV v2 for production as it gives you audit history and the ability to recover accidentally overwritten secrets. Use v1 only for high-throughput use cases where version history creates unacceptable storage overhead, or when migrating from a legacy system that doesn't support the v2 data path (<code>secret/data/</code> prefix).</p>
+</div>
+</details>
+
+<details>
+<summary>Q3: How do dynamic secrets improve security compared to static credentials? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>Answer:</strong> Static credentials (e.g., a DB password shared in config) are permanent, often shared between services, hard to rotate, and a significant blast radius if leaked. Dynamic secrets are generated on-demand and short-lived (e.g., 1-hour DB credentials). Each app instance gets unique credentials, making it easy to identify which service used a credential. When the lease expires, Vault automatically revokes the credential. Even if a credential is compromised, it expires quickly. There's no shared secret — every request generates fresh credentials. This also eliminates the "secret zero" problem for the DB credentials themselves (though Vault auth credentials still need bootstrapping via AppRole/K8s auth).</p>
+</div>
+</details>
+
+<details>
+<summary>Q4: How does AppRole authentication work and why is SecretID wrapping important? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p><strong>Answer:</strong> AppRole is a two-factor machine auth: RoleID (public, like a username — embedded in app config/Docker image) + SecretID (private, like a password — must be securely delivered). The challenge is secure SecretID delivery (the "secret zero problem"). Response wrapping solves this: instead of CI/CD receiving the SecretID directly, it receives a single-use, short-TTL "wrapping token" that can only be unwrapped once. The app unwraps it to get the SecretID. If the wrapping token is intercepted, the legitimate app will fail to unwrap (already used), alerting to the compromise. This shifts the trust boundary to: the CI/CD pipeline only needs permission to generate wrapped SecretIDs, not to access the actual secrets.</p>
+</div>
+</details>
+
+<details>
+<summary>Q5: Explain Vault's Raft storage HA model and what happens during a leader failure. <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p><strong>Answer:</strong> Integrated Raft storage gives Vault built-in HA without an external dependency. Raft uses a consensus protocol: one node is the Leader (handles all writes and reads by default), others are Followers. The Leader sends heartbeats; if Followers don't receive a heartbeat within the election timeout, they become Candidates and call for election. A node wins the election with a majority vote (quorum). For a 3-node cluster, quorum = 2, so you can tolerate 1 failure. All Vault data is replicated via Raft log entries. During leader failure: a new leader is elected in seconds (election timeout 100-500ms typically), brief unavailability (the new leader must be elected and catch up). Clients get a 503 and must retry. Load balancers should be configured to redirect to the new leader (Vault's health endpoint returns 200 only for the active leader).</p>
+</div>
+</details>
+
+<details>
+<summary>Q6: What is the Transit secret engine and how does it enable encryption as a service? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p><strong>Answer:</strong> Transit allows applications to encrypt and decrypt data via Vault's API without Vault ever storing the data itself. The app sends plaintext → gets back ciphertext → stores ciphertext in its own database. To read, it sends the ciphertext → gets plaintext back. The encryption key never leaves Vault. Key benefits: centralized key management, easy key rotation (old data auto-upgradeable with rewrap), comprehensive audit log of every encrypt/decrypt call, no encryption code in the app. It supports multiple key types: AES-GCM for symmetric encryption, RSA/ECDSA for asymmetric, Ed25519 for signing. A common pattern is encrypting PII in a database — even if the DB is breached, data is unreadable without Vault access.</p>
+</div>
+</details>
+
+<details>
+<summary>Q7: How does Vault Injector work in Kubernetes? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p><strong>Answer:</strong> Vault Injector is a Kubernetes mutating admission webhook — it intercepts Pod creation requests and mutates the Pod spec to inject Vault sidecar containers. When a Pod is created with the <code>vault.hashicorp.com/agent-inject: "true"</code> annotation, the webhook adds: (1) an <strong>init container</strong> (vault-agent-init) that authenticates to Vault using the Pod's ServiceAccount JWT (Kubernetes auth method), fetches specified secrets, renders them to files in a shared volume (typically <code>/vault/secrets/</code>), and exits; (2) a <strong>sidecar container</strong> (vault-agent) that keeps running, renewing leases, and re-rendering secrets when they change. The app container reads secrets from the shared in-memory volume. The annotation <code>vault.hashicorp.com/agent-pre-populate-only: "true"</code> disables the sidecar (init-only mode).</p>
+</div>
+</details>
+
+<details>
+<summary>Q8: How do you handle Vault in a disaster recovery scenario? <span class="badge very-advanced">Very Advanced</span></summary>
+<div class="answer">
+<p><strong>Answer:</strong> With Vault Enterprise DR Replication, a secondary cluster in another region continuously receives replicated data from the primary. In a disaster: promote the secondary to primary with <code>vault operator replication dr promote</code> — this requires a DR operation token (generated from the primary or using a DR secondary batch token). All data is available immediately. For open-source Vault: periodic snapshots of Raft storage (<code>vault operator raft snapshot save backup.snap</code>), restore with <code>vault operator raft snapshot restore</code> on a new cluster. RPO = time since last snapshot. Additionally: maintain unseal keys securely (HSM or distributed key holders), pre-configure auto-unseal in the DR region, test DR procedures quarterly, document runbooks for leader re-election and certificate rotation post-failover.</p>
+</div>
+</details>
+
+<details>
+<summary>Q9: What are Vault Policies and how do you use policy templating? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>Answer:</strong> Vault Policies are HCL documents that define which paths a token can access and with what capabilities (create/read/update/delete/list/sudo/deny). Policy templating allows policies to reference the authenticated entity's identity using variables like <code>{{identity.entity.id}}</code>, <code>{{identity.entity.name}}</code>, or <code>{{identity.groups.names.&lt;groupname&gt;.id}}</code>. This enables tenant-isolation patterns: e.g., <code>path "secret/data/users/{{identity.entity.name}}/*"</code> means each user can only access their own secrets using a single shared policy. Without templating, you'd need one policy per user. This is essential for multi-tenant Vault deployments where you don't want to manage thousands of individual policies.</p>
+</div>
+</details>
+
+<details>
+<summary>Q10: Compare Vault PKI with a traditional CA. When would you use Vault for certificate management? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p><strong>Answer:</strong> Traditional CA (e.g., internal Microsoft CA, cfssl): certificate issuance is manual or semi-automated, long TTLs (1-3 years), revocation via CRL/OCSP that clients often don't check promptly. Vault PKI enables short-lived certificates (hours or days) which reduces the need for revocation (certificates expire before they become a problem), full automation via API, tight integration with service mesh (cert rotation without restart), and per-service certificates with appropriate SANs. Use Vault PKI when: mTLS between microservices (rotate certs every 24h), developer environments (issue personal certs on demand), zero-trust architectures (no long-lived credentials). Combine with cert-manager (K8s) for automatic rotation. The golden rule: Vault PKI certificates should be short-lived enough that CRL becomes irrelevant.</p>
+</div>
+</details>
+
+<!-- ===== DHP ===== -->
+<h2 id="dhp-intro">What is DHP (Digital Hosting Platform)</h2>
+<p>DHP is Commonwealth Bank of Australia's internal platform engineering initiative — a standardized, self-service infrastructure and deployment platform that enables engineering teams to deploy, operate, and scale services without managing the underlying infrastructure complexity. It is CBA's implementation of "platform as a product" thinking.</p>
+<div class="callout">
+  <strong>Core purpose:</strong> Standardize how CBA's 200+ engineering teams deploy services · Enable self-service infrastructure · Reduce time-to-production · Enforce security and compliance guardrails · Provide observability out of the box
+</div>
+
+<h3>Key Principles</h3>
+<ul>
+  <li><strong>GitOps:</strong> All environment definitions are YAML in Git — PRs to change infrastructure</li>
+  <li><strong>Self-service:</strong> Teams define their own service configuration within guardrails</li>
+  <li><strong>Paved road:</strong> Platform provides opinionated, secure defaults — teams opt into complexity only when needed</li>
+  <li><strong>Guardrails over gates:</strong> Automated policy enforcement (not slow manual approval) where possible</li>
+  <li><strong>Shift-left security:</strong> Security validation at PR time, not after deployment</li>
+</ul>
+
+<h2 id="dhp-arch">Platform Architecture</h2>
+<div class="mermaid">
+graph TB
+  subgraph Teams["Engineering Teams"]
+    EnvRepo["Environment Definition Repo<br/>(YAML / GitOps)"]
+    AppCode["Application Code Repo"]
+  end
+  subgraph DHP["DHP Platform"]
+    Pipeline["CI/CD Pipeline<br/>(GitHub Actions / Jenkins)"]
+    PlatformCtrl["Platform Controller"]
+    ECS["ECS / Fargate<br/>(Container Runtime)"]
+    K8s["Kubernetes<br/>(Optional)"]
+    ALB["ALB / NLB<br/>(Load Balancers)"]
+    ServiceMesh["Service Mesh<br/>(mTLS, traffic policy)"]
+    Vault2["HashiCorp Vault<br/>(Secrets)"]
+    Obs["Observability Stack<br/>(AppDynamics / Splunk / CloudWatch)"]
+  end
+  subgraph AWS["AWS Infrastructure"]
+    VPC["VPC"]
+    IAM["IAM"]
+    ECR["ECR (Container Registry)"]
+  end
+  EnvRepo -->|"PR merge triggers"| Pipeline
+  AppCode -->|"build + push image"| ECR
+  Pipeline --> PlatformCtrl
+  PlatformCtrl --> ECS
+  PlatformCtrl --> K8s
+  ECS --> ALB
+  K8s --> ALB
+  ALB --> ServiceMesh
+  ECS --> Vault2
+  ECS --> Obs
+  ECS --> VPC
+  VPC --> IAM
+</div>
+
+<h3>Key Components</h3>
+<table>
+  <tr><th>Component</th><th>Purpose</th><th>Tech</th></tr>
+  <tr><td>Container Runtime</td><td>Run application containers</td><td>AWS ECS Fargate (primary), EKS (optional)</td></tr>
+  <tr><td>Load Balancing</td><td>Traffic distribution, TLS termination</td><td>AWS ALB (HTTP/HTTPS), NLB (TCP/gRPC)</td></tr>
+  <tr><td>Secrets Management</td><td>Inject secrets at runtime</td><td>HashiCorp Vault + ECS task role</td></tr>
+  <tr><td>Service Discovery</td><td>Internal DNS, service-to-service routing</td><td>AWS Cloud Map, internal Route53</td></tr>
+  <tr><td>Observability</td><td>Metrics, traces, logs</td><td>AppDynamics, Splunk, CloudWatch, X-Ray</td></tr>
+  <tr><td>Image Registry</td><td>Store and scan container images</td><td>AWS ECR with automated vulnerability scanning</td></tr>
+  <tr><td>IaC</td><td>Infrastructure provisioning</td><td>Terraform, AWS CDK (managed by platform team)</td></tr>
+</table>
+
+<h2 id="swimlanes">Swimlanes Concept</h2>
+<p>Swimlanes are CBA's term for isolated deployment environments. Each swimlane has its own namespace, resource quotas, network policies, and IAM boundaries. Think of them as lightweight "mini-environments" within the larger DHP platform.</p>
+<div class="mermaid">
+graph LR
+  subgraph Platform["InstBankingPlatform1"]
+    subgraph DEV["dev swimlane (d-citbstp-swimlane)"]
+      D1["Service A"]
+      D2["Service B"]
+    end
+    subgraph TEST2["test2 swimlane (t2-citbstp-swimlane)"]
+      T1["Service A"]
+      T2["Service B"]
+    end
+    subgraph STG["stg swimlane (s-citbstp-swimlane)"]
+      S1["Service A"]
+      S2["Service B"]
+    end
+    subgraph PROD["prod swimlane (p-citbstp-swimlane)"]
+      P1["Service A"]
+      P2["Service B"]
+    end
+  end
+  DEV -->|"promotion"| TEST2 -->|"promotion"| STG -->|"promotion"| PROD
+</div>
+<h3>Swimlane Characteristics</h3>
+<ul>
+  <li><strong>Namespace isolation:</strong> Each swimlane has its own ECS cluster namespace or K8s namespace</li>
+  <li><strong>Resource quotas:</strong> CPU/memory limits enforced per swimlane to prevent noisy-neighbor issues</li>
+  <li><strong>Network isolation:</strong> Security groups and NACLs isolate swimlane-to-swimlane traffic</li>
+  <li><strong>IAM boundaries:</strong> ECS task roles scoped to the swimlane — prod roles have production-only DB access</li>
+  <li><strong>Environment-specific config:</strong> Vault paths, ALB hostnames, log destinations differ per swimlane</li>
+  <li><strong>Job Template Definitions:</strong> YAML files defining Temporal worker jobs, ECS task configs per swimlane</li>
+</ul>
+
+<h2 id="env-definitions">Environment Definition Repos (GitOps)</h2>
+<p>DHP uses a GitOps pattern where all environment configuration lives in YAML files in a dedicated repository (e.g., <code>DHP-InstBanking-EnvironmentDefinition</code>). Changes to infrastructure are made via Pull Requests — the CI/CD pipeline validates and applies changes automatically on merge.</p>
+<pre><code class="language-yaml"># Example structure: definitions/Platforms/DHP-InstBanking/
+# InstBankingPlatform1/dev/d-citbstp-swimlane/apps/jobTemplateDefinitions/
+
+# job-template-definition.yaml (example Temporal worker job)
+apiVersion: dhp/v1
+kind: JobTemplateDefinition
+metadata:
+  name: payment-processor-worker
+  swimlane: d-citbstp-swimlane
+spec:
+  image: 123456789.dkr.ecr.ap-southeast-2.amazonaws.com/payment-processor:latest
+  taskRole: arn:aws:iam::123456789:role/payment-processor-task-role-dev
+  cpu: 512
+  memory: 1024
+  environment:
+    - name: TEMPORAL_NAMESPACE
+      value: dev-payments
+    - name: TEMPORAL_TASK_QUEUE
+      value: payment-tasks
+  secrets:
+    - name: DB_PASSWORD
+      valueFrom: vault:secret/data/payment-processor/db-password
+  scaling:
+    min: 1
+    max: 5
+    targetCPUUtilization: 70</code></pre>
+<h3>GitOps Workflow</h3>
+<ol>
+  <li>Engineer creates a branch in the environment definition repo</li>
+  <li>Modifies YAML definition (new service, config change, scaling update)</li>
+  <li>Raises a PR → automated validation runs (schema check, policy check, security scan)</li>
+  <li>Platform team / auto-approval merges the PR</li>
+  <li>CI/CD pipeline applies the change to the target swimlane</li>
+  <li>Deployment status tracked in the PR / Slack notification</li>
+</ol>
+
+<h2 id="dhp-temporal">Temporal on DHP</h2>
+<p>Temporal workflow workers run as ECS Fargate tasks within DHP swimlanes. Each swimlane has its own Temporal namespace, enabling environment isolation for workflow executions.</p>
+<pre><code class="language-yaml"># Temporal worker configuration via Job Template Definition
+spec:
+  temporalConfig:
+    namespace: dev-payments        # Temporal namespace per swimlane
+    taskQueue: payment-processing-tasks
+    workerOptions:
+      maxConcurrentWorkflowTaskPollers: 10
+      maxConcurrentActivityTaskPollers: 20
+  # Vault secret injection for Temporal mTLS certs
+  secrets:
+    - name: TEMPORAL_TLS_CERT
+      valueFrom: vault:pki/issue/temporal-workers
+    - name: TEMPORAL_TLS_KEY
+      valueFrom: vault:pki/issue/temporal-workers</code></pre>
+
+<h2 id="dhp-onboarding">Onboarding Process</h2>
+<ol>
+  <li><strong>Team registration:</strong> Register team in the DHP team catalog (team name, GitHub org, AWS account)</li>
+  <li><strong>Swimlane creation:</strong> Platform team provisions swimlanes (dev/test/stg/prod) via IaC templates</li>
+  <li><strong>Environment definition repo:</strong> Create or fork the environment definition repo structure</li>
+  <li><strong>IAM setup:</strong> ECS task roles created per swimlane with least-privilege policies</li>
+  <li><strong>Vault onboarding:</strong> Vault namespaces/paths provisioned, AppRole or K8s auth configured</li>
+  <li><strong>Certificate management:</strong> Internal certificates provisioned via Vault PKI for service mTLS</li>
+  <li><strong>Observability setup:</strong> AppDynamics agent configured, log shipping to Splunk enabled</li>
+  <li><strong>First deployment:</strong> Deploy a reference service to validate the entire pipeline</li>
+</ol>
+
+<h3>AppDynamics Integration</h3>
+<p>AppDynamics (AppD) is CBA's primary APM (Application Performance Monitoring) tool. The AppD agent is injected as a sidecar or via JVM agent into ECS tasks. It provides: transaction tracing, database call monitoring, JVM metrics, business transaction definitions, dashboards, and alerting. Configuration is via environment variables injected at deployment time.</p>
+
+<h2 id="dhp-qa">DHP Interview Q&amp;A</h2>
+
+<details>
+<summary>Q1: What is the purpose of swimlanes in DHP and how do they enable environment isolation? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>Answer:</strong> Swimlanes provide namespace-level isolation of deployment environments within the DHP platform. Each swimlane (dev/test2/stg/prod) has its own ECS cluster namespace, IAM task roles scoped to that environment, Vault secret paths, network security groups, and resource quotas. This means a dev deployment of Service A cannot accidentally access prod data — the IAM role only has dev database permissions. It also prevents resource starvation: a runaway dev service hitting CPU limits doesn't affect prod. From an operational perspective, swimlanes enable a promotion model — the same container image is promoted through swimlanes with only configuration changing (dev DB → prod DB via swimlane-specific Vault paths), enforcing that prod runs the exact same artifact tested in lower environments.</p>
+</div>
+</details>
+
+<details>
+<summary>Q2: How does GitOps work in DHP's environment definition repositories? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>Answer:</strong> DHP uses GitOps where the desired state of each swimlane is declared in YAML files in the environment definition repo. All infrastructure changes go through a PR workflow — no one SSHes into servers or runs ad-hoc Terraform. When a PR is merged: the CI/CD pipeline detects the change, validates against platform schemas and security policies (e.g., ensuring image comes from approved ECR, task role has acceptable permissions), then applies the change to AWS via Terraform/CDK. The Git history becomes the audit trail for all infrastructure changes. Drift detection can periodically reconcile actual state against the declared state. This gives compliance benefits (all changes reviewed, traceability) and operational benefits (environment reproducibility — recreate any swimlane from the YAML).</p>
+</div>
+</details>
+
+<details>
+<summary>Q3: How are secrets securely delivered to ECS tasks running in DHP? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p><strong>Answer:</strong> In DHP, secrets flow from HashiCorp Vault to ECS tasks via two mechanisms: (1) <strong>ECS Secrets Manager integration</strong> — ECS can reference Vault or AWS Secrets Manager paths in the task definition, injecting them as environment variables at container start; (2) <strong>Vault Agent sidecar</strong> — a Vault Agent container runs alongside the app, authenticates using the ECS task's IAM role (AWS IAM auth method), fetches secrets, and writes them to a shared volume as files. The ECS task role must have an IAM policy allowing the specific <code>sts:AssumeRole</code> action, and a Vault AWS auth role must map that IAM role to a Vault policy. Secrets are per-swimlane (different Vault paths for dev/prod), ensuring a dev task cannot fetch prod secrets. Dynamic database credentials via Vault's DB engine are preferred over static credentials for databases.</p>
+</div>
+</details>
+
+<details>
+<summary>Q4: How does Temporal integrate with DHP swimlanes at CBA? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p><strong>Answer:</strong> Temporal workers are deployed as ECS Fargate tasks within each DHP swimlane. Each swimlane corresponds to a separate Temporal namespace (e.g., <code>dev-payments</code>, <code>prod-payments</code>), providing workflow isolation — a bug in a dev workflow cannot affect prod workflow execution history or task queue polling. Worker configuration is defined in Job Template Definition YAML files in the environment definition repo. The worker connects to a shared Temporal cluster (or separate per-environment cluster for prod) using mTLS certificates issued by Vault's PKI engine, rotated via Vault Agent. Scaling of workers is managed by DHP's ECS autoscaling based on CPU/memory metrics or custom CloudWatch metrics (e.g., Temporal task queue backlog depth). This allows teams to scale payment processing workers independently of other services in the same swimlane.</p>
+</div>
+</details>
+
+<details>
+<summary>Q5: What are the trade-offs of a platform engineering approach like DHP? <span class="badge very-advanced">Very Advanced</span></summary>
+<div class="answer">
+<p><strong>Answer:</strong> <strong>Benefits:</strong> Standardization reduces cognitive load for teams (don't need to know Terraform/AWS deeply), faster onboarding (golden path), built-in security and compliance guardrails, economies of scale (one platform team serves hundreds of product teams), consistent observability, centralized security updates. <strong>Trade-offs:</strong> Platform teams become a bottleneck if not adequately resourced; the "paved road" may not fit edge cases (teams sometimes need escape hatches); abstraction can obscure real complexity (teams don't understand what's happening under the hood when things break); version upgrades (e.g., ECS runtime, K8s version) must be coordinated across all teams simultaneously; over-opinionation can stifle innovation. The key success factor is the platform team treating their internal teams as customers, measuring platform adoption and developer satisfaction (DORA metrics + developer NPS), and providing clear escape valves for teams with legitimate unusual requirements.</p>
+</div>
+</details>
+
+<!-- ===== SDLC ===== -->
+<h2 id="sdlc-phases">SDLC Phases Overview</h2>
+<div class="mermaid">
+graph LR
+  P["1. Planning<br/>(feasibility, resources, timeline)"]
+  R["2. Requirements<br/>(functional & non-functional)"]
+  D["3. Design<br/>(HLD, LLD, tech stack)"]
+  I["4. Implementation<br/>(coding, code review, CI)"]
+  T["5. Testing<br/>(unit, integration, E2E, UAT)"]
+  Dep["6. Deployment<br/>(staging, production, rollback plan)"]
+  M["7. Maintenance<br/>(monitoring, bug fixes, enhancements)"]
+  P --> R --> D --> I --> T --> Dep --> M
+  M -.->|"continuous feedback"| P
+</div>
+
+<h2 id="methodologies">SDLC Methodologies Comparison</h2>
+<table>
+  <tr><th>Methodology</th><th>Approach</th><th>Best For</th><th>Weakness</th></tr>
+  <tr><td><strong>Waterfall</strong></td><td>Sequential phases, heavy docs, change is expensive</td><td>Fixed requirements (construction, government, hardware)</td><td>Late testing, inflexible to change</td></tr>
+  <tr><td><strong>Agile</strong></td><td>Iterative, customer collaboration, respond to change</td><td>Products with evolving requirements</td><td>Hard to predict long-term timelines</td></tr>
+  <tr><td><strong>Scrum</strong></td><td>Time-boxed sprints, defined roles, regular ceremonies</td><td>Cross-functional product teams</td><td>Can become "Scrum theater" without real agile values</td></tr>
+  <tr><td><strong>Kanban</strong></td><td>Continuous flow, WIP limits, pull system</td><td>Support/ops teams, variable demand work</td><td>No cadence for planning ahead</td></tr>
+  <tr><td><strong>SAFe</strong></td><td>Enterprise Agile with PI Planning, ARTs, value streams</td><td>Large organizations (&gt;50 teams) needing coordination</td><td>Heavy process, can feel like enterprise waterfall</td></tr>
+  <tr><td><strong>Shape Up</strong></td><td>6-week cycles, betting table, no backlogs, appetite-based</td><td>Product companies wanting to avoid backlog debt</td><td>Less suited for ongoing maintenance or large teams</td></tr>
+  <tr><td><strong>Lean</strong></td><td>Eliminate waste, amplify learning, defer decisions</td><td>Process improvement, value stream optimization</td><td>Requires cultural change, hard to measure waste</td></tr>
+</table>
+
+<h3>Lean Principles (Toyota Production System adapted for software)</h3>
+<ul>
+  <li>Eliminate waste (unused features, waiting, over-processing, defects)</li>
+  <li>Amplify learning (short feedback loops, experimentation)</li>
+  <li>Decide as late as possible (preserve optionality)</li>
+  <li>Deliver as fast as possible (reduce batch size)</li>
+  <li>Empower the team (decentralized decision-making)</li>
+  <li>Build integrity in (testing, refactoring — not bolted on)</li>
+  <li>See the whole (system thinking, value stream mapping)</li>
+</ul>
+
+<h2 id="scrum-deep">Scrum Deep Dive</h2>
+<h3>Sprints &amp; Ceremonies</h3>
+<table>
+  <tr><th>Ceremony</th><th>When</th><th>Duration</th><th>Purpose</th><th>Attendees</th></tr>
+  <tr><td>Sprint Planning</td><td>Start of sprint</td><td>2h per week of sprint</td><td>Select backlog items, create sprint backlog, define sprint goal</td><td>Full Scrum team</td></tr>
+  <tr><td>Daily Standup</td><td>Daily</td><td>15 min max</td><td>Synchronize, identify impediments (not a status report)</td><td>Dev team (SM optional)</td></tr>
+  <tr><td>Sprint Review</td><td>End of sprint</td><td>1h per week of sprint</td><td>Demo increment to stakeholders, gather feedback</td><td>Full team + stakeholders</td></tr>
+  <tr><td>Sprint Retrospective</td><td>After review</td><td>45min per week of sprint</td><td>Inspect and adapt process (Start/Stop/Continue)</td><td>Full Scrum team</td></tr>
+  <tr><td>Backlog Refinement</td><td>Mid-sprint</td><td>~10% of sprint capacity</td><td>Estimate, clarify, split backlog items for future sprints</td><td>PO + Dev team</td></tr>
+</table>
+
+<h3>Scrum Roles</h3>
+<ul>
+  <li><strong>Product Owner (PO):</strong> Owns the backlog, prioritizes, represents the business/customer, writes acceptance criteria, decides what gets built</li>
+  <li><strong>Scrum Master (SM):</strong> Servant-leader, removes impediments, coaches on Scrum, shields team from distractions, facilitates ceremonies</li>
+  <li><strong>Development Team:</strong> Cross-functional (design/dev/test), self-organizing, 3-9 people, collectively owns delivery quality</li>
+</ul>
+
+<h3>Scrum Artifacts</h3>
+<ul>
+  <li><strong>Product Backlog:</strong> Ordered list of everything needed (user stories, bugs, spikes, tech debt). PO owns it, team refines it</li>
+  <li><strong>Sprint Backlog:</strong> Selected items for the sprint + plan for how to deliver them. Dev team owns it, updated daily</li>
+  <li><strong>Increment:</strong> Potentially shippable product at end of each sprint. Must meet Definition of Done</li>
+  <li><strong>Definition of Done (DoD):</strong> Shared understanding of "done" — code complete + unit tests + code reviewed + CI passes + documentation + deployed to staging</li>
+</ul>
+
+<h3>Estimation Techniques</h3>
+<table>
+  <tr><th>Technique</th><th>Unit</th><th>How it works</th><th>Pro/Con</th></tr>
+  <tr><td>Story Points</td><td>Abstract complexity points (Fibonacci: 1,2,3,5,8,13,21)</td><td>Team estimates relative complexity, not time</td><td>Decouples complexity from time; hard to explain to execs</td></tr>
+  <tr><td>T-shirt sizing</td><td>XS/S/M/L/XL</td><td>Rough relative sizing for backlog grooming</td><td>Fast, non-committal; not granular enough for sprint planning</td></tr>
+  <tr><td>Planning Poker</td><td>Story points</td><td>Everyone reveals simultaneously to avoid anchoring bias</td><td>Surfaces disagreement; time-consuming for large backlogs</td></tr>
+  <tr><td>#NoEstimates</td><td>Count of stories</td><td>All stories roughly same size, count completed per sprint</td><td>Simple; requires good story splitting discipline</td></tr>
+</table>
+
+<h3>Scrum Metrics</h3>
+<ul>
+  <li><strong>Velocity:</strong> Story points completed per sprint (used for capacity planning, not performance measurement)</li>
+  <li><strong>Burndown chart:</strong> Remaining work (story points) over sprint days — should slope down to zero</li>
+  <li><strong>Burnup chart:</strong> Completed work + total scope over time — shows scope creep explicitly</li>
+  <li><strong>Sprint goal completion rate:</strong> % of sprints where the sprint goal was met (better measure than velocity)</li>
+  <li><strong>Cumulative Flow Diagram (CFD):</strong> Work items in each state over time — bottlenecks appear as bands widening</li>
+</ul>
+
+<h2 id="tech-practices">Technical Practices</h2>
+
+<h3>TDD (Test-Driven Development)</h3>
+<p><strong>Red-Green-Refactor cycle:</strong></p>
+<ol>
+  <li><strong>Red:</strong> Write a failing test for the new behavior (test doesn't pass — expected)</li>
+  <li><strong>Green:</strong> Write the minimum code to make the test pass (no gold-plating)</li>
+  <li><strong>Refactor:</strong> Improve code quality without breaking tests (clean up duplication, improve naming)</li>
+</ol>
+<div class="callout">
+  TDD is not about testing — it's about design. Tests drive the API design of your code. The result is code that is inherently testable, with high test coverage, and a fast test suite.
+</div>
+
+<h3>BDD (Behaviour-Driven Development)</h3>
+<p>BDD extends TDD with a business-readable test format using Gherkin syntax:</p>
+<pre><code class="language-gherkin">Feature: User account transfer
+  As a CBA customer
+  I want to transfer money between my accounts
+  So that I can manage my finances
+
+  Scenario: Successful transfer between own accounts
+    Given I have a savings account with balance $1000
+    And I have a checking account with balance $500
+    When I transfer $200 from savings to checking
+    Then my savings account should have balance $800
+    And my checking account should have balance $700
+    And I should see a transfer confirmation
+
+  Scenario: Transfer with insufficient funds
+    Given I have a savings account with balance $100
+    When I transfer $200 from savings to checking
+    Then the transfer should fail
+    And I should see "Insufficient funds" error</code></pre>
+
+<h3>Code Review Best Practices</h3>
+<table>
+  <tr><th>Aspect</th><th>Best Practice</th></tr>
+  <tr><td>PR size</td><td>Keep PRs &lt;400 lines changed. Split large features into logical slices</td></tr>
+  <tr><td>Description</td><td>Explain "why" not "what" — link to ticket, include screenshots for UI changes, test instructions</td></tr>
+  <tr><td>Giving feedback</td><td>Distinguish: blocking (bug/security) vs non-blocking (style/preference). Be kind — "nit:", "question:", "suggestion:"</td></tr>
+  <tr><td>Receiving feedback</td><td>Don't take it personally. Clarify intent before defending. Thank reviewers for thorough review</td></tr>
+  <tr><td>Reviewer checklist</td><td>Correctness, tests, security, performance implications, logging/observability, error handling, docs</td></tr>
+  <tr><td>Turnaround time</td><td>Respond within 24h. Use async review tools — don't block on live meetings for simple PRs</td></tr>
+</table>
+
+<h3>Technical Debt Management</h3>
+<p><strong>Eisenhower-style Debt Quadrant:</strong></p>
+<table>
+  <tr><th></th><th>Reckless</th><th>Prudent</th></tr>
+  <tr><td><strong>Deliberate</strong></td><td>"We don't have time for design" (bad) → pay it back now</td><td>"We must ship now, we'll fix the design later" → schedule repayment</td></tr>
+  <tr><td><strong>Inadvertent</strong></td><td>"What layering?" → refactor immediately when discovered</td><td>"Now we know how we should have done it" → planned refactor</td></tr>
+</table>
+<ul>
+  <li>Track tech debt as items in the product backlog (not a separate "debt list")</li>
+  <li>Reserve 20% of each sprint for debt reduction (Boy Scout Rule: leave code better than you found it)</li>
+  <li>Use ADRs (Architecture Decision Records) to document why debt was incurred</li>
+  <li>Make debt visible to PO with business impact framing ("Our current auth system makes adding MFA 3x harder")</li>
+</ul>
+
+<h2 id="devops-culture">DevOps Culture &amp; DORA Metrics</h2>
+<h3>DORA Metrics (Google DevOps Research &amp; Assessment)</h3>
+<table>
+  <tr><th>Metric</th><th>What it measures</th><th>Elite</th><th>High</th><th>Medium</th><th>Low</th></tr>
+  <tr><td>Deployment Frequency</td><td>How often you deploy to prod</td><td>On demand (multiple/day)</td><td>1/week–1/month</td><td>1/week–1/month</td><td>&lt;1/month</td></tr>
+  <tr><td>Lead Time for Changes</td><td>Code commit → running in prod</td><td>&lt;1 hour</td><td>1 day–1 week</td><td>1 week–1 month</td><td>&gt;6 months</td></tr>
+  <tr><td>Mean Time to Recover (MTTR)</td><td>How fast you restore service after incident</td><td>&lt;1 hour</td><td>&lt;1 day</td><td>1 day–1 week</td><td>&gt;6 months</td></tr>
+  <tr><td>Change Failure Rate</td><td>% of deployments causing prod incidents</td><td>0–15%</td><td>16–30%</td><td>16–30%</td><td>16–30%</td></tr>
+</table>
+
+<h3>Shift-Left Testing</h3>
+<p>Move testing earlier in the development lifecycle — catch bugs when they're cheapest to fix. Layers:</p>
+<ul>
+  <li><strong>IDE:</strong> Linting, type checking, static analysis (instant feedback)</li>
+  <li><strong>Pre-commit:</strong> Unit tests, formatting, secret scanning</li>
+  <li><strong>CI pipeline:</strong> Full unit + integration tests, SAST, dependency vulnerability scan</li>
+  <li><strong>Staging:</strong> E2E, performance, security penetration testing</li>
+  <li><strong>Production:</strong> Synthetic monitoring, chaos engineering</li>
+</ul>
+
+<h3>DevSecOps</h3>
+<p>Integrating security into every phase of SDLC rather than a final gate before release:</p>
+<ul>
+  <li><strong>Code:</strong> Peer review for security, SAST (Snyk, SonarQube, CodeQL)</li>
+  <li><strong>Build:</strong> Container image scanning (Trivy, Clair), dependency auditing</li>
+  <li><strong>Deploy:</strong> IaC security scanning (Checkov, tfsec), secrets detection</li>
+  <li><strong>Run:</strong> DAST, runtime protection (Falco for K8s), WAF, SIEM integration</li>
+</ul>
+
+<h2 id="sdlc-qa">SDLC Interview Q&amp;A</h2>
+
+<details>
+<summary>Q1: Compare Scrum and Kanban. When would you choose one over the other? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>Answer:</strong> Scrum works best for feature development teams where work arrives in planned batches and you need regular stakeholder alignment (sprint reviews). The sprint cadence creates predictability and forces prioritization. Kanban works best for support/operations/maintenance work where demand is unpredictable and can't be batched into sprints. WIP limits in Kanban prevent multitasking and surface bottlenecks. The cumulative flow diagram is more useful than a burndown chart for continuous flow work. In practice, many teams use a hybrid ("Scrumban") — Scrum ceremonies for alignment with Kanban WIP limits to improve flow. Key question: can your work be planned in sprint-sized batches, or is it primarily reactive? At CBA, a payment platform team doing feature development fits Scrum; the incident response team fits Kanban.</p>
+</div>
+</details>
+
+<details>
+<summary>Q2: What are DORA metrics and how have you used them to improve your team? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p><strong>Answer:</strong> DORA metrics (Deployment Frequency, Lead Time, MTTR, Change Failure Rate) measure software delivery and operational performance. They're research-backed predictors of organizational performance. In a previous role, I used them diagnostically: our change failure rate was 25% — high for our targets. Root cause analysis showed insufficient integration testing in CI. We invested in expanding our test coverage and adding contract testing between services. Three months later, CFR dropped to 8% and deployment frequency increased because teams were more confident deploying. Lead time was also long (2 weeks) due to a slow Terraform apply step — we optimized the pipeline with targeted plan/apply on changed modules, dropping it to 2 days. The key is using DORA as a system diagnostic, not as performance targets for individual engineers.</p>
+</div>
+</details>
+
+<details>
+<summary>Q3: How do you handle technical debt in a fast-moving product team? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p><strong>Answer:</strong> Technical debt is unavoidable — the question is managing it intentionally. My approach: first, make it visible by tracking debt as first-class backlog items with business impact descriptions (not just "refactor X"). Second, use the Boy Scout Rule — any time someone touches a module, leave it better (rename confusing variables, add a missing test, extract a helper). Third, reserve 15-20% of sprint capacity explicitly for debt reduction — negotiate this with the PO upfront as an investment in sustained velocity, using the metaphor "if we don't change the oil, the engine seizes." Fourth, for large-scale debt, pitch it as an enabler: "Migrating from our monolith to the event-driven model will cut our lead time for new payment types from 3 months to 2 weeks." Data-driven framing converts debt from a "nice to have" to a business priority.</p>
+</div>
+</details>
+
+<details>
+<summary>Q4: Explain TDD and its trade-offs. Do you practice it? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>Answer:</strong> TDD (Red-Green-Refactor) means writing a failing test before writing production code. Benefits: forces you to design the API before implementation (better interfaces), provides a safety net for refactoring, creates living documentation, high coverage by default, faster debugging (failures localized immediately). Trade-offs: upfront time investment (though studies show net-positive ROI over 3+ months), requires discipline, doesn't work well for exploratory/prototype code where the design is unknown, UI testing is hard to TDD (use BDD/E2E for that layer). My practice: I apply TDD strictly for business logic and service layer code, less strictly for glue code and infrastructure config. For complex algorithms or financial calculations (e.g., interest rate computation at CBA), TDD is non-negotiable — the test suite is the specification.</p>
+</div>
+</details>
+
+<details>
+<summary>Q5: How do you manage a release in a continuous delivery pipeline? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p><strong>Answer:</strong> With CD, every merge to main is a potential release — the pipeline validates and deploys automatically. Key practices: (1) <strong>Feature flags</strong> decouple deployment from release — code ships to prod but is hidden behind a flag, enabled for canary users first; (2) <strong>Trunk-based development</strong> — short-lived branches or direct commits to main, no long-running feature branches causing merge hell; (3) <strong>Deployment strategies</strong> — rolling deploys (gradual pod replacement), blue/green (instant traffic switch with instant rollback), canary (route 5% traffic to new version, monitor, then ramp up); (4) <strong>Pipeline gates</strong> — automated quality gates (test pass rate, coverage threshold, security scan clean) that must pass before promotion to next environment; (5) <strong>Automated rollback</strong> — if error rate spikes post-deploy, the pipeline auto-reverts. At CBA in DHP, this translates to promoting the same container image through swimlanes (dev → test → stg → prod) with automated validation at each gate.</p>
+</div>
+</details>
+
+<details>
+<summary>Q6: What is DevSecOps and how do you implement it? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p><strong>Answer:</strong> DevSecOps integrates security into every phase of development rather than a post-development gate. Implementation: at the IDE/coding level, tools like Snyk VS Code extension catch vulnerable dependencies and SAST issues in real-time. In CI, SAST (SonarQube, CodeQL), dependency scanning (OWASP Dependency Check), container image scanning (Trivy), IaC security scanning (Checkov), and secret detection (GitGuardian, truffleHog) run on every PR. In staging, DAST (OWASP ZAP, Burp Suite) and penetration testing. In production, runtime security monitoring (Falco for container anomalies), WAF rules, and SIEM integration for threat detection. Cultural shift: security team moves from blocker to enabler — they define policies as code, not review gates. Security champions within each team champion secure coding practices. At CBA, this is baked into the DHP pipeline — the platform enforces image scanning and IaC security as non-negotiable pipeline stages.</p>
+</div>
+</details>
+
+<details>
+<summary>Q7: How do you ensure quality when working in a short sprint cycle? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>Answer:</strong> Quality in short cycles requires shifting left: don't write code then test — build quality in as you go. Practices: (1) Strong Definition of Done that includes unit tests, code review, and CI passing — not an afterthought; (2) Three amigos (PO/Dev/Tester) session before coding to align on acceptance criteria and edge cases; (3) BDD scenarios written before development begins; (4) Test pyramid discipline — many fast unit tests, fewer integration, minimal E2E; (5) Pair programming or mob programming for complex or high-risk stories; (6) No "testing sprint" or "hardening sprint" — a sign of insufficient quality discipline in development; (7) Automated regression suite that runs in &lt;10 minutes. If quality requires a longer cycle, the solution is better practices, not longer sprints.</p>
+</div>
+</details>
+
+<details>
+<summary>Q8: What is the difference between a user story and a task? How do you write good acceptance criteria? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p><strong>Answer:</strong> A <strong>user story</strong> is a vertical slice of value from the user's perspective: "As a [persona] I want [goal] so that [benefit]." It's the unit of sprint planning and reflects business value. A <strong>task</strong> is a technical work item within a story (e.g., "create DB migration," "write API endpoint," "update frontend") — horizontal technical slices. Good acceptance criteria (AC): use Given-When-Then (BDD) or bulleted conditions of satisfaction. Good AC is: testable (binary pass/fail), specific (not "works correctly"), complete (covers happy path + error cases), agreed upon (PO + team). Bad AC: "Should be fast" (not measurable). Good AC: "API response time must be &lt;200ms at p95 under 100 concurrent users." Write AC before starting development — it's the contract that defines "done."</p>
+</div>
+</details>
+
+<details>
+<summary>Q9: How do you handle scope creep during a sprint? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>Answer:</strong> The sprint goal is a commitment — mid-sprint scope additions break predictability and disrespect the team's planning. My approach: (1) Distinguish urgency from importance — true production-critical bugs get a separate track, not sprint injection; (2) Log new requests in the backlog for next sprint; (3) If something truly must come in, negotiate out an equivalent-sized item with the PO (keep sprint capacity constant); (4) Daily standup transparency — flag immediately if new work is being taken on; (5) Retrospective discussion if scope creep is chronic — often signals that POs don't trust the team's backlog capacity, or requirements aren't being clarified enough upfront. The Scrum Master's role is to protect the team's ability to meet the sprint goal — "Yes, that's important, it goes to the top of the next sprint backlog."</p>
+</div>
+</details>
+
+<details>
+<summary>Q10: Explain the SAFe framework and when it is appropriate. <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p><strong>Answer:</strong> SAFe (Scaled Agile Framework) addresses the challenge of coordinating agile across many teams working on interconnected systems. Core concepts: Agile Release Trains (ARTs) — groups of 50-125 people aligned to a value stream; PI (Program Increment) Planning — quarterly face-to-face event where all teams plan together and identify dependencies; Epics → Features → Stories hierarchy. Use SAFe when: genuinely large-scale (50+ engineers), multiple teams must coordinate releases (shared platform, regulatory dependencies), enterprise governance requirements need to be met. Criticism: SAFe can become heavyweight bureaucracy that reintroduces waterfall at the program level. Success requires genuine executive commitment and proper Scrum practices at team level first. At CBA, a bank-wide digital transformation with regulatory dependencies on shared banking systems is a legitimate SAFe use case — independent startup-style teams are not.</p>
+</div>
+</details>
+
+<details>
+<summary>Q11: What is the role of a Scrum Master vs. a Project Manager? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p><strong>Answer:</strong> A <strong>Project Manager</strong> is accountable for delivering a defined scope on time and within budget — they plan, track, report status, manage risks, and coordinate resources. Authority flows top-down. A <strong>Scrum Master</strong> is a servant-leader who coaches the team and organization on Scrum values, removes impediments to the team's self-organization, facilitates ceremonies, shields the team from distractions, and helps the organization adopt agile ways of working. A Scrum Master has no authority over the team or what gets built (that's the PO). The SM's success metric is the team's improved performance and self-sufficiency over time — a great SM works to make themselves redundant. In practice, conflating the two roles (PM/SM hybrid) usually produces poor outcomes — the authority dynamic undermines psychological safety needed for self-organization.</p>
+</div>
+</details>
+
+<details>
+<summary>Q12: How do you measure team velocity and why should you be careful using it as a performance metric? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>Answer:</strong> Velocity = story points completed per sprint (based on agreed DoD). It's used for capacity planning: if a team averages 40 points/sprint, they can commit to ~40 points for next sprint. Dangers of misusing velocity: (1) Comparing velocity between teams is meaningless (teams define their own story point scales); (2) Optimizing for velocity by inflating story points ("point farming") — teams learn to estimate high to show "improvement"; (3) Using velocity as a performance score creates pressure that reduces quality and psychological safety; (4) Velocity fluctuates legitimately (holidays, incidents, onboarding new members, refactoring sprints). Use velocity for planning (what can we take on?), not evaluation (how hard is this team working?). Better team health metrics: sprint goal completion rate, deployment frequency, MTTR, team satisfaction scores.</p>
+</div>
+</details>
+
+<details>
+<summary>Q13: What is Shape Up and how does it differ from Scrum? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p><strong>Answer:</strong> Shape Up (Basecamp's methodology) uses 6-week cycles with a "betting table" instead of a backlog. Before a cycle, senior staff "shape" raw ideas into fully designed pitches that specify the appetite (max time to spend), solution, risks, and rabbit holes. The betting table reviews pitches and bets on which to build in the next cycle. During the 6-week cycle, cross-functional teams (designer + 1-2 engineers) work autonomously without daily standups or sprint reviews. At 6 weeks, unfinished work is "cut" (no carry-over) — this creates accountability. A 2-week "cool-down" follows for bugs and exploration. Key differences from Scrum: no product backlog (old ideas die; if important they get re-pitched), no velocity tracking, 6-week cycles vs 2-week sprints, teams decide how to implement (no task breakdown by PO). Works well for stable product teams with experienced engineers; less suited for large enterprises needing coordination.</p>
+</div>
+</details>
+
+<details>
+<summary>Q14: How does continuous integration differ from continuous delivery and continuous deployment? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>Answer:</strong> <strong>Continuous Integration (CI):</strong> Developers merge code to a shared branch multiple times per day; every merge triggers automated build and test — catches integration issues quickly. <strong>Continuous Delivery (CD):</strong> Extends CI — after passing tests, the artifact is automatically deployed to staging/pre-prod environments and is always in a releasable state. Deployment to production requires a manual trigger/approval. <strong>Continuous Deployment:</strong> Extends CD further — every passing build is automatically deployed to production without human intervention. Requires high confidence in the test suite, feature flags for risk management, and good rollback capabilities. At CBA with DHP, most teams practice Continuous Delivery (automatic deployment to lower swimlanes, manual approval gate to prod) rather than full Continuous Deployment, due to regulatory and compliance requirements for production changes.</p>
+</div>
+</details>
+
+<details>
+<summary>Q15: Describe a time when you improved a team's SDLC process. <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p><strong>Answer (STAR format):</strong> <strong>Situation:</strong> Our team was shipping features but with high bug rates in production — about 30% of deployments required hotfixes. Deploys were infrequent (monthly) because they were "events" that required days of manual regression. <strong>Task:</strong> As tech lead, I identified this as a systemic process issue, not individual failures. <strong>Action:</strong> I ran a process retrospective — root causes: no automated integration tests (unit tests only), long-lived feature branches causing huge merge conflicts, no staging environment. I proposed: (1) automated API integration test suite (2-week investment), (2) trunk-based development with feature flags, (3) a staging swimlane in DHP. I framed it to the PO as "reducing our maintenance overhead by 40% based on current hotfix rates." Got buy-in for a "quality sprint." <strong>Result:</strong> Within 2 months: change failure rate dropped from 30% to 8%, deploy frequency increased from monthly to weekly (then daily). The team's confidence in deploying drove more frequent, smaller releases.</p>
+</div>
+</details>
+
+<footer>Built for Dinesh Kumar | Vault, DHP &amp; SDLC Reference | 2024–2025</footer>
+</main>
+</div>
+<script>hljs.highlightAll();mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

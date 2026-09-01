@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Career &amp; Interview Prep – Learning Reference</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6;display:flex;flex-direction:column}.topnav{background:#161b22;padding:10px 24px;border-bottom:1px solid #30363d;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100}.topnav a{color:#58a6ff;text-decoration:none;font-size:13px}.topnav h1{font-size:16px;color:#e6edf3;margin:0}.layout{display:flex;flex:1}.sidebar{width:260px;background:#161b22;border-right:1px solid #30363d;padding:16px;position:sticky;top:41px;height:calc(100vh - 41px);overflow-y:auto;flex-shrink:0}.sidebar a{display:block;padding:4px 8px;color:#8b949e;text-decoration:none;font-size:13px;border-radius:4px;margin-bottom:2px}.sidebar a:hover{background:#21262d;color:#c9d1d9}.sidebar .section-title{color:#58a6ff;font-size:11px;text-transform:uppercase;letter-spacing:.5px;margin:16px 0 6px;padding:0 8px;font-weight:600}main{flex:1;padding:32px 48px;max-width:960px}h1{font-size:2rem;color:#e6edf3;border-bottom:1px solid #30363d;padding-bottom:16px;margin-bottom:24px}h2{font-size:1.5rem;color:#e6edf3;margin:48px 0 16px;border-bottom:1px solid #21262d;padding-bottom:8px}h3{font-size:1.15rem;color:#79c0ff;margin:24px 0 10px}h4{font-size:1rem;color:#d2a8ff;margin:16px 0 8px}p{margin-bottom:12px}ul,ol{margin:0 0 16px 24px}li{margin-bottom:4px}pre{margin:16px 0;border-radius:6px;overflow-x:auto;font-size:13px}code:not(pre code){background:#161b22;padding:2px 6px;border-radius:4px;font-size:13px;color:#f0883e;border:1px solid #30363d}table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}th{background:#161b22;color:#58a6ff;padding:10px 14px;text-align:left;border:1px solid #30363d}td{padding:10px 14px;border:1px solid #30363d;vertical-align:top}tr:nth-child(even) td{background:#0a0d12}.mermaid{background:#161b22;padding:20px;border-radius:6px;margin:16px 0;text-align:center}details{border:1px solid #30363d;border-radius:6px;margin:10px 0;overflow:hidden}summary{padding:12px 16px;cursor:pointer;background:#161b22;color:#79c0ff;font-weight:600;list-style:none}details[open] summary{border-bottom:1px solid #30363d}.answer{padding:16px 20px;background:#0d1117}.badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:700;margin-left:8px}.easy{background:#1a4731;color:#3fb950}.intermediate{background:#2d2b00;color:#e3b341}.advanced{background:#3d1f00;color:#f0883e}.very-advanced{background:#3d0000;color:#ff7b72}.callout{background:#161b22;border-left:4px solid #58a6ff;padding:12px 16px;border-radius:0 6px 6px 0;margin:16px 0}.star-box{background:#0d1f12;border:1px solid #238636;border-radius:6px;padding:16px;margin:12px 0}.star-label{color:#3fb950;font-weight:700;font-size:12px;text-transform:uppercase;margin-bottom:4px}.tip-box{background:#1c2128;border-left:4px solid #e3b341;padding:12px 16px;border-radius:0 6px 6px 0;margin:12px 0}footer{text-align:center;padding:24px;color:#8b949e;font-size:12px;border-top:1px solid #30363d;margin-top:40px}
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <h1>Career &amp; Interview Prep</h1>
+  <a href="index.html">← Hub</a>
+  <a href="vault-dhp-sdlc.html">Vault/DHP/SDLC</a>
+  <a href="manager-architect-qa.html">Manager/Architect Q&amp;A</a>
+</nav>
+<div class="layout">
+<aside class="sidebar">
+  <div class="section-title">FDE Career Roadmap</div>
+  <a href="#junior-fde">Junior FDE (0-2 yrs)</a>
+  <a href="#mid-fde">Mid-Level FDE (2-4 yrs)</a>
+  <a href="#senior-fde">Senior FDE (4-7 yrs)</a>
+  <a href="#staff-fde">Staff/Principal FDE (7+)</a>
+  <a href="#skills-matrix">Skills Matrix</a>
+  <div class="section-title">Portfolio &amp; Branding</div>
+  <a href="#github-portfolio">GitHub Portfolio</a>
+  <a href="#resume-tips">Resume Tips</a>
+  <a href="#linkedin">LinkedIn Optimization</a>
+  <div class="section-title">Interview Prep</div>
+  <a href="#system-design-prep">System Design Prep</a>
+  <a href="#coding-prep">Coding Interview Prep</a>
+  <a href="#star-method">Behavioral STAR Method</a>
+  <a href="#star-stories">10 STAR Stories</a>
+  <a href="#negotiation">Negotiation Tips</a>
+  <div class="section-title">Companies &amp; Market</div>
+  <a href="#top-companies">Top Companies Hiring</a>
+  <a href="#faang-process">FAANG Interview Process</a>
+  <a href="#australian-market">Australian Market</a>
+  <a href="#company-types">Company Types Comparison</a>
+</aside>
+<main>
+<h1>Career Roadmap &amp; Interview Prep</h1>
+
+<!-- ===== CAREER ROADMAP ===== -->
+<h2 id="junior-fde">Junior FDE (0–2 Years)</h2>
+<div class="callout">
+  <strong>Goal:</strong> Build strong foundations, ship real features, learn from senior engineers, establish healthy engineering habits.
+</div>
+<h3>Core Technical Skills</h3>
+<ul>
+  <li><strong>HTML/CSS:</strong> Semantic HTML, Flexbox/Grid, responsive design, accessibility basics (ARIA, keyboard nav)</li>
+  <li><strong>JavaScript:</strong> ES6+, DOM manipulation, event handling, async/await, Fetch API, error handling</li>
+  <li><strong>One framework (React / Vue / Angular):</strong> Component lifecycle, state management basics, routing</li>
+  <li><strong>Git:</strong> Branching strategies, pull requests, resolving merge conflicts, meaningful commit messages</li>
+  <li><strong>Agile basics:</strong> Daily standup, sprint ceremonies, writing user stories, acceptance criteria</li>
+  <li><strong>Debugging:</strong> Chrome DevTools, network tab, console profiling, reading stack traces</li>
+  <li><strong>REST APIs:</strong> CRUD operations, HTTP methods, status codes, headers, authentication patterns</li>
+  <li><strong>Testing:</strong> Unit test basics (Jest), what to test and what not to test</li>
+</ul>
+<h3>Soft Skills at Junior Level</h3>
+<ul>
+  <li>Ask for help effectively (provide context, show what you tried, be specific)</li>
+  <li>Communicate blockers early, not after days of being stuck</li>
+  <li>Accept feedback gracefully — code review is about the code, not you</li>
+  <li>Over-document your code as you learn (will help you and future you)</li>
+  <li>Write good PR descriptions — make reviewers' lives easy</li>
+</ul>
+<h3>Key Learning Resources</h3>
+<ul>
+  <li>MDN Web Docs (the authoritative browser API reference)</li>
+  <li>JavaScript.info (comprehensive modern JS course)</li>
+  <li>React docs (react.dev) — official, now uses hooks throughout</li>
+  <li>CS50 (Harvard) for CS fundamentals if needed</li>
+  <li>The Odin Project (free, project-based curriculum)</li>
+</ul>
+
+<h2 id="mid-fde">Mid-Level FDE (2–4 Years)</h2>
+<div class="callout">
+  <strong>Goal:</strong> Own features end-to-end, contribute to architecture decisions, mentor juniors, improve team processes.
+</div>
+<h3>Core Technical Skills</h3>
+<ul>
+  <li><strong>TypeScript:</strong> Generics, utility types (Partial, Pick, Omit, Record), discriminated unions, type guards, strict mode</li>
+  <li><strong>Advanced React/framework:</strong> Custom hooks, Context, performance optimization (memo, useMemo, useCallback, lazy/Suspense), advanced patterns</li>
+  <li><strong>Testing:</strong> TDD, integration testing, React Testing Library, Playwright/Cypress for E2E, testing async behavior</li>
+  <li><strong>Performance optimization:</strong> Core Web Vitals, Lighthouse, bundle analysis, code splitting, lazy loading, caching strategies</li>
+  <li><strong>System design basics:</strong> Client-server architecture, REST vs GraphQL, CDN usage, database basics, caching</li>
+  <li><strong>Tooling:</strong> Webpack/Vite config, build optimization, CI/CD pipeline understanding, Docker basics</li>
+  <li><strong>Accessibility (a11y):</strong> WCAG 2.1 AA, screen reader testing, focus management, color contrast</li>
+  <li><strong>Security basics:</strong> XSS, CSRF, Content Security Policy, HTTPS, secure cookies, input sanitization</li>
+</ul>
+<h3>Leadership at Mid-Level</h3>
+<ul>
+  <li>Start mentoring junior engineers — code reviews, pairing sessions, answering questions</li>
+  <li>Lead smaller initiatives (new library adoption, test coverage improvement)</li>
+  <li>Write technical documentation and ADRs for decisions you make</li>
+  <li>Participate in on-call rotation, learn incident response</li>
+  <li>Contribute to hiring: participate in interviews, improve interview process</li>
+</ul>
+
+<h2 id="senior-fde">Senior FDE (4–7 Years)</h2>
+<div class="callout">
+  <strong>Goal:</strong> Set technical direction, unblock the team, make trade-offs explicitly, amplify the team (your impact through others &gt; your individual output).
+</div>
+<h3>Core Technical Skills</h3>
+<ul>
+  <li><strong>Architecture decisions:</strong> Micro-frontends, monorepo vs polyrepo, state management at scale, design system architecture</li>
+  <li><strong>Cross-team collaboration:</strong> API contract design, backend coordination, design system contribution, platform team engagement</li>
+  <li><strong>Deep expertise in 2-3 areas:</strong> e.g., React performance + TypeScript + accessibility; or Node.js + React + testing</li>
+  <li><strong>Technical leadership:</strong> RFC/design doc writing, running design reviews, driving technical decisions by consensus</li>
+  <li><strong>Estimation &amp; planning:</strong> Breaking down large projects, identifying risks, creating roadmaps, managing technical dependencies</li>
+  <li><strong>Production operations:</strong> Incident response, runbooks, observability setup (dashboards, alerts), performance analysis</li>
+</ul>
+<h3>Senior Engineer Multiplier Behaviors</h3>
+<ul>
+  <li>Write clear technical docs that unblock multiple people (not just answer one person)</li>
+  <li>Proactively identify systemic problems before they become incidents</li>
+  <li>Mentor mid-level engineers toward senior-level thinking, not just senior-level skills</li>
+  <li>Build consensus and align on technical direction before committing to build</li>
+  <li>Push back on scope when scope will compromise quality — know when to say "we can do this, but here's what we trade off"</li>
+  <li>Represent your team's work and capabilities to leadership</li>
+</ul>
+
+<h2 id="staff-fde">Staff / Principal FDE (7+ Years)</h2>
+<div class="callout">
+  <strong>Goal:</strong> Org-wide technical impact. Define engineering standards, shape technical strategy, affect hiring and culture, influence product direction.
+</div>
+<h3>Responsibilities</h3>
+<ul>
+  <li><strong>Org-wide standards:</strong> Define coding standards, testing requirements, deployment practices that all teams adopt</li>
+  <li><strong>Technical strategy:</strong> Multi-year technology roadmap, platform investment decisions, build-vs-buy analysis</li>
+  <li><strong>Hiring bar:</strong> Define what "good engineering" looks like for the org, run calibration sessions, improve hiring processes</li>
+  <li><strong>External presence:</strong> Conference talks, blog posts, open source contributions that attract talent and build brand</li>
+  <li><strong>Executive communication:</strong> Translate technical complexity to business outcomes, present technology risk to the board</li>
+  <li><strong>Cross-org influence:</strong> Drive adoption without authority — through persuasion, working prototypes, and demonstrated results</li>
+</ul>
+<h3>Getting to Staff Level</h3>
+<ul>
+  <li>Staff is about scope, not seniority — solve problems that span multiple teams</li>
+  <li>Find your "Staff project" — a high-visibility initiative with org-wide impact</li>
+  <li>Build alliances: staff engineers succeed through relationships and trust, not just technical ability</li>
+  <li>Develop a "technical vision" narrative — what should engineering look like in 3 years and why</li>
+  <li>Read: "The Staff Engineer's Path" (Tanya Reilly), "Staff Engineer" (Will Larson)</li>
+</ul>
+
+<h2 id="skills-matrix">Skills Matrix by Level</h2>
+<table>
+  <tr><th>Dimension</th><th>Junior</th><th>Mid-Level</th><th>Senior</th><th>Staff/Principal</th></tr>
+  <tr><td><strong>Technical</strong></td><td>Implements assigned tasks with guidance; learns frameworks</td><td>Owns features E2E; introduces new tools; TDD; performance awareness</td><td>Architects systems; sets technical direction; deep expertise; handles ambiguity</td><td>Org-wide architectural decisions; technology strategy; defines engineering standards</td></tr>
+  <tr><td><strong>Leadership</strong></td><td>Follows team norms; asks good questions</td><td>Mentors juniors; leads small initiatives; contributes to hiring</td><td>Leads projects; unblocks others; cross-team influence; builds team culture</td><td>Sets org culture; executive alignment; multiple team influence; builds other leaders</td></tr>
+  <tr><td><strong>Communication</strong></td><td>Clear written questions; good PR descriptions</td><td>Writes RFCs; explains technical concepts clearly; good retro facilitation</td><td>Presents to stakeholders; writes strategy docs; runs design reviews</td><td>Executive presentations; external speaking; inspires through written vision</td></tr>
+  <tr><td><strong>Business Impact</strong></td><td>Delivers assigned tickets; understands sprint goals</td><td>Drives features that improve metrics; reduces tech debt measurably</td><td>Shapes product direction; identifies tech-enabled business opportunities</td><td>Multi-year ROI decisions; platform investments that enable revenue at scale</td></tr>
+  <tr><td><strong>Scope</strong></td><td>Task / story level</td><td>Feature / team level</td><td>Project / quarter level</td><td>Organization / year-to-multi-year level</td></tr>
+</table>
+
+<!-- ===== PORTFOLIO ===== -->
+<h2 id="github-portfolio">GitHub Portfolio Tips</h2>
+<h3>Profile Setup</h3>
+<ul>
+  <li><strong>Profile README:</strong> Create a <code>&lt;username&gt;/&lt;username&gt;</code> repo with a README — it appears on your profile page. Include: brief bio, current tech stack, what you're learning, how to reach you</li>
+  <li><strong>Pinned repos:</strong> Pin 4-6 of your best projects. Mix of: production-quality projects, learning projects, open-source contributions</li>
+  <li><strong>Contribution graph:</strong> Consistency matters — aim for regular green activity. Even small contributions (docs, issues, small PRs) count</li>
+  <li><strong>Professional photo + bio:</strong> Use a professional headshot, fill in website, Twitter/LinkedIn links</li>
+</ul>
+<h3>Project Quality Checklist</h3>
+<ul>
+  <li>Clear README: what it does, tech stack, how to run it, screenshots/demo link</li>
+  <li>Working live demo (Vercel, Netlify, Railway — free tiers are sufficient)</li>
+  <li>Test coverage (even basic tests show you care about quality)</li>
+  <li>Clean commit history — meaningful commit messages, no "fix stuff" commits</li>
+  <li>Issue tracker used (even for your own projects — shows project management thinking)</li>
+  <li>No hardcoded secrets, proper .gitignore</li>
+  <li>Latest dependency versions, no security vulnerabilities</li>
+</ul>
+<h3>Open Source Contributions</h3>
+<ul>
+  <li>Start with "good first issue" labels on repos you already use</li>
+  <li>Documentation improvements are underrated — they're real contributions</li>
+  <li>Bug reports with minimal reproductions are valued contributions</li>
+  <li>Don't target popular repos initially — smaller projects are more welcoming</li>
+  <li>Follow contribution guides strictly before submitting PRs</li>
+</ul>
+
+<h2 id="resume-tips">Resume Tips</h2>
+<h3>Format</h3>
+<ul>
+  <li><strong>ATS-friendly:</strong> Single column, standard section headings (Experience, Skills, Education), no tables/columns/headers/footers that confuse ATS parsers</li>
+  <li><strong>Length:</strong> 1 page for &lt;5 years experience; 2 pages for senior/staff; never more than 2 pages</li>
+  <li><strong>Font:</strong> Calibri, Garamond, Arial — readable at 11pt, avoid fancy fonts</li>
+  <li><strong>File format:</strong> PDF (preserves formatting), name it <code>FirstName-LastName-Resume.pdf</code></li>
+</ul>
+<h3>STAR Bullet Points</h3>
+<p>Each resume bullet should quantify impact. Bad: "Built a payment API." Good: "Built a payment processing API using Node.js and Stripe, handling $2M+ monthly transactions with 99.98% uptime across 50k+ users."</p>
+<div class="tip-box">
+  <strong>Formula:</strong> [Action verb] + [what you did] + [technology/method used] + [measurable impact]
+</div>
+<h3>Skills Section</h3>
+<ul>
+  <li>List technologies you can discuss fluently in an interview — don't pad with things you've barely used</li>
+  <li>Group by category: Languages, Frameworks, Cloud/Infrastructure, Tools, Databases</li>
+  <li>Match keywords in the job description (ATS parsing)</li>
+</ul>
+<h3>What to Include / Exclude</h3>
+<table>
+  <tr><th>Include</th><th>Exclude</th></tr>
+  <tr><td>Quantified impact (revenue, users, performance %, time saved)</td><td>Personal info (age, marital status, photo — unless local norms require)</td></tr>
+  <tr><td>Technologies you'd be happy being tested on</td><td>Technologies listed just to fill space / game ATS</td></tr>
+  <tr><td>Open source contributions / side projects (if impressive)</td><td>References section ("available on request" is implied)</td></tr>
+  <tr><td>Awards, promotions, scope increases</td><td>Objective statement (outdated — use a professional summary instead)</td></tr>
+  <tr><td>Education (degree, institution, GPA if &gt;3.5)</td><td>Every job if irrelevant — trim to last 10 years / relevant roles</td></tr>
+</table>
+
+<h2 id="linkedin">LinkedIn Optimization</h2>
+<h3>Headline Formula</h3>
+<p>Don't just write your current title. Use the formula: <strong>[Role] | [Specialty/Impact] | [Industry/Company Type]</strong></p>
+<pre><code class="language-text">Examples:
+Senior Full Stack Engineer | React + Node.js | Fintech @ CBA
+Frontend Lead | Design Systems &amp; Performance | Banking Technology
+Software Engineer | Building scalable payment platforms | Open to Opportunities</code></pre>
+
+<h3>About Section Structure</h3>
+<ol>
+  <li><strong>Hook (2 sentences):</strong> What do you do and what's your superpower?</li>
+  <li><strong>Experience highlights (3 bullets):</strong> Most impressive achievements with numbers</li>
+  <li><strong>Technologies:</strong> Brief list of your key stack</li>
+  <li><strong>Current focus / what excites you:</strong> Shows passion and growth mindset</li>
+  <li><strong>CTA:</strong> "Open to [opportunities/speaking/collaborations]. Connect via DM or [email]."</li>
+</ol>
+
+<h3>Featured Section</h3>
+<p>Use this prime real estate for: blog posts you've written, conference talks, side project links (live demo), GitHub profile, podcast appearances.</p>
+
+<h3>Activity &amp; Network</h3>
+<ul>
+  <li>Post 1-2x/week: technical learnings, project updates, opinions on industry trends</li>
+  <li>Comment meaningfully on others' posts — adds visibility</li>
+  <li>Connect with people after conferences, meetups, interviews — personalize the connection request</li>
+  <li>Endorsements: endorse colleagues genuinely (they often reciprocate)</li>
+  <li>Recommendations: give 2-3 genuine recommendations — many will write one back</li>
+  <li>Creator mode: enable for greater distribution of your posts</li>
+</ul>
+
+<!-- ===== INTERVIEW PREP ===== -->
+<h2 id="system-design-prep">System Design Interview Prep Roadmap</h2>
+<h3>Month 1: Fundamentals</h3>
+<ul>
+  <li>How the internet works: DNS, HTTP/HTTPS, TCP/IP, TLS</li>
+  <li>Client-server architecture, load balancing concepts</li>
+  <li>Database fundamentals: RDBMS vs NoSQL, ACID vs BASE, indexing</li>
+  <li>Caching basics: cache-aside, write-through, eviction policies (LRU, LFU)</li>
+  <li>CAP theorem: consistency vs availability vs partition tolerance</li>
+  <li>Read: "Designing Data-Intensive Applications" (Kleppmann) — chapters 1-3</li>
+</ul>
+<h3>Month 2: Common Patterns</h3>
+<ul>
+  <li>Microservices vs monolith: when to use each, trade-offs</li>
+  <li>Message queues and event-driven architecture (Kafka, RabbitMQ)</li>
+  <li>CDN usage, static asset serving</li>
+  <li>SQL vs NoSQL selection criteria</li>
+  <li>Rate limiting, circuit breakers, bulkheads</li>
+  <li>API gateway patterns, service mesh</li>
+  <li>Read: system design primer (GitHub), ByteByteGo newsletter</li>
+</ul>
+<h3>Month 3: Practice</h3>
+<ul>
+  <li>Practice designing 2 systems per week, time-boxed to 45 minutes</li>
+  <li>Classic systems to design: URL shortener, Twitter/X feed, Netflix, Uber, WhatsApp, Google Search, YouTube, Stripe</li>
+  <li>Use the RESHADED framework: Requirements → Estimation → Storage → High-level design → API design → Detailed design → Evaluation → Distinctive components</li>
+  <li>Mock interviews (Pramp, interviewing.io, with friends)</li>
+</ul>
+
+<h3>System Design Interview Framework (RESHADED)</h3>
+<table>
+  <tr><th>Step</th><th>What to do</th><th>Time (45min)</th></tr>
+  <tr><td>Requirements</td><td>Functional reqs (what it does) + Non-functional (scale, latency, consistency)</td><td>5 min</td></tr>
+  <tr><td>Estimation</td><td>DAU, QPS (read/write), storage, bandwidth — back-of-envelope</td><td>5 min</td></tr>
+  <tr><td>Storage/Data model</td><td>Entities, relationships, SQL vs NoSQL choice, schema</td><td>5 min</td></tr>
+  <tr><td>High-Level Design</td><td>Draw the main components, data flows, APIs</td><td>10 min</td></tr>
+  <tr><td>API Design</td><td>Key endpoints, request/response schemas</td><td>5 min</td></tr>
+  <tr><td>Detailed Design</td><td>Deep dive into the hardest/most interesting components</td><td>10 min</td></tr>
+  <tr><td>Evaluation</td><td>Bottlenecks, failure modes, scaling limitations</td><td>3 min</td></tr>
+  <tr><td>Distinctive</td><td>Unique value-add, trade-off discussion, alternatives considered</td><td>2 min</td></tr>
+</table>
+
+<h2 id="coding-prep">Coding Interview Prep</h2>
+<h3>LeetCode Study Plan</h3>
+<table>
+  <tr><th>Phase</th><th>Focus</th><th>Duration</th><th>Target</th></tr>
+  <tr><td>Phase 1</td><td>Array, String, HashMap basics (Easy problems)</td><td>Weeks 1-2</td><td>50 easy problems</td></tr>
+  <tr><td>Phase 2</td><td>Linked Lists, Stacks, Queues, Trees (Easy→Medium)</td><td>Weeks 3-4</td><td>30 medium</td></tr>
+  <tr><td>Phase 3</td><td>Sorting/Searching, Binary Search, Sliding Window</td><td>Weeks 5-6</td><td>30 medium</td></tr>
+  <tr><td>Phase 4</td><td>Dynamic Programming basics (Fibonacci, knapsack, LCS)</td><td>Weeks 7-8</td><td>20 medium, 10 hard</td></tr>
+  <tr><td>Phase 5</td><td>Graphs (BFS/DFS), Tries, Heaps</td><td>Weeks 9-10</td><td>20 medium, 10 hard</td></tr>
+  <tr><td>Phase 6</td><td>Company-specific lists, mock interviews</td><td>Weeks 11-12</td><td>Timed practice</td></tr>
+</table>
+
+<h3>Time Management in Coding Interviews</h3>
+<ul>
+  <li><strong>First 5 min:</strong> Clarify inputs, outputs, constraints, edge cases. Verbalize your understanding</li>
+  <li><strong>Next 5 min:</strong> Discuss approach before coding. State time/space complexity upfront</li>
+  <li><strong>Coding (20 min):</strong> Talk while coding. Name variables clearly. Structure code well</li>
+  <li><strong>Last 10 min:</strong> Test with examples (including edge cases), trace through code, optimize if time</li>
+  <li>If stuck: talk about a simpler version (brute force first), then optimize</li>
+</ul>
+
+<h3>Communicating While Coding</h3>
+<ul>
+  <li>"I'm going to start with a brute force O(n²) approach and optimize from there"</li>
+  <li>"I'm using a HashMap here to trade space for O(1) lookup time"</li>
+  <li>"Let me verify with this edge case: empty array should return..."</li>
+  <li>"I see a potential off-by-one error here, let me check my boundary condition"</li>
+  <li>If you need to think silently: "Give me 30 seconds to think through this"</li>
+</ul>
+
+<h2 id="star-method">Behavioral Interview STAR Method</h2>
+<div class="callout">
+  <strong>STAR:</strong> Situation (context) → Task (your responsibility) → Action (what YOU specifically did) → Result (measurable outcome)
+</div>
+<h3>STAR Method Tips</h3>
+<ul>
+  <li><strong>Situation:</strong> Brief context — 2-3 sentences. Don't over-explain the background</li>
+  <li><strong>Task:</strong> Your specific role — "as the tech lead, I was responsible for..."</li>
+  <li><strong>Action:</strong> This is the most important part — be specific about YOUR actions, not "we did..."</li>
+  <li><strong>Result:</strong> Quantify — "reduced latency by 40%," "increased test coverage from 30% to 85%," "shipped 2 weeks ahead of schedule"</li>
+  <li>Prepare 8-10 stories that can flex to answer different question types</li>
+  <li>Each story should demonstrate: technical skill, leadership, communication, handling adversity</li>
+</ul>
+
+<h3>Common Questions by Category</h3>
+<table>
+  <tr><th>Category</th><th>Common Questions</th></tr>
+  <tr><td>Technical leadership</td><td>Describe a difficult technical decision. How did you handle disagreement? Tell me about a time you introduced a new technology.</td></tr>
+  <tr><td>Handling adversity</td><td>Tell me about a failure. How did you handle a missed deadline? Describe a conflict with a colleague.</td></tr>
+  <tr><td>Collaboration</td><td>Give an example of influencing without authority. How do you work with designers/PMs/other engineers?</td></tr>
+  <tr><td>Growth &amp; learning</td><td>What's the biggest mistake you've made? What would you do differently? How do you stay current?</td></tr>
+  <tr><td>Impact &amp; delivery</td><td>What's your biggest achievement? Tell me about a project you're proud of. How did you improve team productivity?</td></tr>
+</table>
+
+<h2 id="star-stories">10 STAR Stories Library</h2>
+
+<details>
+<summary>Story 1: Technical Decision Under Uncertainty <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<div class="star-box">
+<div class="star-label">Situation</div>
+<p>Our team needed to choose a state management solution for a new React application that would serve 500K+ daily users. Redux, Zustand, Jotai, and React Query were all viable options. There was no clear org standard and team members had strong opinions.</p>
+</div>
+<div class="star-box">
+<div class="star-label">Task</div>
+<p>As the senior engineer, I was responsible for making a recommendation and getting team alignment before we started building.</p>
+</div>
+<div class="star-box">
+<div class="star-label">Action</div>
+<p>I ran a structured evaluation over 3 days. I wrote a 1-pager comparing each option across: learning curve, bundle size, DevTools support, server state vs client state needs, community longevity. I built a small proof-of-concept with React Query (for server state) + Zustand (for client UI state), presented it in a design review with working code. I explicitly listed what I was trading off (more moving parts than pure Redux) and addressed each team member's concern individually. I called for a time-boxed decision — "we decide in this meeting or defer to me."</p>
+</div>
+<div class="star-box">
+<div class="star-label">Result</div>
+<p>Team aligned on React Query + Zustand. Bundle size was 8KB vs 21KB for Redux Toolkit equivalent. Developer productivity improved — survey after 1 sprint showed 8/10 engineers preferred the pattern. The architecture became the template for 2 other teams in our org.</p>
+</div>
+</div>
+</details>
+
+<details>
+<summary>Story 2: Rescuing a Behind-Schedule Project <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<div class="star-box">
+<div class="star-label">Situation</div>
+<p>6 weeks into an 8-week project, we had delivered only 40% of the committed features for a high-visibility product launch at CBA. The PM was escalating to leadership, team morale was low, and there was pressure to work overtime.</p>
+</div>
+<div class="star-box">
+<div class="star-label">Task</div>
+<p>I was the tech lead. My job was to either deliver on time or clearly communicate what we could deliver and what we couldn't.</p>
+</div>
+<div class="star-box">
+<div class="star-label">Action</div>
+<p>I ran an emergency triage session. First, I mapped every remaining feature to business impact and implementation complexity — identified that 3 low-impact features were consuming 30% of remaining effort. I proposed to the PM: descope 3 features (defer to phase 2), reduce scope of 2 others to MVP version. I then re-estimated the remaining work with the team — they'd been over-estimating to "feel safe." I removed blockers: I personally pair-programmed on the two most complex stories, unblocking two engineers in 2 days each. I gave the team permission to skip perfection and ship production-ready (not perfect) code.</p>
+</div>
+<div class="star-box">
+<div class="star-label">Result</div>
+<p>Shipped the descoped version on time. Post-launch metrics showed the 3 deferred features were actually the right call — they were low-usage. The PM thanked the team publicly. I also ran a retrospective on why we were so wrong in initial estimates — led to better estimation practices using reference class forecasting.</p>
+</div>
+</div>
+</details>
+
+<details>
+<summary>Story 3: Improving Engineering Quality Culture <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<div class="star-box">
+<div class="star-label">Situation</div>
+<p>Our team's bug rate in production was high — roughly 30% of sprints had production hotfixes. Code reviews were perfunctory (approved within minutes without meaningful feedback). There was no shared definition of "done" and testing was an afterthought.</p>
+</div>
+<div class="star-box">
+<div class="star-label">Task</div>
+<p>I was a senior engineer, no formal leadership authority, but recognized this as systemic and decided to address it.</p>
+</div>
+<div class="star-box">
+<div class="star-label">Action</div>
+<p>I data-gathered first: tracked bug sources over 4 sprints — 70% came from missing edge case handling and lack of integration tests. I presented this data at a retrospective, framing it as "here's what the data says" not "here's what you're doing wrong." I proposed 3 changes: (1) a code review checklist (security, error handling, test coverage, performance implications); (2) a team-agreed Definition of Done including integration tests; (3) 20% sprint capacity reserved for tests. I modeled the behavior — submitted very detailed code review comments on every PR I reviewed for 2 sprints.</p>
+</div>
+<div class="star-box">
+<div class="star-label">Result</div>
+<p>Production hotfix rate dropped from 30% to 8% over 3 months. Code review turnaround improved from avg 4 days to 1 day because reviews became more focused. Two team members told me this was the most improvement they'd seen in a team's quality culture in their careers.</p>
+</div>
+</div>
+</details>
+
+<details>
+<summary>Story 4: Handling a Disagreement With a Colleague <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<div class="star-box">
+<div class="star-label">Situation</div>
+<p>A senior colleague and I disagreed strongly on whether to introduce a GraphQL API or extend the existing REST API for a new set of mobile features. Both approaches were technically defensible. The discussion in PR comments was becoming heated.</p>
+</div>
+<div class="star-box">
+<div class="star-label">Task</div>
+<p>Resolve the disagreement in a way that produced the best technical decision and preserved the working relationship.</p>
+</div>
+<div class="star-box">
+<div class="star-label">Action</div>
+<p>I moved the conversation from async (PR comments — easy to misread tone) to synchronous (30-min video call). I came in with genuine curiosity: "Help me understand your concern about GraphQL" — I learned his real objection was operational complexity and our team's lack of GraphQL expertise, not the technology itself. I acknowledged this was a legitimate risk I hadn't weighted sufficiently. I proposed a smaller scope: use GraphQL only for the read-heavy mobile feed endpoint (the hardest REST problem), REST for everything else — letting us learn GraphQL in a bounded way. We wrote up the decision as an ADR together.</p>
+</div>
+<div class="star-box">
+<div class="star-label">Result</div>
+<p>The hybrid approach worked well. The GraphQL endpoint reduced mobile data over-fetching by 60%. 6 months later, my colleague became the team's GraphQL advocate after seeing the results. The ADR we wrote together became the template the org adopted for documenting tech decisions.</p>
+</div>
+</div>
+</details>
+
+<details>
+<summary>Story 5: Performance Optimization Under Pressure <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<div class="star-box">
+<div class="star-label">Situation</div>
+<p>Two days before a product launch, performance testing revealed our payment summary page had a 4.2-second initial load time — the business requirement was &lt;2 seconds. Cancelling the launch was not on the table.</p>
+</div>
+<div class="star-box">
+<div class="star-label">Task</div>
+<p>As the frontend tech lead, I needed to identify the bottlenecks and fix them within 36 hours.</p>
+</div>
+<div class="star-box">
+<div class="star-label">Action</div>
+<p>I used Chrome DevTools waterfall + Webpack Bundle Analyzer. Identified: (1) 900KB JavaScript bundle from unused icon library imports — tree-shaking wasn't working due to a Babel config issue; (2) 3 sequential API calls that could be parallelized; (3) no code splitting on chart library (only used on one page). Fixed the Babel config (bundle dropped 280KB), converted sequential API calls to Promise.all() (saved 1.8s), lazy-loaded the chart library. Added a Lighthouse CI gate so this couldn't regress.</p>
+</div>
+<div class="star-box">
+<div class="star-label">Result</div>
+<p>Load time dropped from 4.2s to 1.6s — under the 2-second requirement. Launched on schedule. The Lighthouse CI gate caught 2 future regressions before they reached staging. The Webpack analysis technique became a standard step in our release checklist.</p>
+</div>
+</div>
+</details>
+
+<details>
+<summary>Story 6: Mentoring a Struggling Junior Engineer <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<div class="star-box">
+<div class="star-label">Situation</div>
+<p>A junior engineer on my team was struggling — PRs were frequently sent back with the same type of feedback (missing error handling, over-complicated solutions), they were missing sprint commitments, and seemed demoralized.</p>
+</div>
+<div class="star-box">
+<div class="star-label">Task</div>
+<p>As their assigned mentor, I needed to diagnose why they were struggling and create a path to improvement.</p>
+</div>
+<div class="star-box">
+<div class="star-label">Action</div>
+<p>I had a direct (but kind) 1:1 — "I've noticed X patterns in your PRs. I want to understand what's happening from your perspective before assuming anything." Turns out they were overwhelmed by not knowing what "good code" looked like — they didn't have a mental model of error handling patterns. I shifted from code review comments (prescriptive) to pair programming twice a week for a month — I showed my thought process out loud. I created a personal learning plan: 2 specific patterns per sprint to focus on (error handling + extracting helper functions). I celebrated small wins explicitly in team Slack.</p>
+</div>
+<div class="star-box">
+<div class="star-label">Result</div>
+<p>Within 2 months, their PR approval time went from average 5 iterations to 2. They successfully led their first small feature (auth flow refactor) 3 months later. At the retro they said: "This is the first team where I feel like I'm actually learning, not just being told I'm wrong." They were promoted to mid-level 9 months later.</p>
+</div>
+</div>
+</details>
+
+<details>
+<summary>Story 7: Managing a Production Incident <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<div class="star-box">
+<div class="star-label">Situation</div>
+<p>At 2pm on a Thursday, our payment processing service began throwing 500 errors. Error rate jumped from 0.1% to 23% in 5 minutes. Approximately 15,000 customers were affected.</p>
+</div>
+<div class="star-box">
+<div class="star-label">Task</div>
+<p>As on-call senior engineer, I needed to restore service and coordinate the incident response.</p>
+</div>
+<div class="star-box">
+<div class="star-label">Action</div>
+<p>Immediately opened a war room Slack channel, pinged the team. Checked CloudWatch: no recent deploys. Checked AppDynamics: DB connection pool at 100% utilization — but traffic was normal. Checked recent changes: a new database query added to the checkout flow was not using the connection pool correctly (creating a new connection per request). Confirmed by checking connection count in RDS. Immediate mitigation: rolled back the last merge (10 minutes). Then proper fix: patched the query to use the connection pool, tested in staging, deployed via emergency change process. Total impact: 22 minutes of degraded service. Wrote a full incident report with 5-why root cause analysis.</p>
+</div>
+<div class="star-box">
+<div class="star-label">Result</div>
+<p>Service restored in 22 minutes, under our 30-minute SLA. Post-incident: added a connection pool monitoring dashboard and alert (threshold: &gt;80% utilization). Added a code review checklist item for database query patterns. 0 recurrences in the following 18 months. The incident report format I used was adopted as the team standard.</p>
+</div>
+</div>
+</details>
+
+<details>
+<summary>Story 8: Introducing a New Technology <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<div class="star-box">
+<div class="star-label">Situation</div>
+<p>Our team was writing complex long-running background jobs in a basic queue system. Jobs would fail silently, had no visibility, and retry logic was hand-rolled differently by each developer.</p>
+</div>
+<div class="star-box">
+<div class="star-label">Task</div>
+<p>I identified Temporal as a potential solution and wanted to propose adopting it — but the team had no experience with it and there was natural skepticism about introducing new dependencies.</p>
+</div>
+<div class="star-box">
+<div class="star-label">Action</div>
+<p>I ran a "spike" (time-boxed investigation) over 3 days. I rebuilt one of our most complex jobs (payment reconciliation, with 5 retry conditions) in Temporal, measuring: code reduction, visibility, error handling completeness. I presented the spike at a design review with working code and a live demo showing Temporal's Web UI (a major wow factor — our current system had zero visibility). I explicitly addressed the "new dependency risk" with: vendor support evidence, open-source fallback, adoption at similar fintechs (Stripe, DoorDash). I proposed a 6-week pilot with one non-critical job before committing.</p>
+</div>
+<div class="star-box">
+<div class="star-label">Result</div>
+<p>Pilot approved. The pilot job's code was 60% shorter, had zero silent failures over 6 weeks. The team voted unanimously to adopt Temporal for all new long-running workflows. I later presented this adoption story at an internal CBA tech talk, leading to 2 other teams adopting Temporal.</p>
+</div>
+</div>
+</details>
+
+<details>
+<summary>Story 9: Cross-Functional Collaboration on a Tight Deadline <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<div class="star-box">
+<div class="star-label">Situation</div>
+<p>We were building a new onboarding flow with 3 weeks to launch. Frontend (my team), backend, mobile, and design were all involved. Design was changing requirements 3 days before the deadline, and mobile team said they couldn't implement the new design in time.</p>
+</div>
+<div class="star-box">
+<div class="star-label">Task</div>
+<p>As the frontend lead, I needed to facilitate a resolution that let us ship without sacrificing quality or burning out any team.</p>
+</div>
+<div class="star-box">
+<div class="star-label">Action</div>
+<p>I called a multi-team sync immediately. First, I got everyone to acknowledge the constraint (fixed deadline). Then I got design to explain WHY the change — turned out it was based on last-minute user research showing the original CTA placement had 30% lower conversion in testing. Armed with the "why," I negotiated: implement the CTA change only (high impact), defer the 3 other design tweaks to 2 weeks post-launch. Mobile agreed to the CTA-only change (2 hours of work). I coordinated the API contract changes between frontend and backend live in the meeting to avoid async back-and-forth.</p>
+</div>
+<div class="star-box">
+<div class="star-label">Result</div>
+<p>Shipped on deadline. The CTA placement change increased conversion by 28% post-launch (validating the design research). The deferred changes were shipped 10 days later. The PM noted this was the smoothest cross-team launch in the organization's memory — specifically calling out the collaborative decision-making approach.</p>
+</div>
+</div>
+</details>
+
+<details>
+<summary>Story 10: Failure and What You Learned <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<div class="star-box">
+<div class="star-label">Situation</div>
+<p>Early in my career as a mid-level engineer, I was leading the migration of a critical authentication service. I was confident in my technical approach and under-communicated the risk to stakeholders. The migration caused 2 hours of login failures for 20,000 users during peak hours.</p>
+</div>
+<div class="star-box">
+<div class="star-label">Task</div>
+<p>Execute the migration and restore service. Then deal with the aftermath honestly.</p>
+</div>
+<div class="star-box">
+<div class="star-label">Action</div>
+<p>In the moment: I immediately rolled back, restored service in 45 minutes, communicated status updates every 10 minutes to the business. I wrote a thorough incident report accepting full ownership: the root cause was my decision to perform a hot migration without a dark launch phase, and I'd ignored a colleague's suggestion to test with 5% of traffic first. At the post-incident review, I didn't make excuses — I presented what I'd learned and proposed concrete changes: dark launch pattern as standard for auth changes, a migration runbook template, and a stakeholder sign-off requirement for changes affecting core auth flows.</p>
+</div>
+<div class="star-box">
+<div class="star-label">Result</div>
+<p>Short-term: reputational hit was real but manageable because I owned it. The runbook template I created was adopted org-wide. Long-term: this incident became foundational to how I now approach production changes — my default question before any migration is "what's the blast radius, and do we have a rollback?" Ironically, this incident led to me being trusted with larger projects because leadership saw how I handled adversity.</p>
+</div>
+</div>
+</details>
+
+<!-- ===== NEGOTIATION ===== -->
+<h2 id="negotiation">Negotiation Tips</h2>
+<h3>Research Market Rate</h3>
+<ul>
+  <li>Sources: Levels.fyi (tech companies with detailed TC breakdowns), Glassdoor, LinkedIn Salary, Seek Salary Insights (Australia), SEEK Technology Salary Report</li>
+  <li>Adjust for: company size/stage, location (Sydney vs Melbourne premium), industry (fintech premiums in AU)</li>
+  <li>Ask your network — many engineers are surprisingly open about comp when asked directly</li>
+  <li>Aim for the 75th percentile as your target (not the median)</li>
+</ul>
+<h3>Total Compensation Breakdown</h3>
+<table>
+  <tr><th>Component</th><th>Notes</th></tr>
+  <tr><td>Base salary</td><td>Your guaranteed income. Most important for Australian market (less equity-heavy than US)</td></tr>
+  <tr><td>Annual bonus</td><td>At large companies (CBA, Atlassian) typically 10-20% of base. Note: usually variable/discretionary</td></tr>
+  <tr><td>Equity (RSUs / options)</td><td>RSUs are more valuable than options. Vesting schedule matters (4-year cliff vs monthly). Public co RSUs = real value; startup options = uncertain</td></tr>
+  <tr><td>Superannuation</td><td>Australian employers required to pay 11% super (2024). Some companies pay 12-15%</td></tr>
+  <tr><td>Benefits</td><td>Health insurance, professional development budget ($2k-5k/yr is good), home office allowance, parental leave policy</td></tr>
+  <tr><td>Flexibility</td><td>WFH days, flexible hours — has real monetary value (commute costs, childcare timing)</td></tr>
+</table>
+<h3>Negotiation Strategy</h3>
+<ol>
+  <li><strong>Never reveal your current salary if you can help it</strong> — in some AU states, asking current salary is restricted. Deflect: "I'd rather focus on the value I bring and your budget for the role."</li>
+  <li><strong>Get the offer in writing before negotiating</strong> — gives you something concrete to work with</li>
+  <li><strong>Competing offers are powerful</strong> — even one alternative offer dramatically improves leverage. Time your job search so offers arrive simultaneously</li>
+  <li><strong>Counter-offer formula:</strong> Ask for 10-20% above offer. Anchor high — you can come down, you can't go up</li>
+  <li><strong>If they say "this is our best offer":</strong> Ask for a non-monetary improvement (extra annual leave, $5k signing bonus, earlier performance review, remote work flexibility)</li>
+  <li><strong>Get everything agreed in writing</strong> before giving notice at current role</li>
+</ol>
+<div class="callout">
+  <strong>Scripts:</strong> "Based on my research and the market for someone with my experience in [specialty], I was expecting something in the range of $X-$Y. Is there flexibility?" / "I'm very excited about this role. To make this decision easier, could you get to $X base? I have another offer at $Z but I'd prefer to join here."
+</div>
+
+<!-- ===== COMPANIES ===== -->
+<h2 id="top-companies">Top Companies Hiring FDEs</h2>
+<h2 id="faang-process">FAANG Interview Process</h2>
+<table>
+  <tr><th>Company</th><th>Rounds</th><th>Focus Areas</th><th>Typical Timeline</th></tr>
+  <tr><td><strong>Google</strong></td><td>Phone screen (1) + Onsite (4-5)</td><td>Heavy algorithms (LeetCode hard), system design, behavioral (Googleyness), code quality</td><td>4-8 weeks</td></tr>
+  <tr><td><strong>Meta/Facebook</strong></td><td>Recruiter screen + Technical phone (2) + Virtual onsite (4-5)</td><td>Product sense (Eng), system design, behavioral (impact), coding (medium-hard)</td><td>4-6 weeks</td></tr>
+  <tr><td><strong>Amazon</strong></td><td>Online assessment + Phone (1) + Loop (4-6)</td><td>Leadership Principles (14 LPs — must prep stories for all), coding (medium), system design for senior</td><td>3-5 weeks</td></tr>
+  <tr><td><strong>Apple</strong></td><td>Recruiter + Technical screens (2-3) + Onsite (5-6)</td><td>iOS/macOS specific for mobile; web standards, algorithms, domain expertise for web</td><td>5-10 weeks</td></tr>
+  <tr><td><strong>Netflix</strong></td><td>Recruiter + Technical (2-3) + Onsite/virtual (4-5)</td><td>Culture (freedom &amp; responsibility), senior-only or equivalent expected, impact and ownership stories</td><td>4-6 weeks</td></tr>
+</table>
+
+<h2 id="australian-market">Australian Tech Market Focus</h2>
+<table>
+  <tr><th>Company</th><th>Type</th><th>Focus</th><th>Notes</th></tr>
+  <tr><td><strong>CBA</strong></td><td>Big 4 bank</td><td>Digital banking, DHP platform</td><td>Large scale, good benefits, structured levels, DHP/AWS heavy</td></tr>
+  <tr><td><strong>ANZ</strong></td><td>Big 4 bank</td><td>ANZ Plus digital bank</td><td>Major React Native transformation happening</td></tr>
+  <tr><td><strong>Westpac</strong></td><td>Big 4 bank</td><td>Digital transformation</td><td>Legacy modernization, Java + React stack</td></tr>
+  <tr><td><strong>Atlassian</strong></td><td>Product company</td><td>Jira/Confluence/Bitbucket</td><td>High bar, FAANG-comparable comp, distributed-first culture</td></tr>
+  <tr><td><strong>Canva</strong></td><td>Design unicorn</td><td>Real-time collaboration, design tools</td><td>Very high bar, strong engineering culture, equity valuable</td></tr>
+  <tr><td><strong>Afterpay/Block</strong></td><td>Fintech</td><td>BNPL, payments</td><td>Block ownership, US comp brackets, strong equity</td></tr>
+  <tr><td><strong>Seek</strong></td><td>Job marketplace</td><td>Candidate matching, platform</td><td>Strong tech culture, Java + Kotlin + React</td></tr>
+  <tr><td><strong>REA Group</strong></td><td>Proptech</td><td>Property listings, data</td><td>Strong engineering culture, agile maturity</td></tr>
+</table>
+
+<h2 id="company-types">Company Types Comparison</h2>
+<table>
+  <tr><th>Type</th><th>Compensation</th><th>Learning</th><th>Stability</th><th>Impact</th><th>Best For</th></tr>
+  <tr><td><strong>FAANG/Tier 1</strong></td><td>Very high (TC $200k+ AUD)</td><td>High — surrounded by top engineers</td><td>Good (layoffs possible)</td><td>Large scale but narrow scope</td><td>Maximizing comp + prestige, learning at scale</td></tr>
+  <tr><td><strong>Startup (early)</strong></td><td>Below market base but equity</td><td>Very high — wear many hats</td><td>Low — high failure rate</td><td>Huge individual impact</td><td>Risk-tolerant, wanting to learn fast, equity upside</td></tr>
+  <tr><td><strong>Scale-up (Series C+)</strong></td><td>Competitive base + meaningful equity</td><td>High — growing fast</td><td>Moderate</td><td>High — building the foundation</td><td>Best of startup and stability</td></tr>
+  <tr><td><strong>Enterprise (CBA, Westpac)</strong></td><td>Good base + bonus + super</td><td>Moderate — large systems, process-heavy</td><td>Very high</td><td>Large user impact but slow</td><td>Stability, work-life balance, large system experience</td></tr>
+  <tr><td><strong>Consulting / Agency</strong></td><td>Moderate</td><td>High breadth — many industries/stacks</td><td>Good</td><td>Client-dependent</td><td>Building breadth quickly, unsure of industry preference</td></tr>
+</table>
+
+<footer>Built for Dinesh Kumar | Career &amp; Interview Prep Reference | 2024–2025</footer>
+</main>
+</div>
+<script>hljs.highlightAll();mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

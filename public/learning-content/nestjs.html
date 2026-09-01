@@ -1,0 +1,1587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NestJS — Comprehensive Learning Reference</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6;display:flex;flex-direction:column}.topnav{background:#161b22;padding:10px 24px;border-bottom:1px solid #30363d;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100}.topnav a{color:#58a6ff;text-decoration:none;font-size:13px}.topnav h1{font-size:16px;color:#e6edf3;margin:0}.layout{display:flex;flex:1}.sidebar{width:260px;background:#161b22;border-right:1px solid #30363d;padding:16px;position:sticky;top:41px;height:calc(100vh - 41px);overflow-y:auto;flex-shrink:0}.sidebar a{display:block;padding:4px 8px;color:#8b949e;text-decoration:none;font-size:13px;border-radius:4px;margin-bottom:2px}.sidebar a:hover{background:#21262d;color:#c9d1d9}.sidebar .section-title{color:#58a6ff;font-size:11px;text-transform:uppercase;letter-spacing:.5px;margin:16px 0 6px;padding:0 8px;font-weight:600}main{flex:1;padding:32px 48px;max-width:960px}h1{font-size:2rem;color:#e6edf3;border-bottom:1px solid #30363d;padding-bottom:16px;margin-bottom:24px}h2{font-size:1.5rem;color:#e6edf3;margin:48px 0 16px;border-bottom:1px solid #21262d;padding-bottom:8px}h3{font-size:1.15rem;color:#79c0ff;margin:24px 0 10px}h4{font-size:1rem;color:#d2a8ff;margin:16px 0 8px}p{margin-bottom:12px}ul,ol{margin:0 0 16px 24px}li{margin-bottom:4px}pre{margin:16px 0;border-radius:6px;overflow-x:auto;font-size:13px}code:not(pre code){background:#161b22;padding:2px 6px;border-radius:4px;font-size:13px;color:#f0883e;border:1px solid #30363d}table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}th{background:#161b22;color:#58a6ff;padding:10px 14px;text-align:left;border:1px solid #30363d}td{padding:10px 14px;border:1px solid #30363d;vertical-align:top}tr:nth-child(even) td{background:#0a0d12}.mermaid{background:#161b22;padding:20px;border-radius:6px;margin:16px 0;text-align:center}details{border:1px solid #30363d;border-radius:6px;margin:10px 0;overflow:hidden}summary{padding:12px 16px;cursor:pointer;background:#161b22;color:#79c0ff;font-weight:600;list-style:none}details[open] summary{border-bottom:1px solid #30363d}.answer{padding:16px 20px;background:#0d1117}.badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:700;margin-left:8px}.easy{background:#1a4731;color:#3fb950}.intermediate{background:#2d2b00;color:#e3b341}.advanced{background:#3d1f00;color:#f0883e}.very-advanced{background:#3d0000;color:#ff7b72}.callout{background:#161b22;border-left:4px solid #58a6ff;padding:12px 16px;border-radius:0 6px 6px 0;margin:16px 0}footer{text-align:center;padding:24px;color:#8b949e;font-size:12px;border-top:1px solid #30363d;margin-top:40px}
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <h1>NestJS — Comprehensive Reference</h1>
+  <a href="react-native.html">React Native</a>
+  <a href="nodejs.html">Node.js</a>
+</nav>
+<div class="layout">
+<aside class="sidebar">
+  <div class="section-title">Architecture</div>
+  <a href="#overview">Architecture Overview</a>
+  <a href="#request-lifecycle">Request Lifecycle</a>
+  <a href="#decorators">Decorators</a>
+  <div class="section-title">DI System</div>
+  <a href="#di">Dependency Injection</a>
+  <a href="#providers">Providers</a>
+  <a href="#modules">Modules</a>
+  <div class="section-title">Request Pipeline</div>
+  <a href="#middleware">Middleware</a>
+  <a href="#guards">Guards</a>
+  <a href="#interceptors">Interceptors</a>
+  <a href="#pipes">Pipes</a>
+  <a href="#exception-filters">Exception Filters</a>
+  <div class="section-title">Configuration</div>
+  <a href="#config">Configuration</a>
+  <div class="section-title">Database</div>
+  <a href="#typeorm">TypeORM</a>
+  <a href="#prisma">Prisma</a>
+  <div class="section-title">Auth</div>
+  <a href="#auth">JWT Authentication</a>
+  <a href="#rbac">RBAC Authorization</a>
+  <div class="section-title">API Types</div>
+  <a href="#rest">REST API</a>
+  <a href="#graphql">GraphQL</a>
+  <a href="#websockets">WebSockets</a>
+  <a href="#microservices">Microservices</a>
+  <a href="#queues">Queues (BullMQ)</a>
+  <div class="section-title">Quality</div>
+  <a href="#testing">Testing</a>
+  <a href="#swagger">Swagger</a>
+  <a href="#versions">Version History</a>
+  <div class="section-title">Interview Q&amp;A</div>
+  <a href="#interview">20+ Q&amp;As</a>
+</aside>
+<main>
+<h1>NestJS — Comprehensive Learning Reference</h1>
+
+<!-- ==================== OVERVIEW ==================== -->
+<h2 id="overview">Architecture Overview</h2>
+<p>NestJS is a progressive Node.js framework built on top of Express (or Fastify) that brings Angular-inspired architecture to backend development. It uses TypeScript decorators to declare the structure of your application.</p>
+
+<table>
+<tr><th>Building Block</th><th>Purpose</th><th>Decorator</th></tr>
+<tr><td>Module</td><td>Organises related code into cohesive units</td><td><code>@Module()</code></td></tr>
+<tr><td>Controller</td><td>Handles incoming HTTP requests, returns responses</td><td><code>@Controller()</code></td></tr>
+<tr><td>Provider / Service</td><td>Business logic, injectable dependencies</td><td><code>@Injectable()</code></td></tr>
+<tr><td>Middleware</td><td>Runs before route handler (like Express middleware)</td><td><code>implements NestMiddleware</code></td></tr>
+<tr><td>Guard</td><td>Determines if a request should be handled (AuthN/AuthZ)</td><td><code>@UseGuards()</code></td></tr>
+<tr><td>Interceptor</td><td>Transform/log/cache before &amp; after route handler</td><td><code>@UseInterceptors()</code></td></tr>
+<tr><td>Pipe</td><td>Transform and validate input data</td><td><code>@UsePipes()</code></td></tr>
+<tr><td>Exception Filter</td><td>Catch and format thrown exceptions</td><td><code>@UseFilters()</code></td></tr>
+</table>
+
+<!-- ==================== REQUEST LIFECYCLE ==================== -->
+<h2 id="request-lifecycle">Request Lifecycle</h2>
+
+<div class="mermaid">
+graph TD
+    A[Incoming Request] --> B[Middleware\nnext called]
+    B --> C[Guards\ncanActivate]
+    C -->|true| D[Interceptors\nbefore handle]
+    C -->|false| Z[403 Forbidden]
+    D --> E[Pipes\ntransform + validate]
+    E --> F[Route Handler\nController method]
+    F --> G[Interceptors\nafter handle - map response]
+    G --> H[Exception Filters\nif error thrown]
+    H --> I[Response sent]
+
+    style C fill:#1a4731,color:#3fb950
+    style E fill:#1f3358,color:#58a6ff
+    style D fill:#2d2b00,color:#e3b341
+    style H fill:#3d1f00,color:#f0883e
+    style Z fill:#3d0000,color:#ff7b72
+</div>
+
+<p>Order: <strong>Middleware → Guards → Interceptors (pre) → Pipes → Route Handler → Interceptors (post) → Exception Filters</strong></p>
+
+<!-- ==================== DECORATORS ==================== -->
+<h2 id="decorators">Decorators Reference</h2>
+<pre><code class="language-typescript">// Controller decorators
+@Controller('users')                // base path
+@Controller({ path: 'users', version: '1' })  // with versioning
+
+// Method decorators
+@Get(':id')
+@Post()
+@Put(':id')
+@Patch(':id')
+@Delete(':id')
+@Options()
+@Head()
+@All('*')                          // catch-all
+
+// HTTP control
+@HttpCode(201)                     // set status code
+@Header('Cache-Control', 'none')   // set response header
+@Redirect('https://example.com', 301)
+
+// Parameter decorators
+@Param('id') id: string
+@Param() params: Record&lt;string, string&gt;
+@Body() dto: CreateUserDto
+@Body('email') email: string
+@Query() query: PaginationDto
+@Query('page', ParseIntPipe) page: number
+@Headers('authorization') auth: string
+@Headers() headers: Record&lt;string, string&gt;
+@Req() req: Request                // raw Express request
+@Res({ passthrough: true }) res: Response  // passthrough — Nest still sends response
+@Next() next: NextFunction
+
+// Custom decorators
+export const CurrentUser = createParamDecorator(
+  (data: string | undefined, ctx: ExecutionContext) =&gt; {
+    const request = ctx.switchToHttp().getRequest();
+    return data ? request.user?.[data] : request.user;
+  }
+);
+
+@Get('me')
+getProfile(@CurrentUser('id') userId: string) {}</code></pre>
+
+<!-- ==================== DEPENDENCY INJECTION ==================== -->
+<h2 id="di">Dependency Injection System</h2>
+<p>NestJS's DI system is based on inversion of control (IoC). Providers are registered in a module and injected via constructor parameters. The DI container resolves the dependency graph at bootstrap.</p>
+
+<pre><code class="language-typescript">@Injectable()
+export class UsersService {
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepository: Repository&lt;User&gt;,
+    private readonly configService: ConfigService,
+    private readonly mailService: MailService,
+  ) {}
+}
+
+@Module({
+  providers: [UsersService, MailService],
+  exports: [UsersService],  // export to be used by other modules
+})
+export class UsersModule {}</code></pre>
+
+<!-- ==================== PROVIDERS ==================== -->
+<h2 id="providers">Providers — All Forms</h2>
+<pre><code class="language-typescript">// 1. useClass — standard
+providers: [UsersService]
+// shorthand for:
+providers: [{ provide: UsersService, useClass: UsersService }]
+
+// 2. useValue — constants, configs, mocks
+providers: [
+  { provide: 'API_KEY', useValue: process.env.API_KEY },
+  { provide: ConfigService, useValue: mockConfigService },  // for testing
+]
+@Inject('API_KEY') private readonly apiKey: string
+
+// 3. useFactory — dynamic / async providers
+providers: [
+  {
+    provide: 'DATABASE_CONNECTION',
+    useFactory: async (configService: ConfigService) =&gt; {
+      const conn = await createConnection(configService.get('DB_URL'));
+      return conn;
+    },
+    inject: [ConfigService],
+  }
+]
+
+// 4. useExisting — alias
+providers: [
+  OriginalService,
+  { provide: AliasToken, useExisting: OriginalService }
+]
+
+// 5. Async provider with inject
+providers: [
+  {
+    provide: 'REDIS_CLIENT',
+    useFactory: async () =&gt; {
+      const client = createClient({ url: process.env.REDIS_URL });
+      await client.connect();
+      return client;
+    },
+  }
+]
+
+// Custom token with Symbol
+export const CACHE_TOKEN = Symbol('CACHE_TOKEN');
+@Inject(CACHE_TOKEN) private cache: CacheService</code></pre>
+
+<!-- ==================== MODULES ==================== -->
+<h2 id="modules">Modules</h2>
+<h3>Feature, Shared, Global, Dynamic</h3>
+<pre><code class="language-typescript">// Feature module
+@Module({
+  imports: [TypeOrmModule.forFeature([User])],
+  controllers: [UsersController],
+  providers: [UsersService],
+  exports: [UsersService],
+})
+export class UsersModule {}
+
+// Global module — providers available everywhere without importing
+@Global()
+@Module({ providers: [LoggerService], exports: [LoggerService] })
+export class LoggingModule {}
+
+// Dynamic module — configurable at import time
+@Module({})
+export class DatabaseModule {
+  static forRoot(options: DatabaseOptions): DynamicModule {
+    return {
+      module: DatabaseModule,
+      providers: [
+        { provide: 'DB_OPTIONS', useValue: options },
+        DatabaseService,
+      ],
+      exports: [DatabaseService],
+      global: true,
+    };
+  }
+
+  static forFeature(entities: EntityClassOrSchema[]): DynamicModule {
+    return {
+      module: DatabaseModule,
+      imports: [TypeOrmModule.forFeature(entities)],
+      exports: [TypeOrmModule],
+    };
+  }
+}
+
+// App root module
+@Module({
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    DatabaseModule.forRoot({ url: process.env.DB_URL }),
+    UsersModule,
+    AuthModule,
+  ],
+})
+export class AppModule {}</code></pre>
+
+<!-- ==================== MIDDLEWARE ==================== -->
+<h2 id="middleware">Middleware</h2>
+<pre><code class="language-typescript">// Class-based
+@Injectable()
+export class LoggerMiddleware implements NestMiddleware {
+  use(req: Request, res: Response, next: NextFunction) {
+    console.log(`[${req.method}] ${req.url}`);
+    next();
+  }
+}
+
+// Functional (simpler)
+export function logger(req: Request, res: Response, next: NextFunction) {
+  console.log(`[${req.method}] ${req.url}`);
+  next();
+}
+
+// Apply in module — middleware does NOT support DI token routing
+@Module({ imports: [UsersModule] })
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(LoggerMiddleware, cors())
+      .exclude({ path: 'health', method: RequestMethod.GET })
+      .forRoutes({ path: 'users', method: RequestMethod.ALL });
+
+    consumer.apply(AuthMiddleware).forRoutes(UsersController);
+  }
+}</code></pre>
+
+<!-- ==================== GUARDS ==================== -->
+<h2 id="guards">Guards</h2>
+<pre><code class="language-typescript">// JWT Auth Guard
+@Injectable()
+export class JwtAuthGuard extends AuthGuard('jwt') {
+  canActivate(context: ExecutionContext) {
+    return super.canActivate(context);
+  }
+}
+
+// Custom guard — roles-based
+@Injectable()
+export class RolesGuard implements CanActivate {
+  constructor(private reflector: Reflector) {}
+
+  canActivate(context: ExecutionContext): boolean {
+    const requiredRoles = this.reflector.getAllAndOverride&lt;Role[]&gt;('roles', [
+      context.getHandler(),  // method-level metadata
+      context.getClass(),    // class-level metadata
+    ]);
+    if (!requiredRoles) return true;  // no roles required — allow
+
+    const { user } = context.switchToHttp().getRequest();
+    return requiredRoles.some(role =&gt; user.roles.includes(role));
+  }
+}
+
+// Apply guards
+@UseGuards(JwtAuthGuard, RolesGuard)  // method-level
+@Controller('admin')
+@UseGuards(JwtAuthGuard)              // controller-level
+
+// Global guard (all routes)
+app.useGlobalGuards(new JwtAuthGuard());
+// Or via DI (preferred):
+providers: [{ provide: APP_GUARD, useClass: JwtAuthGuard }]</code></pre>
+
+<!-- ==================== INTERCEPTORS ==================== -->
+<h2 id="interceptors">Interceptors</h2>
+<pre><code class="language-typescript">// Transform response — wrap all responses in { data: ... }
+@Injectable()
+export class TransformInterceptor&lt;T&gt; implements NestInterceptor&lt;T, ApiResponse&lt;T&gt;&gt; {
+  intercept(context: ExecutionContext, next: CallHandler): Observable&lt;ApiResponse&lt;T&gt;&gt; {
+    return next.handle().pipe(
+      map(data =&gt; ({ success: true, data, timestamp: new Date().toISOString() }))
+    );
+  }
+}
+
+// Logging interceptor
+@Injectable()
+export class LoggingInterceptor implements NestInterceptor {
+  intercept(context: ExecutionContext, next: CallHandler): Observable&lt;any&gt; {
+    const req = context.switchToHttp().getRequest();
+    const start = Date.now();
+    return next.handle().pipe(
+      tap(() =&gt; console.log(`${req.method} ${req.url} - ${Date.now() - start}ms`)),
+      catchError(err =&gt; {
+        console.error(`${req.method} ${req.url} - ERROR: ${err.message}`);
+        return throwError(() =&gt; err);
+      })
+    );
+  }
+}
+
+// Timeout interceptor
+@Injectable()
+export class TimeoutInterceptor implements NestInterceptor {
+  intercept(_: ExecutionContext, next: CallHandler): Observable&lt;any&gt; {
+    return next.handle().pipe(timeout(5000));
+  }
+}
+
+// Cache interceptor
+@Injectable()
+export class CacheInterceptor implements NestInterceptor {
+  constructor(private cache: CacheService) {}
+
+  async intercept(ctx: ExecutionContext, next: CallHandler): Promise&lt;Observable&lt;any&gt;&gt; {
+    const key = ctx.switchToHttp().getRequest().url;
+    const cached = await this.cache.get(key);
+    if (cached) return of(cached);
+    return next.handle().pipe(
+      tap(data =&gt; this.cache.set(key, data, 60))
+    );
+  }
+}
+
+// Global interceptor via DI
+providers: [{ provide: APP_INTERCEPTOR, useClass: TransformInterceptor }]</code></pre>
+
+<!-- ==================== PIPES ==================== -->
+<h2 id="pipes">Pipes</h2>
+<pre><code class="language-typescript">// Built-in pipes
+@Param('id', ParseIntPipe) id: number
+@Param('uuid', new ParseUUIDPipe({ version: '4' })) uuid: string
+@Query('active', ParseBoolPipe) active: boolean
+@Body(new ValidationPipe({ whitelist: true })) dto: CreateUserDto
+
+// Global ValidationPipe (recommended setup)
+app.useGlobalPipes(new ValidationPipe({
+  whitelist: true,         // strip unknown properties
+  forbidNonWhitelisted: true,  // throw on unknown properties
+  transform: true,         // auto-transform to DTO types
+  transformOptions: { enableImplicitConversion: true },
+}));
+
+// DTO with class-validator
+import { IsEmail, IsString, MinLength, IsOptional, IsInt, Min, Max } from 'class-validator';
+import { Transform, Type } from 'class-transformer';
+
+export class CreateUserDto {
+  @IsString()
+  @MinLength(2)
+  name: string;
+
+  @IsEmail()
+  @Transform(({ value }) =&gt; value.toLowerCase().trim())
+  email: string;
+
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  @Max(120)
+  @Type(() =&gt; Number)  // auto-cast string to number from query params
+  age?: number;
+}
+
+// Custom pipe
+@Injectable()
+export class TrimPipe implements PipeTransform {
+  transform(value: any) {
+    if (typeof value === 'string') return value.trim();
+    if (typeof value === 'object' &amp;&amp; value !== null) {
+      return Object.fromEntries(
+        Object.entries(value).map(([k, v]) =&gt; [k, typeof v === 'string' ? v.trim() : v])
+      );
+    }
+    return value;
+  }
+}</code></pre>
+
+<!-- ==================== EXCEPTION FILTERS ==================== -->
+<h2 id="exception-filters">Exception Filters</h2>
+<pre><code class="language-typescript">// Throw built-in exceptions
+throw new BadRequestException('Invalid input');
+throw new UnauthorizedException('Invalid token');
+throw new ForbiddenException('Access denied');
+throw new NotFoundException(`User #${id} not found`);
+throw new ConflictException('Email already exists');
+throw new UnprocessableEntityException({ fields: validationErrors });
+throw new InternalServerErrorException();
+throw new HttpException({ message: 'Custom' }, HttpStatus.TEAPOT);
+
+// Custom exception
+export class BusinessRuleException extends HttpException {
+  constructor(message: string, public readonly code: string) {
+    super({ message, code, statusCode: 422 }, HttpStatus.UNPROCESSABLE_ENTITY);
+  }
+}
+
+// Custom exception filter
+@Catch()  // catch all
+export class GlobalExceptionFilter implements ExceptionFilter {
+  catch(exception: unknown, host: ArgumentsHost) {
+    const ctx = host.switchToHttp();
+    const response = ctx.getResponse&lt;Response&gt;();
+    const request = ctx.getRequest&lt;Request&gt;();
+
+    let status = HttpStatus.INTERNAL_SERVER_ERROR;
+    let message = 'Internal server error';
+
+    if (exception instanceof HttpException) {
+      status = exception.getStatus();
+      const res = exception.getResponse();
+      message = typeof res === 'object' ? (res as any).message : res;
+    } else if (exception instanceof Error) {
+      message = exception.message;
+    }
+
+    response.status(status).json({
+      statusCode: status,
+      message,
+      path: request.url,
+      timestamp: new Date().toISOString(),
+    });
+  }
+}
+
+// Apply globally
+app.useGlobalFilters(new GlobalExceptionFilter());
+// Or via DI: providers: [{ provide: APP_FILTER, useClass: GlobalExceptionFilter }]
+
+// Method/controller level
+@UseFilters(new HttpExceptionFilter())</code></pre>
+
+<!-- ==================== CONFIG ==================== -->
+<h2 id="config">Configuration</h2>
+<pre><code class="language-typescript">// @nestjs/config with Joi validation
+import * as Joi from 'joi';
+
+ConfigModule.forRoot({
+  isGlobal: true,
+  envFilePath: ['.env.local', '.env'],
+  validationSchema: Joi.object({
+    NODE_ENV: Joi.string().valid('development', 'production', 'test').required(),
+    PORT: Joi.number().default(3000),
+    DATABASE_URL: Joi.string().required(),
+    JWT_SECRET: Joi.string().min(32).required(),
+  }),
+  validationOptions: { abortEarly: false },
+});
+
+// Typed config with ConfigService
+@Injectable()
+export class AppConfigService {
+  constructor(private config: ConfigService) {}
+
+  get port() { return this.config.get&lt;number&gt;('PORT', 3000); }
+  get dbUrl() { return this.config.getOrThrow&lt;string&gt;('DATABASE_URL'); }
+  get isDev() { return this.config.get('NODE_ENV') === 'development'; }
+}
+
+// Namespace configs
+export const databaseConfig = registerAs('database', () =&gt; ({
+  url: process.env.DATABASE_URL,
+  pool: { min: 2, max: parseInt(process.env.DB_POOL_MAX ?? '10') },
+}));
+
+ConfigModule.forRoot({ load: [databaseConfig] })
+this.config.get('database.pool.max')</code></pre>
+
+<!-- ==================== TYPEORM ==================== -->
+<h2 id="typeorm">TypeORM Integration</h2>
+<pre><code class="language-typescript">// Entity
+@Entity('users')
+export class User {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
+  @Column({ unique: true })
+  email: string;
+
+  @Column()
+  @Exclude()  // class-transformer — exclude from responses
+  password: string;
+
+  @Column({ default: true })
+  isActive: boolean;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
+
+  @OneToMany(() =&gt; Post, post =&gt; post.author, { cascade: true })
+  posts: Post[];
+}
+
+@Entity('posts')
+export class Post {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
+  @Column()
+  title: string;
+
+  @ManyToOne(() =&gt; User, user =&gt; user.posts, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'author_id' })
+  author: User;
+
+  @Column({ name: 'author_id' })
+  authorId: string;
+}
+
+// Repository pattern in service
+@Injectable()
+export class UsersService {
+  constructor(
+    @InjectRepository(User)
+    private repo: Repository&lt;User&gt;,
+    private dataSource: DataSource,
+  ) {}
+
+  async findAll(query: PaginationDto) {
+    return this.repo.findAndCount({
+      where: { isActive: true },
+      relations: ['posts'],
+      order: { createdAt: 'DESC' },
+      take: query.limit,
+      skip: query.offset,
+    });
+  }
+
+  async findWithQueryBuilder(search: string) {
+    return this.repo.createQueryBuilder('user')
+      .leftJoinAndSelect('user.posts', 'post')
+      .where('user.email ILIKE :search OR user.name ILIKE :search', { search: `%${search}%` })
+      .andWhere('user.isActive = :active', { active: true })
+      .orderBy('user.createdAt', 'DESC')
+      .take(20)
+      .getMany();
+  }
+
+  // Transactions
+  async transferCredits(fromId: string, toId: string, amount: number) {
+    return this.dataSource.transaction(async manager =&gt; {
+      const from = await manager.findOneOrFail(User, { where: { id: fromId }, lock: { mode: 'pessimistic_write' } });
+      const to = await manager.findOneOrFail(User, { where: { id: toId } });
+      from.credits -= amount;
+      to.credits += amount;
+      await manager.save([from, to]);
+    });
+  }
+}</code></pre>
+
+<!-- ==================== PRISMA ==================== -->
+<h2 id="prisma">Prisma Integration</h2>
+<pre><code class="language-typescript">// PrismaService
+@Injectable()
+export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
+  async onModuleInit() {
+    await this.$connect();
+  }
+  async onModuleDestroy() {
+    await this.$disconnect();
+  }
+}
+
+// schema.prisma
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String
+  posts     Post[]
+  createdAt DateTime @default(now())
+}
+
+// In service
+@Injectable()
+export class UsersService {
+  constructor(private prisma: PrismaService) {}
+
+  async findAll(skip = 0, take = 20) {
+    const [users, total] = await this.prisma.$transaction([
+      this.prisma.user.findMany({ skip, take, include: { posts: true }, orderBy: { createdAt: 'desc' } }),
+      this.prisma.user.count(),
+    ]);
+    return { users, total };
+  }
+
+  async create(data: CreateUserDto) {
+    return this.prisma.user.create({ data });
+  }
+
+  async upsert(email: string, data: Partial&lt;User&gt;) {
+    return this.prisma.user.upsert({
+      where: { email },
+      update: data,
+      create: { email, ...data },
+    });
+  }
+}</code></pre>
+
+<!-- ==================== AUTH ==================== -->
+<h2 id="auth">JWT Authentication</h2>
+<pre><code class="language-typescript">// Install: @nestjs/passport @nestjs/jwt passport passport-jwt passport-local
+
+// JWT Strategy
+@Injectable()
+export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
+  constructor(configService: ConfigService) {
+    super({
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      secretOrKey: configService.getOrThrow('JWT_SECRET'),
+      ignoreExpiration: false,
+    });
+  }
+
+  async validate(payload: JwtPayload): Promise&lt;User&gt; {
+    // payload is the decoded JWT — return value becomes req.user
+    return { id: payload.sub, email: payload.email, roles: payload.roles };
+  }
+}
+
+// Local Strategy (username/password)
+@Injectable()
+export class LocalStrategy extends PassportStrategy(Strategy, 'local') {
+  constructor(private authService: AuthService) {
+    super({ usernameField: 'email' });
+  }
+
+  async validate(email: string, password: string): Promise&lt;User&gt; {
+    const user = await this.authService.validateUser(email, password);
+    if (!user) throw new UnauthorizedException('Invalid credentials');
+    return user;
+  }
+}
+
+// AuthService
+@Injectable()
+export class AuthService {
+  constructor(
+    private usersService: UsersService,
+    private jwtService: JwtService,
+  ) {}
+
+  async login(user: User) {
+    const payload: JwtPayload = { sub: user.id, email: user.email, roles: user.roles };
+    return {
+      accessToken: this.jwtService.sign(payload, { expiresIn: '15m' }),
+      refreshToken: this.jwtService.sign({ sub: user.id }, {
+        secret: process.env.JWT_REFRESH_SECRET,
+        expiresIn: '7d',
+      }),
+    };
+  }
+
+  async refresh(refreshToken: string) {
+    const payload = this.jwtService.verify(refreshToken, { secret: process.env.JWT_REFRESH_SECRET });
+    const user = await this.usersService.findById(payload.sub);
+    return this.login(user);
+  }
+}
+
+// AuthController
+@Post('login')
+@UseGuards(AuthGuard('local'))
+async login(@CurrentUser() user: User) {
+  return this.authService.login(user);
+}
+
+@Post('refresh')
+async refresh(@Body('refreshToken') token: string) {
+  return this.authService.refresh(token);
+}</code></pre>
+
+<!-- ==================== RBAC ==================== -->
+<h2 id="rbac">RBAC Authorization</h2>
+<pre><code class="language-typescript">// Role enum
+export enum Role { User = 'user', Admin = 'admin', Moderator = 'moderator' }
+
+// Custom decorator
+export const Roles = (...roles: Role[]) =&gt; SetMetadata('roles', roles);
+
+// Controller usage
+@Get('admin/stats')
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles(Role.Admin)
+getStats() {}
+
+// Ownership guard — users can only access their own resources
+@Injectable()
+export class OwnershipGuard implements CanActivate {
+  canActivate(context: ExecutionContext): boolean {
+    const req = context.switchToHttp().getRequest();
+    const { user, params } = req;
+    return user.roles.includes(Role.Admin) || user.id === params.userId;
+  }
+}</code></pre>
+
+<!-- ==================== REST ==================== -->
+<h2 id="rest">REST API — Full Controller Example</h2>
+<pre><code class="language-typescript">@ApiTags('users')
+@Controller({ path: 'users', version: '1' })
+@UseGuards(JwtAuthGuard)
+@UseInterceptors(TransformInterceptor)
+export class UsersController {
+  constructor(private readonly usersService: UsersService) {}
+
+  @Post()
+  @ApiOperation({ summary: 'Create a user' })
+  @ApiResponse({ status: 201, type: UserDto })
+  @HttpCode(201)
+  async create(@Body() dto: CreateUserDto): Promise&lt;UserDto&gt; {
+    return this.usersService.create(dto);
+  }
+
+  @Get()
+  async findAll(@Query() query: PaginationQueryDto) {
+    return this.usersService.findAll(query);
+  }
+
+  @Get(':id')
+  async findOne(@Param('id', ParseUUIDPipe) id: string) {
+    const user = await this.usersService.findById(id);
+    if (!user) throw new NotFoundException(`User ${id} not found`);
+    return user;
+  }
+
+  @Patch(':id')
+  @Roles(Role.Admin)
+  @UseGuards(RolesGuard)
+  async update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() dto: UpdateUserDto,
+  ) {
+    return this.usersService.update(id, dto);
+  }
+
+  @Delete(':id')
+  @HttpCode(204)
+  async remove(@Param('id', ParseUUIDPipe) id: string) {
+    await this.usersService.remove(id);
+  }
+}
+
+// Enable API versioning in main.ts
+app.enableVersioning({ type: VersioningType.URI });  // /v1/users</code></pre>
+
+<!-- ==================== GRAPHQL ==================== -->
+<h2 id="graphql">GraphQL</h2>
+<pre><code class="language-typescript">// Code-first setup (generates schema from TypeScript)
+GraphQLModule.forRoot&lt;ApolloDriverConfig&gt;({
+  driver: ApolloDriver,
+  autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+  sortSchema: true,
+  subscriptions: { 'graphql-ws': true },
+  context: ({ req }) =&gt; ({ req }),
+}),
+
+// Object type
+@ObjectType()
+export class UserType {
+  @Field(() =&gt; ID)
+  id: string;
+
+  @Field()
+  email: string;
+
+  @Field(() =&gt; [PostType])
+  posts: PostType[];
+}
+
+// Resolver
+@Resolver(() =&gt; UserType)
+export class UsersResolver {
+  constructor(
+    private usersService: UsersService,
+    private postsService: PostsService,
+  ) {}
+
+  @Query(() =&gt; [UserType], { name: 'users' })
+  @UseGuards(GqlAuthGuard)
+  findAll() {
+    return this.usersService.findAll();
+  }
+
+  @Query(() =&gt; UserType, { nullable: true })
+  findOne(@Args('id', { type: () =&gt; ID }) id: string) {
+    return this.usersService.findById(id);
+  }
+
+  @Mutation(() =&gt; UserType)
+  createUser(@Args('input') input: CreateUserInput) {
+    return this.usersService.create(input);
+  }
+
+  // ResolveField — lazy-load relations
+  @ResolveField('posts', () =&gt; [PostType])
+  getPosts(@Parent() user: UserType) {
+    return this.postsService.findByAuthor(user.id);
+  }
+
+  // Subscription
+  @Subscription(() =&gt; UserType, {
+    filter: (payload, variables) =&gt; payload.userCreated.id === variables.userId,
+  })
+  userCreated(@Args('userId') userId: string) {
+    return this.pubSub.asyncIterator('userCreated');
+  }
+}
+
+// Input type
+@InputType()
+export class CreateUserInput {
+  @Field()
+  @IsEmail()
+  email: string;
+
+  @Field()
+  @MinLength(2)
+  name: string;
+}
+
+// GQL Auth Guard
+@Injectable()
+export class GqlAuthGuard extends AuthGuard('jwt') {
+  getRequest(context: ExecutionContext) {
+    const ctx = GqlExecutionContext.create(context);
+    return ctx.getContext().req;
+  }
+}</code></pre>
+
+<!-- ==================== WEBSOCKETS ==================== -->
+<h2 id="websockets">WebSockets</h2>
+<pre><code class="language-typescript">import { WebSocketGateway, WebSocketServer, SubscribeMessage,
+         MessageBody, ConnectedSocket, OnGatewayConnection, OnGatewayDisconnect } from '@nestjs/websockets';
+import { Server, Socket } from 'socket.io';
+
+@WebSocketGateway(3001, {
+  cors: { origin: '*' },
+  namespace: '/chat',
+})
+export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
+  @WebSocketServer()
+  server: Server;
+
+  async handleConnection(client: Socket) {
+    const user = await this.authService.validateSocket(client);
+    if (!user) return client.disconnect();
+    client.data.user = user;
+    client.join(`room:${user.roomId}`);
+  }
+
+  handleDisconnect(client: Socket) {
+    console.log(`Client disconnected: ${client.id}`);
+  }
+
+  @SubscribeMessage('message')
+  handleMessage(
+    @MessageBody() data: { content: string; roomId: string },
+    @ConnectedSocket() client: Socket,
+  ) {
+    const message = { ...data, sender: client.data.user, timestamp: Date.now() };
+    // Emit to all in room except sender
+    client.to(`room:${data.roomId}`).emit('message', message);
+    return message;  // ACK back to sender
+  }
+
+  // Broadcast from service
+  broadcastToRoom(roomId: string, event: string, data: any) {
+    this.server.to(`room:${roomId}`).emit(event, data);
+  }
+}</code></pre>
+
+<!-- ==================== MICROSERVICES ==================== -->
+<h2 id="microservices">Microservices</h2>
+<pre><code class="language-typescript">// TCP Transport
+const app = await NestFactory.createMicroservice&lt;MicroserviceOptions&gt;(AppModule, {
+  transport: Transport.TCP,
+  options: { host: 'localhost', port: 8888 },
+});
+await app.listen();
+
+// Redis Transport
+const app = await NestFactory.createMicroservice&lt;MicroserviceOptions&gt;(AppModule, {
+  transport: Transport.REDIS,
+  options: { host: 'localhost', port: 6379 },
+});
+
+// Kafka Transport
+const app = await NestFactory.createMicroservice&lt;MicroserviceOptions&gt;(AppModule, {
+  transport: Transport.KAFKA,
+  options: {
+    client: { brokers: ['localhost:9092'] },
+    consumer: { groupId: 'orders-consumer' },
+  },
+});
+
+// Message patterns in microservice
+@Controller()
+export class OrdersController {
+  @MessagePattern({ cmd: 'get_order' })  // request-response
+  getOrder(@Payload() data: { id: string }) {
+    return this.ordersService.findById(data.id);
+  }
+
+  @EventPattern('order_placed')           // fire-and-forget
+  handleOrderPlaced(@Payload() data: OrderPlacedEvent) {
+    this.ordersService.processOrder(data);
+  }
+}
+
+// ClientProxy — call microservice from another service
+@Module({
+  imports: [
+    ClientsModule.register([{
+      name: 'ORDERS_SERVICE',
+      transport: Transport.TCP,
+      options: { host: 'orders-service', port: 8888 },
+    }]),
+  ],
+})
+export class ApiGatewayModule {}
+
+@Injectable()
+export class ApiGatewayService {
+  constructor(@Inject('ORDERS_SERVICE') private client: ClientProxy) {}
+
+  async getOrder(id: string) {
+    return lastValueFrom(
+      this.client.send({ cmd: 'get_order' }, { id }).pipe(timeout(5000))
+    );
+  }
+
+  async placeOrder(order: CreateOrderDto) {
+    this.client.emit('order_placed', order);  // fire-and-forget
+  }
+}</code></pre>
+
+<!-- ==================== QUEUES ==================== -->
+<h2 id="queues">Queues — BullMQ</h2>
+<pre><code class="language-typescript">// @nestjs/bullmq
+BullModule.forRoot({ connection: { host: 'localhost', port: 6379 } }),
+BullModule.registerQueue({ name: 'emails' }),
+
+// Enqueue jobs
+@Injectable()
+export class EmailService {
+  constructor(@InjectQueue('emails') private emailQueue: Queue) {}
+
+  async sendWelcomeEmail(userId: string) {
+    await this.emailQueue.add('welcome', { userId }, {
+      attempts: 3,
+      backoff: { type: 'exponential', delay: 1000 },
+      removeOnComplete: 100,
+      removeOnFail: 50,
+    });
+  }
+
+  async sendBulk(userIds: string[]) {
+    const jobs = userIds.map(userId =&gt; ({
+      name: 'welcome',
+      data: { userId },
+    }));
+    await this.emailQueue.addBulk(jobs);
+  }
+}
+
+// Process jobs
+@Processor('emails')
+export class EmailProcessor {
+  @Process('welcome')
+  async handleWelcome(@InjectJob() job: Job&lt;{ userId: string }&gt;) {
+    const { userId } = job.data;
+    await job.updateProgress(10);
+    const user = await this.usersService.findById(userId);
+    await job.updateProgress(50);
+    await this.mailer.send({ to: user.email, template: 'welcome' });
+    await job.updateProgress(100);
+  }
+
+  @OnQueueFailed()
+  onFail(job: Job, error: Error) {
+    console.error(`Job ${job.id} failed: ${error.message}`);
+  }
+}</code></pre>
+
+<!-- ==================== TESTING ==================== -->
+<h2 id="testing">Testing</h2>
+<h3>Unit Tests</h3>
+<pre><code class="language-typescript">describe('UsersService', () =&gt; {
+  let service: UsersService;
+  let repo: jest.Mocked&lt;Repository&lt;User&gt;&gt;;
+
+  beforeEach(async () =&gt; {
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        UsersService,
+        {
+          provide: getRepositoryToken(User),
+          useValue: {
+            findOneBy: jest.fn(),
+            save: jest.fn(),
+            create: jest.fn(),
+          },
+        },
+        {
+          provide: ConfigService,
+          useValue: { get: jest.fn().mockReturnValue('test-value') },
+        },
+      ],
+    }).compile();
+
+    service = module.get&lt;UsersService&gt;(UsersService);
+    repo = module.get(getRepositoryToken(User));
+  });
+
+  it('should create a user', async () =&gt; {
+    const dto: CreateUserDto = { email: 'test@test.com', name: 'Test' };
+    const savedUser = { id: 'uuid', ...dto };
+    repo.create.mockReturnValue(savedUser as User);
+    repo.save.mockResolvedValue(savedUser as User);
+
+    const result = await service.create(dto);
+    expect(result.email).toBe(dto.email);
+    expect(repo.save).toHaveBeenCalledWith(savedUser);
+  });
+
+  it('throws ConflictException if email exists', async () =&gt; {
+    repo.findOneBy.mockResolvedValue({ id: 'existing' } as User);
+    await expect(service.create({ email: 'taken@test.com', name: 'X' }))
+      .rejects.toThrow(ConflictException);
+  });
+});</code></pre>
+
+<h3>E2E Tests with Supertest</h3>
+<pre><code class="language-typescript">describe('UsersController (e2e)', () =&gt; {
+  let app: INestApplication;
+  let accessToken: string;
+
+  beforeAll(async () =&gt; {
+    const module = await Test.createTestingModule({
+      imports: [AppModule],
+    })
+    .overrideProvider(MailService)
+    .useValue({ send: jest.fn() })  // mock external services
+    .compile();
+
+    app = module.createNestApplication();
+    app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
+    await app.init();
+
+    // Login to get token
+    const { body } = await request(app.getHttpServer())
+      .post('/auth/login')
+      .send({ email: 'admin@test.com', password: 'password' });
+    accessToken = body.accessToken;
+  });
+
+  afterAll(() =&gt; app.close());
+
+  it('GET /users returns array', async () =&gt; {
+    const { body } = await request(app.getHttpServer())
+      .get('/v1/users')
+      .set('Authorization', `Bearer ${accessToken}`)
+      .expect(200);
+
+    expect(Array.isArray(body.data)).toBe(true);
+  });
+
+  it('POST /users creates user', async () =&gt; {
+    await request(app.getHttpServer())
+      .post('/v1/users')
+      .set('Authorization', `Bearer ${accessToken}`)
+      .send({ name: 'New User', email: 'newuser@test.com' })
+      .expect(201);
+  });
+
+  it('POST /users returns 422 on invalid body', async () =&gt; {
+    const { body } = await request(app.getHttpServer())
+      .post('/v1/users')
+      .set('Authorization', `Bearer ${accessToken}`)
+      .send({ name: 'X' })  // missing email
+      .expect(422);
+
+    expect(body.message).toContain('email');
+  });
+});</code></pre>
+
+<!-- ==================== SWAGGER ==================== -->
+<h2 id="swagger">Swagger / OpenAPI</h2>
+<pre><code class="language-typescript">// main.ts setup
+const config = new DocumentBuilder()
+  .setTitle('My API')
+  .setDescription('REST API documentation')
+  .setVersion('1.0')
+  .addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT' })
+  .addTag('users')
+  .build();
+
+const document = SwaggerModule.createDocument(app, config);
+SwaggerModule.setup('api/docs', app, document, {
+  swaggerOptions: { persistAuthorization: true },
+});
+
+// DTO decorators
+export class CreateUserDto {
+  @ApiProperty({ example: 'Alice', minLength: 2 })
+  @IsString() @MinLength(2)
+  name: string;
+
+  @ApiProperty({ example: 'alice@example.com' })
+  @IsEmail()
+  email: string;
+
+  @ApiPropertyOptional({ example: 25 })
+  @IsOptional() @IsInt()
+  age?: number;
+}
+
+// Controller decorators
+@ApiTags('users')
+@ApiBearerAuth()
+@Controller('users')
+export class UsersController {
+  @Post()
+  @ApiOperation({ summary: 'Create user', description: 'Creates a new user account' })
+  @ApiResponse({ status: 201, description: 'User created', type: UserResponseDto })
+  @ApiResponse({ status: 409, description: 'Email already exists' })
+  @ApiBody({ type: CreateUserDto })
+  create(@Body() dto: CreateUserDto) {}
+}</code></pre>
+
+<!-- ==================== VERSIONS ==================== -->
+<h2 id="versions">Version History</h2>
+<table>
+<tr><th>Version</th><th>Key Changes</th></tr>
+<tr><td>NestJS 8 (2021)</td><td>Standalone applications, HTTP adapter injection, REPL support, RxJS 7, official Redis/NATS microservice transports update</td></tr>
+<tr><td>NestJS 9 (2022)</td><td>Durable providers (long-lived across request contexts), <code>RouterModule</code> improvements, <code>HttpModule</code> updated to Axios 1.x, Fastify v4 support</td></tr>
+<tr><td>NestJS 10 (2023)</td><td>Dropped Node 12/14 support (Node 16+ required), <code>CacheModule</code> extracted to <code>@nestjs/cache-manager</code>, TypeScript 5.0 support, SWC (Speedy Web Compiler) support via <code>@nestjs/cli</code> for 20x faster builds</td></tr>
+<tr><td>NestJS 11 (2024)</td><td>Node 18+ minimum, Fastify v5 support, <code>express</code> v5 support, <code>@nestjs/bullmq</code> improvements, enhanced module resolution, improved lazy loading, updated Swagger plugin</td></tr>
+</table>
+
+<!-- ==================== INTERVIEW ==================== -->
+<h2 id="interview">Interview Q&amp;A</h2>
+
+<details>
+<summary>Q1: What is NestJS and what problems does it solve? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p>NestJS is a Node.js framework for building scalable server-side applications. It addresses the lack of structure in Express/Fastify apps by providing:</p>
+<ul>
+<li><strong>Architecture</strong>: Modules, Controllers, Providers — enforced separation of concerns</li>
+<li><strong>Dependency Injection</strong>: IoC container manages dependencies and their lifecycle</li>
+<li><strong>TypeScript-first</strong>: Full TypeScript support with decorators</li>
+<li><strong>Testability</strong>: DI makes mocking trivial; built-in testing utilities</li>
+<li><strong>Ecosystem</strong>: Official packages for every concern (auth, DB, queues, GraphQL, microservices)</li>
+</ul>
+<p>It is inspired by Angular's architecture and brings similar patterns to the backend.</p>
+</div>
+</details>
+
+<details>
+<summary>Q2: Explain the full NestJS request lifecycle. <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p>Incoming request → <strong>Middleware</strong> (express-style, <code>next()</code>) → <strong>Guards</strong> (canActivate — AuthN/AuthZ) → <strong>Interceptors</strong> (before handler — transform/log) → <strong>Pipes</strong> (validate/transform request data) → <strong>Route Handler</strong> → <strong>Interceptors</strong> (after handler — transform response) → <strong>Exception Filters</strong> (if anything threw).</p>
+<p>Each layer can short-circuit: a Guard returning <code>false</code> stops the request (403), a Pipe throwing stops with 422/400, an Exception Filter catches anything thrown at any stage.</p>
+</div>
+</details>
+
+<details>
+<summary>Q3: What are the different provider types in NestJS? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<ul>
+<li><strong>useClass</strong>: Standard — provide a class instance (default)</li>
+<li><strong>useValue</strong>: Provide a static value (config, mocks, constants)</li>
+<li><strong>useFactory</strong>: Dynamic — factory function (supports async, receives injected deps via <code>inject</code> array)</li>
+<li><strong>useExisting</strong>: Alias — make an existing provider accessible under a different token</li>
+</ul>
+</div>
+</details>
+
+<details>
+<summary>Q4: What is the difference between a Guard and Middleware for authentication? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>Middleware</strong> runs before routing — it doesn't know which route handler will be called. It cannot access the route metadata (decorators). Good for: logging, CORS, compression, cookie parsing.</p>
+<p><strong>Guard</strong> runs after routing (Nest knows the target handler). It receives the <code>ExecutionContext</code> — can read route metadata via <code>Reflector</code> (<code>@Roles</code>, <code>@Public</code> decorators). Can return <code>false</code> or throw to block the request. Much more powerful for authentication and authorization.</p>
+<p>Use middleware for pre-routing concerns. Use guards for route-aware security.</p>
+</div>
+</details>
+
+<details>
+<summary>Q5: How does the Reflector work with Guards and decorators? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<pre><code class="language-typescript">// Set metadata on a route
+export const Roles = (...roles: Role[]) =&gt; SetMetadata('roles', roles);
+
+// Read metadata in a Guard
+@Injectable()
+export class RolesGuard implements CanActivate {
+  constructor(private reflector: Reflector) {}
+
+  canActivate(context: ExecutionContext): boolean {
+    // getAllAndOverride: handler-level overrides class-level
+    const roles = this.reflector.getAllAndOverride&lt;Role[]&gt;('roles', [
+      context.getHandler(),
+      context.getClass(),
+    ]);
+    if (!roles) return true;
+    return this.reflector.get('roles', context.getHandler())
+      ?.some(r =&gt; req.user.roles.includes(r));
+  }
+}</code></pre>
+<p><code>getAllAndMerge</code> merges arrays from both levels. <code>getAllAndOverride</code> uses the first non-null value (handler first).</p>
+</div>
+</details>
+
+<details>
+<summary>Q6: What is the difference between <code>@Res()</code> and <code>@Res({ passthrough: true })</code>? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>Without <code>passthrough: true</code>, using <code>@Res()</code> puts the controller in "library-specific mode" — Nest stops managing the response lifecycle. You must call <code>res.send()</code> or <code>res.end()</code> yourself. Interceptors that wrap the response no longer work.</p>
+<p>With <code>{ passthrough: true }</code>, you can manipulate the response object (set headers, cookies) but still return from the handler normally. Nest sends the return value and interceptors work correctly.</p>
+<pre><code class="language-typescript">@Post('login')
+async login(@Body() dto: LoginDto, @Res({ passthrough: true }) res: Response) {
+  const tokens = await this.authService.login(dto);
+  res.cookie('refresh_token', tokens.refreshToken, { httpOnly: true, secure: true });
+  return { accessToken: tokens.accessToken };  // Nest sends this
+}</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q7: How do you implement request-scoped providers? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>By default, providers are <strong>singletons</strong> (shared across the app). You can change scope:</p>
+<pre><code class="language-typescript">@Injectable({ scope: Scope.REQUEST })
+export class RequestContextService {
+  // A new instance is created for EACH request
+  // Can inject REQUEST to access the current request
+  constructor(@Inject(REQUEST) private request: Request) {}
+}
+
+// Scopes:
+// Scope.DEFAULT — singleton (shared)
+// Scope.REQUEST — new instance per request (injecting this into a singleton is a problem — scope bubbles up!)
+// Scope.TRANSIENT — new instance every time it's injected</code></pre>
+<p><strong>Warning</strong>: If a singleton injects a REQUEST-scoped provider, the singleton also becomes REQUEST-scoped (scope bubbles). Use <code>Scope.REQUEST</code> sparingly — it adds overhead. For storing per-request context, prefer the AsyncLocalStorage pattern (zero-overhead, no scope bubbling).</p>
+</div>
+</details>
+
+<details>
+<summary>Q8: How do Dynamic Modules work and when would you create one? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>Dynamic Modules allow a module to be configured differently at import time — returning a <code>DynamicModule</code> with providers based on the passed options.</p>
+<pre><code class="language-typescript">@Module({})
+export class MailModule {
+  static forRoot(config: MailConfig): DynamicModule {
+    return {
+      module: MailModule,
+      providers: [
+        { provide: MAIL_CONFIG, useValue: config },
+        MailService,
+      ],
+      exports: [MailService],
+    };
+  }
+}
+
+// Usage
+MailModule.forRoot({ host: 'smtp.gmail.com', port: 587 })</code></pre>
+<p>Use for: database connections, mailers, external API clients — anything that needs different configuration per environment or per feature module (<code>forFeature</code> pattern).</p>
+</div>
+</details>
+
+<details>
+<summary>Q9: What is the difference between <code>send</code> and <code>emit</code> in microservices? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong><code>send(pattern, data)</code></strong>: Request-response. Returns an Observable. The client waits for a response from the microservice. The microservice handler must return a value. Use for queries that need a result.</p>
+<p><strong><code>emit(pattern, data)</code></strong>: Fire-and-forget event. Returns void (Observable that completes immediately). The microservice handles it asynchronously. Use for events where the caller doesn't need a result (order placed, email notification triggered).</p>
+<p>Corresponding microservice decorators: <code>@MessagePattern</code> handles <code>send</code>; <code>@EventPattern</code> handles <code>emit</code>.</p>
+</div>
+</details>
+
+<details>
+<summary>Q10: How does ValidationPipe with <code>whitelist: true</code> protect against mass assignment? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>Mass assignment vulnerabilities occur when an attacker sends unexpected fields in the request body that get saved to the database (e.g., <code>isAdmin: true</code>).</p>
+<p><code>whitelist: true</code> strips any properties from the request body that are NOT declared with <code>@ApiProperty</code> or class-validator decorators in the DTO. These properties never reach the handler.</p>
+<p><code>forbidNonWhitelisted: true</code> takes it further — instead of silently stripping, it throws a <code>BadRequestException</code> listing the unexpected fields.</p>
+<p>Combined with <code>transform: true</code>, the body is also automatically cast to the DTO class instance, enabling type coercion.</p>
+</div>
+</details>
+
+<details>
+<summary>Q11: How do you implement caching with interceptors vs @nestjs/cache-manager? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p><strong>Manual interceptor approach</strong> (full control): Inject a cache store, check for cached value in <code>intercept()</code> before calling <code>next.handle()</code>, store result on the way out. Can cache with custom keys, TTLs, and conditional logic.</p>
+<p><strong><code>@nestjs/cache-manager</code> approach</strong>: Uses the <code>CacheInterceptor</code> + <code>@CacheKey()</code> / <code>@CacheTTL()</code> decorators. Register globally or per-route. Backed by <code>cache-manager</code> which supports Redis, Memcached, memory store. Less flexible but zero-boilerplate for simple GET caching.</p>
+<pre><code class="language-typescript">CacheModule.registerAsync({
+  useFactory: (config: ConfigService) =&gt; ({
+    store: redisStore,
+    host: config.get('REDIS_HOST'),
+    ttl: 300,
+  }),
+  inject: [ConfigService],
+})</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q12: How do you handle circular dependencies between modules? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>Circular dependencies (Module A imports Module B, B imports A) cause DI resolution failures.</p>
+<p><strong>Solutions:</strong></p>
+<ol>
+<li><strong>Forward reference</strong>: <code>forwardRef(() =&gt; ModuleB)</code> in imports/providers — tells Nest to resolve lazily</li>
+<li><strong>Restructure</strong>: Extract shared logic into a third module (SharedModule) that both import</li>
+<li><strong>Events</strong>: Use EventEmitter or a message bus to decouple (Module A emits, Module B listens)</li>
+</ol>
+<pre><code class="language-typescript">@Module({ imports: [forwardRef(() =&gt; UsersModule)] })
+export class AuthModule {}
+
+@Injectable()
+export class AuthService {
+  constructor(
+    @Inject(forwardRef(() =&gt; UsersService))
+    private usersService: UsersService,
+  ) {}
+}</code></pre>
+<p>Prefer restructuring. <code>forwardRef</code> is a code smell — circular deps usually mean poor separation of concerns.</p>
+</div>
+</details>
+
+<details>
+<summary>Q13: What is the ExecutionContext and how is it used? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><code>ExecutionContext</code> is an abstraction over the current request, available in Guards, Interceptors, and Exception Filters. It allows the same code to work across HTTP, WebSockets, microservices, and GraphQL.</p>
+<pre><code class="language-typescript">// HTTP
+const req = ctx.switchToHttp().getRequest&lt;Request&gt;();
+const res = ctx.switchToHttp().getResponse&lt;Response&gt;();
+
+// WebSocket
+const client = ctx.switchToWs().getClient&lt;Socket&gt;();
+const data = ctx.switchToWs().getData();
+
+// Microservice
+const rpcCtx = ctx.switchToRpc().getContext();
+
+// GraphQL
+const gqlCtx = GqlExecutionContext.create(ctx);
+const info = gqlCtx.getInfo&lt;GraphQLResolveInfo&gt;();
+const gqlReq = gqlCtx.getContext().req;</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q14: How does NestJS SWC support improve build times? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>SWC (Speedy Web Compiler) is a Rust-based JavaScript/TypeScript compiler, ~20x faster than the TypeScript compiler (<code>tsc</code>). NestJS 10 added first-class SWC support via <code>@nestjs/cli</code>:</p>
+<pre><code class="language-bash">nest start --builder swc  # dev server
+nest build --builder swc  # build</code></pre>
+<p>Trade-off: SWC doesn't run TypeScript type checking. Use it for fast iteration during development, and run <code>tsc --noEmit</code> separately for type-checking in CI. NestJS CLI automatically runs SWC for transpilation + tsc for type-checking in parallel when <code>typeCheck: true</code> in nest-cli.json.</p>
+</div>
+</details>
+
+<details>
+<summary>Q15: Explain durable providers introduced in NestJS 9 <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>Normally, request-scoped providers create a new instance per request (high overhead for high-traffic routes). Durable providers solve this for providers that differ by tenant/context but not per request.</p>
+<p>Durable providers create one instance per unique "sub-tree" identifier (e.g., tenant ID). All requests from the same tenant share one provider instance.</p>
+<pre><code class="language-typescript">@Injectable({ scope: Scope.REQUEST, durable: true })
+export class TenantService {
+  constructor(@Inject(REQUEST) private req: Request) {}
+}
+
+// Context ID factory — defines the "sub-tree" key
+ContextIdFactory.apply(new AggregateByTenantContextIdStrategy());</code></pre>
+<p>Useful for: multi-tenant apps where each tenant needs isolated DB connections but you don't want one instance per request.</p>
+</div>
+</details>
+
+<details>
+<summary>Q16: How does code-first GraphQL schema generation work in NestJS? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>NestJS code-first GraphQL uses decorators (<code>@ObjectType</code>, <code>@Field</code>, <code>@Resolver</code>, <code>@Query</code>, <code>@Mutation</code>) on TypeScript classes. The <code>@nestjs/graphql</code> package uses the TypeScript reflection metadata (<code>reflect-metadata</code>) and the class definitions to auto-generate the <code>schema.gql</code> file at startup.</p>
+<p>The generated schema file can be committed and used for contract testing. The <code>autoSchemaFile: true</code> option generates in-memory (dev), while a path generates a file (CI-friendly).</p>
+<p>Schema-first (alternative): write the SDL schema manually, NestJS generates TypeScript interfaces from it using <code>GraphQLModule.forRoot({ typePaths: [...] })</code>. Better for teams with dedicated GraphQL designers, but more boilerplate.</p>
+</div>
+</details>
+
+<details>
+<summary>Q17: How do you test a controller that uses Guards and Interceptors? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<pre><code class="language-typescript">describe('UsersController', () =&gt; {
+  let controller: UsersController;
+
+  beforeEach(async () =&gt; {
+    const module = await Test.createTestingModule({
+      controllers: [UsersController],
+      providers: [{ provide: UsersService, useValue: mockUsersService }],
+    })
+    .overrideGuard(JwtAuthGuard)
+    .useValue({ canActivate: () =&gt; true })  // bypass auth in unit tests
+    .overrideInterceptor(TransformInterceptor)
+    .useValue({ intercept: (_, next) =&gt; next.handle() })  // passthrough
+    .compile();
+
+    controller = module.get(UsersController);
+  });
+
+  it('calls service with correct params', async () =&gt; {
+    await controller.findOne('uuid-123');
+    expect(mockUsersService.findById).toHaveBeenCalledWith('uuid-123');
+  });
+});</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q18: What is the APP_GUARD / APP_INTERCEPTOR / APP_PIPE / APP_FILTER pattern? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>These are special DI tokens that register components globally but through the DI system (not <code>app.useGlobalGuards()</code>).</p>
+<p>The difference: <code>app.useGlobalGuards(new X())</code> creates the guard outside the DI container — it cannot inject other providers. Using <code>{ provide: APP_GUARD, useClass: X }</code> registers it within the DI container — full injection support.</p>
+<pre><code class="language-typescript">@Module({
+  providers: [
+    { provide: APP_GUARD, useClass: JwtAuthGuard },
+    { provide: APP_GUARD, useClass: RolesGuard },  // multiple — applied in order
+    { provide: APP_INTERCEPTOR, useClass: TransformInterceptor },
+    { provide: APP_PIPE, useClass: ValidationPipe },
+    { provide: APP_FILTER, useClass: GlobalExceptionFilter },
+  ],
+})
+export class AppModule {}</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q19: How would you implement rate limiting per user in NestJS? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<pre><code class="language-typescript">// Using @nestjs/throttler
+ThrottlerModule.forRootAsync({
+  useFactory: (config: ConfigService) =&gt; ({
+    throttlers: [
+      { name: 'short', ttl: 1000, limit: 3 },    // 3 req/second
+      { name: 'long', ttl: 60000, limit: 100 },   // 100 req/minute
+    ],
+    storage: new ThrottlerStorageRedisService(redisClient),
+  }),
+  inject: [ConfigService],
+}),
+
+// Apply globally
+providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }]
+
+// Per-user throttling (override generateKey)
+@Injectable()
+export class UserThrottlerGuard extends ThrottlerGuard {
+  protected generateKey(ctx: ExecutionContext, suffix: string, name: string) {
+    const req = ctx.switchToHttp().getRequest();
+    const userId = req.user?.id ?? req.ip;
+    return `throttle:${name}:${userId}:${suffix}`;
+  }
+}
+
+// Per-route override
+@UseGuards(ThrottlerGuard)
+@Throttle({ default: { ttl: 60000, limit: 5 } })
+@Post('password-reset')
+resetPassword() {}</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q20: How do you implement database transactions across multiple services? <span class="badge very-advanced">Very Advanced</span></summary>
+<div class="answer">
+<p>Options from simple to complex:</p>
+<ol>
+<li><strong>Pass DataSource/EntityManager</strong>: Start transaction in a high-level service, pass the transaction manager to lower-level services as a parameter.</li>
+<li><strong>Unit of Work with AsyncLocalStorage</strong>: Store the current transaction in AsyncLocalStorage. Lower-level services read it automatically without needing a parameter.</li>
+<li><strong>Saga pattern</strong> (microservices): For distributed transactions across services, implement a saga orchestrator or choreography with compensating transactions (event-driven rollback).</li>
+</ol>
+<pre><code class="language-typescript">// AsyncLocalStorage transaction context
+@Injectable()
+export class TransactionManager {
+  private storage = new AsyncLocalStorage&lt;EntityManager&gt;();
+
+  async run&lt;T&gt;(fn: (manager: EntityManager) =&gt; Promise&lt;T&gt;): Promise&lt;T&gt; {
+    return this.dataSource.transaction(manager =&gt;
+      this.storage.run(manager, () =&gt; fn(manager))
+    );
+  }
+
+  get current(): EntityManager {
+    return this.storage.getStore() ?? this.dataSource.manager;
+  }
+}
+
+// In services — automatically picks up transaction context
+@Injectable()
+export class UsersService {
+  constructor(private tx: TransactionManager) {}
+  async create(dto: CreateUserDto) {
+    return this.tx.current.save(User, dto);  // uses active transaction if any
+  }
+}</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q21: What changed in NestJS 11 and what was the minimum Node.js version change? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p>NestJS 11 (2024):</p>
+<ul>
+<li><strong>Node.js 18+ minimum</strong> (dropped Node 16)</li>
+<li>Fastify v5 support (major update to Fastify's HTTP layer)</li>
+<li>Express v5 support (first Express major version in ~10 years)</li>
+<li>Improved lazy loading for large monorepo applications</li>
+<li>Updated <code>@nestjs/bullmq</code> with BullMQ v5 support</li>
+<li>Enhanced Swagger plugin for NestJS CLI (better automatic DTO detection)</li>
+<li>Streamlined module resolution improvements</li>
+</ul>
+<p>Migration: update peer dependencies, test Fastify v5 breaking changes if applicable, ensure Node 18+ in deployment environments.</p>
+</div>
+</details>
+
+<footer>NestJS Comprehensive Reference &mdash; covers NestJS 8 through NestJS 11</footer>
+</main>
+</div>
+<script>hljs.highlightAll();mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

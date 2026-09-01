@@ -1,0 +1,2113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vue.js Comprehensive Learning Reference</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6;display:flex;flex-direction:column}.topnav{background:#161b22;padding:10px 24px;border-bottom:1px solid #30363d;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100}.topnav a{color:#58a6ff;text-decoration:none;font-size:13px}.topnav h1{font-size:16px;color:#e6edf3;margin:0}.layout{display:flex;flex:1}.sidebar{width:260px;background:#161b22;border-right:1px solid #30363d;padding:16px;position:sticky;top:41px;height:calc(100vh - 41px);overflow-y:auto;flex-shrink:0}.sidebar a{display:block;padding:4px 8px;color:#8b949e;text-decoration:none;font-size:13px;border-radius:4px;margin-bottom:2px}.sidebar a:hover{background:#21262d;color:#c9d1d9}.sidebar .section-title{color:#58a6ff;font-size:11px;text-transform:uppercase;letter-spacing:.5px;margin:16px 0 6px;padding:0 8px;font-weight:600}main{flex:1;padding:32px 48px;max-width:960px}h1{font-size:2rem;color:#e6edf3;border-bottom:1px solid #30363d;padding-bottom:16px;margin-bottom:24px}h2{font-size:1.5rem;color:#e6edf3;margin:48px 0 16px;border-bottom:1px solid #21262d;padding-bottom:8px}h3{font-size:1.15rem;color:#79c0ff;margin:24px 0 10px}h4{font-size:1rem;color:#d2a8ff;margin:16px 0 8px}p{margin-bottom:12px}ul,ol{margin:0 0 16px 24px}li{margin-bottom:4px}pre{margin:16px 0;border-radius:6px;overflow-x:auto;font-size:13px}code:not(pre code){background:#161b22;padding:2px 6px;border-radius:4px;font-size:13px;color:#f0883e;border:1px solid #30363d}table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}th{background:#161b22;color:#58a6ff;padding:10px 14px;text-align:left;border:1px solid #30363d}td{padding:10px 14px;border:1px solid #30363d;vertical-align:top}tr:nth-child(even) td{background:#0a0d12}.mermaid{background:#161b22;padding:20px;border-radius:6px;margin:16px 0;text-align:center}details{border:1px solid #30363d;border-radius:6px;margin:10px 0;overflow:hidden}summary{padding:12px 16px;cursor:pointer;background:#161b22;color:#79c0ff;font-weight:600;list-style:none}details[open] summary{border-bottom:1px solid #30363d}.answer{padding:16px 20px;background:#0d1117}.badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:700;margin-left:8px}.easy{background:#1a4731;color:#3fb950}.intermediate{background:#2d2b00;color:#e3b341}.advanced{background:#3d1f00;color:#f0883e}.very-advanced{background:#3d0000;color:#ff7b72}.callout{background:#161b22;border-left:4px solid #58a6ff;padding:12px 16px;border-radius:0 6px 6px 0;margin:16px 0}footer{text-align:center;padding:24px;color:#8b949e;font-size:12px;border-top:1px solid #30363d;margin-top:40px}
+</style>
+</head>
+<body>
+
+<div class="topnav">
+  <h1>Vue.js — Comprehensive Learning Reference</h1>
+  <a href="#overview">Overview</a>
+  <a href="#versions">Versions</a>
+  <a href="#apis">Options vs Composition</a>
+  <a href="#reactivity">Reactivity</a>
+  <a href="#templates">Templates</a>
+  <a href="#components">Components</a>
+  <a href="#interview">Interview Q&amp;A</a>
+</div>
+
+<div class="layout">
+<nav class="sidebar">
+  <div class="section-title">Fundamentals</div>
+  <a href="#overview">1. Overview &amp; Philosophy</a>
+  <a href="#versions">2. Version History</a>
+  <a href="#apis">3. Options API vs Composition API</a>
+  <a href="#reactivity">4. Reactivity System</a>
+  <a href="#templates">5. Template Syntax &amp; Directives</a>
+  <div class="section-title">Components</div>
+  <a href="#components">6. Components In-Depth</a>
+  <a href="#script-setup">7. script setup</a>
+  <a href="#composables">8. Composables</a>
+  <div class="section-title">Ecosystem</div>
+  <a href="#pinia">9. Pinia State Management</a>
+  <a href="#router">10. Vue Router</a>
+  <a href="#performance">11. Performance</a>
+  <div class="section-title">Interview Prep</div>
+  <a href="#interview-easy">Easy Questions</a>
+  <a href="#interview-intermediate">Intermediate Questions</a>
+  <a href="#interview-advanced">Advanced Questions</a>
+  <a href="#interview-very-advanced">Very Advanced Questions</a>
+</nav>
+
+<main>
+
+<!-- ===================== 1. OVERVIEW ===================== -->
+<h1 id="overview">Vue.js — Comprehensive Learning Reference</h1>
+
+<h2 id="overview">1. Overview &amp; Philosophy</h2>
+
+<p>Vue.js is a <strong>progressive JavaScript framework</strong> for building user interfaces. "Progressive" means you can adopt it incrementally — use it as a library to enhance static HTML, or build a full-scale SPA with its ecosystem tools.</p>
+
+<div class="callout">
+  <strong>Core Design Tenets:</strong> Approachability (familiar HTML/CSS/JS), Performant (minimal overhead, optimized VDOM), and Versatile (library to full framework).
+</div>
+
+<h3>Vue vs React vs Angular</h3>
+<table>
+  <tr><th>Feature</th><th>Vue 3</th><th>React 18</th><th>Angular 17</th></tr>
+  <tr><td>Learning Curve</td><td>Low-Medium</td><td>Medium</td><td>High</td></tr>
+  <tr><td>Template Style</td><td>HTML-based templates / JSX optional</td><td>JSX (required)</td><td>HTML templates + TypeScript</td></tr>
+  <tr><td>State Management</td><td>Pinia (official)</td><td>Redux / Zustand / Jotai</td><td>NgRx / Services</td></tr>
+  <tr><td>Reactivity</td><td>Proxy-based (automatic)</td><td>useState / hooks (explicit)</td><td>Zone.js / Signals</td></tr>
+  <tr><td>Bundle Size</td><td>~33KB min+gz</td><td>~45KB min+gz</td><td>~130KB+ min+gz</td></tr>
+  <tr><td>Two-way binding</td><td>v-model (built-in)</td><td>Manually wired</td><td>[(ngModel)] built-in</td></tr>
+  <tr><td>TypeScript</td><td>First-class (3.x)</td><td>Good support</td><td>Required</td></tr>
+  <tr><td>SSR</td><td>Nuxt.js</td><td>Next.js</td><td>Angular Universal</td></tr>
+  <tr><td>Mobile</td><td>Ionic Vue / NativeScript</td><td>React Native</td><td>Ionic Angular / NativeScript</td></tr>
+</table>
+
+<h3>When to Choose Vue</h3>
+<ul>
+  <li>Gradual adoption into existing HTML/jQuery apps</li>
+  <li>Teams that prefer clear separation of concerns (SFC: template / script / style)</li>
+  <li>Projects needing rapid development with low boilerplate</li>
+  <li>When a gentler learning curve is important for the team</li>
+</ul>
+
+<!-- ===================== 2. VERSION HISTORY ===================== -->
+<h2 id="versions">2. Version History</h2>
+
+<h3>Vue 2.7 "Naruto" (July 2022) — Final Vue 2 minor</h3>
+<ul>
+  <li>Backported Composition API (<code>setup()</code>, <code>ref()</code>, <code>reactive()</code>, etc.) from Vue 3</li>
+  <li><code>&lt;script setup&gt;</code> sugar available in SFCs</li>
+  <li><code>defineProps</code> / <code>defineEmits</code> usable in Vue 2 SFCs</li>
+  <li>Vue 2 reached End-of-Life on December 31, 2023</li>
+</ul>
+
+<h3>Vue 3.0 "One Piece" (September 2020)</h3>
+<ul>
+  <li><strong>Composition API</strong> — <code>setup()</code>, <code>ref()</code>, <code>reactive()</code>, <code>computed()</code>, lifecycle hooks</li>
+  <li><strong>Teleport</strong> — render content in a different DOM node</li>
+  <li><strong>Fragments</strong> — multiple root elements in a component</li>
+  <li><strong>Emits option</strong> — explicit emit declaration</li>
+  <li><strong>Multiple v-model</strong> — <code>v-model:title</code>, <code>v-model:content</code></li>
+  <li><strong>Suspense</strong> — async component loading with fallback</li>
+  <li>Proxy-based reactivity (replaces Object.defineProperty)</li>
+  <li>Tree-shakeable global APIs</li>
+</ul>
+
+<h3>Vue 3.2 "Quintessential Quintuplets" (August 2021)</h3>
+<ul>
+  <li><strong><code>&lt;script setup&gt;</code> stable</strong> — compile-time sugar for Composition API in SFCs</li>
+  <li><strong><code>v-bind</code> in CSS</strong> — bind reactive data to CSS custom properties</li>
+  <li><strong><code>defineCustomElement()</code></strong> — create native Custom Elements from Vue components</li>
+  <li>Performance improvements: 2–3x faster <code>ref()</code>, <code>reactive()</code></li>
+  <li>New <code>@vue/server-renderer</code> improvements</li>
+  <li>Vite plugin improvements</li>
+</ul>
+
+<h3>Vue 3.3 "Rurouni Kenshin" (May 2023)</h3>
+<ul>
+  <li><strong><code>defineModel()</code> (experimental)</strong> — simplifies two-way binding macro</li>
+  <li><strong>Generic components</strong> — <code>&lt;script setup lang="ts" generic="T"&gt;</code></li>
+  <li><strong>Imported types in <code>defineProps</code>/<code>defineEmits</code></strong> — use external TypeScript interfaces</li>
+  <li><strong><code>defineSlots()</code></strong> — type-check slot names and props</li>
+  <li><code>defineOptions()</code> — declare component options without <code>script setup</code> extra block</li>
+  <li>Improved error messages in template compiler</li>
+</ul>
+
+<h3>Vue 3.4 "Slam Dunk" (December 2023)</h3>
+<ul>
+  <li><strong><code>defineModel()</code> stable</strong> — fully stabilized two-way binding macro</li>
+  <li><strong><code>v-bind</code> same-name shorthand</strong> — <code>:id</code> shorthand for <code>:id="id"</code></li>
+  <li><strong>Improved reactivity system</strong> — computed values only re-trigger when result actually changes</li>
+  <li><strong>Faster template parsing</strong> — 2x speed improvement</li>
+  <li><code>watchEffect</code> cleanup callback via <code>onWatcherCleanup()</code></li>
+</ul>
+
+<!-- ===================== 3. OPTIONS API vs COMPOSITION API ===================== -->
+<h2 id="apis">3. Options API vs Composition API</h2>
+
+<h3>Side-by-Side Comparison — Counter Component</h3>
+
+<h4>Options API</h4>
+<pre><code class="language-vue">&lt;!-- CounterOptions.vue --&gt;
+&lt;template&gt;
+  &lt;div&gt;
+    &lt;p&gt;Count: {{ count }}&lt;/p&gt;
+    &lt;p&gt;Double: {{ doubleCount }}&lt;/p&gt;
+    &lt;button @click="increment"&gt;+&lt;/button&gt;
+    &lt;button @click="decrement"&gt;-&lt;/button&gt;
+    &lt;button @click="reset"&gt;Reset&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+export default {
+  name: 'CounterOptions',
+  props: {
+    initialValue: {
+      type: Number,
+      default: 0
+    }
+  },
+  emits: ['change'],
+  data() {
+    return {
+      count: this.initialValue
+    }
+  },
+  computed: {
+    doubleCount() {
+      return this.count * 2
+    }
+  },
+  watch: {
+    count(newVal, oldVal) {
+      this.$emit('change', { newVal, oldVal })
+    }
+  },
+  mounted() {
+    console.log('Counter mounted with value:', this.count)
+  },
+  methods: {
+    increment() { this.count++ },
+    decrement() { this.count-- },
+    reset() { this.count = this.initialValue }
+  }
+}
+&lt;/script&gt;</code></pre>
+
+<h4>Composition API (script setup)</h4>
+<pre><code class="language-vue">&lt;!-- CounterComposition.vue --&gt;
+&lt;template&gt;
+  &lt;div&gt;
+    &lt;p&gt;Count: {{ count }}&lt;/p&gt;
+    &lt;p&gt;Double: {{ doubleCount }}&lt;/p&gt;
+    &lt;button @click="increment"&gt;+&lt;/button&gt;
+    &lt;button @click="decrement"&gt;-&lt;/button&gt;
+    &lt;button @click="reset"&gt;Reset&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script setup lang="ts"&gt;
+import { ref, computed, watch, onMounted } from 'vue'
+
+interface Props {
+  initialValue?: number
+}
+
+const props = withDefaults(defineProps&lt;Props&gt;(), {
+  initialValue: 0
+})
+
+const emit = defineEmits&lt;{
+  change: [{ newVal: number; oldVal: number }]
+}&gt;()
+
+const count = ref(props.initialValue)
+
+const doubleCount = computed(() =&gt; count.value * 2)
+
+watch(count, (newVal, oldVal) =&gt; {
+  emit('change', { newVal, oldVal })
+})
+
+onMounted(() =&gt; {
+  console.log('Counter mounted with value:', count.value)
+})
+
+const increment = () =&gt; count.value++
+const decrement = () =&gt; count.value--
+const reset = () =&gt; (count.value = props.initialValue)
+&lt;/script&gt;</code></pre>
+
+<h3>Comparison Table</h3>
+<table>
+  <tr><th>Aspect</th><th>Options API</th><th>Composition API</th></tr>
+  <tr><td>Organization</td><td>By option type (data, methods, computed)</td><td>By logical concern (feature-based)</td></tr>
+  <tr><td>Reusability</td><td>Mixins (namespace conflicts)</td><td>Composables (clean, explicit)</td></tr>
+  <tr><td>TypeScript</td><td>Limited inference, <code>this</code> issues</td><td>Excellent inference</td></tr>
+  <tr><td>Code splitting</td><td>Hard to split by feature</td><td>Easy to extract to composables</td></tr>
+  <tr><td>Learning curve</td><td>Lower (familiar OOP-like)</td><td>Higher (requires understanding reactivity)</td></tr>
+  <tr><td>this keyword</td><td>Required everywhere</td><td>Not needed (closures)</td></tr>
+  <tr><td>Tree shaking</td><td>Less effective</td><td>Better (explicit imports)</td></tr>
+  <tr><td>Best for</td><td>Simple components, Vue 2 migration</td><td>Complex components, teams, large apps</td></tr>
+</table>
+
+<div class="callout">
+  <strong>When to use Options API:</strong> Migrating from Vue 2, simple components, teams new to Vue, or when <code>this</code>-based patterns feel more natural.<br>
+  <strong>When to use Composition API:</strong> Complex components with multiple logical concerns, reusable logic (composables), TypeScript projects, large teams.
+</div>
+
+<!-- ===================== 4. REACTIVITY ===================== -->
+<h2 id="reactivity">4. Reactivity System</h2>
+
+<h3>How Vue 3 Reactivity Works Under the Hood</h3>
+<p>Vue 3 uses JavaScript <strong>Proxy</strong> objects to intercept get/set operations on reactive data. When you access a property in a reactive context (inside <code>computed</code>, <code>watch</code>, or the template), Vue tracks that as a dependency. When the property changes, Vue triggers all dependent effects.</p>
+
+<div class="mermaid">
+graph LR
+  A["ref() / reactive()"] -->|"Proxy wraps"| B["Reactive Object"]
+  B -->|"get trap → track()"| C["Dependency Tracker"]
+  C -->|"stores"| D["Active Effect (computed/watch/render)"]
+  B -->|"set trap → trigger()"| E["Scheduler"]
+  E -->|"queues &amp; runs"| D
+</div>
+
+<h3>ref()</h3>
+<pre><code class="language-javascript">import { ref } from 'vue'
+
+// Wraps primitives and objects in a reactive container
+const count = ref(0)          // { value: 0 }
+const name = ref('Vue')       // { value: 'Vue' }
+const user = ref({ age: 25 }) // { value: { age: 25 } }
+
+// Access/mutate with .value in JS
+count.value++
+name.value = 'Vue 3'
+
+// Auto-unwrapped in templates (no .value needed)
+// {{ count }} not {{ count.value }}
+
+// Check if ref
+import { isRef, unref } from 'vue'
+isRef(count)   // true
+unref(count)   // 0 — returns .value if ref, else the value itself</code></pre>
+
+<h3>reactive()</h3>
+<pre><code class="language-javascript">import { reactive } from 'vue'
+
+// Deep reactive proxy for objects
+const state = reactive({
+  count: 0,
+  user: { name: 'Alice', age: 30 },
+  items: ['a', 'b', 'c']
+})
+
+// Access directly (no .value)
+state.count++
+state.user.name = 'Bob'
+state.items.push('d')
+
+// CAUTION: destructuring loses reactivity!
+const { count } = state       // BROKEN - count is a plain number
+const { count } = toRefs(state) // CORRECT - count is a ref</code></pre>
+
+<h3>computed()</h3>
+<pre><code class="language-javascript">import { ref, computed } from 'vue'
+
+const price = ref(100)
+const quantity = ref(3)
+
+// Read-only computed
+const total = computed(() =&gt; price.value * quantity.value)
+
+// Writable computed
+const firstName = ref('John')
+const lastName = ref('Doe')
+const fullName = computed({
+  get: () =&gt; `${firstName.value} ${lastName.value}`,
+  set: (val) =&gt; {
+    [firstName.value, lastName.value] = val.split(' ')
+  }
+})
+
+fullName.value = 'Jane Smith'
+// firstName.value === 'Jane', lastName.value === 'Smith'
+
+// Vue 3.4 improvement: computed only triggers dependents
+// when the VALUE ACTUALLY CHANGES (not just re-runs)
+const isEven = computed(() =&gt; price.value % 2 === 0)
+// watchers on isEven only re-run when parity changes</code></pre>
+
+<h3>watch()</h3>
+<pre><code class="language-javascript">import { ref, reactive, watch } from 'vue'
+
+const count = ref(0)
+const state = reactive({ name: 'Alice' })
+
+// Watch a ref
+watch(count, (newVal, oldVal) =&gt; {
+  console.log(`count: ${oldVal} → ${newVal}`)
+})
+
+// Watch a getter (for reactive properties)
+watch(() =&gt; state.name, (newName) =&gt; {
+  console.log('Name changed to:', newName)
+})
+
+// Watch multiple sources
+watch([count, () =&gt; state.name], ([newCount, newName], [oldCount, oldName]) =&gt; {
+  console.log('Either changed')
+})
+
+// Options
+watch(count, handler, {
+  immediate: true,      // Run immediately on creation
+  deep: true,           // Deep watch nested objects
+  once: true,           // Auto-stop after first trigger (Vue 3.4+)
+  flush: 'post'         // Run after DOM updates ('pre' | 'post' | 'sync')
+})
+
+// Stop a watcher
+const stop = watch(count, handler)
+stop() // Stops watching</code></pre>
+
+<h3>watchEffect()</h3>
+<pre><code class="language-javascript">import { ref, watchEffect } from 'vue'
+
+const userId = ref(1)
+
+// Automatically tracks dependencies used inside
+const stop = watchEffect(async (onCleanup) =&gt; {
+  const controller = new AbortController()
+
+  // Cleanup for previous run (cancel previous request)
+  onCleanup(() =&gt; controller.abort())
+
+  const data = await fetch(`/api/user/${userId.value}`, {
+    signal: controller.signal
+  })
+  // ...
+})
+
+// Vue 3.4+: onWatcherCleanup() outside the callback
+import { onWatcherCleanup } from 'vue'
+watchEffect(() =&gt; {
+  const timer = setTimeout(() =&gt; {}, 200)
+  onWatcherCleanup(() =&gt; clearTimeout(timer))
+})
+
+stop() // Stop the effect</code></pre>
+
+<h3>Other Reactivity Utilities</h3>
+<pre><code class="language-javascript">import {
+  readonly, shallowRef, shallowReactive,
+  toRef, toRefs, markRaw, triggerRef
+} from 'vue'
+
+// readonly - prevents mutations (but tracks reactivity)
+const original = reactive({ count: 0 })
+const readonlyState = readonly(original)
+// readonlyState.count++ // Warning in dev mode
+
+// shallowRef - only .value itself is reactive (no deep)
+const shallowUser = shallowRef({ name: 'Alice', address: { city: 'NY' } })
+shallowUser.value.address.city = 'LA' // NOT reactive
+shallowUser.value = { name: 'Bob', address: { city: 'LA' } } // IS reactive
+
+// shallowReactive - only top-level properties are reactive
+const shallowState = shallowReactive({
+  user: { name: 'Alice' }
+})
+shallowState.user = { name: 'Bob' }  // IS reactive
+shallowState.user.name = 'Charlie'   // NOT reactive
+
+// toRef - create a ref linked to a reactive property
+const state = reactive({ count: 0 })
+const countRef = toRef(state, 'count')
+// Mutating countRef.value also mutates state.count
+
+// toRefs - convert entire reactive object to refs
+const { count, name } = toRefs(state)
+
+// markRaw - exclude from reactivity system
+const rawObject = markRaw({ hugeData: [...] })
+
+// triggerRef - manually trigger a shallowRef's effects
+triggerRef(shallowUser)</code></pre>
+
+<!-- ===================== 5. TEMPLATE SYNTAX ===================== -->
+<h2 id="templates">5. Template Syntax &amp; Directives</h2>
+
+<h3>Text Interpolation &amp; Binding</h3>
+<pre><code class="language-html">&lt;!-- Text interpolation --&gt;
+&lt;p&gt;{{ message }}&lt;/p&gt;
+&lt;p&gt;{{ message.toUpperCase() }}&lt;/p&gt;
+&lt;p&gt;{{ isActive ? 'Yes' : 'No' }}&lt;/p&gt;
+
+&lt;!-- v-html (XSS risk - use carefully) --&gt;
+&lt;div v-html="rawHtml"&gt;&lt;/div&gt;
+
+&lt;!-- v-text (same as {{ }}, replaces element content) --&gt;
+&lt;span v-text="message"&gt;&lt;/span&gt;
+
+&lt;!-- v-bind shorthand --&gt;
+&lt;img :src="imageUrl" :alt="altText"&gt;
+&lt;div :class="{ active: isActive, 'text-danger': hasError }"&gt;&lt;/div&gt;
+&lt;div :class="[baseClass, { active: isActive }]"&gt;&lt;/div&gt;
+&lt;div :style="{ color: textColor, fontSize: size + 'px' }"&gt;&lt;/div&gt;
+
+&lt;!-- Vue 3.4 same-name shorthand --&gt;
+&lt;img :src :alt&gt;         &lt;!-- equivalent to :src="src" :alt="alt" --&gt;
+
+&lt;!-- Dynamic attribute name --&gt;
+&lt;button :[dynamicAttr]="value"&gt;Click&lt;/button&gt;</code></pre>
+
+<h3>Conditional Rendering</h3>
+<pre><code class="language-html">&lt;!-- v-if, v-else-if, v-else (true DOM removal) --&gt;
+&lt;div v-if="type === 'A'"&gt;Type A&lt;/div&gt;
+&lt;div v-else-if="type === 'B'"&gt;Type B&lt;/div&gt;
+&lt;div v-else&gt;Unknown&lt;/div&gt;
+
+&lt;!-- v-show (CSS display toggle, stays in DOM) --&gt;
+&lt;div v-show="isVisible"&gt;Always rendered, toggled via CSS&lt;/div&gt;
+
+&lt;!-- template v-if (no wrapper element) --&gt;
+&lt;template v-if="condition"&gt;
+  &lt;h1&gt;Title&lt;/h1&gt;
+  &lt;p&gt;Content&lt;/p&gt;
+&lt;/template&gt;
+
+&lt;!-- v-if vs v-show:
+  v-if: higher toggle cost, lower initial cost (conditional rendering)
+  v-show: lower toggle cost, higher initial cost (always rendered)
+  Use v-show for frequent toggles, v-if for rare condition changes --&gt;</code></pre>
+
+<h3>List Rendering</h3>
+<pre><code class="language-html">&lt;!-- v-for with :key (always use key!) --&gt;
+&lt;ul&gt;
+  &lt;li v-for="item in items" :key="item.id"&gt;
+    {{ item.name }}
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!-- v-for with index --&gt;
+&lt;li v-for="(item, index) in items" :key="item.id"&gt;
+  {{ index + 1 }}. {{ item.name }}
+&lt;/li&gt;
+
+&lt;!-- v-for on object --&gt;
+&lt;div v-for="(value, key, index) in myObject" :key="key"&gt;
+  {{ index }}. {{ key }}: {{ value }}
+&lt;/div&gt;
+
+&lt;!-- v-for with range --&gt;
+&lt;span v-for="n in 10" :key="n"&gt;{{ n }}&lt;/span&gt;
+
+&lt;!-- v-for on template --&gt;
+&lt;template v-for="item in items" :key="item.id"&gt;
+  &lt;tr&gt;&lt;td&gt;{{ item.name }}&lt;/td&gt;&lt;/tr&gt;
+  &lt;tr&gt;&lt;td&gt;{{ item.detail }}&lt;/td&gt;&lt;/tr&gt;
+&lt;/template&gt;
+
+&lt;!-- v-for and v-if (avoid on same element, use template) --&gt;
+&lt;template v-for="item in items" :key="item.id"&gt;
+  &lt;li v-if="item.visible"&gt;{{ item.name }}&lt;/li&gt;
+&lt;/template&gt;</code></pre>
+
+<h3>Event Handling</h3>
+<pre><code class="language-html">&lt;!-- v-on shorthand @ --&gt;
+&lt;button @click="handleClick"&gt;Click&lt;/button&gt;
+&lt;button @click="count++"&gt;Inline&lt;/button&gt;
+&lt;button @click="handleClick($event, 'arg')"&gt;With event&lt;/button&gt;
+
+&lt;!-- Multiple handlers --&gt;
+&lt;button @click="handleA(), handleB()"&gt;Multiple&lt;/button&gt;
+
+&lt;!-- Event modifiers --&gt;
+&lt;form @submit.prevent="onSubmit"&gt;...&lt;/form&gt;
+&lt;button @click.stop="doThis"&gt;Stop propagation&lt;/button&gt;
+&lt;button @click.stop.prevent&gt;Chain modifiers&lt;/button&gt;
+&lt;button @click.once&gt;Fire once&lt;/button&gt;
+&lt;div @click.self="doThis"&gt;Only if target is self&lt;/div&gt;
+&lt;div @scroll.passive="onScroll"&gt;Passive scroll (perf)&lt;/div&gt;
+
+&lt;!-- Key modifiers --&gt;
+&lt;input @keyup.enter="submit"&gt;
+&lt;input @keyup.ctrl.enter="submit"&gt;
+&lt;input @keyup.alt.s="save"&gt;
+&lt;input @keydown.delete="onDelete"&gt;
+
+&lt;!-- Mouse button modifiers --&gt;
+&lt;button @click.right.prevent="onRightClick"&gt;Right Click&lt;/button&gt;</code></pre>
+
+<h3>v-model Two-Way Binding</h3>
+<pre><code class="language-html">&lt;!-- Basic input types --&gt;
+&lt;input v-model="text"&gt;           &lt;!-- binds to value --&gt;
+&lt;input type="checkbox" v-model="checked"&gt;   &lt;!-- binds to checked --&gt;
+&lt;input type="radio" v-model="picked" value="a"&gt;
+&lt;select v-model="selected"&gt;
+  &lt;option value="a"&gt;A&lt;/option&gt;
+&lt;/select&gt;
+&lt;textarea v-model="content"&gt;&lt;/textarea&gt;
+
+&lt;!-- v-model modifiers --&gt;
+&lt;input v-model.trim="text"&gt;       &lt;!-- trim whitespace --&gt;
+&lt;input v-model.number="age"&gt;      &lt;!-- convert to number --&gt;
+&lt;input v-model.lazy="text"&gt;       &lt;!-- sync on change (not input) --&gt;
+
+&lt;!-- Multiple v-model on custom components --&gt;
+&lt;UserProfile
+  v-model:firstName="firstName"
+  v-model:lastName="lastName"
+/&gt;
+
+&lt;!-- v-model on custom component (under the hood) --&gt;
+&lt;!--
+  :modelValue="value" @update:modelValue="value = $event"
+  is equivalent to v-model="value"
+--&gt;</code></pre>
+
+<h3>Other Important Directives</h3>
+<pre><code class="language-html">&lt;!-- v-once: render once, skip future updates --&gt;
+&lt;span v-once&gt;{{ expensiveComputation }}&lt;/span&gt;
+
+&lt;!-- v-memo: memoize sub-tree (Vue 3.2+) --&gt;
+&lt;!-- Re-render only when dependencies change --&gt;
+&lt;div v-memo="[item.id, item.selected]"&gt;
+  {{ item.name }} - {{ item.selected }}
+&lt;/div&gt;
+
+&lt;!-- v-cloak: hide uncompiled mustaches until ready --&gt;
+&lt;!-- [v-cloak] { display: none } in your CSS --&gt;
+&lt;div v-cloak&gt;{{ message }}&lt;/div&gt;
+
+&lt;!-- Template refs --&gt;
+&lt;input ref="inputRef"&gt;           &lt;!-- access via inputRef.value in setup --&gt;
+&lt;div ref="containerRef"&gt;&lt;/div&gt;
+
+&lt;!-- Dynamic components --&gt;
+&lt;component :is="currentComponent"&gt;&lt;/component&gt;
+&lt;!-- with keep-alive --&gt;
+&lt;KeepAlive :include="['CompA', 'CompB']" :max="5"&gt;
+  &lt;component :is="currentComponent"&gt;&lt;/component&gt;
+&lt;/KeepAlive&gt;</code></pre>
+
+<!-- ===================== 6. COMPONENTS ===================== -->
+<h2 id="components">6. Components In-Depth</h2>
+
+<h3>Props</h3>
+<pre><code class="language-vue">&lt;script setup lang="ts"&gt;
+// Type-based declaration (preferred in TS)
+interface Props {
+  title: string
+  count?: number
+  user: {
+    name: string
+    age: number
+  }
+  items: string[]
+  variant?: 'primary' | 'secondary' | 'danger'
+  callback?: (val: string) =&gt; void
+}
+
+const props = withDefaults(defineProps&lt;Props&gt;(), {
+  count: 0,
+  variant: 'primary',
+  items: () =&gt; [],  // Use factory fn for objects/arrays
+})
+
+// Runtime declaration (without TS)
+// const props = defineProps({
+//   title: { type: String, required: true },
+//   count: { type: Number, default: 0 },
+//   variant: {
+//     type: String,
+//     default: 'primary',
+//     validator: (v) =&gt; ['primary', 'secondary'].includes(v)
+//   }
+// })
+&lt;/script&gt;</code></pre>
+
+<h3>Emits</h3>
+<pre><code class="language-vue">&lt;script setup lang="ts"&gt;
+// Type-based emits
+const emit = defineEmits&lt;{
+  change: [value: string]
+  submit: [data: { name: string; email: string }]
+  'update:modelValue': [value: number]
+}&gt;()
+
+// Usage
+emit('change', 'new value')
+emit('submit', { name: 'Alice', email: 'alice@example.com' })
+
+// Runtime declaration with validation
+// const emit = defineEmits({
+//   change: (value) =&gt; typeof value === 'string',
+//   submit: (data) =&gt; data !== null
+// })
+&lt;/script&gt;</code></pre>
+
+<h3>Slots</h3>
+<pre><code class="language-vue">&lt;!-- Parent --&gt;
+&lt;template&gt;
+  &lt;Card&gt;
+    &lt;!-- Default slot --&gt;
+    &lt;p&gt;Default content&lt;/p&gt;
+
+    &lt;!-- Named slot --&gt;
+    &lt;template #header&gt;
+      &lt;h2&gt;Card Header&lt;/h2&gt;
+    &lt;/template&gt;
+
+    &lt;!-- Scoped slot (access child data) --&gt;
+    &lt;template #footer="{ actions }"&gt;
+      &lt;button v-for="action in actions" :key="action.id"&gt;
+        {{ action.label }}
+      &lt;/button&gt;
+    &lt;/template&gt;
+  &lt;/Card&gt;
+&lt;/template&gt;
+
+&lt;!-- Card.vue (child) --&gt;
+&lt;template&gt;
+  &lt;div class="card"&gt;
+    &lt;header v-if="$slots.header"&gt;
+      &lt;slot name="header" /&gt;
+    &lt;/header&gt;
+    &lt;main&gt;
+      &lt;slot /&gt;  &lt;!-- default slot --&gt;
+    &lt;/main&gt;
+    &lt;footer&gt;
+      &lt;slot name="footer" :actions="footerActions" /&gt;
+    &lt;/footer&gt;
+  &lt;/div&gt;
+&lt;/template&gt;</code></pre>
+
+<h3>provide / inject</h3>
+<pre><code class="language-vue">&lt;!-- Ancestor component --&gt;
+&lt;script setup lang="ts"&gt;
+import { provide, ref } from 'vue'
+
+const theme = ref('dark')
+const updateTheme = (newTheme: string) =&gt; {
+  theme.value = newTheme
+}
+
+// Provide with injection key (typed)
+import type { InjectionKey, Ref } from 'vue'
+export const themeKey: InjectionKey&lt;{ theme: Ref&lt;string&gt;; updateTheme: (t: string) =&gt; void }&gt;
+  = Symbol('theme')
+
+provide(themeKey, { theme, updateTheme })
+&lt;/script&gt;
+
+&lt;!-- Any descendant component --&gt;
+&lt;script setup lang="ts"&gt;
+import { inject } from 'vue'
+import { themeKey } from './AncestorComponent.vue'
+
+const themeContext = inject(themeKey) // typed!
+const { theme, updateTheme } = themeContext ?? {}
+&lt;/script&gt;</code></pre>
+
+<h3>Teleport</h3>
+<pre><code class="language-vue">&lt;template&gt;
+  &lt;div&gt;
+    &lt;!-- Modal will be rendered inside #modals in the DOM --&gt;
+    &lt;Teleport to="#modals" :disabled="isMobile"&gt;
+      &lt;div class="modal" v-if="isOpen"&gt;
+        &lt;slot /&gt;
+      &lt;/div&gt;
+    &lt;/Teleport&gt;
+
+    &lt;!-- Multiple teleports to same target (stacked) --&gt;
+    &lt;Teleport to="body"&gt;
+      &lt;div class="toast"&gt;Notification&lt;/div&gt;
+    &lt;/Teleport&gt;
+  &lt;/div&gt;
+&lt;/template&gt;</code></pre>
+
+<h3>Async Components &amp; Suspense</h3>
+<pre><code class="language-javascript">// defineAsyncComponent
+import { defineAsyncComponent } from 'vue'
+
+// Basic
+const AsyncComp = defineAsyncComponent(() =&gt;
+  import('./HeavyComponent.vue')
+)
+
+// With options
+const AsyncCompWithOptions = defineAsyncComponent({
+  loader: () =&gt; import('./HeavyComponent.vue'),
+  loadingComponent: LoadingSpinner,
+  errorComponent: ErrorDisplay,
+  delay: 200,        // Delay before showing loading component
+  timeout: 3000      // Error if not loaded in 3s
+})</code></pre>
+
+<pre><code class="language-html">&lt;!-- Suspense in parent template --&gt;
+&lt;Suspense&gt;
+  &lt;template #default&gt;
+    &lt;AsyncDashboard /&gt;  &lt;!-- component with async setup() --&gt;
+  &lt;/template&gt;
+  &lt;template #fallback&gt;
+    &lt;LoadingSpinner /&gt;
+  &lt;/template&gt;
+&lt;/Suspense&gt;</code></pre>
+
+<!-- ===================== 7. SCRIPT SETUP ===================== -->
+<h2 id="script-setup">7. &lt;script setup&gt;</h2>
+
+<p><code>&lt;script setup&gt;</code> is compile-time syntactic sugar for using the Composition API in Single-File Components. It is the <strong>recommended</strong> approach for Vue 3 SFCs.</p>
+
+<h3>All Compiler Macros</h3>
+<pre><code class="language-vue">&lt;script setup lang="ts"&gt;
+import { ref, computed } from 'vue'
+
+// 1. defineProps — declare component props
+interface Props { name: string; age?: number }
+const props = withDefaults(defineProps&lt;Props&gt;(), { age: 0 })
+
+// 2. defineEmits — declare component events
+const emit = defineEmits&lt;{
+  update: [value: string]
+}&gt;()
+
+// 3. defineModel — two-way binding (Vue 3.4 stable)
+const modelValue = defineModel&lt;string&gt;()
+// equivalent to: v-model passes :modelValue + @update:modelValue
+const count = defineModel&lt;number&gt;('count', { default: 0 })
+
+// 4. defineExpose — expose properties to parent refs
+const publicData = ref('exposed')
+const publicMethod = () =&gt; 'hello from child'
+defineExpose({ publicData, publicMethod })
+
+// 5. defineSlots — type-check slots
+const slots = defineSlots&lt;{
+  default(props: { item: string }): unknown
+  header(props: {}): unknown
+}&gt;()
+
+// 6. defineOptions — set component options (Vue 3.3+)
+defineOptions({
+  name: 'MyComponent',
+  inheritAttrs: false
+})
+
+// 7. useAttrs — access fallthrough attributes
+import { useAttrs } from 'vue'
+const attrs = useAttrs() // { class, style, ...non-prop attrs }
+
+// 8. useSlots — access slots programmatically
+import { useSlots } from 'vue'
+const slotsRef = useSlots()
+const hasHeader = computed(() =&gt; !!slotsRef.header)
+&lt;/script&gt;</code></pre>
+
+<h3>Generic Components (Vue 3.3+)</h3>
+<pre><code class="language-vue">&lt;script setup lang="ts" generic="T extends { id: number; name: string }"&gt;
+interface Props {
+  items: T[]
+  selected?: T
+}
+const props = defineProps&lt;Props&gt;()
+
+const emit = defineEmits&lt;{
+  select: [item: T]
+}&gt;()
+&lt;/script&gt;
+
+&lt;template&gt;
+  &lt;ul&gt;
+    &lt;li
+      v-for="item in items"
+      :key="item.id"
+      :class="{ selected: item === selected }"
+      @click="emit('select', item)"
+    &gt;
+      {{ item.name }}
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/template&gt;</code></pre>
+
+<h3>defineModel (Vue 3.4)</h3>
+<pre><code class="language-vue">&lt;!-- Child: MyInput.vue --&gt;
+&lt;script setup lang="ts"&gt;
+// Before defineModel you needed:
+// const props = defineProps(['modelValue'])
+// const emit = defineEmits(['update:modelValue'])
+
+// Now with defineModel:
+const model = defineModel&lt;string&gt;()
+
+// Named model
+const firstName = defineModel&lt;string&gt;('firstName')
+const lastName = defineModel&lt;string&gt;('lastName')
+&lt;/script&gt;
+
+&lt;template&gt;
+  &lt;input :value="model" @input="model = $event.target.value"&gt;
+&lt;/template&gt;
+
+&lt;!-- Parent usage --&gt;
+&lt;!-- &lt;MyInput v-model="text" v-model:firstName="fname" v-model:lastName="lname" /&gt; --&gt;</code></pre>
+
+<!-- ===================== 8. COMPOSABLES ===================== -->
+<h2 id="composables">8. Composables</h2>
+
+<h3>The useXxx Pattern</h3>
+<pre><code class="language-javascript">// composables/useFetch.ts
+import { ref, watchEffect, toValue, type MaybeRefOrGetter } from 'vue'
+
+interface FetchState&lt;T&gt; {
+  data: Ref&lt;T | null&gt;
+  error: Ref&lt;Error | null&gt;
+  loading: Ref&lt;boolean&gt;
+}
+
+export function useFetch&lt;T&gt;(url: MaybeRefOrGetter&lt;string&gt;): FetchState&lt;T&gt; {
+  const data = ref&lt;T | null&gt;(null)
+  const error = ref&lt;Error | null&gt;(null)
+  const loading = ref(false)
+
+  watchEffect(async (onCleanup) =&gt; {
+    const controller = new AbortController()
+    onCleanup(() =&gt; controller.abort())
+
+    loading.value = true
+    error.value = null
+
+    try {
+      const response = await fetch(toValue(url), {
+        signal: controller.signal
+      })
+      if (!response.ok) throw new Error(response.statusText)
+      data.value = await response.json()
+    } catch (e) {
+      if (e instanceof Error &amp;&amp; e.name !== 'AbortError') {
+        error.value = e
+      }
+    } finally {
+      loading.value = false
+    }
+  })
+
+  return { data, error, loading }
+}</code></pre>
+
+<pre><code class="language-vue">&lt;!-- Usage --&gt;
+&lt;script setup&gt;
+import { ref } from 'vue'
+import { useFetch } from '@/composables/useFetch'
+
+const userId = ref(1)
+const { data: user, loading, error } = useFetch(
+  () =&gt; `/api/users/${userId.value}`  // reactive URL
+)
+&lt;/script&gt;</code></pre>
+
+<h3>Lifecycle Hooks in Composables</h3>
+<pre><code class="language-javascript">// composables/useEventListener.ts
+import { onMounted, onUnmounted } from 'vue'
+
+export function useEventListener(
+  target: EventTarget | Ref&lt;EventTarget | null&gt;,
+  event: string,
+  callback: EventListener
+) {
+  onMounted(() =&gt; {
+    const el = isRef(target) ? target.value : target
+    el?.addEventListener(event, callback)
+  })
+
+  onUnmounted(() =&gt; {
+    const el = isRef(target) ? target.value : target
+    el?.removeEventListener(event, callback)
+  })
+}</code></pre>
+
+<h3>Composables vs Mixins</h3>
+<table>
+  <tr><th>Aspect</th><th>Composables</th><th>Mixins</th></tr>
+  <tr><td>Source of data</td><td>Clear — explicit return value</td><td>Unclear — merged into component</td></tr>
+  <tr><td>Namespace conflicts</td><td>None (destructure as needed)</td><td>Possible collisions</td></tr>
+  <tr><td>Reuse across composables</td><td>Composables can call composables</td><td>Mixins can interact unpredictably</td></tr>
+  <tr><td>Type safety</td><td>Full TypeScript support</td><td>Limited</td></tr>
+  <tr><td>Pass arguments</td><td>Yes, as function arguments</td><td>No</td></tr>
+  <tr><td>Status</td><td>Recommended (Vue 3)</td><td>Legacy (avoid in new code)</td></tr>
+</table>
+
+<h3>VueUse — Essential Composables Library</h3>
+<pre><code class="language-javascript">// Popular VueUse composables
+import {
+  useLocalStorage,    // localStorage with reactivity
+  useSessionStorage,
+  useDark,            // dark mode
+  useToggle,          // boolean toggle
+  useDebounce,        // debounce a ref
+  useThrottle,        // throttle a ref
+  useMouse,           // mouse position
+  useWindowSize,      // window dimensions
+  useIntersectionObserver, // intersection observer
+  useVirtualList,     // virtual scroll
+  useFetch,           // fetch with loading/error
+  useMediaQuery,      // media query reactivity
+  useClipboard,       // clipboard API
+  useGeolocation,     // geolocation API
+  onClickOutside      // click outside element
+} from '@vueuse/core'
+
+// Usage examples
+const isDark = useDark()
+const [isOpen, toggleOpen] = useToggle(false)
+const mouse = useMouse()
+const { width, height } = useWindowSize()
+const searchQuery = ref('')
+const debouncedQuery = useDebounce(searchQuery, 300)
+const theme = useLocalStorage('theme', 'light')</code></pre>
+
+<!-- ===================== 9. PINIA ===================== -->
+<h2 id="pinia">9. Pinia State Management</h2>
+
+<p>Pinia is the <strong>official</strong> Vue state management library (replaces Vuex). Lightweight, TypeScript-first, devtools support.</p>
+
+<h3>Setup Style Store (Recommended)</h3>
+<pre><code class="language-javascript">// stores/useCartStore.ts
+import { ref, computed } from 'vue'
+import { defineStore } from 'pinia'
+
+export const useCartStore = defineStore('cart', () =&gt; {
+  // State (refs)
+  const items = ref&lt;CartItem[]&gt;([])
+  const isLoading = ref(false)
+
+  // Getters (computed)
+  const totalItems = computed(() =&gt;
+    items.value.reduce((sum, item) =&gt; sum + item.quantity, 0)
+  )
+  const totalPrice = computed(() =&gt;
+    items.value.reduce((sum, item) =&gt; sum + item.price * item.quantity, 0)
+  )
+
+  // Actions (functions)
+  async function fetchCart(userId: string) {
+    isLoading.value = true
+    try {
+      items.value = await api.getCart(userId)
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  function addItem(product: Product, quantity = 1) {
+    const existing = items.value.find(i =&gt; i.id === product.id)
+    if (existing) {
+      existing.quantity += quantity
+    } else {
+      items.value.push({ ...product, quantity })
+    }
+  }
+
+  function removeItem(productId: string) {
+    items.value = items.value.filter(i =&gt; i.id !== productId)
+  }
+
+  function clearCart() {
+    items.value = []
+  }
+
+  return {
+    items, isLoading,
+    totalItems, totalPrice,
+    fetchCart, addItem, removeItem, clearCart
+  }
+})</code></pre>
+
+<h3>Options Style Store</h3>
+<pre><code class="language-javascript">// stores/useUserStore.ts
+import { defineStore } from 'pinia'
+
+export const useUserStore = defineStore('user', {
+  state: () =&gt; ({
+    user: null as User | null,
+    token: '',
+    isAuthenticated: false,
+  }),
+
+  getters: {
+    displayName: (state) =&gt; state.user?.name ?? 'Guest',
+    isAdmin: (state) =&gt; state.user?.role === 'admin',
+  },
+
+  actions: {
+    async login(credentials: { email: string; password: string }) {
+      const { user, token } = await api.login(credentials)
+      this.user = user
+      this.token = token
+      this.isAuthenticated = true
+    },
+
+    logout() {
+      this.$reset() // Reset to initial state
+    },
+
+    updateProfile(updates: Partial&lt;User&gt;) {
+      if (this.user) {
+        // $patch for partial updates
+        this.$patch({ user: { ...this.user, ...updates } })
+      }
+    }
+  },
+
+  // Persist to localStorage
+  // persist: true // with pinia-plugin-persistedstate
+})</code></pre>
+
+<h3>Using Stores in Components</h3>
+<pre><code class="language-vue">&lt;script setup&gt;
+import { storeToRefs } from 'pinia'
+import { useCartStore } from '@/stores/useCartStore'
+
+const cartStore = useCartStore()
+
+// Use storeToRefs to destructure reactive state/getters
+// (direct destructuring loses reactivity)
+const { items, totalPrice, isLoading } = storeToRefs(cartStore)
+
+// Actions can be destructured directly (they're not reactive)
+const { addItem, removeItem, clearCart } = cartStore
+&lt;/script&gt;</code></pre>
+
+<h3>Store Subscriptions &amp; Plugins</h3>
+<pre><code class="language-javascript">// $subscribe — watch state changes
+cartStore.$subscribe((mutation, state) =&gt; {
+  // mutation.type: 'direct' | 'patch object' | 'patch function'
+  // mutation.storeId: 'cart'
+  localStorage.setItem('cart', JSON.stringify(state.items))
+})
+
+// $onAction — intercept actions
+cartStore.$onAction(({ name, store, args, after, onError }) =&gt; {
+  const start = Date.now()
+  after((result) =&gt; {
+    console.log(`${name} took ${Date.now() - start}ms`)
+  })
+  onError((error) =&gt; {
+    console.error(`${name} failed:`, error)
+  })
+})
+
+// Cross-store composition
+// stores/useOrderStore.ts
+import { useCartStore } from './useCartStore'
+import { useUserStore } from './useUserStore'
+
+export const useOrderStore = defineStore('order', () =&gt; {
+  const cartStore = useCartStore()
+  const userStore = useUserStore()
+
+  async function placeOrder() {
+    await api.order({
+      userId: userStore.user?.id,
+      items: cartStore.items
+    })
+    cartStore.clearCart()
+  }
+  return { placeOrder }
+})</code></pre>
+
+<!-- ===================== 10. VUE ROUTER ===================== -->
+<h2 id="router">10. Vue Router</h2>
+
+<h3>Setup</h3>
+<pre><code class="language-javascript">// router/index.ts
+import { createRouter, createWebHistory, createWebHashHistory, createMemoryHistory } from 'vue-router'
+
+const router = createRouter({
+  // History modes:
+  history: createWebHistory(import.meta.env.BASE_URL), // HTML5 (recommended)
+  // history: createWebHashHistory(),    // Hash mode (#/path)
+  // history: createMemoryHistory(),     // SSR / testing
+
+  routes: [
+    {
+      path: '/',
+      name: 'home',
+      component: () =&gt; import('@/views/HomeView.vue'), // Lazy loaded
+      meta: { requiresAuth: false, title: 'Home' }
+    },
+    {
+      path: '/user/:id',                // Required param
+      component: () =&gt; import('@/views/UserView.vue'),
+      props: true                        // Pass params as props
+    },
+    {
+      path: '/search/:category?',       // Optional param
+      component: SearchView
+    },
+    {
+      path: '/files/:path(.*)*',         // Catch-all / 404
+      component: NotFoundView
+    },
+    {
+      path: '/dashboard',
+      component: DashboardLayout,
+      children: [
+        { path: '', component: DashboardHome },
+        { path: 'profile', component: DashboardProfile },
+        { path: 'settings', component: DashboardSettings }
+      ]
+    },
+    {
+      // Named views
+      path: '/admin',
+      components: {
+        default: AdminMain,
+        sidebar: AdminSidebar,
+        header: AdminHeader
+      }
+    }
+  ],
+
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) return savedPosition
+    if (to.hash) return { el: to.hash, behavior: 'smooth' }
+    return { top: 0 }
+  }
+})</code></pre>
+
+<h3>Navigation Guards</h3>
+<pre><code class="language-javascript">// Global guards
+router.beforeEach(async (to, from) =&gt; {
+  const authStore = useAuthStore()
+
+  if (to.meta.requiresAuth &amp;&amp; !authStore.isAuthenticated) {
+    return { name: 'login', query: { redirect: to.fullPath } }
+  }
+
+  // Update page title
+  document.title = to.meta.title as string ?? 'My App'
+
+  // Return false to cancel, a route location to redirect, or undefined/true to proceed
+})
+
+router.beforeResolve(async (to) =&gt; {
+  // Called after all component guards and async components are resolved
+  if (to.meta.requiresCamera) {
+    try {
+      await askForCameraPermission()
+    } catch {
+      return false
+    }
+  }
+})
+
+router.afterEach((to, from, failure) =&gt; {
+  // Analytics, cleanup (no return value, cannot affect navigation)
+  if (!failure) trackPageView(to.fullPath)
+})
+
+// Per-route guard (in route config)
+{
+  path: '/admin',
+  component: AdminView,
+  beforeEnter: (to, from) =&gt; {
+    if (!isAdmin()) return { name: 'forbidden' }
+  }
+}
+
+// In-component guards (Composition API)
+import { onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router'
+
+onBeforeRouteLeave((to, from) =&gt; {
+  if (hasUnsavedChanges.value) {
+    return confirm('Unsaved changes! Leave?')
+  }
+})
+
+onBeforeRouteUpdate(async (to, from) =&gt; {
+  // Called when component reuses but params change (/user/1 -&gt; /user/2)
+  await loadUser(to.params.id as string)
+})</code></pre>
+
+<h3>Programmatic Navigation &amp; Composition</h3>
+<pre><code class="language-javascript">import { useRouter, useRoute } from 'vue-router'
+
+const router = useRouter()
+const route = useRoute()
+
+// route — current route info (reactive)
+console.log(route.path)       // '/user/1'
+console.log(route.params.id)  // '1'
+console.log(route.query.page) // '2'
+console.log(route.meta)       // { requiresAuth: true }
+console.log(route.name)       // 'user-detail'
+
+// router — navigation methods
+router.push('/user/2')
+router.push({ name: 'user', params: { id: '2' } })
+router.push({ path: '/search', query: { q: 'vue' } })
+router.replace('/new-path')   // No history entry
+router.go(-1)                 // History back
+router.back()                 // Same as go(-1)
+router.forward()</code></pre>
+
+<!-- ===================== 11. PERFORMANCE ===================== -->
+<h2 id="performance">11. Performance</h2>
+
+<h3>v-memo</h3>
+<pre><code class="language-html">&lt;!-- v-memo: skip re-rendering sub-tree when deps unchanged --&gt;
+&lt;!-- Great for large v-for lists --&gt;
+&lt;div v-for="item in list" :key="item.id" v-memo="[item.id, item.selected]"&gt;
+  &lt;p&gt;{{ item.name }}&lt;/p&gt;
+  &lt;p&gt;{{ item.description }}&lt;/p&gt;
+  &lt;!-- Complex content that's expensive to re-render --&gt;
+&lt;/div&gt;
+&lt;!-- Only re-renders when item.id or item.selected changes --&gt;</code></pre>
+
+<h3>shallowRef for Large Objects</h3>
+<pre><code class="language-javascript">import { shallowRef, triggerRef } from 'vue'
+
+// Avoid deep reactivity for large datasets
+const tableData = shallowRef([]); // Only .value assignment is reactive
+
+// When mutating internally, manually trigger
+function updateRow(index, newRow) {
+  tableData.value[index] = newRow  // Won't auto-trigger
+  triggerRef(tableData)             // Manually trigger
+}
+
+// Or replace the whole array (triggers automatically)
+tableData.value = [...tableData.value]</code></pre>
+
+<h3>defineAsyncComponent + Code Splitting</h3>
+<pre><code class="language-javascript">// Route-level code splitting (automatic with dynamic import in router)
+const routes = [
+  { path: '/chart', component: () =&gt; import('./ChartView.vue') },
+  // Webpack/Vite named chunk
+  { path: '/heavy', component: () =&gt; import(/* webpackChunkName: "heavy" */ './HeavyView.vue') }
+]
+
+// Component-level lazy loading
+const HeavyChart = defineAsyncComponent({
+  loader: () =&gt; import('./HeavyChart.vue'),
+  loadingComponent: Spinner,
+  delay: 200,
+  errorComponent: ErrorState,
+  timeout: 5000
+})</code></pre>
+
+<h3>Performance Tips Summary</h3>
+<ul>
+  <li>Use <code>v-memo</code> on large list items that have expensive sub-trees</li>
+  <li>Use <code>shallowRef</code> / <code>shallowReactive</code> for large non-reactive data</li>
+  <li>Prefer <code>v-show</code> for elements toggled frequently</li>
+  <li>Use <code>markRaw()</code> to exclude third-party class instances from reactivity</li>
+  <li>Avoid large inline objects/arrays in templates (creates new references each render)</li>
+  <li>Use <code>key</code> strategically in <code>v-for</code> (stable IDs, not array index)</li>
+  <li>Use <code>defineAsyncComponent</code> + route lazy loading for code splitting</li>
+  <li>Virtualize long lists with <code>@vueuse/core</code>'s <code>useVirtualList</code></li>
+  <li>Use <code>computed</code> for derived state, avoid recalculating in templates</li>
+  <li>Use <code>v-once</code> for static content that never changes</li>
+</ul>
+
+<!-- ===================== INTERVIEW Q&A ===================== -->
+<h2 id="interview">12. Interview Q&amp;A</h2>
+
+<h2 id="interview-easy">Easy Questions</h2>
+
+<details>
+  <summary>Q1. What is the difference between v-show and v-if? <span class="badge easy">Easy</span></summary>
+  <div class="answer">
+    <p><strong>v-if</strong> conditionally renders the element — it's completely removed from the DOM when false. It also tears down and re-creates event listeners and child components.</p>
+    <p><strong>v-show</strong> always renders the element but toggles its <code>display</code> CSS property. The element always stays in the DOM.</p>
+    <table>
+      <tr><th>Feature</th><th>v-if</th><th>v-show</th></tr>
+      <tr><td>DOM presence</td><td>Removed when false</td><td>Always in DOM</td></tr>
+      <tr><td>Initial render cost</td><td>Low (lazy)</td><td>Higher (always renders)</td></tr>
+      <tr><td>Toggle cost</td><td>High (destroy/create)</td><td>Low (CSS toggle)</td></tr>
+      <tr><td>Supports v-else</td><td>Yes</td><td>No</td></tr>
+      <tr><td>Best for</td><td>Conditions that rarely change</td><td>Frequent toggling</td></tr>
+    </table>
+    <pre><code class="language-html">&lt;!-- Use v-if for infrequent condition changes --&gt;
+&lt;HeavyComponent v-if="isAdmin" /&gt;
+
+&lt;!-- Use v-show for frequent toggles like modals, dropdowns --&gt;
+&lt;div v-show="isDropdownOpen"&gt;...&lt;/div&gt;</code></pre>
+  </div>
+</details>
+
+<details>
+  <summary>Q2. What is the Vue reactivity system and how does ref() differ from reactive()? <span class="badge easy">Easy</span></summary>
+  <div class="answer">
+    <p>Vue 3 uses <strong>Proxy</strong> to intercept property access and mutations on reactive objects, enabling automatic dependency tracking.</p>
+    <p><strong>ref()</strong> wraps any value (primitive or object) in a reactive container. You access the value via <code>.value</code> in JavaScript but it's auto-unwrapped in templates.</p>
+    <p><strong>reactive()</strong> returns a deep reactive proxy of an object. No <code>.value</code> needed, but only works with objects (not primitives), and loses reactivity if destructured.</p>
+    <pre><code class="language-javascript">// ref — works with any type
+const count = ref(0)
+count.value++  // Access with .value
+
+// reactive — objects only
+const state = reactive({ count: 0 })
+state.count++  // Access directly
+
+// Destructuring reactive loses reactivity
+const { count } = state        // BROKEN
+const { count } = toRefs(state) // CORRECT</code></pre>
+    <p><strong>Rule of thumb:</strong> Use <code>ref()</code> for primitives and simple values; either works for objects, but <code>ref()</code> is preferred in <code>&lt;script setup&gt;</code> for consistency.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q3. What are Vue Single File Components (SFCs)? <span class="badge easy">Easy</span></summary>
+  <div class="answer">
+    <p>SFCs are files with a <code>.vue</code> extension that encapsulate a component's template, logic, and styles in a single file. They are compiled by tools like Vite or Vue CLI.</p>
+    <pre><code class="language-vue">&lt;template&gt;
+  &lt;!-- HTML template --&gt;
+&lt;/template&gt;
+
+&lt;script setup lang="ts"&gt;
+// Component logic
+&lt;/script&gt;
+
+&lt;!-- Scoped styles --&gt;
+&lt;style scoped&gt;
+.container { color: red; }
+&lt;/style&gt;</code></pre>
+    <ul>
+      <li><code>scoped</code> attribute adds a unique data attribute to limit CSS scope to the component</li>
+      <li><code>module</code> attribute enables CSS Modules</li>
+      <li>Multiple <code>&lt;style&gt;</code> blocks are allowed</li>
+      <li><code>lang="ts"</code> enables TypeScript, <code>lang="scss"</code> enables SCSS preprocessing</li>
+    </ul>
+  </div>
+</details>
+
+<details>
+  <summary>Q4. How do you pass data between parent and child components? <span class="badge easy">Easy</span></summary>
+  <div class="answer">
+    <p>Vue uses a unidirectional data flow: <strong>props down, events up</strong>.</p>
+    <pre><code class="language-vue">&lt;!-- Parent --&gt;
+&lt;ChildComp
+  :title="parentTitle"
+  :items="parentItems"
+  @item-selected="handleSelection"
+/&gt;
+
+&lt;!-- Child --&gt;
+&lt;script setup&gt;
+const props = defineProps(['title', 'items'])
+const emit = defineEmits(['item-selected'])
+
+function selectItem(item) {
+  emit('item-selected', item)
+}
+&lt;/script&gt;</code></pre>
+    <p>For distant components, use <code>provide/inject</code>. For global state across components, use <strong>Pinia</strong>.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q5. What is v-model and how does it work on custom components? <span class="badge easy">Easy</span></summary>
+  <div class="answer">
+    <p><code>v-model</code> is syntactic sugar for a value binding + event listener. On native inputs:</p>
+    <pre><code class="language-html">&lt;!-- v-model on input --&gt;
+&lt;input v-model="text"&gt;
+&lt;!-- is equivalent to: --&gt;
+&lt;input :value="text" @input="text = $event.target.value"&gt;</code></pre>
+    <p>On custom components, <code>v-model</code> binds <code>modelValue</code> prop + listens for <code>update:modelValue</code> event:</p>
+    <pre><code class="language-vue">&lt;!-- Usage --&gt;
+&lt;MyInput v-model="name" /&gt;
+&lt;!-- is equivalent to: --&gt;
+&lt;MyInput :modelValue="name" @update:modelValue="name = $event" /&gt;
+
+&lt;!-- MyInput.vue with defineModel (Vue 3.4) --&gt;
+&lt;script setup&gt;
+const model = defineModel()  // no boilerplate needed!
+&lt;/script&gt;
+&lt;template&gt;
+  &lt;input :value="model" @input="model = $event.target.value"&gt;
+&lt;/template&gt;</code></pre>
+  </div>
+</details>
+
+<h2 id="interview-intermediate">Intermediate Questions</h2>
+
+<details>
+  <summary>Q6. Explain Vue's computed properties vs watchers — when to use which? <span class="badge intermediate">Intermediate</span></summary>
+  <div class="answer">
+    <p><strong>computed()</strong> — for <em>derived state</em>. Automatically cached; only re-evaluates when dependencies change.</p>
+    <p><strong>watch()</strong> — for <em>side effects</em> in response to state changes (API calls, DOM manipulation, etc.).</p>
+    <pre><code class="language-javascript">// Use computed for derived values
+const fullName = computed(() =&gt; `${firstName.value} ${lastName.value}`)
+
+// Use watch for side effects
+watch(userId, async (newId) =&gt; {
+  userData.value = await fetchUser(newId)
+}, { immediate: true })
+
+// watchEffect — auto-track dependencies (like computed but for effects)
+watchEffect(async () =&gt; {
+  // Automatically tracks userId.value
+  userData.value = await fetchUser(userId.value)
+})</code></pre>
+    <table>
+      <tr><th></th><th>computed</th><th>watch</th><th>watchEffect</th></tr>
+      <tr><td>Returns value</td><td>Yes</td><td>No</td><td>No</td></tr>
+      <tr><td>Cached</td><td>Yes</td><td>N/A</td><td>N/A</td></tr>
+      <tr><td>Tracks deps</td><td>Auto</td><td>Manual</td><td>Auto</td></tr>
+      <tr><td>Runs immediately</td><td>On access</td><td>Opt-in (immediate)</td><td>Yes</td></tr>
+      <tr><td>Access old value</td><td>No</td><td>Yes (2nd arg)</td><td>No</td></tr>
+    </table>
+  </div>
+</details>
+
+<details>
+  <summary>Q7. How does the Vue component lifecycle work in the Composition API? <span class="badge intermediate">Intermediate</span></summary>
+  <div class="answer">
+    <pre><code class="language-javascript">import {
+  onBeforeMount, onMounted,
+  onBeforeUpdate, onUpdated,
+  onBeforeUnmount, onUnmounted,
+  onErrorCaptured, onActivated, onDeactivated,
+  onServerPrefetch // SSR only
+} from 'vue'
+
+// setup() runs before creation (replaces created + beforeCreate)
+onBeforeMount(() =&gt; {
+  // Before component is inserted into DOM
+  // $el is not yet available
+})
+
+onMounted(() =&gt; {
+  // DOM is available, refs are accessible
+  // Make API calls, setup third-party libs here
+})
+
+onBeforeUpdate(() =&gt; {
+  // Before reactive state change causes re-render
+})
+
+onUpdated(() =&gt; {
+  // After re-render — avoid state mutations here (infinite loop risk)
+})
+
+onBeforeUnmount(() =&gt; {
+  // Cleanup: clear timers, unsubscribe events
+})
+
+onUnmounted(() =&gt; {
+  // Component is destroyed
+})</code></pre>
+    <p><code>onActivated</code>/<code>onDeactivated</code> are called when component is inside <code>&lt;KeepAlive&gt;</code> and is activated/deactivated instead of mounted/unmounted.</p>
+    <p><code>onErrorCaptured</code> catches errors from descendant components — return false to prevent propagation.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q8. What is Pinia and how is it different from Vuex? <span class="badge intermediate">Intermediate</span></summary>
+  <div class="answer">
+    <table>
+      <tr><th>Feature</th><th>Pinia</th><th>Vuex 4</th></tr>
+      <tr><td>Mutations</td><td>None — actions mutate directly</td><td>Required for state changes</td></tr>
+      <tr><td>TypeScript</td><td>First-class, excellent inference</td><td>Verbose, complex types</td></tr>
+      <tr><td>Modules</td><td>Multiple stores (flat)</td><td>Nested modules with namespacing</td></tr>
+      <tr><td>Devtools</td><td>Full support</td><td>Full support</td></tr>
+      <tr><td>Bundle size</td><td>~1KB</td><td>~10KB</td></tr>
+      <tr><td>Composition API</td><td>Full support (setup stores)</td><td>Limited</td></tr>
+      <tr><td>SSR</td><td>Full support</td><td>Full support</td></tr>
+    </table>
+    <pre><code class="language-javascript">// Vuex (verbose, mutations required)
+const store = createStore({
+  state: { count: 0 },
+  mutations: { INCREMENT(state) { state.count++ } },
+  actions: { increment({ commit }) { commit('INCREMENT') } }
+})
+
+// Pinia (simple, no mutations needed)
+const useCounterStore = defineStore('counter', () =&gt; {
+  const count = ref(0)
+  const increment = () =&gt; count.value++
+  return { count, increment }
+})</code></pre>
+  </div>
+</details>
+
+<details>
+  <summary>Q9. Explain Vue Router navigation guards and their execution order. <span class="badge intermediate">Intermediate</span></summary>
+  <div class="answer">
+    <p>Navigation guards run in a specific order to control route transitions:</p>
+    <ol>
+      <li>Navigation triggered</li>
+      <li><code>beforeRouteLeave</code> in deactivating component</li>
+      <li>Global <code>router.beforeEach</code></li>
+      <li><code>beforeEnter</code> in route config</li>
+      <li>Async route components resolved</li>
+      <li><code>beforeRouteEnter</code> in activating component</li>
+      <li>Global <code>router.beforeResolve</code></li>
+      <li>Navigation confirmed</li>
+      <li>Global <code>router.afterEach</code></li>
+      <li>DOM updates triggered</li>
+      <li><code>beforeRouteEnter</code>'s <code>next(vm =&gt; {})</code> callbacks called</li>
+    </ol>
+    <pre><code class="language-javascript">router.beforeEach(async (to, from) =&gt; {
+  // Return false to cancel
+  // Return a route to redirect
+  // Return nothing or true to proceed
+  if (to.meta.requiresAuth &amp;&amp; !isAuthenticated()) {
+    return { name: 'login', query: { redirect: to.fullPath } }
+  }
+})</code></pre>
+  </div>
+</details>
+
+<details>
+  <summary>Q10. How do Vue composables work and what are the rules for using them? <span class="badge intermediate">Intermediate</span></summary>
+  <div class="answer">
+    <p>Composables are functions that use Vue's Composition API to encapsulate and reuse stateful logic. They follow the <code>useXxx</code> naming convention.</p>
+    <p><strong>Rules:</strong></p>
+    <ul>
+      <li>Must be called from <code>setup()</code> or <code>&lt;script setup&gt;</code> (or another composable)</li>
+      <li>Must be called synchronously (no conditional calls)</li>
+      <li>Lifecycle hooks inside composables attach to the calling component instance</li>
+    </ul>
+    <pre><code class="language-javascript">// CORRECT — called synchronously in setup
+export function useMouse() {
+  const x = ref(0), y = ref(0)
+
+  onMounted(() =&gt; window.addEventListener('mousemove', update))
+  onUnmounted(() =&gt; window.removeEventListener('mousemove', update))
+
+  function update(e) { x.value = e.x; y.value = e.y }
+
+  return { x, y }
+}
+
+// In component
+const { x, y } = useMouse()  // Called synchronously in setup
+
+// WRONG — conditional call
+if (condition) {
+  const { x } = useMouse()  // Never do this
+}</code></pre>
+  </div>
+</details>
+
+<h2 id="interview-advanced">Advanced Questions</h2>
+
+<details>
+  <summary>Q11. How does Vue 3's Proxy-based reactivity differ from Vue 2's Object.defineProperty approach? <span class="badge advanced">Advanced</span></summary>
+  <div class="answer">
+    <p>Vue 2 used <code>Object.defineProperty</code> to intercept property access, which had several limitations:</p>
+    <ul>
+      <li>Could not detect property <strong>addition or deletion</strong> (required <code>Vue.set</code>/<code>Vue.delete</code>)</li>
+      <li>Could not detect <strong>array index</strong> assignments (<code>arr[0] = val</code>) or <code>.length</code> mutations</li>
+      <li>Required traversing the entire object at initialization (performance cost)</li>
+    </ul>
+    <p>Vue 3 uses <code>Proxy</code> which intercepts all operations on an object:</p>
+    <pre><code class="language-javascript">// Vue 3 simplified reactivity internals
+function reactive(raw) {
+  return new Proxy(raw, {
+    get(target, key, receiver) {
+      // Track: record that current effect depends on this property
+      track(target, key)
+      return Reflect.get(target, key, receiver)
+    },
+    set(target, key, value, receiver) {
+      const result = Reflect.set(target, key, value, receiver)
+      // Trigger: notify all effects that depend on this property
+      trigger(target, key)
+      return result
+    },
+    deleteProperty(target, key) {
+      const result = Reflect.deleteProperty(target, key)
+      trigger(target, key)
+      return result
+    }
+    // also: has, ownKeys, etc.
+  })
+}
+
+// Now these work in Vue 3:
+const state = reactive({ items: [] })
+state.newProp = 'works!'     // Detects new property
+delete state.newProp          // Detects deletion
+state.items[0] = 'works!'    // Detects array index
+state.items.length = 0        // Detects length change</code></pre>
+    <p>Proxy also enables lazy/on-demand reactivity (nested objects become reactive only when accessed), improving initial performance.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q12. What is the virtual DOM in Vue, and how does Vue's compiler optimize it? <span class="badge advanced">Advanced</span></summary>
+  <div class="answer">
+    <p>The Virtual DOM (VDOM) is a JavaScript representation of the actual DOM tree. Vue diffs the new VDOM against the previous one and only updates changed nodes — avoiding expensive full DOM re-renders.</p>
+    <p>Vue 3's compiler performs <strong>static analysis</strong> at compile time to generate highly optimized render functions:</p>
+    <ul>
+      <li><strong>Static hoisting:</strong> Pure static nodes are hoisted outside the render function (created once, not re-created each render)</li>
+      <li><strong>Patch flags:</strong> Dynamic nodes are tagged with a bitfield indicating what changed (text only? props only?), so the diffing only checks what can change</li>
+      <li><strong>Block tree optimization:</strong> Dynamic nodes within a block are tracked in a flat array, skipping stable static subtrees entirely</li>
+    </ul>
+    <pre><code class="language-javascript">// Template:
+// &lt;div&gt;
+//   &lt;p&gt;Static text&lt;/p&gt;  &lt;!-- hoisted --&gt;
+//   &lt;p&gt;{{ dynamic }}&lt;/p&gt; &lt;!-- patch flag: TEXT (1) --&gt;
+//   &lt;div :id="dynamicId"&gt;...&lt;/div&gt; &lt;!-- patch flag: PROPS (8) --&gt;
+// &lt;/div&gt;
+
+// Compiled render function (simplified):
+const _hoisted_1 = createElementVNode("p", null, "Static text")
+
+function render() {
+  return createElementBlock("div", null, [
+    _hoisted_1,   // Reused, not recreated
+    createElementVNode("p", null, toDisplayString(dynamic), 1 /* TEXT */),
+    createElementVNode("div", { id: dynamicId }, null, 8 /* PROPS */)
+  ])
+}</code></pre>
+  </div>
+</details>
+
+<details>
+  <summary>Q13. How do you implement server-side rendering (SSR) with Vue and Nuxt? <span class="badge advanced">Advanced</span></summary>
+  <div class="answer">
+    <p>Vue supports SSR natively via <code>@vue/server-renderer</code>. <strong>Nuxt</strong> is the meta-framework that handles SSR, file-based routing, auto-imports, and more.</p>
+    <pre><code class="language-javascript">// Raw Vue SSR (server entry)
+import { createSSRApp } from 'vue'
+import { renderToString } from '@vue/server-renderer'
+import App from './App.vue'
+
+export async function render(url, manifest) {
+  const app = createSSRApp(App)
+
+  // Create fresh router, store per request
+  const router = createRouter()
+  const pinia = createPinia()
+  app.use(router).use(pinia)
+
+  await router.push(url)
+  await router.isReady()
+
+  const ctx = {}
+  const html = await renderToString(app, ctx)
+  return { html, state: pinia.state.value }
+}</code></pre>
+    <p><strong>SSR caveats:</strong></p>
+    <ul>
+      <li>No access to browser APIs (<code>window</code>, <code>document</code>, <code>localStorage</code>) during server render</li>
+      <li>Guard with <code>if (process.client)</code> / <code>if (!import.meta.env.SSR)</code></li>
+      <li>Components are created fresh per request — avoid global mutable state</li>
+      <li>Use <code>onMounted</code> for browser-only code (doesn't run on server)</li>
+      <li>Hydration: client-side Vue takes over server-rendered HTML (<code>createSSRApp</code> instead of <code>createApp</code>)</li>
+    </ul>
+    <p><strong>Nuxt 3 rendering modes:</strong></p>
+    <pre><code class="language-javascript">// nuxt.config.ts
+export default defineNuxtConfig({
+  routeRules: {
+    '/': { prerender: true },      // SSG
+    '/blog/**': { swr: 3600 },     // ISR (stale-while-revalidate)
+    '/admin/**': { ssr: false },   // SPA
+    '/api/**': { cors: true }      // API routes
+  }
+})</code></pre>
+  </div>
+</details>
+
+<details>
+  <summary>Q14. How does provide/inject work, and what are the best practices for typed injection? <span class="badge advanced">Advanced</span></summary>
+  <div class="answer">
+    <p><code>provide()</code> makes data available to any descendant component (avoids prop drilling). <code>inject()</code> retrieves it. The key best practice is using typed <code>InjectionKey</code> symbols for type safety.</p>
+    <pre><code class="language-typescript">// keys.ts — centralized injection keys
+import type { InjectionKey, Ref } from 'vue'
+
+export interface UserContext {
+  user: Ref&lt;User | null&gt;
+  isAuthenticated: Ref&lt;boolean&gt;
+  login: (creds: Credentials) =&gt; Promise&lt;void&gt;
+  logout: () =&gt; void
+}
+
+export const userContextKey: InjectionKey&lt;UserContext&gt; = Symbol('userContext')
+
+// AuthProvider.vue
+import { provide, ref } from 'vue'
+import { userContextKey } from './keys'
+
+const user = ref&lt;User | null&gt;(null)
+const isAuthenticated = ref(false)
+
+provide(userContextKey, {
+  user, isAuthenticated,
+  login: async (creds) =&gt; { /* ... */ },
+  logout: () =&gt; { user.value = null; isAuthenticated.value = false }
+})
+
+// Any descendant
+import { inject } from 'vue'
+import { userContextKey } from './keys'
+
+// Fully typed, no need for type assertion
+const { user, login, logout } = inject(userContextKey)!
+
+// With default value (when provider might not exist)
+const ctx = inject(userContextKey, {
+  user: ref(null),
+  isAuthenticated: ref(false),
+  login: async () =&gt; {},
+  logout: () =&gt; {}
+})</code></pre>
+    <p><strong>Reactivity with provide/inject:</strong> To maintain reactivity, provide refs/reactive objects, not their raw values. To prevent mutation of provided data from descendants, wrap with <code>readonly()</code>.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q15. Explain the difference between Teleport and KeepAlive and their internal implementation details. <span class="badge advanced">Advanced</span></summary>
+  <div class="answer">
+    <p><strong>Teleport</strong> moves the component's rendered DOM to a different place in the document, while keeping its logical position in the component tree (parent-child relationships, provide/inject, event handling all work normally).</p>
+    <pre><code class="language-html">&lt;!-- Even though Portal renders inside App component tree,
+     its DOM appears inside #portal-target --&gt;
+&lt;Teleport to="#portal-target" :disabled="isMobile"&gt;
+  &lt;Modal v-if="showModal" /&gt;
+&lt;/Teleport&gt;
+
+&lt;!-- Multiple Teleports to same target are appended in order --&gt;
+&lt;Teleport to="body"&gt;&lt;Toast msg="First" /&gt;&lt;/Teleport&gt;
+&lt;Teleport to="body"&gt;&lt;Toast msg="Second" /&gt;&lt;/Teleport&gt;</code></pre>
+    <p><strong>KeepAlive</strong> caches component instances when they are conditionally unmounted. Instead of destroying the component, it moves it to an internal cache, preserving state.</p>
+    <pre><code class="language-html">&lt;KeepAlive
+  :include="/^(UserProfile|Dashboard)$/"
+  :exclude="['TempComponent']"
+  :max="10"
+&gt;
+  &lt;component :is="currentTab" /&gt;
+&lt;/KeepAlive&gt;</code></pre>
+    <ul>
+      <li><code>include</code>/<code>exclude</code>: String, RegExp, or Array — matches component <code>name</code></li>
+      <li><code>max</code>: LRU eviction when cache exceeds limit</li>
+      <li>Cached components trigger <code>onActivated</code>/<code>onDeactivated</code> instead of <code>onMounted</code>/<code>onUnmounted</code></li>
+    </ul>
+  </div>
+</details>
+
+<h2 id="interview-very-advanced">Very Advanced Questions</h2>
+
+<details>
+  <summary>Q16. How would you implement a custom Vue renderer, and what are the use cases? <span class="badge very-advanced">Very Advanced</span></summary>
+  <div class="answer">
+    <p>Vue 3 exposes <code>createRenderer</code> from <code>@vue/runtime-core</code>, allowing you to create custom renderers that target non-DOM environments (Canvas, WebGL, Three.js, native mobile, terminal, etc.).</p>
+    <pre><code class="language-javascript">import { createRenderer } from '@vue/runtime-core'
+
+// Canvas renderer example
+const { createApp } = createRenderer({
+  // Create a new element/node
+  createElement(type) {
+    return { type, x: 0, y: 0, width: 0, height: 0, children: [] }
+  },
+
+  // Set text content
+  createText(text) {
+    return { type: 'text', content: text }
+  },
+
+  // Set properties
+  patchProp(el, key, prevValue, nextValue) {
+    el[key] = nextValue
+    // Trigger re-draw
+    requestAnimationFrame(() =&gt; renderToCanvas(rootEl))
+  },
+
+  // Insert into parent
+  insert(child, parent, anchor) {
+    const index = anchor ? parent.children.indexOf(anchor) : parent.children.length
+    parent.children.splice(index, 0, child)
+  },
+
+  // Remove from parent
+  remove(child) {
+    const parent = child.parentNode
+    if (parent) {
+      parent.children.splice(parent.children.indexOf(child), 1)
+    }
+  },
+
+  // Other required methods
+  createComment: (text) =&gt; ({ type: 'comment', text }),
+  setText: (node, text) =&gt; { node.content = text },
+  setElementText: (el, text) =&gt; { el.textContent = text },
+  parentNode: (node) =&gt; node.parentNode,
+  nextSibling: (node) =&gt; {
+    const siblings = node.parentNode?.children ?? []
+    return siblings[siblings.indexOf(node) + 1] ?? null
+  }
+})
+
+// Use like regular Vue
+const app = createApp(CanvasApp)
+app.mount(canvasElement)</code></pre>
+    <p>Real-world use cases: <strong>vue-three</strong> (3D scenes), <strong>vue-terminal</strong> (terminal UIs), <strong>Native mobile</strong> (NativeScript Vue), <strong>PDF generation</strong>, <strong>test renderers</strong>.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q17. Explain Vue's scheduler and how it batches DOM updates. <span class="badge very-advanced">Very Advanced</span></summary>
+  <div class="answer">
+    <p>Vue batches reactive updates using a <strong>microtask queue</strong> (via <code>Promise.then</code> or <code>MutationObserver</code>). When reactive data changes, re-renders are not immediate — they're scheduled to run after the current synchronous code finishes.</p>
+    <pre><code class="language-javascript">// Simplified scheduler internals
+const queue: SchedulerJob[] = []
+let isFlushing = false
+
+function queueJob(job) {
+  if (!queue.includes(job)) {
+    queue.push(job)
+  }
+  queueFlush()
+}
+
+function queueFlush() {
+  if (!isFlushing) {
+    isFlushing = true
+    Promise.resolve().then(flushJobs)  // Microtask
+  }
+}
+
+function flushJobs() {
+  // Sort by component ID (parent before child = parent renders first)
+  queue.sort((a, b) =&gt; a.id - b.id)
+
+  try {
+    for (let i = 0; i &lt; queue.length; i++) {
+      const job = queue[i]
+      job()  // Run component re-render / watcher callback
+    }
+  } finally {
+    queue.length = 0
+    isFlushing = false
+  }
+}</code></pre>
+    <pre><code class="language-javascript">// Practical consequence: multiple synchronous changes = ONE re-render
+count.value = 1
+count.value = 2
+count.value = 3
+// Component re-renders ONCE with count = 3, not 3 times
+
+// nextTick: wait for pending DOM updates
+import { nextTick } from 'vue'
+
+async function onClick() {
+  items.value.push(newItem)
+  await nextTick()  // Wait for DOM update
+  // Now DOM reflects the new item — safe to measure, scroll, etc.
+  const lastEl = listRef.value?.lastElementChild
+  lastEl?.scrollIntoView()
+}
+
+// flush: 'sync' watcher bypasses scheduler — runs synchronously
+watch(count, handler, { flush: 'sync' }) // Dangerous — use sparingly</code></pre>
+  </div>
+</details>
+
+<details>
+  <summary>Q18. How does Vue's template compiler work, and how can you write custom compiler transforms? <span class="badge very-advanced">Very Advanced</span></summary>
+  <div class="answer">
+    <p>Vue's template compiler transforms HTML templates into optimized render functions in 3 phases:</p>
+    <ol>
+      <li><strong>Parse:</strong> HTML → Abstract Syntax Tree (AST) — <code>@vue/compiler-core</code></li>
+      <li><strong>Transform:</strong> Apply AST transforms (v-if, v-for, directives, static analysis)</li>
+      <li><strong>Codegen:</strong> AST → JavaScript render function string</li>
+    </ol>
+    <pre><code class="language-javascript">import { parse, transform, generate } from '@vue/compiler-core'
+
+// Write a custom transform plugin
+const myTransform = {
+  // Called for every node in the AST
+  transformElement(node, context) {
+    if (node.type === 1 /* ELEMENT */ &amp;&amp; node.tag === 'my-tag') {
+      // Modify the AST node
+      node.tag = 'div'
+      node.props.push({
+        type: 6, // ATTRIBUTE
+        name: 'data-my-tag',
+        value: { type: 2, content: 'true' }
+      })
+    }
+  }
+}
+
+// Use in Vite plugin
+import { Plugin } from 'vite'
+import { compileTemplate } from '@vue/compiler-sfc'
+
+export function myVuePlugin(): Plugin {
+  return {
+    name: 'my-vue-transform',
+    transform(code, id) {
+      if (!id.endsWith('.vue')) return
+      // Intercept and transform Vue SFC compilation
+    }
+  }
+}</code></pre>
+    <p>Custom transforms are used internally for built-in directives like <code>v-if</code>, <code>v-for</code>, and for features like <code>&lt;script setup&gt;</code> macro processing. Third-party uses include <code>vue-i18n</code>'s compile-time message extraction.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q19. Design a plugin architecture for Vue with TypeScript — how to extend app-level capabilities? <span class="badge very-advanced">Very Advanced</span></summary>
+  <div class="answer">
+    <pre><code class="language-typescript">// my-plugin/index.ts
+import type { App, Plugin } from 'vue'
+
+// Augment Vue's ComponentCustomProperties for this.$myPlugin
+declare module 'vue' {
+  interface ComponentCustomProperties {
+    $myPlugin: MyPluginApi
+  }
+  // Augment component options
+  interface ComponentCustomOptions {
+    myPluginOptions?: MyPluginComponentOptions
+  }
+}
+
+interface MyPluginOptions {
+  apiKey: string
+  baseUrl?: string
+  debug?: boolean
+}
+
+interface MyPluginApi {
+  track: (event: string, data?: Record&lt;string, unknown&gt;) =&gt; void
+  identify: (userId: string) =&gt; void
+}
+
+export const MyPlugin: Plugin = {
+  install(app: App, options: MyPluginOptions) {
+    const api: MyPluginApi = {
+      track: (event, data) =&gt; {
+        if (options.debug) console.log('[MyPlugin] track', event, data)
+        fetch(`${options.baseUrl}/track`, {
+          method: 'POST',
+          body: JSON.stringify({ event, data, key: options.apiKey })
+        })
+      },
+      identify: (userId) =&gt; { /* ... */ }
+    }
+
+    // Global property
+    app.config.globalProperties.$myPlugin = api
+
+    // Provide for Composition API usage
+    app.provide('myPlugin', api)
+
+    // Global component
+    app.component('MyButton', MyButton)
+
+    // Global directive
+    app.directive('track', {
+      mounted(el, binding) {
+        el.addEventListener('click', () =&gt; api.track(binding.value))
+      }
+    })
+
+    // Global mixin (use sparingly)
+    app.mixin({
+      mounted() {
+        const options = (this.$options as any).myPluginOptions
+        if (options?.trackMount) {
+          api.track('component_mounted', { name: this.$options.name })
+        }
+      }
+    })
+  }
+}
+
+// Composable for Composition API consumers
+export function useMyPlugin(): MyPluginApi {
+  const api = inject&lt;MyPluginApi&gt;('myPlugin')
+  if (!api) throw new Error('MyPlugin not installed')
+  return api
+}
+
+// Usage:
+// app.use(MyPlugin, { apiKey: 'xxx', debug: true })</code></pre>
+  </div>
+</details>
+
+<details>
+  <summary>Q20. How would you implement micro-frontend architecture with Vue components that can be shared across different frameworks? <span class="badge very-advanced">Very Advanced</span></summary>
+  <div class="answer">
+    <p>The key technology is <strong>Custom Elements / Web Components</strong> via Vue's <code>defineCustomElement()</code>, enabling Vue components to be used anywhere HTML runs — in React, Angular, or vanilla JS apps.</p>
+    <pre><code class="language-javascript">// Define a Vue component as a Custom Element
+import { defineCustomElement } from 'vue'
+import MyButton from './MyButton.vue'
+
+// Convert SFC to Custom Element
+const MyButtonElement = defineCustomElement(MyButton)
+
+// Register globally
+customElements.define('my-button', MyButtonElement)
+
+// Now usable in any HTML/framework:
+// &lt;my-button color="primary" @click="handler"&gt;Click&lt;/my-button&gt;</code></pre>
+    <pre><code class="language-javascript">// Advanced: Custom Element with Shadow DOM, slots, events
+import { defineCustomElement, h, ref } from 'vue'
+
+const MyCounter = defineCustomElement({
+  props: ['initialValue'],
+  emits: ['change'],
+  styles: ['.counter { display: flex; gap: 8px; }'],  // Injected into Shadow DOM
+
+  setup(props, { emit }) {
+    const count = ref(parseInt(props.initialValue) || 0)
+
+    function increment() {
+      count.value++
+      emit('change', count.value)
+    }
+
+    return () =&gt; h('div', { class: 'counter' }, [
+      h('button', { onClick: () =&gt; count.value-- }, '-'),
+      h('span', count.value),
+      h('button', { onClick: increment }, '+')
+    ])
+  }
+})</code></pre>
+    <p><strong>Module Federation approach</strong> (Webpack 5 / Vite):</p>
+    <pre><code class="language-javascript">// vite.config.ts of the provider app
+import federation from '@originjs/vite-plugin-federation'
+
+export default {
+  plugins: [
+    federation({
+      name: 'vue-components-app',
+      filename: 'remoteEntry.js',
+      exposes: {
+        './Button': './src/components/Button.vue',
+        './stores/useCart': './src/stores/useCartStore.ts'
+      },
+      shared: ['vue', 'pinia']  // Shared singletons
+    })
+  ]
+}
+
+// Consumer app (can be React, Angular, or another Vue app)
+import federation from '@originjs/vite-plugin-federation'
+
+export default {
+  plugins: [
+    federation({
+      remotes: {
+        'vue-components': 'http://localhost:3001/assets/remoteEntry.js'
+      },
+      shared: ['vue']
+    })
+  ]
+}
+
+// In consumer:
+const Button = defineAsyncComponent(() =&gt; import('vue-components/Button'))</code></pre>
+  </div>
+</details>
+
+<footer>
+  Vue.js Comprehensive Learning Reference &mdash; Covers Vue 3.0 through 3.4 &mdash; Options API, Composition API, Pinia, Vue Router
+</footer>
+
+</main>
+</div>
+
+<script>hljs.highlightAll();mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

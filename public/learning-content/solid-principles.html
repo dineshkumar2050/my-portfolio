@@ -1,0 +1,1538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOLID Principles & Design Guidelines</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6;display:flex;flex-direction:column}.topnav{background:#161b22;padding:10px 24px;border-bottom:1px solid #30363d;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100}.topnav a{color:#58a6ff;text-decoration:none;font-size:13px}.topnav h1{font-size:16px;color:#e6edf3;margin:0}.layout{display:flex;flex:1}.sidebar{width:260px;background:#161b22;border-right:1px solid #30363d;padding:16px;position:sticky;top:41px;height:calc(100vh - 41px);overflow-y:auto;flex-shrink:0}.sidebar a{display:block;padding:4px 8px;color:#8b949e;text-decoration:none;font-size:13px;border-radius:4px;margin-bottom:2px}.sidebar a:hover{background:#21262d;color:#c9d1d9}.sidebar .section-title{color:#58a6ff;font-size:11px;text-transform:uppercase;letter-spacing:.5px;margin:16px 0 6px;padding:0 8px;font-weight:600}main{flex:1;padding:32px 48px;max-width:960px}h1{font-size:2rem;color:#e6edf3;border-bottom:1px solid #30363d;padding-bottom:16px;margin-bottom:24px}h2{font-size:1.5rem;color:#e6edf3;margin:48px 0 16px;border-bottom:1px solid #21262d;padding-bottom:8px}h3{font-size:1.15rem;color:#79c0ff;margin:24px 0 10px}h4{font-size:1rem;color:#d2a8ff;margin:16px 0 8px}p{margin-bottom:12px}ul,ol{margin:0 0 16px 24px}li{margin-bottom:4px}pre{margin:16px 0;border-radius:6px;overflow-x:auto;font-size:13px}code:not(pre code){background:#161b22;padding:2px 6px;border-radius:4px;font-size:13px;color:#f0883e;border:1px solid #30363d}table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}th{background:#161b22;color:#58a6ff;padding:10px 14px;text-align:left;border:1px solid #30363d}td{padding:10px 14px;border:1px solid #30363d;vertical-align:top}tr:nth-child(even) td{background:#0a0d12}.mermaid{background:#161b22;padding:20px;border-radius:6px;margin:16px 0;text-align:center}details{border:1px solid #30363d;border-radius:6px;margin:10px 0;overflow:hidden}summary{padding:12px 16px;cursor:pointer;background:#161b22;color:#79c0ff;font-weight:600;list-style:none}details[open] summary{border-bottom:1px solid #30363d}.answer{padding:16px 20px;background:#0d1117}.badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:700;margin-left:8px}.easy{background:#1a4731;color:#3fb950}.intermediate{background:#2d2b00;color:#e3b341}.advanced{background:#3d1f00;color:#f0883e}.very-advanced{background:#3d0000;color:#ff7b72}.callout{background:#161b22;border-left:4px solid #58a6ff;padding:12px 16px;border-radius:0 6px 6px 0;margin:16px 0}footer{text-align:center;padding:24px;color:#8b949e;font-size:12px;border-top:1px solid #30363d;margin-top:40px}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <h1>SOLID Principles &amp; Design Guidelines</h1>
+  <a href="microservices.html">Microservices</a>
+  <a href="api-gateway.html">API Gateway</a>
+</nav>
+
+<div class="layout">
+<aside class="sidebar">
+  <div class="section-title">SOLID</div>
+  <a href="#srp">S — Single Responsibility</a>
+  <a href="#ocp">O — Open/Closed</a>
+  <a href="#lsp">L — Liskov Substitution</a>
+  <a href="#isp">I — Interface Segregation</a>
+  <a href="#dip">D — Dependency Inversion</a>
+  <div class="section-title">Other Principles</div>
+  <a href="#dry">DRY</a>
+  <a href="#kiss">KISS</a>
+  <a href="#yagni">YAGNI</a>
+  <a href="#lod">Law of Demeter</a>
+  <a href="#composition">Composition over Inheritance</a>
+  <div class="section-title">Interview Q&amp;A</div>
+  <a href="#qa">20+ Interview Questions</a>
+</aside>
+
+<main>
+<h1>SOLID Principles &amp; Design Guidelines</h1>
+
+<!-- ===== SRP ===== -->
+<h2 id="srp">S — Single Responsibility Principle</h2>
+<p><strong>Definition:</strong> A class should have only <em>one reason to change</em>. This means each class should be responsible for a single piece of functionality.</p>
+<div class="callout">
+  <strong>Real-World Analogy:</strong> A chef cooks food. A waiter takes orders. You wouldn't want one person to cook, take orders, handle billing, AND wash dishes — each person has a single responsibility so the restaurant runs efficiently.
+</div>
+
+<h3>Mermaid: Bad vs Good Structure</h3>
+<div class="mermaid">
+classDiagram
+  class UserService_BAD {
+    +createUser()
+    +validateEmail()
+    +sendWelcomeEmail()
+    +saveToDatabase()
+    +generatePDFReport()
+    note: "Too many reasons to change"
+  }
+  class UserService_GOOD {
+    +createUser()
+  }
+  class EmailValidator {
+    +validateEmail()
+  }
+  class EmailService {
+    +sendWelcomeEmail()
+  }
+  class UserRepository {
+    +save()
+  }
+  class ReportGenerator {
+    +generatePDF()
+  }
+  UserService_GOOD --> EmailValidator
+  UserService_GOOD --> EmailService
+  UserService_GOOD --> UserRepository
+  UserService_GOOD --> ReportGenerator
+</div>
+
+<h3>Java — Bad Example (Violation)</h3>
+<pre><code class="language-java">// BAD: One class doing too much — multiple reasons to change
+public class UserService {
+    public void createUser(String name, String email) {
+        // 1. Validate email
+        if (!email.contains("@")) throw new IllegalArgumentException("Invalid email");
+
+        // 2. Save to DB — reason to change: DB schema changes
+        String sql = "INSERT INTO users (name, email) VALUES (?, ?)";
+        // ... jdbc code ...
+
+        // 3. Send welcome email — reason to change: email template changes
+        String body = "Welcome " + name + "! Thanks for registering.";
+        // ... smtp code ...
+
+        // 4. Generate PDF report — reason to change: report format changes
+        // ... pdf generation code ...
+
+        // 4 reasons to change = 4 responsibilities = SRP violation!
+    }
+}</code></pre>
+
+<h3>Java — Good Example (Fixed)</h3>
+<pre><code class="language-java">// GOOD: Each class has exactly one responsibility
+public class EmailValidator {
+    public boolean isValid(String email) {
+        return email != null && email.contains("@") && email.contains(".");
+    }
+}
+
+public class UserRepository {
+    private final DataSource dataSource;
+
+    public UserRepository(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    public void save(User user) {
+        String sql = "INSERT INTO users (name, email) VALUES (?, ?)";
+        // ... only DB concern here
+    }
+}
+
+public class EmailService {
+    private final MailSender mailSender;
+
+    public EmailService(MailSender mailSender) {
+        this.mailSender = mailSender;
+    }
+
+    public void sendWelcomeEmail(User user) {
+        String body = "Welcome " + user.getName() + "!";
+        mailSender.send(user.getEmail(), "Welcome!", body);
+    }
+}
+
+public class UserService {
+    private final EmailValidator emailValidator;
+    private final UserRepository userRepository;
+    private final EmailService emailService;
+
+    public UserService(EmailValidator emailValidator,
+                       UserRepository userRepository,
+                       EmailService emailService) {
+        this.emailValidator = emailValidator;
+        this.userRepository = userRepository;
+        this.emailService = emailService;
+    }
+
+    public void createUser(String name, String email) {
+        if (!emailValidator.isValid(email)) {
+            throw new IllegalArgumentException("Invalid email: " + email);
+        }
+        User user = new User(name, email);
+        userRepository.save(user);
+        emailService.sendWelcomeEmail(user);
+    }
+    // UserService now has only ONE reason to change: user creation workflow
+}</code></pre>
+
+<h3>TypeScript — Bad Example</h3>
+<pre><code class="language-typescript">// BAD: Order class has too many concerns
+class Order {
+  constructor(private items: OrderItem[]) {}
+
+  calculateTotal(): number {
+    return this.items.reduce((sum, item) => sum + item.price * item.qty, 0);
+  }
+
+  // DB concern mixed in
+  saveToDatabase(): void {
+    const db = new Database();
+    db.query(`INSERT INTO orders ...`);
+  }
+
+  // Email concern mixed in
+  sendConfirmationEmail(): void {
+    const mailer = new Mailer();
+    mailer.send(this.customerEmail, "Order confirmed!");
+  }
+
+  // PDF concern mixed in
+  printInvoice(): void {
+    const pdf = new PDFGenerator();
+    pdf.generate(this);
+  }
+}</code></pre>
+
+<h3>TypeScript — Good Example</h3>
+<pre><code class="language-typescript">// GOOD: Separated responsibilities
+class Order {
+  constructor(
+    public readonly id: string,
+    public readonly items: OrderItem[],
+    public readonly customerEmail: string
+  ) {}
+
+  calculateTotal(): number {
+    return this.items.reduce((sum, item) => sum + item.price * item.qty, 0);
+  }
+}
+
+class OrderRepository {
+  save(order: Order): void {
+    // Only DB concern
+    db.query(`INSERT INTO orders (id, total) VALUES (?, ?)`, [order.id, order.calculateTotal()]);
+  }
+}
+
+class OrderNotificationService {
+  sendConfirmation(order: Order): void {
+    // Only email concern
+    mailer.send(order.customerEmail, "Order confirmed!", `Your order #${order.id} is placed.`);
+  }
+}
+
+class InvoiceService {
+  generatePDF(order: Order): Buffer {
+    // Only PDF concern
+    return pdfGenerator.create(order);
+  }
+}
+
+// Orchestrator
+class OrderService {
+  constructor(
+    private repo: OrderRepository,
+    private notifier: OrderNotificationService,
+    private invoiceService: InvoiceService
+  ) {}
+
+  placeOrder(order: Order): void {
+    this.repo.save(order);
+    this.notifier.sendConfirmation(order);
+  }
+}</code></pre>
+
+<h4>When Is It OK to Bend SRP?</h4>
+<ul>
+  <li>Tiny utility/script where over-engineering adds no value</li>
+  <li>Prototype code where separation is premature</li>
+  <li>Framework-generated code (Entity classes with some annotations)</li>
+  <li>When two "responsibilities" genuinely change together always (cohesion)</li>
+</ul>
+
+<!-- ===== OCP ===== -->
+<h2 id="ocp">O — Open/Closed Principle</h2>
+<p><strong>Definition:</strong> Software entities (classes, modules, functions) should be <em>open for extension</em> but <em>closed for modification</em>. Add new behavior by adding new code, not by editing existing tested code.</p>
+<div class="callout">
+  <strong>Real-World Analogy:</strong> A power strip is closed for modification (you can't rewire it), but open for extension — you plug in new devices without modifying the strip itself.
+</div>
+<p><strong>Connection to Strategy Pattern:</strong> OCP is best implemented via the Strategy Pattern — define a family of algorithms, encapsulate each one, and make them interchangeable.</p>
+
+<h3>Mermaid: OCP with Strategy Pattern</h3>
+<div class="mermaid">
+classDiagram
+  class DiscountCalculator {
+    +calculate(order, strategy)
+  }
+  class DiscountStrategy {
+    <<interface>>
+    +apply(price) double
+  }
+  class NoDiscount {
+    +apply(price) double
+  }
+  class SeasonalDiscount {
+    +apply(price) double
+  }
+  class LoyaltyDiscount {
+    +apply(price) double
+  }
+  class NewUserDiscount {
+    +apply(price) double
+  }
+  DiscountCalculator --> DiscountStrategy
+  DiscountStrategy <|.. NoDiscount
+  DiscountStrategy <|.. SeasonalDiscount
+  DiscountStrategy <|.. LoyaltyDiscount
+  DiscountStrategy <|.. NewUserDiscount
+</div>
+
+<h3>Java — Bad Example (Violation)</h3>
+<pre><code class="language-java">// BAD: Must modify this class every time we add a new shape
+public class AreaCalculator {
+    public double calculate(Object shape) {
+        if (shape instanceof Circle) {
+            Circle c = (Circle) shape;
+            return Math.PI * c.getRadius() * c.getRadius();
+        } else if (shape instanceof Rectangle) {
+            Rectangle r = (Rectangle) shape;
+            return r.getWidth() * r.getHeight();
+        }
+        // Need to add Triangle? Must MODIFY this class — OCP violation!
+        throw new UnsupportedOperationException("Unknown shape");
+    }
+}</code></pre>
+
+<h3>Java — Good Example (Fixed)</h3>
+<pre><code class="language-java">// GOOD: Open for extension (new shapes), closed for modification
+public interface Shape {
+    double area();
+}
+
+public class Circle implements Shape {
+    private final double radius;
+    public Circle(double radius) { this.radius = radius; }
+
+    @Override
+    public double area() {
+        return Math.PI * radius * radius;
+    }
+}
+
+public class Rectangle implements Shape {
+    private final double width, height;
+    public Rectangle(double width, double height) {
+        this.width = width; this.height = height;
+    }
+
+    @Override
+    public double area() {
+        return width * height;
+    }
+}
+
+// Adding Triangle? Zero changes to existing code!
+public class Triangle implements Shape {
+    private final double base, height;
+    public Triangle(double base, double height) {
+        this.base = base; this.height = height;
+    }
+
+    @Override
+    public double area() { return 0.5 * base * height; }
+}
+
+// This class is truly CLOSED for modification
+public class AreaCalculator {
+    public double calculate(Shape shape) {
+        return shape.area();  // polymorphism handles everything
+    }
+
+    public double totalArea(List&lt;Shape&gt; shapes) {
+        return shapes.stream().mapToDouble(Shape::area).sum();
+    }
+}</code></pre>
+
+<h3>TypeScript — Strategy Pattern (OCP)</h3>
+<pre><code class="language-typescript">// BAD: Conditional logic that grows with every new payment type
+class PaymentProcessor_BAD {
+  process(amount: number, type: string): void {
+    if (type === 'stripe') { /* stripe logic */ }
+    else if (type === 'paypal') { /* paypal logic */ }
+    else if (type === 'crypto') { /* must modify this every time */ }
+  }
+}
+
+// GOOD: Strategy Pattern — closed for modification, open for extension
+interface PaymentStrategy {
+  process(amount: number): Promise&lt;PaymentResult&gt;;
+  getName(): string;
+}
+
+class StripePayment implements PaymentStrategy {
+  async process(amount: number): Promise&lt;PaymentResult&gt; {
+    // Stripe-specific logic
+    return { success: true, transactionId: 'stripe_txn_123' };
+  }
+  getName() { return 'stripe'; }
+}
+
+class PayPalPayment implements PaymentStrategy {
+  async process(amount: number): Promise&lt;PaymentResult&gt; {
+    return { success: true, transactionId: 'pp_txn_456' };
+  }
+  getName() { return 'paypal'; }
+}
+
+// Adding CryptoPayment? Zero changes to PaymentProcessor!
+class CryptoPayment implements PaymentStrategy {
+  async process(amount: number): Promise&lt;PaymentResult&gt; {
+    return { success: true, transactionId: 'crypto_txn_789' };
+  }
+  getName() { return 'crypto'; }
+}
+
+class PaymentProcessor {
+  private strategies = new Map&lt;string, PaymentStrategy&gt;();
+
+  register(strategy: PaymentStrategy): void {
+    this.strategies.set(strategy.getName(), strategy);
+  }
+
+  async process(amount: number, type: string): Promise&lt;PaymentResult&gt; {
+    const strategy = this.strategies.get(type);
+    if (!strategy) throw new Error(`Unknown payment type: ${type}`);
+    return strategy.process(amount);
+  }
+}</code></pre>
+
+<h4>When Is It OK to Bend OCP?</h4>
+<ul>
+  <li>Small, stable codebases where extensions rarely happen</li>
+  <li>When over-abstraction would create indirection without benefit</li>
+  <li>During initial development before patterns emerge (avoid premature abstraction)</li>
+</ul>
+
+<!-- ===== LSP ===== -->
+<h2 id="lsp">L — Liskov Substitution Principle</h2>
+<p><strong>Definition:</strong> Objects of a subclass must be substitutable for objects of the superclass without breaking the program. If S is a subtype of T, then objects of type T may be replaced with objects of type S without altering any of the desirable properties of the program.</p>
+<div class="callout">
+  <strong>Key Rules:</strong> Subtypes must not strengthen preconditions, must not weaken postconditions, and must not throw new exceptions not declared in the supertype.
+</div>
+<div class="callout">
+  <strong>Real-World Analogy:</strong> If you can drive any sedan, you should be able to drive ANY sedan (Toyota, Honda, BMW) without reading a new manual. A subclass "SportsCar" that requires special controls violates LSP.
+</div>
+
+<h3>Classic LSP Violation: Square extends Rectangle</h3>
+<div class="mermaid">
+classDiagram
+  class Rectangle {
+    +setWidth(w)
+    +setHeight(h)
+    +area() int
+  }
+  class Square_BAD {
+    +setWidth(w) "sets both w and h"
+    +setHeight(h) "sets both w and h"
+    note: "Violates LSP! Breaks rectangle contract"
+  }
+  class Shape {
+    <<interface>>
+    +area() int
+  }
+  class Rectangle_GOOD {
+    +area() int
+  }
+  class Square_GOOD {
+    +area() int
+  }
+  Rectangle --|> Square_BAD : extends BAD
+  Shape <|.. Rectangle_GOOD
+  Shape <|.. Square_GOOD
+</div>
+
+<h3>Java — Bad Example (Square/Rectangle Violation)</h3>
+<pre><code class="language-java">// BAD: Classic LSP violation
+public class Rectangle {
+    protected int width, height;
+
+    public void setWidth(int width) { this.width = width; }
+    public void setHeight(int height) { this.height = height; }
+    public int area() { return width * height; }
+}
+
+public class Square extends Rectangle {
+    @Override
+    public void setWidth(int width) {
+        // Square must keep sides equal — CHANGES BEHAVIOR!
+        this.width = width;
+        this.height = width; // violates Rectangle's contract
+    }
+
+    @Override
+    public void setHeight(int height) {
+        this.width = height;
+        this.height = height;
+    }
+}
+
+// This code breaks when we substitute Square for Rectangle
+public class LSPTest {
+    static void increaseWidth(Rectangle r) {
+        int originalHeight = r.height;
+        r.setWidth(r.width + 10); // expects only width to change
+        // FAILS for Square! height also changes
+        assert r.area() == (r.width) * originalHeight : "LSP violated!";
+    }
+
+    public static void main(String[] args) {
+        Rectangle rect = new Rectangle();
+        rect.setWidth(5); rect.setHeight(10);
+        increaseWidth(rect); // works fine
+
+        Square sq = new Square();
+        sq.setWidth(5);
+        increaseWidth(sq); // AssertionError! LSP broken
+    }
+}</code></pre>
+
+<h3>Java — Good Example (Fixed)</h3>
+<pre><code class="language-java">// GOOD: Don't force Square to extend Rectangle
+// Both are shapes, but Square is NOT a behavioral subtype of Rectangle
+public interface Shape {
+    int area();
+    int perimeter();
+}
+
+public class Rectangle implements Shape {
+    private final int width, height;
+
+    public Rectangle(int width, int height) {
+        this.width = width;
+        this.height = height;
+    }
+
+    @Override public int area() { return width * height; }
+    @Override public int perimeter() { return 2 * (width + height); }
+    public int getWidth() { return width; }
+    public int getHeight() { return height; }
+}
+
+public class Square implements Shape {
+    private final int side;
+
+    public Square(int side) { this.side = side; }
+
+    @Override public int area() { return side * side; }
+    @Override public int perimeter() { return 4 * side; }
+    public int getSide() { return side; }
+}
+
+// Now LSP holds: any Shape can be used where Shape is expected
+public class AreaPrinter {
+    public void print(Shape shape) {
+        System.out.println("Area: " + shape.area()); // works for ALL shapes
+    }
+}</code></pre>
+
+<h3>TypeScript — LSP with Preconditions/Postconditions</h3>
+<pre><code class="language-typescript">// BAD: Subclass strengthens precondition (requires more) — LSP violation
+class FileReader {
+  read(path: string): string {
+    // reads any valid path
+    return fs.readFileSync(path, 'utf8');
+  }
+}
+
+class SecureFileReader extends FileReader {
+  read(path: string): string {
+    // Strengthening precondition: requires path to start with /secure/
+    if (!path.startsWith('/secure/')) {
+      throw new Error('Can only read from /secure/ directory!');
+    }
+    return super.read(path);
+  }
+}
+// Code that uses FileReader now breaks with SecureFileReader — LSP violated!
+
+// GOOD: Subclass can only weaken preconditions, strengthen postconditions
+abstract class UserFinder {
+  abstract findById(id: number): User | null;
+}
+
+class DatabaseUserFinder extends UserFinder {
+  findById(id: number): User | null {
+    return db.query(`SELECT * FROM users WHERE id = ?`, [id]);
+  }
+}
+
+class CachingUserFinder extends UserFinder {
+  constructor(private inner: UserFinder, private cache: Map&lt;number, User&gt;) {
+    super();
+  }
+
+  findById(id: number): User | null {
+    // Postcondition: still returns User | null (contract maintained)
+    // Behavior enriched (caching) without breaking contract
+    if (this.cache.has(id)) return this.cache.get(id)!;
+    const user = this.inner.findById(id);
+    if (user) this.cache.set(id, user);
+    return user;
+  }
+}
+
+// Perfectly substitutable — LSP holds
+function displayUser(finder: UserFinder, id: number): void {
+  const user = finder.findById(id); // works with ANY UserFinder implementation
+  if (user) console.log(user.name);
+}</code></pre>
+
+<h4>When Is It OK to Bend LSP?</h4>
+<ul>
+  <li>When the superclass is intentionally abstract and never used directly</li>
+  <li>When documentation explicitly states certain overrides change behavior (template method pattern with documented extension points)</li>
+  <li>When using override methods only for performance optimization (same observable behavior, different implementation)</li>
+</ul>
+
+<!-- ===== ISP ===== -->
+<h2 id="isp">I — Interface Segregation Principle</h2>
+<p><strong>Definition:</strong> Clients should not be forced to depend on interfaces they do not use. Prefer many specific interfaces (role interfaces) over one fat/general interface.</p>
+<div class="callout">
+  <strong>Real-World Analogy:</strong> A TV remote has specific buttons per function. You wouldn't want a single remote that also controls your car, microwave, and AC — you'd accidentally press buttons meant for other devices.
+</div>
+
+<h3>Mermaid: Fat Interface vs Role Interfaces</h3>
+<div class="mermaid">
+classDiagram
+  class IWorker_FAT {
+    <<interface>>
+    +work()
+    +eat()
+    +sleep()
+    note: "Robot must implement eat/sleep — forced!"
+  }
+  class IWorkable {
+    <<interface>>
+    +work()
+  }
+  class IFeedable {
+    <<interface>>
+    +eat()
+  }
+  class ISleepable {
+    <<interface>>
+    +sleep()
+  }
+  class HumanWorker {
+    +work()
+    +eat()
+    +sleep()
+  }
+  class RobotWorker {
+    +work()
+    note: "Only implements what it needs"
+  }
+  IWorkable <|.. HumanWorker
+  IFeedable <|.. HumanWorker
+  ISleepable <|.. HumanWorker
+  IWorkable <|.. RobotWorker
+</div>
+
+<h3>Java — Bad Example (Fat Interface)</h3>
+<pre><code class="language-java">// BAD: Fat interface forces all implementors to implement all methods
+public interface Animal {
+    void eat();
+    void sleep();
+    void fly();    // Dogs can't fly!
+    void swim();   // Not all animals swim
+    void bark();   // Only dogs bark
+    void meow();   // Only cats meow
+}
+
+public class Dog implements Animal {
+    @Override public void eat() { System.out.println("Dog eating"); }
+    @Override public void sleep() { System.out.println("Dog sleeping"); }
+    @Override public void fly() { throw new UnsupportedOperationException("Dogs can't fly!"); }
+    @Override public void swim() { System.out.println("Dog paddling"); }
+    @Override public void bark() { System.out.println("Woof!"); }
+    @Override public void meow() { throw new UnsupportedOperationException("Dogs don't meow!"); }
+}</code></pre>
+
+<h3>Java — Good Example (Role Interfaces)</h3>
+<pre><code class="language-java">// GOOD: Segregated role interfaces
+public interface Eatable { void eat(); }
+public interface Sleepable { void sleep(); }
+public interface Flyable { void fly(); double getMaxAltitude(); }
+public interface Swimmable { void swim(); }
+public interface Barkable { void bark(); }
+public interface Meoable { void meow(); }
+
+// Each class only implements what makes sense
+public class Dog implements Eatable, Sleepable, Swimmable, Barkable {
+    @Override public void eat() { System.out.println("Dog eating"); }
+    @Override public void sleep() { System.out.println("Dog sleeping"); }
+    @Override public void swim() { System.out.println("Dog paddling"); }
+    @Override public void bark() { System.out.println("Woof!"); }
+    // No fly(), no meow() — clean!
+}
+
+public class Eagle implements Eatable, Sleepable, Flyable {
+    @Override public void eat() { System.out.println("Eagle eating"); }
+    @Override public void sleep() { System.out.println("Eagle sleeping"); }
+    @Override public void fly() { System.out.println("Eagle soaring"); }
+    @Override public double getMaxAltitude() { return 3000.0; }
+}
+
+public class Duck implements Eatable, Sleepable, Flyable, Swimmable {
+    @Override public void eat() { System.out.println("Duck eating"); }
+    @Override public void sleep() { System.out.println("Duck sleeping"); }
+    @Override public void fly() { System.out.println("Duck flying"); }
+    @Override public double getMaxAltitude() { return 500.0; }
+    @Override public void swim() { System.out.println("Duck swimming"); }
+}
+
+// Methods depend only on what they need
+public class FlyingZoo {
+    public void letFly(Flyable creature) { creature.fly(); }  // only Flyable
+    public void feedAll(List&lt;Eatable&gt; animals) { animals.forEach(Eatable::eat); }
+}</code></pre>
+
+<h3>TypeScript — Good Example (ISP in API layer)</h3>
+<pre><code class="language-typescript">// BAD: One huge repository interface
+interface UserRepository_FAT {
+  findById(id: string): User;
+  findAll(): User[];
+  save(user: User): void;
+  delete(id: string): void;
+  findByEmail(email: string): User;
+  generateReport(): Report;      // not a DB concern!
+  sendNotification(id: string): void; // definitely not a DB concern!
+}
+
+// GOOD: Segregated interfaces — clients depend only on what they use
+interface UserReader {
+  findById(id: string): Promise&lt;User | null&gt;;
+  findByEmail(email: string): Promise&lt;User | null&gt;;
+  findAll(pagination: Pagination): Promise&lt;User[]&gt;;
+}
+
+interface UserWriter {
+  save(user: User): Promise&lt;void&gt;;
+  update(id: string, data: Partial&lt;User&gt;): Promise&lt;User&gt;;
+}
+
+interface UserDeleter {
+  delete(id: string): Promise&lt;void&gt;;
+}
+
+// Full implementation
+class PostgresUserRepository implements UserReader, UserWriter, UserDeleter {
+  async findById(id: string) { /* ... */ return null; }
+  async findByEmail(email: string) { /* ... */ return null; }
+  async findAll(pagination: Pagination) { /* ... */ return []; }
+  async save(user: User) { /* ... */ }
+  async update(id: string, data: Partial&lt;User&gt;) { /* ... */ return data as User; }
+  async delete(id: string) { /* ... */ }
+}
+
+// Read-only service: only depends on UserReader
+class UserQueryService {
+  constructor(private reader: UserReader) {}  // doesn't need write/delete
+
+  async getUser(id: string) { return this.reader.findById(id); }
+}
+
+// Admin service: needs full access
+class AdminUserService {
+  constructor(
+    private reader: UserReader,
+    private writer: UserWriter,
+    private deleter: UserDeleter
+  ) {}
+}</code></pre>
+
+<!-- ===== DIP ===== -->
+<h2 id="dip">D — Dependency Inversion Principle</h2>
+<p><strong>Definition:</strong> (1) High-level modules should not depend on low-level modules. Both should depend on abstractions. (2) Abstractions should not depend on details. Details (concrete implementations) should depend on abstractions.</p>
+<div class="callout">
+  <strong>Real-World Analogy:</strong> An electrical outlet (abstraction) doesn't care what you plug in. Your lamp (high-level) plugs into the outlet (abstraction), not directly into the power station (low-level). You can switch power providers without rewiring your lamp.
+</div>
+
+<h3>Mermaid: DIP with IoC Container</h3>
+<div class="mermaid">
+classDiagram
+  class OrderService_BAD {
+    -repo: MySQLOrderRepository
+    note: "Directly depends on concrete class"
+  }
+  class MySQLOrderRepository_BAD {
+  }
+  OrderService_BAD --> MySQLOrderRepository_BAD : directly coupled
+
+  class OrderService_GOOD {
+    -repo: IOrderRepository
+  }
+  class IOrderRepository {
+    <<interface>>
+    +findById()
+    +save()
+  }
+  class MySQLOrderRepository {
+    +findById()
+    +save()
+  }
+  class MongoOrderRepository {
+    +findById()
+    +save()
+  }
+  OrderService_GOOD --> IOrderRepository
+  IOrderRepository <|.. MySQLOrderRepository
+  IOrderRepository <|.. MongoOrderRepository
+</div>
+
+<h3>Java — Bad Example (Violation)</h3>
+<pre><code class="language-java">// BAD: High-level module directly depends on low-level module (MySQL)
+public class OrderService {
+    // Direct dependency on concrete class — tightly coupled!
+    private MySQLOrderRepository repository = new MySQLOrderRepository();
+    private GmailEmailService emailService = new GmailEmailService();
+
+    public void processOrder(Order order) {
+        repository.save(order);   // tied to MySQL
+        emailService.send(order); // tied to Gmail
+        // Want to switch to MongoDB? Must change OrderService!
+        // Want to switch to SendGrid? Must change OrderService!
+    }
+}
+
+// Low-level modules
+public class MySQLOrderRepository {
+    public void save(Order order) { /* MySQL-specific */ }
+}
+
+public class GmailEmailService {
+    public void send(Order order) { /* Gmail-specific */ }
+}</code></pre>
+
+<h3>Java — Good Example (DI with Abstractions)</h3>
+<pre><code class="language-java">// GOOD: Abstractions (interfaces) decouple high-level from low-level
+public interface OrderRepository {
+    void save(Order order);
+    Optional&lt;Order&gt; findById(String id);
+}
+
+public interface NotificationService {
+    void notifyOrderCreated(Order order);
+}
+
+// Low-level modules depend on the abstraction
+public class MySQLOrderRepository implements OrderRepository {
+    @Override public void save(Order order) { /* MySQL code */ }
+    @Override public Optional&lt;Order&gt; findById(String id) { return Optional.empty(); }
+}
+
+public class MongoOrderRepository implements OrderRepository {
+    @Override public void save(Order order) { /* MongoDB code */ }
+    @Override public Optional&lt;Order&gt; findById(String id) { return Optional.empty(); }
+}
+
+public class EmailNotificationService implements NotificationService {
+    @Override public void notifyOrderCreated(Order order) { /* email code */ }
+}
+
+public class SMSNotificationService implements NotificationService {
+    @Override public void notifyOrderCreated(Order order) { /* SMS code */ }
+}
+
+// High-level module depends on abstractions, NOT concretions
+public class OrderService {
+    private final OrderRepository repository;
+    private final NotificationService notificationService;
+
+    // Injection via constructor (Spring, Guice, manual DI)
+    public OrderService(OrderRepository repository, NotificationService notificationService) {
+        this.repository = repository;
+        this.notificationService = notificationService;
+    }
+
+    public void processOrder(Order order) {
+        repository.save(order);
+        notificationService.notifyOrderCreated(order);
+        // Switch to MongoDB? Just inject MongoOrderRepository — zero code change here!
+    }
+}
+
+// Spring Boot DI Container wiring
+@Configuration
+public class AppConfig {
+    @Bean
+    public OrderRepository orderRepository(DataSource ds) {
+        return new MySQLOrderRepository(ds);
+    }
+
+    @Bean
+    public NotificationService notificationService(MailSender sender) {
+        return new EmailNotificationService(sender);
+    }
+
+    @Bean
+    public OrderService orderService(OrderRepository repo, NotificationService ns) {
+        return new OrderService(repo, ns);
+    }
+}</code></pre>
+
+<h3>TypeScript — DIP with IoC Container</h3>
+<pre><code class="language-typescript">// Using InversifyJS for IoC
+import 'reflect-metadata';
+import { injectable, inject, Container } from 'inversify';
+
+const TYPES = {
+  IUserRepository: Symbol.for('IUserRepository'),
+  IEmailService: Symbol.for('IEmailService'),
+  UserService: Symbol.for('UserService'),
+};
+
+interface IUserRepository {
+  findById(id: string): Promise&lt;User | null&gt;;
+  save(user: User): Promise&lt;void&gt;;
+}
+
+interface IEmailService {
+  send(to: string, subject: string, body: string): Promise&lt;void&gt;;
+}
+
+@injectable()
+class PostgresUserRepository implements IUserRepository {
+  async findById(id: string) { /* postgres logic */ return null; }
+  async save(user: User) { /* postgres logic */ }
+}
+
+@injectable()
+class SendGridEmailService implements IEmailService {
+  async send(to: string, subject: string, body: string) { /* sendgrid logic */ }
+}
+
+@injectable()
+class UserService {
+  constructor(
+    @inject(TYPES.IUserRepository) private repo: IUserRepository,
+    @inject(TYPES.IEmailService) private email: IEmailService
+  ) {}
+
+  async registerUser(user: User): Promise&lt;void&gt; {
+    await this.repo.save(user);
+    await this.email.send(user.email, 'Welcome!', `Hi ${user.name}!`);
+  }
+}
+
+// IoC Container configuration
+const container = new Container();
+container.bind&lt;IUserRepository&gt;(TYPES.IUserRepository).to(PostgresUserRepository);
+container.bind&lt;IEmailService&gt;(TYPES.IEmailService).to(SendGridEmailService);
+container.bind&lt;UserService&gt;(TYPES.UserService).to(UserService);
+
+const userService = container.get&lt;UserService&gt;(TYPES.UserService);</code></pre>
+
+<!-- ===== OTHER PRINCIPLES ===== -->
+<h2 id="dry">DRY — Don't Repeat Yourself</h2>
+<p><strong>Definition:</strong> Every piece of knowledge must have a single, unambiguous, authoritative representation within a system. Duplication is the root of all maintenance nightmares.</p>
+
+<pre><code class="language-typescript">// BAD: Duplicated validation logic
+function createUser(name: string, email: string) {
+  if (!email.includes('@')) throw new Error('Invalid email');
+  if (name.length &lt; 2) throw new Error('Name too short');
+  // ... create user
+}
+
+function updateUser(id: string, name: string, email: string) {
+  if (!email.includes('@')) throw new Error('Invalid email'); // duplicated!
+  if (name.length &lt; 2) throw new Error('Name too short');    // duplicated!
+  // ... update user
+}
+
+// GOOD: Single source of truth
+class UserValidator {
+  static validate(name: string, email: string): void {
+    if (!email.includes('@')) throw new Error('Invalid email');
+    if (name.length &lt; 2) throw new Error('Name too short');
+  }
+}
+
+function createUser(name: string, email: string) {
+  UserValidator.validate(name, email);
+  // ... create user
+}
+
+function updateUser(id: string, name: string, email: string) {
+  UserValidator.validate(name, email); // single reference
+  // ... update user
+}</code></pre>
+
+<div class="callout">
+  <strong>Warning:</strong> DRY applies to <em>knowledge/logic</em>, not just identical-looking code. Two identical code blocks that represent different concepts should NOT be merged (accidental duplication). Premature DRY can lead to wrong abstractions.
+</div>
+
+<h2 id="kiss">KISS — Keep It Simple, Stupid</h2>
+<p><strong>Definition:</strong> Most systems work best if they are kept simple rather than made complicated. Avoid unnecessary complexity. The simplest solution that works is usually the best.</p>
+
+<pre><code class="language-java">// BAD: Over-engineered
+public class NumberEvenChecker {
+    private final NumberParityStrategy strategy;
+    public NumberEvenChecker(NumberParityStrategy strategy) { this.strategy = strategy; }
+    public boolean evaluate(int n) { return strategy.check(n); }
+}
+interface NumberParityStrategy { boolean check(int n); }
+class ModuloEvenStrategy implements NumberParityStrategy {
+    public boolean check(int n) { return n % 2 == 0; }
+}
+// Usage: new NumberEvenChecker(new ModuloEvenStrategy()).evaluate(4)
+
+// GOOD: KISS — just write the function
+public boolean isEven(int n) { return n % 2 == 0; }
+</code></pre>
+
+<h2 id="yagni">YAGNI — You Ain't Gonna Need It</h2>
+<p><strong>Definition:</strong> Don't implement functionality until you actually need it. Implement things when you need them, not when you just foresee that you might need them. Every feature you write that's never used is pure waste.</p>
+
+<pre><code class="language-typescript">// BAD: Building features "just in case"
+class UserService {
+  createUser(data: UserDTO) { /* ... */ }
+  createUserBulk(users: UserDTO[]) { /* ... needed? not now */ }
+  createUserFromCSV(file: File) { /* ... needed? not now */ }
+  createUserFromXML(xml: string) { /* ... definitely premature */ }
+  createUserWithMultiTenancy(data: UserDTO, tenant: string) { /* ... */ }
+}
+
+// GOOD: Only implement what's currently needed
+class UserService {
+  createUser(data: UserDTO): Promise&lt;User&gt; {
+    // Only what the current feature requires
+    return this.userRepo.save(new User(data));
+  }
+  // Add createUserBulk WHEN bulk import feature is actually requested
+}
+</code></pre>
+
+<h2 id="lod">Law of Demeter (Principle of Least Knowledge)</h2>
+<p><strong>Definition:</strong> A module should not know about the internal workings of the objects it manipulates. Don't talk to strangers. A method should only call methods on: itself, its parameters, objects it creates, its direct component objects.</p>
+<div class="callout">
+  <strong>Rule of Thumb:</strong> Avoid "train wrecks" — chains like <code>order.getCustomer().getAddress().getCity()</code>
+</div>
+
+<pre><code class="language-java">// BAD: Violates LoD — deep traversal (train wreck)
+public class OrderService {
+    public String getOrderCity(Order order) {
+        // Knows too much about Order's internals
+        return order.getCustomer().getAddress().getCity().toUpperCase();
+        // OrderService now depends on: Order, Customer, Address, City
+    }
+
+    public double calculateShipping(Order order) {
+        double weight = order.getItems().get(0).getProduct().getWeight(); // fragile chain
+        return weight * 2.5;
+    }
+}
+
+// GOOD: Respects LoD — Order exposes what you need
+public class Order {
+    private Customer customer;
+    private List&lt;OrderItem&gt; items;
+
+    // Convenience method — Order knows its own internals
+    public String getCustomerCity() {
+        return customer.getCity(); // Customer knows its own address
+    }
+
+    public double getTotalWeight() {
+        return items.stream().mapToDouble(OrderItem::getWeight).sum();
+    }
+}
+
+public class Customer {
+    private Address address;
+    public String getCity() { return address.getCity(); } // Customer delegates to Address
+}
+
+public class OrderService {
+    public String getOrderCity(Order order) {
+        return order.getCustomerCity(); // Only talks to direct collaborator
+    }
+
+    public double calculateShipping(Order order) {
+        return order.getTotalWeight() * 2.5; // Only talks to Order
+    }
+}</code></pre>
+
+<h2 id="composition">Composition over Inheritance</h2>
+<p><strong>Definition:</strong> Prefer composing objects with desired behaviors over inheriting from a base class. Inheritance models an "is-a" relationship; composition models a "has-a" relationship. Composition gives you flexibility at runtime.</p>
+
+<div class="mermaid">
+classDiagram
+  class Character_INHERITANCE {
+    +swim()
+    +fly()
+    +shoot()
+    note: "Explosion of subclasses: SwimmingFlyingCharacter, SwimmingShootingCharacter, etc."
+  }
+  class Character_COMPOSITION {
+    -locomotion: LocomotionAbility
+    -attack: AttackAbility
+    +move()
+    +attack()
+  }
+  class LocomotionAbility {
+    <<interface>>
+    +move()
+  }
+  class Swimming { +move() }
+  class Flying { +move() }
+  class AttackAbility { <<interface>> +attack() }
+  class ShootingAttack { +attack() }
+  class MeleeAttack { +attack() }
+  LocomotionAbility <|.. Swimming
+  LocomotionAbility <|.. Flying
+  AttackAbility <|.. ShootingAttack
+  AttackAbility <|.. MeleeAttack
+  Character_COMPOSITION --> LocomotionAbility
+  Character_COMPOSITION --> AttackAbility
+</div>
+
+<pre><code class="language-typescript">// BAD: Deep inheritance hierarchy — fragile, inflexible
+class Animal {
+  breathe() {}
+}
+class SwimmingAnimal extends Animal {
+  swim() {}
+}
+class FlyingSwimmingAnimal extends SwimmingAnimal {
+  fly() {}
+  // What about an animal that only flies? We need another branch...
+  // Explosion of subclasses as behaviors multiply!
+}
+
+// GOOD: Composition — behaviors as pluggable components
+interface SwimBehavior { swim(): void; }
+interface FlyBehavior { fly(): void; }
+interface EatBehavior { eat(food: string): void; }
+
+class CanSwim implements SwimBehavior {
+  swim() { console.log('Swimming with fins'); }
+}
+class CanFly implements FlyBehavior {
+  fly() { console.log('Flying with wings'); }
+}
+class CantFly implements FlyBehavior {
+  fly() { console.log("I can't fly"); }
+}
+
+class Duck {
+  private swimBehavior: SwimBehavior = new CanSwim();
+  private flyBehavior: FlyBehavior = new CanFly();
+
+  swim() { this.swimBehavior.swim(); }
+  fly() { this.flyBehavior.fly(); }
+
+  // Can CHANGE behavior at runtime — impossible with inheritance
+  setFlyBehavior(behavior: FlyBehavior) { this.flyBehavior = behavior; }
+}
+
+class RubberDuck {
+  private swimBehavior: SwimBehavior = new CanSwim();
+  private flyBehavior: FlyBehavior = new CantFly();
+
+  swim() { this.swimBehavior.swim(); }
+  fly() { this.flyBehavior.fly(); }
+}
+
+// React: Composition over Inheritance in UI
+// BAD: Extending base components
+class EnhancedButton extends Button {
+  render() {
+    return super.render() + ' (enhanced)';
+  }
+}
+
+// GOOD: Compose via HOC / wrapping
+const withLogging = (WrappedComponent: React.ComponentType&lt;any&gt;) =&gt;
+  (props: any) =&gt; {
+    console.log('Rendering with props:', props);
+    return &lt;WrappedComponent {...props} /&gt;;
+  };
+
+const LoggedButton = withLogging(Button);</code></pre>
+
+<!-- ===== INTERVIEW Q&A ===== -->
+<h2 id="qa">Interview Questions &amp; Answers</h2>
+
+<details>
+<summary>Q1. What is the Single Responsibility Principle and how do you identify violations? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p>SRP states a class should have only <strong>one reason to change</strong>. A class has multiple responsibilities if you can describe its purpose with "AND" — e.g., "UserService creates users AND sends emails AND generates reports."</p>
+<p><strong>Signs of SRP violation:</strong></p>
+<ul>
+  <li>Class imports from many different packages (DB, email, PDF, logging)</li>
+  <li>Class has more than ~10 methods</li>
+  <li>Test file needs mocks for 5+ different dependencies</li>
+  <li>Small change to one feature requires changing/retesting unrelated code</li>
+</ul>
+<p><strong>Fix:</strong> Extract each responsibility into its own class. Use composition (inject the separated classes) to maintain behavior.</p>
+</div>
+</details>
+
+<details>
+<summary>Q2. Can you give an example where following SRP might be wrong? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>Yes. A <code>Money</code> value object that stores an amount AND currency AND formats itself as a string is technically doing two things (storing + formatting), but splitting it might be over-engineering. When two responsibilities are <strong>cohesive</strong> and always change together, separating them creates unnecessary indirection.</p>
+<p>Another case: a <code>Name</code> class with <code>firstName</code>, <code>lastName</code>, and <code>fullName()</code>. The formatting is intrinsically part of the Name concept.</p>
+<p><strong>Key insight:</strong> SRP is about <em>reasons to change</em>, not counting methods. If two things change together for the same reason, they belong together.</p>
+</div>
+</details>
+
+<details>
+<summary>Q3. How does the Open/Closed Principle relate to the Strategy Pattern? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>The Strategy Pattern is the primary mechanism for achieving OCP. Instead of using <code>if/else</code> or <code>switch</code> on a type field, you define a strategy interface and pass in the desired strategy at runtime.</p>
+<p><strong>Without Strategy (OCP violation):</strong> Every new payment type requires modifying <code>PaymentProcessor</code>.</p>
+<p><strong>With Strategy (OCP satisfied):</strong> Each payment type is a new class implementing <code>PaymentStrategy</code>. <code>PaymentProcessor</code> never changes.</p>
+<p>Other OCP patterns: Template Method, Decorator, Plugin architecture, Event-Driven systems (emitting events lets extensions react without the source changing).</p>
+</div>
+</details>
+
+<details>
+<summary>Q4. Why is the Square/Rectangle problem an LSP violation? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>In mathematics, a square IS a rectangle (all squares are rectangles). But in OOP with mutable state, <code>Square extends Rectangle</code> violates LSP because:</p>
+<ol>
+  <li>Rectangle's contract: <code>setWidth(5)</code> only changes width; height is unchanged</li>
+  <li>Square must keep sides equal, so <code>setWidth(5)</code> also sets height to 5</li>
+  <li>Code that assumes Rectangle behavior (checks area after setting one dimension) breaks when a Square is substituted</li>
+</ol>
+<p><strong>Solution:</strong> Use a common interface (<code>Shape</code> with <code>area()</code>), or use immutable value objects — <code>Square.withSide(5)</code> and <code>Rectangle.withDimensions(4, 5)</code> are both <code>Shape</code>s.</p>
+<p><strong>Lesson:</strong> "Is-a" in mathematics ≠ "is-a" in OOP. Behavioral compatibility matters, not taxonomic classification.</p>
+</div>
+</details>
+
+<details>
+<summary>Q5. What are preconditions and postconditions in the context of LSP? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>From Bertrand Meyer's Design by Contract:</p>
+<ul>
+  <li><strong>Precondition:</strong> What must be true BEFORE calling a method (caller's obligation)</li>
+  <li><strong>Postcondition:</strong> What must be true AFTER the method returns (callee's guarantee)</li>
+  <li><strong>Invariant:</strong> What must always be true about the object's state</li>
+</ul>
+<p><strong>LSP rules:</strong></p>
+<ul>
+  <li>Subclass must NOT strengthen preconditions (cannot require MORE from callers)</li>
+  <li>Subclass must NOT weaken postconditions (cannot guarantee LESS to callers)</li>
+</ul>
+<p><strong>Example violation:</strong> <code>FileReader.read(path)</code> accepts any valid path (weak precondition). <code>SecureFileReader.read(path)</code> requires path to start with <code>/secure/</code> (stronger precondition). Code using <code>FileReader</code> breaks with <code>SecureFileReader</code>.</p>
+</div>
+</details>
+
+<details>
+<summary>Q6. What is the difference between Interface Segregation and Single Responsibility? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>SRP</strong> is about a class having only one reason to change — it's about the <em>implementation</em>.</p>
+<p><strong>ISP</strong> is about clients not being forced to depend on methods they don't use — it's about the <em>interface/contract</em>.</p>
+<p>A class can follow SRP but still expose a fat interface that forces clients to depend on methods they don't need. Conversely, a class could violate SRP internally while ISP is preserved from the client's perspective.</p>
+<p><strong>Example:</strong> A <code>UserRepository</code> with <code>findById</code>, <code>findAll</code>, <code>save</code>, <code>delete</code> follows SRP (all DB concerns), but violates ISP if a read-only service is forced to depend on <code>save</code> and <code>delete</code> — fix: split into <code>UserReader</code> and <code>UserWriter</code>.</p>
+</div>
+</details>
+
+<details>
+<summary>Q7. How does Dependency Inversion differ from Dependency Injection? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>Dependency Inversion Principle (DIP)</strong> is an architectural rule: high-level modules shouldn't depend on low-level modules; both should depend on abstractions.</p>
+<p><strong>Dependency Injection (DI)</strong> is a technique/pattern used to achieve DIP — it provides dependencies to a class from the outside rather than having the class create them.</p>
+<p><strong>Analogy:</strong> DIP is the design rule ("use a plug socket"). DI is the mechanism ("plug in the device from outside, don't hardwire it").</p>
+<p>You can violate DIP even with DI: if you inject a concrete <code>MySQLRepository</code> instead of an <code>IRepository</code> interface, you're using DI but not DIP.</p>
+<p><strong>IoC (Inversion of Control)</strong> is a broader concept — the framework controls the flow of the application, not your code. Spring, Angular, and NestJS IoC containers implement DI to achieve DIP.</p>
+</div>
+</details>
+
+<details>
+<summary>Q8. What is the Law of Demeter and when does it conflict with performance? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>The Law of Demeter (LoD) says a method should only call methods on: itself, parameters, objects it creates, and its direct fields. This prevents "train wrecks" like <code>a.getB().getC().doSomething()</code>.</p>
+<p><strong>Conflict with performance:</strong> Following LoD sometimes means adding wrapper methods that add indirection, or loading extra data you don't need. For example, if you only need a city name but LoD says <code>order.getCustomerCity()</code> (not <code>order.getCustomer().getAddress().getCity()</code>), <code>Order.getCustomerCity()</code> might load the full Customer and Address from DB unnecessarily.</p>
+<p><strong>Resolution:</strong> Use projections/DTOs — a <code>OrderSummaryDTO</code> that already contains the needed fields without navigation. LoD then holds naturally (no chains, just flat data).</p>
+<p><strong>Practical advice:</strong> LoD is a guideline, not a law. 2-level chains (<code>user.getAddress().getCity()</code>) are generally OK. 3+ level chains are code smells.</p>
+</div>
+</details>
+
+<details>
+<summary>Q9. When should you prefer inheritance over composition? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>Composition is generally preferred, but inheritance has valid use cases:</p>
+<ul>
+  <li><strong>True "is-a" relationships with stable hierarchies:</strong> <code>IllegalArgumentException extends RuntimeException</code> — this is stable and correct</li>
+  <li><strong>Template Method Pattern:</strong> Base class defines algorithm skeleton, subclasses fill in steps</li>
+  <li><strong>Framework base classes:</strong> <code>AbstractController</code>, <code>JpaRepository</code> — you extend to reuse infrastructure</li>
+  <li><strong>When subclass truly IS the same type</strong> and needs to be substitutable everywhere the parent is used</li>
+</ul>
+<p><strong>Prefer composition when:</strong></p>
+<ul>
+  <li>Behaviors need to change at runtime</li>
+  <li>You want to combine multiple behaviors</li>
+  <li>The hierarchy would become deep or wide</li>
+  <li>Java/TypeScript can only extend one class (multiple inheritance problem)</li>
+</ul>
+</div>
+</details>
+
+<details>
+<summary>Q10. How do you apply SOLID principles in a microservices architecture? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>SOLID applies at both class level AND service level:</p>
+<ul>
+  <li><strong>SRP:</strong> Each microservice owns one business capability (User Service, Order Service). Services don't mix concerns.</li>
+  <li><strong>OCP:</strong> Services communicate via stable contracts (APIs, events). Adding a new consumer doesn't require changing the producer.</li>
+  <li><strong>LSP:</strong> If services implement the same contract (e.g., all payment providers expose the same REST API), they must be substitutable.</li>
+  <li><strong>ISP:</strong> Don't expose one giant API. BFF pattern creates focused APIs per client type. Event schemas contain only what subscribers need.</li>
+  <li><strong>DIP:</strong> Services depend on abstractions (API contracts, message schemas), not concrete implementations. Service mesh (Istio) or API Gateway provides this indirection layer.</li>
+</ul>
+</div>
+</details>
+
+<details>
+<summary>Q11. What is the difference between DRY and the Wrong Abstraction? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>DRY says "don't repeat yourself." But blindly applying DRY can create the <strong>wrong abstraction</strong> — merging code that looks the same but represents different concepts.</p>
+<p><strong>Example:</strong> Order validation and User registration both check if an email is unique. They look similar but have different business rules (orders can share emails, users cannot). If you extract one <code>isEmailUnique()</code> function and add flags to handle both cases, you've created a wrong abstraction that's harder to modify than duplication.</p>
+<p><strong>Sandi Metz's rule:</strong> "Duplication is far cheaper than the wrong abstraction." Wait for the third occurrence of identical logic before abstracting, and ensure they represent the same concept, not just similar code.</p>
+</div>
+</details>
+
+<details>
+<summary>Q12. How do you explain YAGNI to a team that keeps adding "future-proof" features? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>Cost of unused features:</strong></p>
+<ul>
+  <li>Development time spent building something never used</li>
+  <li>Maintenance burden: every line of code has a maintenance cost</li>
+  <li>Testing complexity: must test code paths never exercised</li>
+  <li>Cognitive overhead: new developers must understand features that serve no current purpose</li>
+  <li>Wrong abstractions: guessing future requirements leads to abstractions that don't fit when the future arrives</li>
+</ul>
+<p><strong>Studies:</strong> In many codebases, 45-64% of features are rarely or never used (based on feature usage analytics from companies like Microsoft and others).</p>
+<p><strong>YAGNI doesn't mean:</strong> Don't plan at all. Design for change (OCP), write clean code, leave extension points. But don't implement the extension before it's needed.</p>
+</div>
+</details>
+
+<details>
+<summary>Q13. Describe a real scenario where you had to choose between following SOLID and pragmatism. <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p><strong>Scenario:</strong> A startup needs a quick feature for a demo next week. Proper DIP would require creating interfaces, DI container configuration, and separate implementations. The team has two engineers and three days.</p>
+<p><strong>Pragmatic approach:</strong></p>
+<ol>
+  <li>Write the feature with direct instantiation (<code>new MySQLRepo()</code>)</li>
+  <li>Isolate in a separate class/module so refactoring is localized</li>
+  <li>Write a TODO/tech debt ticket</li>
+  <li>Refactor to proper DIP when the second implementation is actually needed (YAGNI-aligned)</li>
+</ol>
+<p><strong>Key insight:</strong> SOLID is about managing complexity at scale. For a 2-person team with no foreseeable need for multiple DB implementations, full DIP is over-engineering. Apply principles proportionally to the team size, codebase complexity, and rate of change.</p>
+</div>
+</details>
+
+<details>
+<summary>Q14. How does the Decorator Pattern relate to OCP and composition? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>The Decorator Pattern is a perfect example of OCP via composition. You wrap an existing class to add new behavior without modifying the original.</p>
+<pre><code class="language-java">// Interface
+public interface Logger {
+    void log(String message);
+}
+
+// Core implementation (closed for modification)
+public class ConsoleLogger implements Logger {
+    public void log(String message) {
+        System.out.println(message);
+    }
+}
+
+// Extension via decoration (open for extension)
+public class TimestampLogger implements Logger {
+    private final Logger inner;
+    public TimestampLogger(Logger inner) { this.inner = inner; }
+
+    public void log(String message) {
+        inner.log(LocalDateTime.now() + " " + message);
+    }
+}
+
+public class MetricsLogger implements Logger {
+    private final Logger inner;
+    private final MetricsRegistry metrics;
+
+    public MetricsLogger(Logger inner, MetricsRegistry metrics) {
+        this.inner = inner; this.metrics = metrics;
+    }
+
+    public void log(String message) {
+        metrics.increment("log.count");
+        inner.log(message);
+    }
+}
+
+// Chain decorators — zero modification to existing classes
+Logger logger = new MetricsLogger(new TimestampLogger(new ConsoleLogger()), registry);</code></pre>
+<p>This is also composition over inheritance — each decorator wraps instead of extends.</p>
+</div>
+</details>
+
+<details>
+<summary>Q15. How does ISP apply to REST API design? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>In REST APIs, ISP manifests as avoiding "fat" endpoints that return more data than any single client needs.</p>
+<ul>
+  <li><strong>Problem:</strong> <code>GET /users/{id}</code> returns 50 fields. Mobile clients only need 5 fields — they're forced to transfer/parse unnecessary data.</li>
+  <li><strong>ISP Solution 1 — BFF Pattern:</strong> Create separate API gateways for mobile vs web, each returning only what its client needs</li>
+  <li><strong>ISP Solution 2 — GraphQL:</strong> Let clients specify exactly which fields they need</li>
+  <li><strong>ISP Solution 3 — Sparse fieldsets:</strong> <code>GET /users/{id}?fields=id,name,email</code> (JSON:API spec)</li>
+  <li><strong>ISP Solution 4 — View Models:</strong> Different endpoints for different client needs — <code>GET /users/{id}/summary</code> vs <code>GET /users/{id}/profile</code></li>
+</ul>
+</div>
+</details>
+
+<details>
+<summary>Q16. What are the drawbacks of over-applying SOLID? <span class="badge very-advanced">Very Advanced</span></summary>
+<div class="answer">
+<p>SOLID principles, over-applied, lead to:</p>
+<ul>
+  <li><strong>Abstraction overload:</strong> Interfaces for everything, even classes with only one implementation — unnecessary complexity</li>
+  <li><strong>Indirection maze:</strong> Following a call requires jumping through 10 files — cognitive overhead</li>
+  <li><strong>Premature generalization:</strong> Strategy Pattern for logic with only one variant — wasted effort</li>
+  <li><strong>Anemic domain model:</strong> Extreme SRP + DIP can lead to domain objects with no behavior (just getters/setters), all logic in service classes — loses OOP benefits</li>
+  <li><strong>Verbose DI configuration:</strong> Large IoC container setup for simple apps</li>
+</ul>
+<p><strong>Counter-principles to balance:</strong> KISS, YAGNI. Apply SOLID where complexity exists or is anticipated. For simple, stable code, simpler is better.</p>
+</div>
+</details>
+
+<details>
+<summary>Q17. Explain the "fragile base class problem" and how composition solves it. <span class="badge very-advanced">Very Advanced</span></summary>
+<div class="answer">
+<p>The <strong>fragile base class problem</strong>: when a base class changes, subclasses break in unexpected ways, even when the change seems safe. This is a consequence of deep inheritance hierarchies.</p>
+<p><strong>Example:</strong> <code>HashSet</code> extends <code>AbstractSet</code>. If <code>addAll()</code> in <code>AbstractSet</code> internally calls <code>add()</code> for each element, and a subclass overrides <code>add()</code> to count insertions, then calling <code>addAll(5 items)</code> will count 5 insertions from <code>addAll</code> PLUS 5 more from the internal <code>add()</code> calls = double counting. The subclass is fragile to the superclass's internal implementation.</p>
+<p><strong>Composition fix:</strong> Instead of extending, wrap (<code>has-a HashSet</code>). Your class calls the wrapped <code>HashSet.add()</code> directly without being affected by internal delegation chains.</p>
+<p>This is why Java's Effective Java (Bloch) recommends "Favor composition over inheritance" and "Design and document for inheritance, or else prohibit it."</p>
+</div>
+</details>
+
+<details>
+<summary>Q18. How would you refactor a God Class? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>A <strong>God Class</strong> is a massive class that knows and does everything — the ultimate SRP violation. Refactoring strategy:</p>
+<ol>
+  <li><strong>Add tests first</strong> — characterization tests to capture current behavior</li>
+  <li><strong>Identify responsibilities</strong> — list what the class does; group by concern</li>
+  <li><strong>Extract value objects</strong> — pure data clusters with no external dependencies</li>
+  <li><strong>Extract service classes</strong> — one by one, move methods to focused classes</li>
+  <li><strong>Introduce interfaces</strong> — abstract extracted classes behind interfaces (DIP)</li>
+  <li><strong>Wire with DI</strong> — inject the new collaborators</li>
+  <li><strong>Delete dead code</strong> — remove methods now delegated to extracted classes</li>
+</ol>
+<p><strong>Tools:</strong> IntelliJ's "Extract Class" refactoring, "Move Method," "Pull Up/Push Down." Eclipse Che, VS Code with language servers support similar refactoring.</p>
+<p><strong>Key:</strong> Do it incrementally. Each PR is one extracted class, always leaving tests green. Don't try to refactor the whole thing at once.</p>
+</div>
+</details>
+
+<details>
+<summary>Q19. Can SOLID apply to functional programming? <span class="badge very-advanced">Very Advanced</span></summary>
+<div class="answer">
+<p>SOLID was coined for OOP but most principles translate to FP:</p>
+<ul>
+  <li><strong>SRP → Single-purpose functions:</strong> Each function does one thing. Compose functions with <code>pipe</code>/<code>compose</code></li>
+  <li><strong>OCP → Higher-order functions:</strong> Pass functions as parameters instead of if/else. A <code>map</code> function is open for extension (any transform function) and closed for modification</li>
+  <li><strong>LSP → Algebraic types/type classes:</strong> Any type implementing a type class contract is substitutable</li>
+  <li><strong>ISP → Small, focused modules:</strong> Export only what consumers need. Tree-shaking benefits</li>
+  <li><strong>DIP → Dependency injection as function parameters:</strong> Pass dependencies as higher-order function arguments rather than importing concretions directly</li>
+</ul>
+<pre><code class="language-typescript">// FP-style DIP: dependencies as function parameters
+const createUserService = (
+  findUser: (id: string) =&gt; Promise&lt;User | null&gt;,
+  saveUser: (user: User) =&gt; Promise&lt;void&gt;,
+  sendEmail: (to: string, body: string) =&gt; Promise&lt;void&gt;
+) =&gt; ({
+  register: async (data: UserDTO) =&gt; {
+    const user = new User(data);
+    await saveUser(user);
+    await sendEmail(user.email, 'Welcome!');
+  }
+});</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q20. What is the "Tell, Don't Ask" principle and how does it relate to SOLID? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p><strong>Tell, Don't Ask:</strong> Instead of asking an object for its state and then making decisions based on that state (procedural), tell the object to do something and let it decide how (OOP).</p>
+<pre><code class="language-java">// ASK (procedural, bad)
+if (user.getAge() &gt;= 18 &amp;&amp; user.isEmailVerified() &amp;&amp; !user.isBanned()) {
+    // do something
+}
+
+// TELL (OOP, good)
+if (user.canAccess()) {
+    user.grantAccess();
+}
+// User encapsulates the logic for what "canAccess" means
+</code></pre>
+<p><strong>Relation to SOLID:</strong></p>
+<ul>
+  <li>Supports <strong>SRP</strong>: Logic for access rules lives in <code>User</code>, not scattered across callers</li>
+  <li>Supports <strong>OCP</strong>: Adding a new access condition only requires changing <code>User.canAccess()</code></li>
+  <li>Supports <strong>LoD</strong>: You're not drilling into <code>user.getAccount().getStatus()</code></li>
+  <li>Supports rich domain models over anemic ones</li>
+</ul>
+</div>
+</details>
+
+<details>
+<summary>Q21. How do you write unit tests that reinforce SOLID principles? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>Good unit tests <em>enforce</em> SOLID:</p>
+<ul>
+  <li><strong>SRP:</strong> If your test needs 5+ mocks, the class under test has too many responsibilities. Tests act as a smell detector.</li>
+  <li><strong>OCP:</strong> If adding a test for a new case requires modifying the production class, OCP is violated. New behaviors should be testable by adding new test cases (not modifying existing ones)</li>
+  <li><strong>LSP:</strong> Write shared test suites that run against all implementations of an interface. If any implementation fails the suite, LSP is violated.</li>
+  <li><strong>ISP:</strong> Test classes should only depend on the interface they're testing. If a mock needs to stub methods not used in the test, the interface is too fat.</li>
+  <li><strong>DIP:</strong> Tests naturally enforce DIP — you inject mocks of interfaces, not concretions. If you can't easily mock a dependency, it's likely a concrete class dependency (DIP violation).</li>
+</ul>
+<pre><code class="language-java">// LSP contract test
+@RunWith(Parameterized.class)
+public class OrderRepositoryContractTest {
+    private final OrderRepository repo;
+
+    @Parameters
+    public static Collection&lt;OrderRepository&gt; repos() {
+        return Arrays.asList(new MySQLOrderRepository(), new InMemoryOrderRepository());
+    }
+
+    @Test
+    public void savedOrderCanBeRetrieved() {
+        Order order = new Order("id-1");
+        repo.save(order);
+        assertEquals(order, repo.findById("id-1").orElseThrow());
+    }
+}</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q22. What's the relationship between SOLID and Clean Architecture? <span class="badge very-advanced">Very Advanced</span></summary>
+<div class="answer">
+<p>Clean Architecture (Robert C. Martin) is essentially SOLID applied at the architectural level:</p>
+<ul>
+  <li><strong>SRP:</strong> Each layer (Entity, Use Case, Interface Adapter, Framework) has one responsibility — Entities encode enterprise business rules, Use Cases encode app-specific rules, etc.</li>
+  <li><strong>OCP:</strong> Inner layers don't know about outer layers. Adding a new delivery mechanism (REST, GraphQL, CLI) doesn't change use cases.</li>
+  <li><strong>LSP:</strong> Frameworks are substitutable — switch from Spring to Quarkus without changing domain logic.</li>
+  <li><strong>ISP:</strong> Port interfaces (in hexagonal architecture) are narrow and focused on what the use case needs.</li>
+  <li><strong>DIP:</strong> The Dependency Rule — source code dependencies point inward. Use cases define repository interfaces; outer layers implement them. The dependency arrow is inverted.</li>
+</ul>
+<p>Hexagonal Architecture (Ports and Adapters) is a concrete implementation of these same ideas: ports are ISP-compliant interfaces, adapters implement them, and the domain (use cases) only depends on ports (DIP).</p>
+</div>
+</details>
+
+<footer>SOLID Principles &amp; Design Guidelines — Comprehensive Reference</footer>
+</main>
+</div>
+
+<script>hljs.highlightAll();mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

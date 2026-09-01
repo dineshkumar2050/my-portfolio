@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Temporal Workflow Engine – Complete Reference</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/typescript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0d1117;color:#c9d1d9;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.7;font-size:15px}
+.container{max-width:1100px;margin:0 auto;padding:0 24px 60px}
+header{background:linear-gradient(135deg,#161b22 0%,#0d1117 100%);border-bottom:1px solid #30363d;padding:40px 24px 32px;text-align:center;margin-bottom:40px}
+header h1{font-size:2.4rem;color:#58a6ff;letter-spacing:-0.5px;margin-bottom:8px}
+header p{color:#8b949e;font-size:1.05rem;max-width:700px;margin:0 auto}
+.badge{display:inline-block;background:#1f6feb;color:#cae8ff;font-size:0.75rem;font-weight:600;padding:2px 10px;border-radius:12px;margin-left:8px;vertical-align:middle;letter-spacing:0.3px}
+h2{font-size:1.6rem;color:#58a6ff;border-bottom:2px solid #21262d;padding-bottom:10px;margin:40px 0 20px}
+h3{font-size:1.15rem;color:#79c0ff;margin:24px 0 10px}
+h4{font-size:1rem;color:#d2a8ff;margin:16px 0 8px}
+p{margin-bottom:14px;color:#b3bac5}
+ul,ol{padding-left:20px;margin-bottom:14px;color:#b3bac5}
+li{margin-bottom:5px}
+a{color:#58a6ff;text-decoration:none}
+a:hover{text-decoration:underline}
+pre{margin:16px 0;border-radius:8px;overflow-x:auto;border:1px solid #30363d}
+pre code{font-size:0.87rem;padding:16px !important;display:block}
+code:not(pre code){background:#161b22;border:1px solid #30363d;border-radius:4px;padding:1px 6px;font-size:0.85rem;color:#e3b341}
+.info-box{background:#161b22;border:1px solid #30363d;border-left:4px solid #58a6ff;border-radius:6px;padding:16px 20px;margin:16px 0}
+.warn-box{background:#161b22;border:1px solid #30363d;border-left:4px solid #d29922;border-radius:6px;padding:16px 20px;margin:16px 0}
+.success-box{background:#161b22;border:1px solid #30363d;border-left:4px solid #3fb950;border-radius:6px;padding:16px 20px;margin:16px 0}
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:0.88rem}
+th{background:#161b22;color:#79c0ff;font-weight:600;padding:10px 14px;text-align:left;border:1px solid #30363d}
+td{padding:9px 14px;border:1px solid #21262d;color:#b3bac5}
+tr:nth-child(even) td{background:#0d1117}
+tr:nth-child(odd) td{background:#161b22}
+details{background:#161b22;border:1px solid #30363d;border-radius:8px;margin:10px 0;overflow:hidden}
+details[open]{border-color:#58a6ff}
+summary{padding:14px 18px;cursor:pointer;font-weight:600;color:#79c0ff;list-style:none;display:flex;align-items:center;gap:10px;user-select:none}
+summary::-webkit-details-marker{display:none}
+summary::before{content:'▶';font-size:0.7rem;color:#58a6ff;transition:transform 0.2s;flex-shrink:0}
+details[open] summary::before{transform:rotate(90deg)}
+.qa-body{padding:6px 18px 18px}
+.qa-body p{color:#c9d1d9}
+.mermaid{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:20px;margin:16px 0;text-align:center}
+.difficulty{display:inline-block;font-size:0.72rem;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:6px;vertical-align:middle}
+.easy{background:#033a16;color:#3fb950}
+.medium{background:#2d2100;color:#d29922}
+.hard{background:#2d1b00;color:#ff7b72}
+.vhard{background:#2d0229;color:#d2a8ff}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+@media(max-width:700px){.grid-2{grid-template-columns:1fr}}
+.concept-card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:16px}
+.concept-card h4{margin-top:0;color:#79c0ff}
+.toc{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:20px 24px;margin-bottom:32px}
+.toc h3{margin-top:0;color:#d2a8ff;font-size:1rem;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px}
+.toc ol{padding-left:18px}
+.toc li{margin-bottom:4px;font-size:0.9rem}
+</style>
+</head>
+<body>
+<header>
+  <h1>Temporal Workflow Engine <span class="badge">Complete Reference</span></h1>
+  <p>Durable execution, fault-tolerant workflows, TypeScript SDK, activities, signals, queries, versioning, and testing</p>
+</header>
+<div class="container">
+
+<div class="toc">
+  <h3>Contents</h3>
+  <ol>
+    <li><a href="#what-is-temporal">What is Temporal?</a></li>
+    <li><a href="#comparison">Temporal vs Alternatives</a></li>
+    <li><a href="#core-concepts">Core Concepts</a></li>
+    <li><a href="#architecture">Server Architecture</a></li>
+    <li><a href="#determinism">Determinism Rules</a></li>
+    <li><a href="#sleep-signals">Sleep, Signals, Queries & Updates</a></li>
+    <li><a href="#versioning">Workflow Versioning</a></li>
+    <li><a href="#continue-as-new">Continue-As-New</a></li>
+    <li><a href="#activities">Activities: Retries, Timeouts, Heartbeats</a></li>
+    <li><a href="#local-activities">Local Activities</a></li>
+    <li><a href="#typescript-sdk">TypeScript SDK Examples</a></li>
+    <li><a href="#testing">Testing with TestWorkflowEnvironment</a></li>
+    <li><a href="#cli">Temporal CLI</a></li>
+    <li><a href="#cloud-vs-self">Cloud vs Self-Hosted</a></li>
+    <li><a href="#qa">15 Q&amp;As</a></li>
+  </ol>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="what-is-temporal">1. What is Temporal?</h2>
+<p>Temporal is an open-source <strong>durable execution</strong> platform. It ensures that your application code runs to completion even in the face of hardware failures, network outages, process crashes, or long periods of waiting. Rather than coordinating state through external databases or message queues, Temporal <em>is</em> the state machine — the entire execution history is stored in the Temporal Server and replayed on-demand.</p>
+
+<div class="info-box">
+  <strong>Core promise:</strong> Write code as if failures do not exist. Temporal handles retries, timeouts, and state persistence transparently. A workflow function that sleeps for 30 days is just <code>await workflow.sleep('30 days')</code>.
+</div>
+
+<h3>Key Properties</h3>
+<ul>
+  <li><strong>Durable:</strong> Workflow state survives process crashes; execution resumes from where it stopped.</li>
+  <li><strong>Reliable:</strong> Activities are retried automatically with configurable back-off.</li>
+  <li><strong>Scalable:</strong> Millions of concurrent workflows per namespace.</li>
+  <li><strong>Observable:</strong> Full execution history — every event logged and queryable.</li>
+  <li><strong>Developer-centric:</strong> Workflow logic is plain TypeScript/Go/Java/Python.</li>
+</ul>
+
+<h3>How Durable Execution Works</h3>
+<p>Every state transition in a workflow is persisted to an immutable event history in the Temporal server. When a worker crashes mid-workflow, a new worker picks up the task queue entry, downloads the history, and <em>replays</em> the workflow code deterministically to reconstruct in-memory state — then continues from the last durable checkpoint.</p>
+
+<!-- ============================================================ -->
+<h2 id="comparison">2. Temporal vs Alternatives</h2>
+<table>
+  <thead><tr><th>Feature</th><th>Temporal</th><th>Cron / Task Scheduler</th><th>Message Queue (SQS/RabbitMQ)</th><th>Saga (manual)</th><th>Airflow / Prefect</th></tr></thead>
+  <tbody>
+    <tr><td>Multi-step workflow</td><td>Native</td><td>No</td><td>Manual orchestration needed</td><td>Manual</td><td>Yes (DAG)</td></tr>
+    <tr><td>Durable sleep (days/weeks)</td><td>Yes — <code>workflow.sleep()</code></td><td>Re-schedule needed</td><td>No</td><td>No</td><td>Via task scheduler only</td></tr>
+    <tr><td>Automatic retries</td><td>Per-activity, configurable</td><td>No</td><td>Dead-letter queue only</td><td>Manual</td><td>Yes, but simple</td></tr>
+    <tr><td>State management</td><td>Built-in event history</td><td>External DB required</td><td>External DB required</td><td>External DB required</td><td>Metadata DB</td></tr>
+    <tr><td>Long-running (months)</td><td>Yes</td><td>Only via re-trigger</td><td>No</td><td>No</td><td>Limited</td></tr>
+    <tr><td>Signals / human-in-loop</td><td>Yes (Signals + Updates)</td><td>No</td><td>Hacky workarounds</td><td>Manual</td><td>Sensors only</td></tr>
+    <tr><td>Code language</td><td>TypeScript/Go/Java/Python/.NET</td><td>Shell/Python</td><td>Any</td><td>Any (complex)</td><td>Python</td></tr>
+    <tr><td>Versioning running workflows</td><td>workflow.patched()</td><td>N/A</td><td>N/A</td><td>N/A</td><td>DAG versioning</td></tr>
+    <tr><td>Testing support</td><td>TestWorkflowEnvironment</td><td>Minimal</td><td>Minimal</td><td>Unit tests only</td><td>pytest integration</td></tr>
+  </tbody>
+</table>
+
+<!-- ============================================================ -->
+<h2 id="core-concepts">3. Core Concepts</h2>
+<div class="grid-2">
+  <div class="concept-card">
+    <h4>Workflow</h4>
+    <p>A durable function that orchestrates activities. It is deterministic — given the same event history it always produces the same result. The workflow function itself never performs I/O directly.</p>
+  </div>
+  <div class="concept-card">
+    <h4>Activity</h4>
+    <p>A function that performs side effects: HTTP calls, DB writes, file I/O, sending emails. Activities can fail and are retried by Temporal automatically. They run in a regular environment with no determinism constraints.</p>
+  </div>
+  <div class="concept-card">
+    <h4>Worker</h4>
+    <p>A process you run that polls a Task Queue, executes workflow and activity code, and reports completions back to the Temporal server. You control scaling workers independently.</p>
+  </div>
+  <div class="concept-card">
+    <h4>Task Queue</h4>
+    <p>A logical channel between the Temporal server and your workers. Workflows are started on a specific task queue; workers poll that queue. One queue can have many workers for horizontal scaling.</p>
+  </div>
+  <div class="concept-card">
+    <h4>Namespace</h4>
+    <p>An isolation boundary within a Temporal cluster. Workflows in different namespaces cannot directly communicate. Used for environment separation (dev/staging/prod) or multi-tenancy.</p>
+  </div>
+  <div class="concept-card">
+    <h4>Workflow Execution</h4>
+    <p>A single running instance of a workflow function, identified by <code>workflowId</code> (user-defined) and <code>runId</code> (system-assigned). The workflowId can be reused after completion.</p>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="architecture">4. Temporal Server Architecture</h2>
+<div class="mermaid">
+graph TD
+  CLIENT["Client App\n(WorkflowClient)"] -->|"StartWorkflow / Signal / Query"| FRONTEND["Frontend Service\n(gRPC gateway)"]
+  FRONTEND --> HISTORY["History Service\n(Event log, state machine)"]
+  FRONTEND --> MATCHING["Matching Service\n(Task queue dispatch)"]
+  HISTORY -->|"Schedule activity task"| MATCHING
+  MATCHING -->|"Poll for tasks"| WORKER_WF["Workflow Worker\n(executes deterministic code)"]
+  MATCHING -->|"Poll for tasks"| WORKER_ACT["Activity Worker\n(executes side effects)"]
+  HISTORY --> DB[("Persistence\n(Cassandra / PostgreSQL / MySQL)")]
+  MATCHING --> DB
+  WORKER_WF -->|"Complete workflow task"| HISTORY
+  WORKER_ACT -->|"Complete activity task"| HISTORY
+  HISTORY --> ES[("ElasticSearch\n(visibility / search)")]
+
+  style CLIENT fill:#1f6feb,color:#cae8ff
+  style WORKER_WF fill:#1a7f37,color:#aff0b5
+  style WORKER_ACT fill:#1a7f37,color:#aff0b5
+  style DB fill:#6e40c9,color:#e2c5ff
+  style ES fill:#6e40c9,color:#e2c5ff
+</div>
+
+<h3>Service Responsibilities</h3>
+<ul>
+  <li><strong>Frontend Service:</strong> Single entry point for all client API calls (gRPC + HTTP). Routes requests to appropriate internal services.</li>
+  <li><strong>History Service:</strong> Owns the workflow execution state machine and event history. Sharded by workflowId. Durably persists every state change.</li>
+  <li><strong>Matching Service:</strong> Manages task queues. Matches workflow/activity tasks to polling workers. Handles sticky execution for performance.</li>
+  <li><strong>Worker Service:</strong> Internal Temporal workers that handle background tasks (archival, replication).</li>
+</ul>
+
+<!-- ============================================================ -->
+<h2 id="determinism">5. Determinism Rules</h2>
+<div class="warn-box">
+  <strong>Critical:</strong> Workflow code MUST be deterministic. Temporal replays your workflow history to restore state — any non-deterministic operation will produce different results on replay, causing a <em>non-determinism error</em> and failing the workflow.
+</div>
+
+<h3>Forbidden in Workflow Code</h3>
+<table>
+  <thead><tr><th>Operation</th><th>Problem</th><th>Temporal Alternative</th></tr></thead>
+  <tbody>
+    <tr><td><code>Math.random()</code></td><td>Different value on each replay</td><td><code>workflow.uuid()</code> or pass randomness via activity</td></tr>
+    <tr><td><code>Date.now()</code> / <code>new Date()</code></td><td>Different timestamp on replay</td><td><code>workflow.now()</code></td></tr>
+    <tr><td><code>setTimeout</code> / <code>setInterval</code></td><td>Not tracked in event history</td><td><code>workflow.sleep(duration)</code></td></tr>
+    <tr><td>Direct HTTP/DB calls</td><td>Side effects not persisted</td><td>Wrap in an Activity</td></tr>
+    <tr><td>Global mutable state</td><td>Not part of event history</td><td>Use workflow variables</td></tr>
+    <tr><td><code>process.env</code> reads</td><td>Environment may differ on replay</td><td>Pass as workflow input or activity param</td></tr>
+    <tr><td>External library with side effects</td><td>May behave differently</td><td>Move to Activity</td></tr>
+    <tr><td>Non-deterministic iteration (Map/Set without sort)</td><td>Order may change</td><td>Sort before iterating</td></tr>
+  </tbody>
+</table>
+
+<h3>Safe Workflow APIs (TypeScript)</h3>
+<pre><code class="language-typescript">import { workflow } from '@temporalio/workflow';
+
+// Safe: deterministic time
+const now: Date = workflow.now();
+
+// Safe: deterministic sleep (persisted, survives restarts)
+await workflow.sleep('30 days');
+await workflow.sleep(1000 * 60 * 60 * 24); // ms also accepted
+
+// Safe: deterministic UUID
+const id: string = workflow.uuid4();
+
+// Safe: wait for condition
+await workflow.condition(() => someFlag === true, '1 hour'); // optional timeout
+
+// Cancellation scope
+const { CancellationScope } = workflow;
+await CancellationScope.cancellable(async () => {
+  await someActivity();
+});</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="sleep-signals">6. Sleep, Signals, Queries &amp; Updates</h2>
+
+<h3>Workflow Sleep</h3>
+<p><code>workflow.sleep()</code> persists a timer in the Temporal server. The worker is free; no process needs to stay running. When the timer fires, any available worker picks up the task.</p>
+<pre><code class="language-typescript">// Free billing reminder workflow
+export async function billingReminderWorkflow(userId: string): Promise<void> {
+  await workflow.sleep('7 days');         // server-side timer, no process held
+  await sendReminderActivity({ userId }); // resumes on any worker
+  await workflow.sleep('30 days');
+  await chargeCreditCardActivity({ userId });
+}</code></pre>
+
+<h3>Signals — Sending Data In</h3>
+<p>Signals are fire-and-forget messages sent to a running workflow. They are buffered until the workflow handles them. Defined with <code>defineSignal</code>, handled with <code>workflow.setHandler</code>.</p>
+<pre><code class="language-typescript">// workflow.ts
+import { defineSignal, setHandler, condition } from '@temporalio/workflow';
+
+export const approveSignal = defineSignal<[{ approvedBy: string }]>('approve');
+export const rejectSignal  = defineSignal<[{ reason: string }]>('reject');
+
+export async function approvalWorkflow(requestId: string): Promise<string> {
+  let decision: 'approved' | 'rejected' | null = null;
+  let meta: any = {};
+
+  setHandler(approveSignal, ({ approvedBy }) => {
+    decision = 'approved';
+    meta = { approvedBy };
+  });
+  setHandler(rejectSignal, ({ reason }) => {
+    decision = 'rejected';
+    meta = { reason };
+  });
+
+  // Block until signal received OR 72-hour timeout
+  const gotDecision = await condition(() => decision !== null, '72 hours');
+  if (!gotDecision) return 'timeout';
+  return `${decision} by ${meta.approvedBy ?? 'N/A'}`;
+}
+
+// client.ts
+await client.workflow.getHandle(workflowId).signal(approveSignal, { approvedBy: 'manager1' });</code></pre>
+
+<h3>Queries — Reading State</h3>
+<p>Queries are synchronous reads of workflow state. They do NOT advance the workflow and have no side effects. The response is returned directly from the worker holding the sticky execution cache.</p>
+<pre><code class="language-typescript">// workflow.ts
+import { defineQuery, setHandler } from '@temporalio/workflow';
+
+export const getStatusQuery = defineQuery<string>('getStatus');
+
+export async function orderWorkflow(): Promise<void> {
+  let status = 'created';
+  setHandler(getStatusQuery, () => status);
+
+  status = 'processing';
+  await processOrderActivity();
+  status = 'shipped';
+  await shipOrderActivity();
+  status = 'delivered';
+}
+
+// client.ts
+const status = await client.workflow.getHandle(workflowId).query(getStatusQuery);
+console.log(status); // 'processing' | 'shipped' | 'delivered' ...</code></pre>
+
+<h3>Updates (Temporal 1.21+)</h3>
+<p>Updates combine Signal (mutate) and Query (return value) — they modify workflow state and synchronously return a result to the caller. Updates can also be validated (rejected before applying).</p>
+<pre><code class="language-typescript">import { defineUpdate, setHandler } from '@temporalio/workflow';
+
+export const addItemUpdate = defineUpdate<string, [string]>('addItem');
+
+export async function cartWorkflow(): Promise<void> {
+  const items: string[] = [];
+  setHandler(
+    addItemUpdate,
+    (item: string) => {
+      items.push(item);
+      return `Added: ${item}, total: ${items.length}`;
+    },
+    {
+      validator: (item: string) => {
+        if (!item || item.trim() === '') throw new Error('Item cannot be empty');
+      }
+    }
+  );
+  await workflow.condition(() => false); // run forever until cancelled
+}
+
+// client — returns the update result synchronously
+const result = await handle.executeUpdate(addItemUpdate, { args: ['widget'] });
+// result === 'Added: widget, total: 1'</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="versioning">7. Workflow Versioning with <code>workflow.patched()</code></h2>
+<p>When you change workflow logic while executions are still running, replaying old history against new code causes non-determinism errors. <code>workflow.patched()</code> (formerly <code>getVersion</code> in other SDKs) provides a safe path.</p>
+
+<pre><code class="language-typescript">import { patched, deprecatePatch } from '@temporalio/workflow';
+
+// STEP 1: Introduce the patch — old workers take the else branch, new workers take the if branch
+export async function myWorkflow(): Promise<void> {
+  if (patched('my-new-behaviour-v2')) {
+    // New code path
+    await newActivityV2();
+  } else {
+    // Old code path — kept for replay compatibility with running instances
+    await oldActivityV1();
+  }
+  await finishActivity();
+}
+
+// STEP 2: Once all pre-patch executions have completed, mark patch as deprecated
+// Old code path is removed; deprecatePatch() is a no-op that keeps the marker in history
+export async function myWorkflowV3(): Promise<void> {
+  deprecatePatch('my-new-behaviour-v2'); // marker only, no branching
+  await newActivityV2();
+  await finishActivity();
+}
+
+// STEP 3: Eventually remove deprecatePatch() once all v2-patched executions are done</code></pre>
+
+<div class="info-box">
+  <strong>Best practice:</strong> Treat versioning as a 3-stage migration: (1) add <code>patched()</code>, (2) promote to <code>deprecatePatch()</code> after old runs drain, (3) remove entirely. Never delete workflow code while instances are still running.
+</div>
+
+<!-- ============================================================ -->
+<h2 id="continue-as-new">8. Continue-As-New</h2>
+<p>Temporal stores the complete event history for a workflow execution. Very long-running or high-throughput workflows can accumulate hundreds of thousands of events, causing slow replay and large memory usage. <code>continueAsNew</code> starts a fresh execution with a clean history, passing current state as input.</p>
+
+<pre><code class="language-typescript">import { continueAsNew, isCancellation } from '@temporalio/workflow';
+
+interface PollerState { itemsProcessed: number; cursor: string }
+
+export async function longPollerWorkflow(state: PollerState): Promise<void> {
+  for (let i = 0; i < 1000; i++) {
+    const result = await pollForItemsActivity({ cursor: state.cursor });
+    state.cursor = result.nextCursor;
+    state.itemsProcessed += result.items.length;
+  }
+
+  // After 1000 iterations, reset history by continuing as new
+  // Passes current state so no data is lost
+  await continueAsNew<typeof longPollerWorkflow>(state);
+}</code></pre>
+
+<div class="warn-box">
+  <strong>When to use continueAsNew:</strong> If your workflow runs for months/years, or processes in a loop, call <code>continueAsNew</code> every ~1000–10000 iterations or when history size approaches 50k events.
+</div>
+
+<!-- ============================================================ -->
+<h2 id="activities">9. Activities: Retry Policies, Timeouts &amp; Heartbeats</h2>
+
+<h3>Retry Policy</h3>
+<pre><code class="language-typescript">import { proxyActivities } from '@temporalio/workflow';
+import type * as activities from './activities';
+
+const { processPayment } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '30 seconds',
+  retry: {
+    initialInterval: '1 second',      // first retry after 1s
+    backoffCoefficient: 2,             // doubles each retry: 1s, 2s, 4s, 8s...
+    maximumInterval: '100 seconds',    // cap the back-off
+    maximumAttempts: 10,               // give up after 10 attempts
+    nonRetryableErrorTypes: [
+      'InvalidCardError',              // these error types are NOT retried
+      'FraudDetectedError',
+    ],
+  },
+});</code></pre>
+
+<h3>Activity Timeout Reference</h3>
+<table>
+  <thead><tr><th>Timeout</th><th>Measures</th><th>Use For</th></tr></thead>
+  <tbody>
+    <tr><td><code>scheduleToCloseTimeout</code></td><td>Schedule time → complete</td><td>Overall deadline including all retry attempts</td></tr>
+    <tr><td><code>scheduleToStartTimeout</code></td><td>Schedule → worker picks up</td><td>Detect stuck/overloaded workers; fail fast if queue is backed up</td></tr>
+    <tr><td><code>startToCloseTimeout</code></td><td>Worker starts → worker completes</td><td>Single execution attempt deadline (most commonly set)</td></tr>
+    <tr><td><code>heartbeatTimeout</code></td><td>Between consecutive heartbeats</td><td>Long-running activities; detect silent crashes mid-execution</td></tr>
+  </tbody>
+</table>
+
+<h3>Long-Running Activities &amp; Heartbeat</h3>
+<p>Long-running activities (file uploads, ML model training, video encoding) must call <code>activity.heartbeat()</code> periodically. If the heartbeat isn't received within <code>heartbeatTimeout</code>, Temporal marks the activity as failed and schedules a retry — the new attempt can even pick up from the last checkpoint via <code>activity.getHeartbeatDetails()</code>.</p>
+
+<pre><code class="language-typescript">// activities.ts
+import { Context } from '@temporalio/activity';
+
+export async function uploadLargeFileActivity(params: {
+  fileUrl: string;
+  destination: string;
+}): Promise<void> {
+  const ctx = Context.current();
+  const chunks = await getFileChunks(params.fileUrl);
+
+  // Retrieve last successful chunk from previous attempt (if any)
+  const lastChunk: number = ctx.info.heartbeatDetails ?? 0;
+
+  for (let i = lastChunk; i < chunks.length; i++) {
+    // Check if workflow wants to cancel this activity
+    ctx.cancellationSignal.throwIfAborted();
+
+    await uploadChunk(chunks[i], params.destination);
+
+    // Heartbeat with progress — saved in server for retry pickup
+    ctx.heartbeat(i + 1); // last completed chunk index
+  }
+}
+
+// In workflow, use heartbeatTimeout:
+const { uploadLargeFileActivity } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '2 hours',
+  heartbeatTimeout: '30 seconds', // must heartbeat every 30s
+});</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="local-activities">10. Local Activities vs Regular Activities</h2>
+<table>
+  <thead><tr><th>Dimension</th><th>Regular Activity</th><th>Local Activity</th></tr></thead>
+  <tbody>
+    <tr><td>Execution</td><td>Scheduled via Temporal server, any worker</td><td>Executed in-process by the same workflow worker</td></tr>
+    <tr><td>Latency</td><td>One round-trip to server (~5–20ms)</td><td>Sub-millisecond (in-process)</td></tr>
+    <tr><td>History event</td><td>Full ActivityTaskScheduled/Started/Completed</td><td>Compressed marker event</td></tr>
+    <tr><td>Retry behaviour</td><td>Full retry policy, cross-worker</td><td>Retried locally — no server scheduling overhead</td></tr>
+    <tr><td>Best for</td><td>Long-running, cross-worker, important side effects</td><td>Fast, CPU-bound, short duration (under 1 second)</td></tr>
+    <tr><td>Worker crash during</td><td>Temporal reschedules on another worker</td><td>Lost — the workflow task is re-scheduled from before local activity</td></tr>
+    <tr><td>Max duration</td><td>Hours/days (with heartbeat)</td><td>Seconds (no heartbeat)</td></tr>
+  </tbody>
+</table>
+
+<pre><code class="language-typescript">import { executeChild, proxyLocalActivities } from '@temporalio/workflow';
+
+const { validateInput } = proxyLocalActivities<typeof activities>({
+  startToCloseTimeout: '5 seconds', // keep short for local activities
+});
+
+export async function myWorkflow(input: Input): Promise<void> {
+  // Local activity: fast, low overhead
+  const validatedInput = await validateInput(input);
+
+  // Regular activity: durable, retryable, may take longer
+  await processOrderActivity(validatedInput);
+}</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="typescript-sdk">11. TypeScript SDK — Complete Examples</h2>
+
+<h3>Define Activities</h3>
+<pre><code class="language-typescript">// src/activities.ts
+import { Context } from '@temporalio/activity';
+
+export interface SendEmailParams {
+  to: string;
+  subject: string;
+  body: string;
+}
+
+export async function sendEmailActivity(params: SendEmailParams): Promise<boolean> {
+  const ctx = Context.current();
+  console.log(`Sending email to ${params.to}, attempt ${ctx.info.attempt}`);
+
+  const response = await fetch('https://api.emailservice.com/send', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(params),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Email service error: ${response.status}`);
+  }
+  return true;
+}
+
+export async function getUserProfile(userId: string): Promise<{ name: string; email: string }> {
+  // DB lookup
+  return db.users.findById(userId);
+}</code></pre>
+
+<h3>Define Workflow</h3>
+<pre><code class="language-typescript">// src/workflows.ts
+import { proxyActivities, defineSignal, setHandler,
+         condition, sleep, defineQuery } from '@temporalio/workflow';
+import type * as activities from './activities';
+
+const { sendEmailActivity, getUserProfile } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '30 seconds',
+  retry: { maximumAttempts: 5, initialInterval: '2 seconds', backoffCoefficient: 2 },
+});
+
+export const pauseSignal   = defineSignal('pause');
+export const resumeSignal  = defineSignal('resume');
+export const statusQuery   = defineQuery<string>('status');
+
+export async function onboardingWorkflow(userId: string): Promise<void> {
+  let paused = false;
+  let status = 'started';
+
+  setHandler(pauseSignal,  () => { paused = true;  status = 'paused'; });
+  setHandler(resumeSignal, () => { paused = false; status = 'running'; });
+  setHandler(statusQuery,  () => status);
+
+  // Step 1: Get user profile
+  status = 'fetching-profile';
+  const user = await getUserProfile(userId);
+
+  // Step 2: Wait for pause/resume, proceed when unpaused
+  await condition(() => !paused);
+
+  // Step 3: Send welcome email
+  status = 'sending-welcome';
+  await sendEmailActivity({
+    to: user.email,
+    subject: 'Welcome!',
+    body: `Hello ${user.name}, welcome aboard!`,
+  });
+
+  // Step 4: Wait 7 days and send follow-up
+  status = 'waiting-7-days';
+  await sleep('7 days');
+
+  status = 'sending-followup';
+  await sendEmailActivity({
+    to: user.email,
+    subject: 'How are you settling in?',
+    body: `Hi ${user.name}, checking in after your first week!`,
+  });
+
+  status = 'completed';
+}</code></pre>
+
+<h3>Create and Run Worker</h3>
+<pre><code class="language-typescript">// src/worker.ts
+import { Worker } from '@temporalio/worker';
+import * as activities from './activities';
+
+async function run() {
+  const worker = await Worker.create({
+    workflowsPath: require.resolve('./workflows'),
+    activities,
+    taskQueue: 'onboarding-queue',
+    // Optional: tune worker concurrency
+    maxConcurrentActivityTaskExecutions: 100,
+    maxConcurrentWorkflowTaskExecutions: 40,
+  });
+  await worker.run(); // blocks until shutdown
+}
+
+run().catch(err => {
+  console.error(err);
+  process.exit(1);
+});</code></pre>
+
+<h3>Start Workflow from Client</h3>
+<pre><code class="language-typescript">// src/client.ts
+import { Client, Connection } from '@temporalio/client';
+import { onboardingWorkflow, pauseSignal, resumeSignal, statusQuery } from './workflows';
+
+async function main() {
+  const connection = await Connection.connect({ address: 'localhost:7233' });
+  const client = new Client({ connection, namespace: 'default' });
+
+  // Start a new workflow execution
+  const handle = await client.workflow.start(onboardingWorkflow, {
+    taskQueue: 'onboarding-queue',
+    workflowId: `onboarding-${userId}`,  // idempotent — safe to call again
+    args: [userId],
+    // Optional workflow-level timeout
+    workflowExecutionTimeout: '30 days',
+  });
+
+  console.log(`Started workflow: ${handle.workflowId}`);
+
+  // Send signal
+  await handle.signal(pauseSignal);
+  await new Promise(r => setTimeout(r, 5000));
+  await handle.signal(resumeSignal);
+
+  // Query current status
+  const status = await handle.query(statusQuery);
+  console.log('Status:', status);
+
+  // Wait for result (blocks until workflow completes)
+  const result = await handle.result();
+  console.log('Workflow finished:', result);
+}</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="testing">12. Testing with TestWorkflowEnvironment</h2>
+<pre><code class="language-typescript">// src/__tests__/onboarding.test.ts
+import { TestWorkflowEnvironment } from '@temporalio/testing';
+import { Worker }                    from '@temporalio/worker';
+import { onboardingWorkflow }        from '../workflows';
+import * as activities               from '../activities';
+
+let testEnv: TestWorkflowEnvironment;
+
+beforeAll(async () => {
+  // Creates an in-process Temporal server with skippable time
+  testEnv = await TestWorkflowEnvironment.createLocal();
+});
+
+afterAll(async () => {
+  await testEnv?.teardown();
+});
+
+test('onboarding workflow completes and sends emails', async () => {
+  const { client, nativeConnection } = testEnv;
+
+  // Mock activities — don't make real HTTP calls in tests
+  const mockActivities: typeof activities = {
+    sendEmailActivity: jest.fn().mockResolvedValue(true),
+    getUserProfile:    jest.fn().mockResolvedValue({ name: 'Test User', email: 'test@example.com' }),
+  };
+
+  const worker = await Worker.create({
+    connection: nativeConnection,
+    workflowsPath: require.resolve('../workflows'),
+    activities: mockActivities,
+    taskQueue: 'test-queue',
+  });
+
+  await worker.runUntil(async () => {
+    const handle = await client.workflow.start(onboardingWorkflow, {
+      taskQueue: 'test-queue',
+      workflowId: 'test-onboarding-1',
+      args: ['user-123'],
+    });
+
+    // Skip the 7-day sleep instantly — TestWorkflowEnvironment supports time skipping
+    await testEnv.sleep('7 days');
+
+    await handle.result();
+  });
+
+  // Verify activities were called
+  expect(mockActivities.sendEmailActivity).toHaveBeenCalledTimes(2);
+  expect(mockActivities.getUserProfile).toHaveBeenCalledWith('user-123');
+}, 30000);</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="cli">13. Temporal CLI</h2>
+<pre><code class="language-bash"># Install
+brew install temporal          # macOS
+# OR: go install github.com/temporalio/cli/cmd/temporal@latest
+
+# Start local dev server (in-memory, great for development)
+temporal server start-dev
+# Access UI at http://localhost:8233
+
+# Start a workflow
+temporal workflow start \
+  --task-queue onboarding-queue \
+  --type onboardingWorkflow \
+  --workflow-id onboarding-user-1 \
+  --input '"user-123"'
+
+# Signal a running workflow
+temporal workflow signal \
+  --workflow-id onboarding-user-1 \
+  --name pause
+
+# Query workflow state
+temporal workflow query \
+  --workflow-id onboarding-user-1 \
+  --type status
+
+# Describe workflow (see history summary, pending activities)
+temporal workflow describe --workflow-id onboarding-user-1
+
+# Show workflow history (all events)
+temporal workflow show --workflow-id onboarding-user-1
+
+# Terminate (force-stop) a workflow
+temporal workflow terminate --workflow-id onboarding-user-1 --reason "testing"
+
+# Cancel (graceful) a workflow — sends CancellationError
+temporal workflow cancel --workflow-id onboarding-user-1
+
+# List running workflows
+temporal workflow list --query "ExecutionStatus='Running'"
+
+# Temporal Cloud — connect with mTLS
+temporal workflow list \
+  --address yournamespace.tmprl.cloud:7233 \
+  --tls-cert-path client.pem \
+  --tls-key-path client.key \
+  --namespace yournamespace.accountId</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="cloud-vs-self">14. Temporal Cloud vs Self-Hosted</h2>
+<table>
+  <thead><tr><th>Dimension</th><th>Temporal Cloud</th><th>Self-Hosted</th></tr></thead>
+  <tbody>
+    <tr><td>Operations burden</td><td>Zero — Temporal manages servers</td><td>Full responsibility: HA, updates, monitoring</td></tr>
+    <tr><td>Pricing</td><td>Per action (workflow start, activity, signal, etc.)</td><td>Infrastructure costs only</td></tr>
+    <tr><td>Availability SLA</td><td>99.99% SLA provided</td><td>You build it — multi-zone/region needed</td></tr>
+    <tr><td>Namespaces</td><td>Isolated per customer, multi-region support</td><td>Shared cluster, manual isolation</td></tr>
+    <tr><td>Security</td><td>mTLS per namespace, SOC2 certified</td><td>Configure your own TLS, auth, network policies</td></tr>
+    <tr><td>Scale</td><td>Auto-scales transparently</td><td>Manual horizontal scaling of services</td></tr>
+    <tr><td>Data residency</td><td>Choose AWS region; HIPAA, GDPR options</td><td>Full control over data location</td></tr>
+    <tr><td>Best for</td><td>Teams wanting to focus on product, not infra</td><td>Strict data sovereignty or cost optimization at scale</td></tr>
+    <tr><td>Multi-region failover</td><td>Built-in (global namespace)</td><td>Complex to configure — active-active via XDC</td></tr>
+    <tr><td>Persistence options</td><td>Managed (Cassandra)</td><td>Cassandra, PostgreSQL, MySQL, SQLite (dev)</td></tr>
+  </tbody>
+</table>
+
+<!-- ============================================================ -->
+<h2 id="qa">15. Q&amp;A — 15 Questions</h2>
+
+<details>
+  <summary>Q1. What is durable execution and why does Temporal achieve it? <span class="difficulty easy">Easy</span></summary>
+  <div class="qa-body">
+    <p><strong>Durable execution</strong> means application code that runs to successful completion regardless of hardware or software failures. Temporal achieves this by persisting every state transition — workflow task completions, activity scheduling, timers, signals — as immutable events in its History Service backed by a database (Cassandra/Postgres). When a worker crashes, a new worker downloads the event history and <strong>replays</strong> the deterministic workflow code to reconstruct in-memory state exactly, then resumes from the last recorded checkpoint. The developer writes code as if failures don't exist; Temporal's infrastructure handles the durability.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q2. Why must workflow code be deterministic, and what happens if it is not? <span class="difficulty easy">Easy</span></summary>
+  <div class="qa-body">
+    <p>Temporal reconstructs workflow state by replaying event history. Replaying means re-executing the workflow function from the top and comparing what the code "wants to do" with what the history says "already happened." If the code is non-deterministic (e.g., calls <code>Math.random()</code>), it may take a different branch on replay than the original execution, causing the commands it emits to mismatch the history. Temporal detects this as a <strong>non-determinism error</strong> and fails the workflow task with a <code>DeterminsticError</code>. The workflow is stuck and requires investigation. Always use Temporal's safe APIs: <code>workflow.now()</code>, <code>workflow.sleep()</code>, <code>workflow.uuid4()</code>.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q3. What is the difference between a Signal and a Query? <span class="difficulty easy">Easy</span></summary>
+  <div class="qa-body">
+    <p><strong>Signal:</strong> Asynchronous, one-way message sent to a running workflow. It can modify workflow state (set flags, add items to a queue). The caller does not wait for a return value. Signals are buffered and processed in order.</p>
+    <p><strong>Query:</strong> Synchronous read of current workflow state. Queries do NOT modify state, do NOT add events to history, and return data directly to the caller. They are served by the worker currently holding the workflow in its sticky cache. Used for dashboards, progress reporting, or reading derived state.</p>
+    <p><strong>Update (Temporal 1.21+):</strong> Combines both — modifies state AND returns a value synchronously to the caller. Can also be validated and rejected before applying.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q4. How does workflow.sleep() differ from a plain setTimeout? <span class="difficulty easy">Easy</span></summary>
+  <div class="qa-body">
+    <p><code>setTimeout</code> is an in-memory OS timer — it is lost the moment the process restarts. It also creates a non-deterministic event from Temporal's perspective (not tracked in history).</p>
+    <p><code>workflow.sleep(duration)</code> creates a <strong>durable timer event</strong> in the Temporal server. The worker is free to handle other work. If the worker restarts, the sleep simply continues counting down on the server. If the sleep has already elapsed when the worker resumes, the workflow immediately continues. A sleep of 30 days works exactly as expected even if your workers restart dozens of times during that period.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q5. Describe the four activity timeout types and when to use each. <span class="difficulty medium">Intermediate</span></summary>
+  <div class="qa-body">
+    <p><strong>scheduleToStart:</strong> Time from when Temporal enqueues the activity to when a worker picks it up. Detects overloaded or offline worker pools. Set this short (30s–2min) to fail fast when the task queue is backed up.</p>
+    <p><strong>startToClose:</strong> Time a single execution attempt may take. Most commonly configured. Must be set; Temporal defaults to <code>scheduleToClose</code> if not explicitly set.</p>
+    <p><strong>scheduleToClose:</strong> Overall budget for ALL attempts including retries. If retries keep failing beyond this duration, the activity fails permanently regardless of <code>maximumAttempts</code>.</p>
+    <p><strong>heartbeatTimeout:</strong> For long-running activities. The activity must call <code>Context.current().heartbeat()</code> at least this frequently. Detects silent crashes mid-execution (e.g., hung HTTP calls, stuck upload loops). New attempts can pick up from last heartbeat details.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q6. How do you safely update workflow code that has running executions? <span class="difficulty medium">Intermediate</span></summary>
+  <div class="qa-body">
+    <p>Use <code>workflow.patched('patch-id')</code> (TypeScript) / <code>workflow.getVersion()</code> (Go/Java). This is a <strong>3-step migration</strong>:</p>
+    <ol>
+      <li><strong>Deploy with patch:</strong> Wrap new code in <code>if (patched('v2')) { newCode } else { oldCode }</code>. Running old executions replay through the <code>else</code> branch; new executions use the <code>if</code> branch and write a marker event to history.</li>
+      <li><strong>Drain old executions:</strong> Wait until all pre-patch workflow runs have completed.</li>
+      <li><strong>Deprecate:</strong> Replace <code>patched()</code> with <code>deprecatePatch('v2')</code> and remove the old code. This records a deprecation marker for any still-running v2 executions. Eventually, remove <code>deprecatePatch</code> too once all executions have finished.</li>
+    </ol>
+    <p>Never delete workflow code that may still be needed for replay — this will cause non-determinism errors on running instances.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q7. What is Continue-As-New and when is it needed? <span class="difficulty medium">Intermediate</span></summary>
+  <div class="qa-body">
+    <p>Temporal stores every event in workflow history. Workflows running for months or looping thousands of times accumulate large histories, causing slow replay, high memory usage, and eventually hitting the hard server-side limit (~50k events default). <code>continueAsNew</code> atomically completes the current execution and starts a brand-new execution with a fresh (empty) history, passing the current state as input arguments. From the outside, it looks like one continuous workflow; internally it is a chain of executions. Best practice: call <code>continueAsNew</code> every ~1000–10000 iterations in polling loops, or proactively for any workflow intended to run indefinitely.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q8. Compare Local Activities with regular Activities. <span class="difficulty medium">Intermediate</span></summary>
+  <div class="qa-body">
+    <p><strong>Regular Activities</strong> are scheduled via the Temporal server — the server maintains a task queue, dispatches to any available worker, and tracks the full lifecycle in history. Each execution round-trips through the server, adding latency (~5–20ms) but providing strong durability and the ability to retry on a different worker.</p>
+    <p><strong>Local Activities</strong> run in-process within the workflow worker itself. They bypass the server task queue, producing only a compressed marker event in history. Latency is sub-millisecond. Best for fast, CPU-bound operations (input validation, small transforms) that should complete in under a second. Drawbacks: no cross-worker retry, longer retries block the workflow task, and they don't support heartbeating — keep them short.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q9. How would you implement a long-running ETL pipeline with Temporal that can resume mid-stream after a crash? <span class="difficulty hard">Advanced</span></summary>
+  <div class="qa-body">
+    <p><strong>Design approach:</strong></p>
+    <ol>
+      <li><strong>Activity for each chunk:</strong> Process data in batches. Each batch is a separate activity — on crash, only the current batch retries.</li>
+      <li><strong>Heartbeat with progress cursor:</strong> Within the batch activity, call <code>ctx.heartbeat(cursor)</code> periodically. On retry, read <code>ctx.info.heartbeatDetails</code> to resume from the last committed cursor.</li>
+      <li><strong>Continue-As-New after N batches:</strong> To avoid history bloat, call <code>continueAsNew({ offset: currentOffset })</code> after processing every 1000 batches, passing the current offset as workflow input.</li>
+      <li><strong>Signal for pause/resume:</strong> Use a signal handler with <code>workflow.condition()</code> to allow operators to pause the pipeline during business hours.</li>
+      <li><strong>Non-retryable errors:</strong> Schema validation errors should be in <code>nonRetryableErrorTypes</code> — no point retrying a malformed record; route to a dead-letter queue activity instead.</li>
+    </ol>
+    <p>This design gives at-least-once delivery for each batch with the ability to resume from the last heartbeat checkpoint within a batch.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q10. How does Temporal handle the Saga pattern for distributed transactions? <span class="difficulty hard">Advanced</span></summary>
+  <div class="qa-body">
+    <p>Temporal is an excellent fit for Sagas. You implement the saga orchestrator directly as a workflow:</p>
+    <ol>
+      <li>Call each microservice as an activity in sequence.</li>
+      <li>Wrap the sequence in a try/catch. On failure, execute compensating activities (rollback) in reverse order.</li>
+      <li>Use <code>CancellationScope.nonCancellable()</code> for compensating transactions so they are not cancelled even if the workflow is cancelled.</li>
+    </ol>
+    <pre style="margin-top:10px"><code class="language-typescript">export async function orderSagaWorkflow(order: Order): Promise<void> {
+  let paymentId: string | null = null;
+  let inventoryReserved = false;
+  try {
+    paymentId = await chargePaymentActivity(order);
+    inventoryReserved = await reserveInventoryActivity(order);
+    await shipOrderActivity(order);
+  } catch (err) {
+    await CancellationScope.nonCancellable(async () => {
+      if (inventoryReserved) await releaseInventoryActivity(order);
+      if (paymentId)         await refundPaymentActivity(paymentId);
+    });
+    throw err;
+  }
+}</code></pre>
+    <p>Temporal handles retries on each activity automatically, and the compensations are themselves durable activities — no saga state machine in an external DB needed.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q11. What strategies exist for scaling Temporal workers under high load? <span class="difficulty hard">Advanced</span></summary>
+  <div class="qa-body">
+    <p><strong>Horizontal scaling:</strong> Run multiple worker process replicas — they all poll the same task queue. Temporal's Matching service distributes tasks across pollers. Add replicas via Kubernetes HPA or container orchestration.</p>
+    <p><strong>Dedicated task queues:</strong> Separate activity workers from workflow workers. Separate high-priority tasks (payments) from low-priority (reports) onto different task queues with different worker pools.</p>
+    <p><strong>Worker concurrency tuning:</strong> Increase <code>maxConcurrentActivityTaskExecutions</code> (default 100) and <code>maxConcurrentWorkflowTaskExecutions</code> (default 40) on each worker instance.</p>
+    <p><strong>Sticky execution:</strong> Temporal keeps workflows on the same worker (sticky cache) to avoid re-downloading history on every task. Increase <code>stickyScheduleToStartTimeout</code> to reduce replay frequency when workers are stable.</p>
+    <p><strong>Rate limiting:</strong> Use <code>maxTaskQueueActivitiesPerSecond</code> on the worker or Temporal Cloud namespace limits to prevent downstream overload during traffic spikes.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q12. How do workflow IDs and run IDs interact, and what is the workflow ID conflict policy? <span class="difficulty hard">Advanced</span></summary>
+  <div class="qa-body">
+    <p><strong>workflowId:</strong> User-defined, business-meaningful identifier (e.g., <code>order-12345</code>). Reusable across executions. At any point, at most one <em>open</em> (running) execution per workflowId exists within a namespace.</p>
+    <p><strong>runId:</strong> System-assigned UUID for each individual execution run. A workflowId can have multiple runIds over time (each new execution gets a new runId).</p>
+    <p><strong>ID Conflict Policies (on start):</strong></p>
+    <ul>
+      <li><code>ALLOW_DUPLICATE</code>: Start a new run even if one completed before.</li>
+      <li><code>ALLOW_DUPLICATE_FAILED_ONLY</code>: Only start new run if the last run failed.</li>
+      <li><code>REJECT_DUPLICATE</code>: Fail the start request if any execution with this ID exists.</li>
+      <li><code>TERMINATE_IF_RUNNING</code>: Terminate any running execution and start a new one.</li>
+    </ul>
+    <p>Setting a meaningful workflowId with <code>ALLOW_DUPLICATE_FAILED_ONLY</code> is a common pattern to make workflow starts idempotent — safe to call from an at-least-once message consumer.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q13. Explain how Temporal achieves exactly-once semantics for activities. <span class="difficulty hard">Advanced</span></summary>
+  <div class="qa-body">
+    <p>Temporal provides <strong>at-least-once</strong> execution semantics for activities by default (retries on failure). Achieving idempotence / effectively-once requires application-level design:</p>
+    <ol>
+      <li><strong>Idempotency keys:</strong> Pass a stable idempotency key (e.g., workflowId + activityId + attempt) to downstream APIs that support it (Stripe, Braintree). The same charge call with the same key is a no-op.</li>
+      <li><strong>Database upserts:</strong> Use INSERT ... ON CONFLICT DO NOTHING or upsert semantics keyed on the operation ID.</li>
+      <li><strong>Check-then-act:</strong> In the activity, first check if the side effect already occurred; skip if yes. This is safe because activities are retried from scratch, not from mid-execution.</li>
+    </ol>
+    <p>Note: Temporal guarantees that a successfully completed activity result is durably persisted and will NOT be re-executed on workflow replay. Retries only happen when an activity fails (throws an exception or times out).</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q14. How would you model a human-in-the-loop approval process with SLA enforcement? <span class="difficulty vhard">Very Advanced</span></summary>
+  <div class="qa-body">
+    <p><strong>Approach:</strong> Model the approval wait as a <code>workflow.condition()</code> with a timeout, combined with Signals for approve/reject.</p>
+    <pre><code class="language-typescript">export async function approvalWorkflow(request: ApprovalRequest): Promise<ApprovalResult> {
+  let decision: 'approved' | 'rejected' | null = null;
+  let reviewer = '';
+
+  setHandler(approveSignal, ({ by }) => { decision = 'approved'; reviewer = by; });
+  setHandler(rejectSignal,  ({ by, reason }) => { decision = 'rejected'; reviewer = by; });
+
+  // Send notification to approvers
+  await notifyApproversActivity(request);
+
+  const slaMs = request.slaHours * 60 * 60 * 1000;
+  const approved = await condition(() => decision !== null, slaMs);
+
+  if (!approved) {
+    // SLA breached — escalate or auto-approve based on policy
+    await escalateActivity(request);
+    decision = request.defaultOnTimeout;
+  }
+
+  await auditLogActivity({ request, decision, reviewer, timestamp: workflow.now() });
+  return { decision, reviewer };
+}</code></pre>
+    <p><strong>SLA monitoring:</strong> Run a side workflow (or use a separate timer signal) that pings an escalation channel at 50%/80%/100% of SLA. Use Temporal's visibility API to query all open approval workflows approaching their SLA via <code>ExecutionStatus='Running' AND StartTime &lt; '...'</code>.</p>
+    <p><strong>Audit:</strong> The immutable event history is itself a full audit trail — every signal received, every state change timestamped. Export to your audit system via the archival feature.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q15. How does Temporal's event sourcing model compare to traditional event sourcing (EventStoreDB) architectures? <span class="difficulty vhard">Very Advanced</span></summary>
+  <div class="qa-body">
+    <p>Both use an immutable, append-only event log as the source of truth. Key similarities and differences:</p>
+    <p><strong>Similarities:</strong> Immutable history, state reconstructed by replaying events, full audit log, temporal queries (point-in-time state).</p>
+    <p><strong>Differences:</strong></p>
+    <ul>
+      <li><strong>Purpose:</strong> Traditional event sourcing stores domain events for the entire application's aggregate state, often feeding multiple read models/projections. Temporal's event log is per-workflow-execution and private to Temporal — it stores workflow task commands and results, not necessarily your domain events.</li>
+      <li><strong>Visibility:</strong> Traditional ES exposes events to consumers (event bus, subscriptions). Temporal's history is internal — you get it via query/describe, not as a consumer stream.</li>
+      <li><strong>Projections:</strong> ES practitioners build read models by projecting the event stream. With Temporal you use Queries and the Visibility API (ElasticSearch) for read models.</li>
+      <li><strong>Complementary use:</strong> You can use Temporal to orchestrate workflows that emit domain events to an event bus (Kafka, SNS) as activities. Temporal handles the orchestration durability; the bus handles the projection fan-out.</li>
+    </ul>
+    <p>In practice, Temporal reduces the need for full event sourcing in the orchestration layer — its implicit event log provides the durability guarantees that event sourcing was often adopted for, without the CQRS complexity.</p>
+  </div>
+</details>
+
+</div>
+<script>
+  hljs.highlightAll();
+  mermaid.initialize({ startOnLoad: true, theme: 'dark', themeVariables: { background: '#161b22', primaryColor: '#1f6feb', primaryTextColor: '#c9d1d9', edgeLabelBackground: '#161b22', lineColor: '#30363d' }});
+</script>
+</body>
+</html>

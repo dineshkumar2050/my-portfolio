@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Caching — Patterns, Eviction, Redis, CDN, Browser</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6;display:flex;flex-direction:column}.topnav{background:#161b22;padding:10px 24px;border-bottom:1px solid #30363d;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100}.topnav a{color:#58a6ff;text-decoration:none;font-size:13px}.topnav h1{font-size:16px;color:#e6edf3;margin:0}.layout{display:flex;flex:1}.sidebar{width:260px;background:#161b22;border-right:1px solid #30363d;padding:16px;position:sticky;top:41px;height:calc(100vh - 41px);overflow-y:auto;flex-shrink:0}.sidebar a{display:block;padding:4px 8px;color:#8b949e;text-decoration:none;font-size:13px;border-radius:4px;margin-bottom:2px}.sidebar a:hover{background:#21262d;color:#c9d1d9}.sidebar .section-title{color:#58a6ff;font-size:11px;text-transform:uppercase;letter-spacing:.5px;margin:16px 0 6px;padding:0 8px;font-weight:600}main{flex:1;padding:32px 48px;max-width:960px}h1{font-size:2rem;color:#e6edf3;border-bottom:1px solid #30363d;padding-bottom:16px;margin-bottom:24px}h2{font-size:1.5rem;color:#e6edf3;margin:48px 0 16px;border-bottom:1px solid #21262d;padding-bottom:8px}h3{font-size:1.15rem;color:#79c0ff;margin:24px 0 10px}h4{font-size:1rem;color:#d2a8ff;margin:16px 0 8px}p{margin-bottom:12px}ul,ol{margin:0 0 16px 24px}li{margin-bottom:4px}pre{margin:16px 0;border-radius:6px;overflow-x:auto;font-size:13px}code:not(pre code){background:#161b22;padding:2px 6px;border-radius:4px;font-size:13px;color:#f0883e;border:1px solid #30363d}table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}th{background:#161b22;color:#58a6ff;padding:10px 14px;text-align:left;border:1px solid #30363d}td{padding:10px 14px;border:1px solid #30363d;vertical-align:top}tr:nth-child(even) td{background:#0a0d12}.mermaid{background:#161b22;padding:20px;border-radius:6px;margin:16px 0;text-align:center}details{border:1px solid #30363d;border-radius:6px;margin:10px 0;overflow:hidden}summary{padding:12px 16px;cursor:pointer;background:#161b22;color:#79c0ff;font-weight:600;list-style:none}details[open] summary{border-bottom:1px solid #30363d}.answer{padding:16px 20px;background:#0d1117}.badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:700;margin-left:8px}.easy{background:#1a4731;color:#3fb950}.intermediate{background:#2d2b00;color:#e3b341}.advanced{background:#3d1f00;color:#f0883e}.very-advanced{background:#3d0000;color:#ff7b72}.callout{background:#161b22;border-left:4px solid #58a6ff;padding:12px 16px;border-radius:0 6px 6px 0;margin:16px 0}footer{text-align:center;padding:24px;color:#8b949e;font-size:12px;border-top:1px solid #30363d;margin-top:40px}
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <h1>Caching — Patterns, Eviction, Redis, CDN &amp; Browser</h1>
+  <a href="databases.html">Databases</a>
+  <a href="kafka.html">Kafka</a>
+  <a href="elasticsearch.html">Elasticsearch</a>
+</nav>
+<div class="layout">
+<aside class="sidebar">
+  <div class="section-title">Why Cache</div>
+  <a href="#why-cache">Motivation &amp; Hit Ratio</a>
+  <div class="section-title">Cache Patterns</div>
+  <a href="#cache-aside">Cache-Aside (Lazy)</a>
+  <a href="#write-through">Write-Through</a>
+  <a href="#write-behind">Write-Behind</a>
+  <a href="#write-around">Write-Around</a>
+  <a href="#read-through">Read-Through</a>
+  <div class="section-title">Eviction Policies</div>
+  <a href="#lru">LRU</a>
+  <a href="#lfu">LFU</a>
+  <a href="#other-eviction">FIFO / LIFO / MRU / ARC / TinyLFU</a>
+  <div class="section-title">Cache Problems</div>
+  <a href="#stampede">Cache Stampede</a>
+  <a href="#penetration">Cache Penetration</a>
+  <a href="#avalanche">Cache Avalanche</a>
+  <a href="#pollution">Cache Pollution</a>
+  <div class="section-title">CDN Caching</div>
+  <a href="#cdn">CDN &amp; Edge Caching</a>
+  <div class="section-title">Browser Caching</div>
+  <a href="#browser">Cache-Control &amp; ETags</a>
+  <div class="section-title">Redis Deep Dive</div>
+  <a href="#redis-structures">Data Structures</a>
+  <a href="#redis-persistence">Persistence</a>
+  <a href="#redis-cluster">Clustering &amp; Sentinel</a>
+  <a href="#redis-pubsub">Pub/Sub vs Streams</a>
+  <a href="#redis-tx">Transactions &amp; Lua</a>
+  <a href="#redis-eviction">Eviction Policies</a>
+  <a href="#redis-vs-memcached">Redis vs Memcached</a>
+  <div class="section-title">LRU Implementation</div>
+  <a href="#lru-impl">LRU Cache in JS</a>
+  <div class="section-title">Interview Q&amp;As</div>
+  <a href="#interview">20+ Questions</a>
+</aside>
+<main>
+<h1>Caching: Patterns, Eviction, Redis, CDN &amp; Browser Caching</h1>
+
+<!-- ============================================================ -->
+<h2 id="why-cache">Why Cache?</h2>
+
+<p>Caching is the practice of storing computed or fetched results closer to the consumer so future requests can be served faster without repeating expensive work.</p>
+
+<table>
+<tr><th>Benefit</th><th>Detail</th></tr>
+<tr><td>Latency Reduction</td><td>Memory access: ~100 ns. SSD read: ~100 µs. Network DB query: ~1-10 ms. Caching eliminates the expensive path.</td></tr>
+<tr><td>Throughput Increase</td><td>One DB server can serve 1K TPS; a Redis cluster can serve 1M+ ops/sec. Cache absorbs the read amplification.</td></tr>
+<tr><td>DB Load Reduction</td><td>Popular queries (hot keys) hitting cache instead of DB allows DB to handle complex writes and analytics.</td></tr>
+<tr><td>Resilience</td><td>Cache can serve stale data during DB downtime if configured with stale-while-revalidate.</td></tr>
+</table>
+
+<h4>Cache Hit Ratio</h4>
+<p><code>Hit Ratio = Cache Hits / (Cache Hits + Cache Misses)</code></p>
+<p>A hit ratio of 80% means 80% of requests are served from cache. Aim for &gt;90% for effective caching. Monitor with Redis <code>INFO stats</code>: <code>keyspace_hits</code> / (<code>keyspace_hits</code> + <code>keyspace_misses</code>).</p>
+
+<!-- ============================================================ -->
+<h2 id="cache-aside">Cache-Aside (Lazy Loading)</h2>
+
+<p>Application code manages the cache explicitly. Cache is populated on a miss. Most widely used pattern.</p>
+
+<div class="mermaid">
+sequenceDiagram
+  participant App
+  participant Cache as Cache (Redis)
+  participant DB
+  App->>Cache: GET user:42
+  alt Cache Hit
+    Cache-->>App: return user data
+  else Cache Miss
+    Cache-->>App: nil
+    App->>DB: SELECT * FROM users WHERE id=42
+    DB-->>App: user data
+    App->>Cache: SET user:42 {data} EX 300
+    App-->>App: return user data
+  end
+</div>
+
+<pre><code class="language-javascript">async function getUser(userId) {
+  const cacheKey = `user:${userId}`;
+  // Try cache first
+  const cached = await redis.get(cacheKey);
+  if (cached) return JSON.parse(cached);
+
+  // Cache miss: fetch from DB
+  const user = await db.query('SELECT * FROM users WHERE id = ?', [userId]);
+  if (user) {
+    await redis.setex(cacheKey, 300, JSON.stringify(user)); // 5 min TTL
+  }
+  return user;
+}
+
+// Invalidation: delete on update
+async function updateUser(userId, data) {
+  await db.query('UPDATE users SET ? WHERE id = ?', [data, userId]);
+  await redis.del(`user:${userId}`); // invalidate
+}</code></pre>
+
+<table>
+<tr><th></th><th>Cache-Aside</th></tr>
+<tr><td>Pros</td><td>Cache only what's requested; resilient to cache failure (app reads DB); flexible TTL per object; works with any cache store</td></tr>
+<tr><td>Cons</td><td>Initial cache miss overhead; stale data possible if invalidation is missed; cache stampede risk on cold start</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<h2 id="write-through">Write-Through</h2>
+
+<p>Every write goes through the cache — data is written to cache and database synchronously before returning to the client.</p>
+
+<div class="mermaid">
+sequenceDiagram
+  participant App
+  participant Cache
+  participant DB
+  App->>Cache: WRITE user:42 data
+  Cache->>DB: INSERT/UPDATE user (synchronous)
+  DB-->>Cache: OK
+  Cache-->>App: OK
+  Note over Cache,DB: Cache and DB always in sync
+</div>
+
+<table>
+<tr><th></th><th>Write-Through</th></tr>
+<tr><td>Pros</td><td>Cache and DB always consistent; no stale reads after writes; no invalidation logic needed</td></tr>
+<tr><td>Cons</td><td>Write latency = cache + DB latency; cache may fill with infrequently-read data (write-heavy workloads waste cache space); cache failure on write = write failure</td></tr>
+<tr><td>Best For</td><td>Read-heavy data that is always written then read shortly after (user sessions, product details post-update)</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<h2 id="write-behind">Write-Behind (Write-Back)</h2>
+
+<p>Write goes to cache immediately; cache asynchronously flushes to the database later (after a delay or in batches).</p>
+
+<div class="mermaid">
+sequenceDiagram
+  participant App
+  participant Cache
+  participant Queue as Async Queue
+  participant DB
+  App->>Cache: WRITE user:42 data
+  Cache-->>App: OK (instant)
+  Cache->>Queue: queue DB write
+  Queue->>DB: batch INSERT/UPDATE (delayed)
+  DB-->>Queue: OK
+</div>
+
+<table>
+<tr><th></th><th>Write-Behind</th></tr>
+<tr><td>Pros</td><td>Lowest write latency; DB writes can be batched (reduces I/O); absorbs write spikes</td></tr>
+<tr><td>Cons</td><td>Data loss risk if cache fails before flush; complex to implement correctly; eventual consistency between cache and DB; dirty tracking required</td></tr>
+<tr><td>Best For</td><td>High-frequency writes where some data loss is tolerable (view counts, analytics counters, gaming scores)</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<h2 id="write-around">Write-Around</h2>
+
+<p>Writes bypass the cache and go directly to the database. Cache is only populated on reads (cache-aside on read).</p>
+
+<table>
+<tr><th></th><th>Write-Around</th></tr>
+<tr><td>Pros</td><td>Cache not polluted with write-once / rarely-read data; prevents cache churn</td></tr>
+<tr><td>Cons</td><td>First read after a write always misses cache; higher read latency for recently-written data</td></tr>
+<tr><td>Best For</td><td>Write-once read-never or read-rarely data (logs, audit records, large files)</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<h2 id="read-through">Read-Through</h2>
+
+<p>Cache sits in front of DB. Application always reads from cache. On a miss, the <em>cache itself</em> (not the application) fetches from DB, populates itself, and returns. Application code is simpler.</p>
+
+<div class="mermaid">
+sequenceDiagram
+  participant App
+  participant Cache as Cache Layer (provider)
+  participant DB
+  App->>Cache: GET user:42
+  alt Hit
+    Cache-->>App: data
+  else Miss
+    Cache->>DB: SELECT ...
+    DB-->>Cache: data
+    Cache->>Cache: store in cache
+    Cache-->>App: data
+  end
+</div>
+
+<table>
+<tr><th></th><th>Read-Through</th></tr>
+<tr><td>Pros</td><td>Application code simplified (no cache population logic); works well with write-through (cache always warm)</td></tr>
+<tr><td>Cons</td><td>First request always slow (cold cache); tightly couples cache to data model; harder to customize per-entity TTL</td></tr>
+<tr><td>Best For</td><td>Managed caches (AWS ElastiCache DAX for DynamoDB, NCache, Ehcache with CacheLoader)</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<h2 id="lru">Eviction Policies — LRU</h2>
+
+<p><strong>LRU (Least Recently Used)</strong> evicts the item that has not been accessed for the longest time. Implementation: doubly linked list (order of use) + hashmap (O(1) lookup).</p>
+
+<pre><code class="language-javascript">// LRU Cache implementation from scratch in JavaScript
+// O(1) get and put using Map (insertion-ordered) as LRU queue
+class LRUCache {
+  constructor(capacity) {
+    this.capacity = capacity;
+    this.cache = new Map(); // key → value, maintains insertion order
+  }
+
+  get(key) {
+    if (!this.cache.has(key)) return -1;
+    // Move to end (most recently used)
+    const value = this.cache.get(key);
+    this.cache.delete(key);
+    this.cache.set(key, value);
+    return value;
+  }
+
+  put(key, value) {
+    if (this.cache.has(key)) {
+      this.cache.delete(key); // remove to re-insert at end
+    } else if (this.cache.size >= this.capacity) {
+      // Evict LRU: first key in Map (least recently used)
+      const lruKey = this.cache.keys().next().value;
+      this.cache.delete(lruKey);
+    }
+    this.cache.set(key, value);
+  }
+}
+
+// Usage
+const cache = new LRUCache(3);
+cache.put(1, 'a'); // {1:'a'}
+cache.put(2, 'b'); // {1:'a', 2:'b'}
+cache.put(3, 'c'); // {1:'a', 2:'b', 3:'c'}
+cache.get(1);      // returns 'a', moves 1 to end: {2:'b', 3:'c', 1:'a'}
+cache.put(4, 'd'); // evicts 2 (LRU): {3:'c', 1:'a', 4:'d'}</code></pre>
+
+<h4>Doubly Linked List + HashMap (Classic Implementation)</h4>
+<pre><code class="language-javascript">class Node {
+  constructor(key, val) { this.key = key; this.val = val; this.prev = this.next = null; }
+}
+
+class LRUCacheLinked {
+  constructor(capacity) {
+    this.capacity = capacity;
+    this.map = new Map();
+    // Sentinel head (LRU end) and tail (MRU end)
+    this.head = new Node(0, 0);
+    this.tail = new Node(0, 0);
+    this.head.next = this.tail;
+    this.tail.prev = this.head;
+  }
+
+  _remove(node) {
+    node.prev.next = node.next;
+    node.next.prev = node.prev;
+  }
+
+  _addToTail(node) {
+    node.prev = this.tail.prev;
+    node.next = this.tail;
+    this.tail.prev.next = node;
+    this.tail.prev = node;
+  }
+
+  get(key) {
+    if (!this.map.has(key)) return -1;
+    const node = this.map.get(key);
+    this._remove(node);
+    this._addToTail(node);
+    return node.val;
+  }
+
+  put(key, val) {
+    if (this.map.has(key)) this._remove(this.map.get(key));
+    else if (this.map.size >= this.capacity) {
+      const lru = this.head.next;
+      this._remove(lru);
+      this.map.delete(lru.key);
+    }
+    const node = new Node(key, val);
+    this._addToTail(node);
+    this.map.set(key, node);
+  }
+}</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="lfu">Eviction Policies — LFU</h2>
+
+<p><strong>LFU (Least Frequently Used)</strong> evicts the item with the lowest access frequency. Ties broken by LRU among same frequency. Requires tracking a frequency counter per key.</p>
+
+<pre><code class="language-javascript">class LFUCache {
+  constructor(capacity) {
+    this.capacity = capacity;
+    this.minFreq = 0;
+    this.keyMap = new Map();   // key → {value, freq}
+    this.freqMap = new Map();  // freq → LinkedSet of keys (insertion order = LRU within freq)
+  }
+
+  _updateFreq(key) {
+    const { value, freq } = this.keyMap.get(key);
+    this.keyMap.set(key, { value, freq: freq + 1 });
+    this.freqMap.get(freq).delete(key);
+    if (this.freqMap.get(freq).size === 0) {
+      this.freqMap.delete(freq);
+      if (this.minFreq === freq) this.minFreq++;
+    }
+    if (!this.freqMap.has(freq + 1)) this.freqMap.set(freq + 1, new Set());
+    this.freqMap.get(freq + 1).add(key);
+  }
+
+  get(key) {
+    if (!this.keyMap.has(key)) return -1;
+    this._updateFreq(key);
+    return this.keyMap.get(key).value;
+  }
+
+  put(key, value) {
+    if (this.capacity === 0) return;
+    if (this.keyMap.has(key)) {
+      this.keyMap.get(key).value = value;
+      this._updateFreq(key);
+      return;
+    }
+    if (this.keyMap.size >= this.capacity) {
+      // Evict LFU (and LRU among same frequency)
+      const minFreqKeys = this.freqMap.get(this.minFreq);
+      const evictKey = minFreqKeys.values().next().value;
+      minFreqKeys.delete(evictKey);
+      if (minFreqKeys.size === 0) this.freqMap.delete(this.minFreq);
+      this.keyMap.delete(evictKey);
+    }
+    this.keyMap.set(key, { value, freq: 1 });
+    if (!this.freqMap.has(1)) this.freqMap.set(1, new Set());
+    this.freqMap.get(1).add(key);
+    this.minFreq = 1;
+  }
+}</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="other-eviction">FIFO / LIFO / MRU / ARC / TinyLFU</h2>
+
+<table>
+<tr><th>Policy</th><th>Evicts</th><th>Use Case</th><th>Notes</th></tr>
+<tr><td>FIFO</td><td>Oldest entry (by insertion time)</td><td>Simple queue-like access patterns</td><td>No recency/frequency tracking; misses recently used but old items</td></tr>
+<tr><td>LIFO</td><td>Most recently inserted</td><td>Stack-like, rarely used for caches</td><td>Counter-intuitive for caching; rarely used</td></tr>
+<tr><td>MRU (Most Recently Used)</td><td>Most recently accessed item</td><td>Cyclic access patterns where last-used is least likely to be needed again</td><td>Good for scan resistance (e.g., DB buffer pool when doing full table scans)</td></tr>
+<tr><td>ARC (Adaptive Replacement Cache)</td><td>Dynamically balances between LRU and LFU ghosts</td><td>General-purpose high-performance caching</td><td>Maintains 4 lists: T1 (recent once), T2 (recent twice+), B1 (ghost of T1), B2 (ghost of T2). Adapts to workload. Used in ZFS, Solaris.</td></tr>
+<tr><td>TinyLFU / W-TinyLFU</td><td>LFU with frequency sketches (Count-Min Sketch); Windowed portion for recency</td><td>General-purpose high hit-rate caches</td><td>Used in Caffeine (Java). Window TinyLFU: 1% window cache (LRU) + 99% main (SLRU). Frequency tracked with 4-bit counters + periodic halving.</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<h2 id="stampede">Cache Stampede (Thundering Herd)</h2>
+
+<p>Occurs when a popular cached item expires and many concurrent requests all miss cache simultaneously, all hitting the database at once, potentially overwhelming it.</p>
+
+<h4>Solutions</h4>
+
+<h4>1. Mutex / Locking</h4>
+<pre><code class="language-javascript">// Only one request refreshes cache; others wait
+async function getWithMutex(key) {
+  const cached = await redis.get(key);
+  if (cached) return JSON.parse(cached);
+
+  const lockKey = `lock:${key}`;
+  const locked = await redis.set(lockKey, '1', 'NX', 'EX', 5); // 5s lock
+  if (locked) {
+    try {
+      const data = await db.fetchData(key);
+      await redis.setex(key, 300, JSON.stringify(data));
+      return data;
+    } finally {
+      await redis.del(lockKey);
+    }
+  } else {
+    // Wait and retry (another process is refreshing)
+    await sleep(100);
+    return getWithMutex(key);
+  }
+}</code></pre>
+
+<h4>2. Probabilistic Early Expiration (XFetch)</h4>
+<pre><code class="language-javascript">// Probabilistically refresh BEFORE expiry to avoid simultaneous expiry
+async function getWithEarlyExpiry(key, beta = 1) {
+  const data = await redis.get(key);
+  if (!data) return refreshCache(key);
+
+  const { value, delta, expiry } = JSON.parse(data);
+  const now = Date.now() / 1000;
+  // Recompute if random threshold crossed before TTL expires
+  if (now - delta * beta * Math.log(Math.random()) >= expiry) {
+    refreshCacheAsync(key); // background refresh
+  }
+  return value;
+}</code></pre>
+
+<h4>3. Background Refresh (Stale-While-Revalidate)</h4>
+<p>Return stale value immediately; asynchronously kick off a background job to refresh the cache. Client gets fast response; cache freshness converges.</p>
+
+<!-- ============================================================ -->
+<h2 id="penetration">Cache Penetration</h2>
+
+<p>Requests for keys that <em>never exist</em> in cache or DB (e.g., querying non-existent user IDs) bypass cache entirely and hammer the database on every request.</p>
+
+<h4>Solutions</h4>
+
+<h4>1. Cache Null Values</h4>
+<pre><code class="language-javascript">const result = await db.findById(id);
+if (result === null) {
+  // Cache the absence with short TTL
+  await redis.setex(`user:${id}`, 60, '__NULL__');
+  return null;
+}
+await redis.setex(`user:${id}`, 300, JSON.stringify(result));</code></pre>
+
+<h4>2. Bloom Filter</h4>
+<pre><code class="language-javascript">// Add all valid IDs to bloom filter on startup
+// Before any DB query, check bloom filter
+import { BloomFilter } from 'bloom-filters';
+const bloomFilter = BloomFilter.create(1000000, 0.01); // 1M items, 1% false positive
+
+function getUser(id) {
+  if (!bloomFilter.has(String(id))) {
+    return null; // Definitely doesn't exist — skip DB entirely
+  }
+  return db.findById(id); // May exist (bloom filter says yes, 1% may be false positive)
+}
+
+// Rebuild bloom filter periodically from DB</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="avalanche">Cache Avalanche</h2>
+
+<p>Large numbers of cache keys expire simultaneously, causing a sudden surge of database load — the "avalanche" of cache misses all hitting the DB at the same time.</p>
+
+<h4>Solutions</h4>
+<ul>
+  <li><strong>TTL Jitter:</strong> Add random spread to TTLs: <code>TTL = baseTTL + random(0, baseTTL * 0.1)</code>. Keys expire gradually over a time window.</li>
+  <li><strong>Circuit Breaker:</strong> Monitor DB error rate; if threshold exceeded, fail fast and return cached/default data rather than amplifying DB load.</li>
+  <li><strong>Cache Warm-up:</strong> Pre-populate cache before traffic hits (e.g., after deployment, after Redis restart). Load data from DB in background before going live.</li>
+  <li><strong>Multi-level Caching:</strong> L1 (local in-memory Caffeine) + L2 (Redis). Even if Redis has a gap, L1 absorbs some traffic.</li>
+  <li><strong>Distributed Lock on Repopulation:</strong> For each key, only one node refreshes it (mutex pattern).</li>
+</ul>
+
+<pre><code class="language-javascript">// TTL Jitter
+function setWithJitter(key, value, baseTtl) {
+  const jitter = Math.floor(Math.random() * baseTtl * 0.1);
+  return redis.setex(key, baseTtl + jitter, value);
+}</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="pollution">Cache Pollution</h2>
+
+<p>Cache is filled with items that are accessed once (or rarely) and never evicted quickly enough, crowding out frequently-accessed items. Common with LRU when scan operations (full table reads, batch jobs) evict hot data.</p>
+
+<h4>Solutions</h4>
+<ul>
+  <li>Use <strong>MRU eviction</strong> for sequential scan access patterns (evicts the last-scanned item).</li>
+  <li>Use <strong>TinyLFU/W-TinyLFU</strong> — frequency tracking prevents single-access items from displacing frequently-used ones.</li>
+  <li>Use <strong>segmented caches</strong> (protected + probationary segments like SLRU) — new items start in probationary; only promoted to protected after second access.</li>
+  <li>Use explicit <strong>bypass hints</strong>: database buffer pool has <code>SQL_NO_CACHE</code>; application can skip caching for known bulk operations.</li>
+</ul>
+
+<!-- ============================================================ -->
+<h2 id="cdn">CDN Caching</h2>
+
+<p>CDN (Content Delivery Network) caches static and dynamic content at edge servers close to end users, reducing origin server load and latency.</p>
+
+<h4>CDN Architecture</h4>
+<div class="mermaid">
+graph LR
+  User["User (Sydney)"]
+  Edge["Edge Node (Singapore PoP)"]
+  Shield["Origin Shield (Tokyo)"]
+  Origin["Origin Server (US)"]
+  User -->|Request| Edge
+  Edge -->|Cache Miss| Shield
+  Shield -->|Cache Miss| Origin
+  Origin -->|Response| Shield
+  Shield -->|Cache &amp; Return| Edge
+  Edge -->|Cache &amp; Return| User
+</div>
+
+<h4>Cache-Control Headers</h4>
+<table>
+<tr><th>Directive</th><th>Meaning</th></tr>
+<tr><td>max-age=N</td><td>Resource is fresh for N seconds from the request time</td></tr>
+<tr><td>s-maxage=N</td><td>Like max-age but for shared caches (CDN/proxy) only; overrides max-age for CDN</td></tr>
+<tr><td>no-cache</td><td>Must revalidate with server before each use (not "don't cache" — it IS cached but always validated)</td></tr>
+<tr><td>no-store</td><td>Never store in any cache — every response fetched fresh from server</td></tr>
+<tr><td>private</td><td>Can only be cached in browser; not CDN or proxy caches</td></tr>
+<tr><td>public</td><td>Can be cached by any cache (browser, CDN, proxy)</td></tr>
+<tr><td>must-revalidate</td><td>Once stale, must revalidate; cannot serve stale even on server error</td></tr>
+<tr><td>immutable</td><td>Resource will never change during max-age period; browser skips revalidation entirely</td></tr>
+<tr><td>stale-while-revalidate=N</td><td>Serve stale response while revalidating in background; N = window in seconds</td></tr>
+<tr><td>stale-if-error=N</td><td>Serve stale response if server returns 5xx for up to N seconds</td></tr>
+</table>
+
+<pre><code class="language-http">// Static asset (hashed filename — never changes)
+Cache-Control: public, max-age=31536000, immutable
+
+// API response (fresh for 60s, CDN can serve stale for 10s while refreshing)
+Cache-Control: public, s-maxage=60, stale-while-revalidate=10
+
+// User-specific data (browser only, 5 minutes)
+Cache-Control: private, max-age=300
+
+// Always revalidate (dynamic page, but cacheable)
+Cache-Control: no-cache
+ETag: "abc123"
+
+// Never cache (payment, auth)
+Cache-Control: no-store, no-cache, must-revalidate</code></pre>
+
+<h4>Surrogate-Control</h4>
+<p>CDN-specific header (Varnish, Fastly, Akamai) that overrides Cache-Control for CDN behavior without affecting browser caching: <code>Surrogate-Control: max-age=3600</code>. Stripped by CDN before response reaches browser.</p>
+
+<!-- ============================================================ -->
+<h2 id="browser">Browser Caching</h2>
+
+<h4>Validation Headers</h4>
+<table>
+<tr><th>Header Pair</th><th>Direction</th><th>Mechanism</th></tr>
+<tr><td>ETag / If-None-Match</td><td>Server sends ETag; browser sends If-None-Match on next request</td><td>If resource unchanged: server returns 304 Not Modified (no body); browser uses cached version</td></tr>
+<tr><td>Last-Modified / If-Modified-Since</td><td>Server sends timestamp; browser sends it back</td><td>Weaker than ETag; time-based validation; 1-second granularity limitation</td></tr>
+</table>
+
+<pre><code class="language-http">-- First response
+HTTP/1.1 200 OK
+Cache-Control: max-age=3600
+ETag: "v1.2-abc123"
+Last-Modified: Sat, 01 Jun 2024 10:00:00 GMT
+Content-Type: application/json
+
+-- Revalidation request (after TTL expires)
+GET /api/products HTTP/1.1
+If-None-Match: "v1.2-abc123"
+If-Modified-Since: Sat, 01 Jun 2024 10:00:00 GMT
+
+-- Server: resource unchanged
+HTTP/1.1 304 Not Modified
+ETag: "v1.2-abc123"
+Cache-Control: max-age=3600</code></pre>
+
+<h4>Vary Header</h4>
+<p>Tells caches that the response varies by a request header. <code>Vary: Accept-Encoding</code> means cache a separate copy for gzip vs brotli clients. <code>Vary: Accept-Language</code> for localized responses. CDNs store separate cache entries per Vary combination.</p>
+
+<!-- ============================================================ REDIS =========== -->
+<h2 id="redis-structures">Redis — Data Structures &amp; Commands</h2>
+
+<h3>String</h3>
+<pre><code class="language-bash">SET user:42:name "Alice"
+GET user:42:name
+INCR page_views:home          # atomic increment
+INCRBY score:player:1 10
+SETNX lock:resource "1"       # set if not exists (mutex)
+SETEX session:abc 3600 "{...}" # set with TTL seconds
+SET key value EX 60 NX        # set with TTL + only if not exists (atomic lock)
+MSET k1 v1 k2 v2 k3 v3       # multiple set
+MGET k1 k2 k3                 # multiple get
+GETSET key newval             # get old value, set new (atomic swap)
+STRLEN key                    # length of string</code></pre>
+
+<h3>List (doubly linked list)</h3>
+<pre><code class="language-bash">LPUSH queue task1 task2       # push to head
+RPUSH queue task3             # push to tail
+LPOP queue                    # pop from head
+RPOP queue                    # pop from tail
+BLPOP queue 30                # blocking pop, timeout 30s (worker queue pattern)
+LRANGE queue 0 -1             # all elements
+LLEN queue                    # length
+LINDEX queue 0                # element at index
+LINSERT queue BEFORE pivot val
+LREM queue 1 "val"            # remove N occurrences</code></pre>
+
+<h3>Hash</h3>
+<pre><code class="language-bash">HSET user:42 name "Alice" age 30 email "a@b.com"
+HGET user:42 name
+HGETALL user:42               # all fields and values
+HMGET user:42 name email      # multiple fields
+HDEL user:42 email
+HEXISTS user:42 name
+HLEN user:42
+HINCRBY user:42 age 1
+HSCAN user:42 0 MATCH * COUNT 100</code></pre>
+
+<h3>Set (unordered unique elements)</h3>
+<pre><code class="language-bash">SADD tags:post:1 "redis" "caching" "nosql"
+SMEMBERS tags:post:1
+SISMEMBER tags:post:1 "redis"  # O(1) membership check
+SCARD tags:post:1              # cardinality
+SREM tags:post:1 "nosql"
+SINTER tags:post:1 tags:post:2  # intersection
+SUNION tags:post:1 tags:post:2  # union
+SDIFF tags:post:1 tags:post:2   # difference</code></pre>
+
+<h3>Sorted Set (score-ordered unique elements)</h3>
+<pre><code class="language-bash">ZADD leaderboard 1500 "alice" 2300 "bob" 800 "carol"
+ZRANGE leaderboard 0 -1 WITHSCORES     # ascending
+ZREVRANGE leaderboard 0 9 WITHSCORES   # top 10 desc
+ZRANGEBYSCORE leaderboard 1000 2000    # score range
+ZRANK leaderboard "alice"              # rank (0-based, ascending)
+ZREVRANK leaderboard "alice"           # rank from top
+ZINCRBY leaderboard 100 "alice"        # add to score
+ZREM leaderboard "carol"
+ZCOUNT leaderboard 1000 2000           # count in score range
+ZPOPMIN leaderboard 1                  # pop lowest score member</code></pre>
+
+<h3>Stream</h3>
+<pre><code class="language-bash">XADD events * action "click" page "home"  # auto-generated ID
+XREAD COUNT 10 STREAMS events 0           # read from beginning
+XREAD COUNT 10 BLOCK 0 STREAMS events $   # blocking read for new events
+
+# Consumer groups
+XGROUP CREATE events mygroup $ MKSTREAM
+XREADGROUP GROUP mygroup consumer1 COUNT 10 STREAMS events >
+XACK events mygroup 1700000000-0          # acknowledge processed</code></pre>
+
+<h3>HyperLogLog (probabilistic cardinality)</h3>
+<pre><code class="language-bash">PFADD unique_visitors:2024-06-01 "user:1" "user:2" "user:3"
+PFCOUNT unique_visitors:2024-06-01        # ~0.81% standard error
+PFMERGE monthly_uniq daily:1 daily:2 daily:3</code></pre>
+
+<h3>Geo</h3>
+<pre><code class="language-bash">GEOADD locations -73.9857 40.7484 "NYC" -87.6298 41.8781 "Chicago"
+GEODIST locations "NYC" "Chicago" km
+GEORADIUS locations -73.9857 40.7484 500 km WITHCOORD WITHDIST</code></pre>
+
+<h3>Bloom Filter (RedisBloom module)</h3>
+<pre><code class="language-bash">BF.RESERVE emails 0.01 1000000    # 1% error rate, 1M capacity
+BF.ADD emails user@example.com
+BF.EXISTS emails user@example.com  # 0 = definitely not; 1 = probably yes</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="redis-persistence">Redis Persistence</h2>
+
+<h4>RDB (Redis Database Snapshots)</h4>
+<pre><code class="language-bash"># redis.conf
+save 900 1      # save after 900s if at least 1 key changed
+save 300 10     # save after 300s if at least 10 keys changed
+save 60 10000   # save after 60s if at least 10000 keys changed
+
+# Manual save
+SAVE        # synchronous (blocks Redis)
+BGSAVE      # async fork — parent keeps serving; child writes dump.rdb
+
+dbfilename dump.rdb
+dir /var/lib/redis</code></pre>
+
+<ul>
+  <li><strong>Pros:</strong> Compact single-file backup; fast restart; minimal I/O during operation</li>
+  <li><strong>Cons:</strong> Data loss = all writes since last snapshot; large datasets = long fork time (copy-on-write)</li>
+</ul>
+
+<h4>AOF (Append-Only File)</h4>
+<pre><code class="language-bash">appendonly yes
+appendfilename "appendonly.aof"
+
+# appendfsync options:
+appendfsync always    # fsync after every write — safest, slowest (~1K TPS)
+appendfsync everysec  # fsync every second — good balance (default, lose max 1s)
+appendfsync no        # OS decides — fastest, no durability guarantee
+
+# AOF rewrite (compaction — remove redundant commands)
+auto-aof-rewrite-percentage 100   # rewrite when AOF doubles
+auto-aof-rewrite-min-size 64mb
+BGREWRITEAOF  # manual trigger</code></pre>
+
+<ul>
+  <li><strong>Pros:</strong> Much less data loss risk (max 1 second with everysec); human-readable log</li>
+  <li><strong>Cons:</strong> Larger file than RDB; slower restart (replay all commands); AOF rewrite I/O spikes</li>
+</ul>
+
+<h4>RDB + AOF Hybrid (Redis 4.0+)</h4>
+<pre><code class="language-bash">aof-use-rdb-preamble yes  # AOF file starts with RDB snapshot, then incremental AOF commands
+# Best of both: fast restart + low data loss</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="redis-cluster">Redis Clustering &amp; Sentinel</h2>
+
+<h4>Redis Cluster (Horizontal Sharding)</h4>
+<p>Automatically shards data across multiple master nodes. Uses 16,384 hash slots. Key's slot = CRC16(key) % 16384. Each master owns a range of slots (e.g., 0-5460, 5461-10922, 10923-16383 for 3 masters). Each master has replica nodes.</p>
+
+<div class="mermaid">
+graph TD
+  Client["Client"]
+  M1["Master 1<br/>Slots 0-5460"]
+  M2["Master 2<br/>Slots 5461-10922"]
+  M3["Master 3<br/>Slots 10923-16383"]
+  R1["Replica 1"]
+  R2["Replica 2"]
+  R3["Replica 3"]
+  Client -->|MOVED redirect| M1
+  Client --> M2
+  Client --> M3
+  M1 --> R1
+  M2 --> R2
+  M3 --> R3
+</div>
+
+<pre><code class="language-bash"># redis.conf for cluster
+cluster-enabled yes
+cluster-config-file nodes.conf
+cluster-node-timeout 5000
+
+# Create cluster
+redis-cli --cluster create \
+  127.0.0.1:7001 127.0.0.1:7002 127.0.0.1:7003 \
+  127.0.0.1:7004 127.0.0.1:7005 127.0.0.1:7006 \
+  --cluster-replicas 1
+
+# Key in cluster: use hash tags to ensure related keys go to same slot
+SET {user:42}.name "Alice"    # {user:42} is the hash tag
+SET {user:42}.score 100       # same slot as above</code></pre>
+
+<h4>Redis Sentinel (HA for Standalone Redis)</h4>
+<p>Sentinel monitors Redis master and replicas. On master failure: Sentinel cluster elects a new master via majority vote and promotes a replica. Requires 3+ Sentinel processes for fault tolerance.</p>
+
+<pre><code class="language-bash"># sentinel.conf
+sentinel monitor mymaster 127.0.0.1 6379 2  # 2 sentinels must agree for failover
+sentinel down-after-milliseconds mymaster 30000
+sentinel failover-timeout mymaster 180000
+sentinel parallel-syncs mymaster 1  # replicas syncing in parallel during failover</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="redis-pubsub">Pub/Sub vs Streams</h2>
+
+<table>
+<tr><th>Feature</th><th>Pub/Sub</th><th>Streams</th></tr>
+<tr><td>Persistence</td><td>No — fire and forget; messages lost if no subscriber</td><td>Yes — persisted in Redis memory; survives disconnects</td></tr>
+<tr><td>Message Replay</td><td>No</td><td>Yes — read from any offset/ID</td></tr>
+<tr><td>Consumer Groups</td><td>No — every subscriber gets every message</td><td>Yes — only one consumer in group processes each message</td></tr>
+<tr><td>Acknowledgment</td><td>No</td><td>Yes — XACK; pending entries tracked</td></tr>
+<tr><td>Ordering</td><td>Best effort</td><td>Guaranteed within stream (monotonic ID)</td></tr>
+<tr><td>Fan-out</td><td>Yes — all subscribers receive</td><td>Different consumer groups each get all messages</td></tr>
+<tr><td>Use Case</td><td>Chat rooms, real-time notifications, simple fan-out</td><td>Event sourcing, work queues, audit log, IoT ingestion</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<h2 id="redis-tx">Redis Transactions &amp; Lua Scripting</h2>
+
+<pre><code class="language-bash"># MULTI/EXEC — queue commands, execute atomically
+MULTI
+INCR balance:user:42
+DECR balance:user:1
+EXEC   # executes both atomically (no other commands interleave)
+
+DISCARD  # cancel queued transaction
+
+# WATCH — optimistic locking (CAS)
+WATCH balance:user:42       # watch for changes
+balance = GET balance:user:42
+
+MULTI
+  SET balance:user:42 [balance - 50]
+result = EXEC  # returns nil if watched key was modified by another client
+# If nil: retry the whole operation</code></pre>
+
+<pre><code class="language-lua">-- Lua script (EVAL) — atomic, server-side execution
+-- Rate limiter example: allow max N requests per window
+local key = KEYS[1]
+local limit = tonumber(ARGV[1])
+local window = tonumber(ARGV[2])
+
+local current = redis.call('GET', key)
+if current and tonumber(current) >= limit then
+  return 0  -- rate limited
+end
+redis.call('INCR', key)
+redis.call('EXPIRE', key, window)
+return 1  -- allowed</code></pre>
+
+<pre><code class="language-bash">EVAL "return redis.call('get', KEYS[1])" 1 mykey
+# Load script and call by SHA (saves bandwidth)
+SCRIPT LOAD "return redis.call('get', KEYS[1])"
+# Returns SHA: "abc123..."
+EVALSHA abc123... 1 mykey</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="redis-eviction">Redis Eviction Policies</h2>
+
+<table>
+<tr><th>Policy</th><th>Behavior</th><th>Use Case</th></tr>
+<tr><td>noeviction</td><td>Return error when memory full</td><td>Critical data that must not be lost; application handles OOM</td></tr>
+<tr><td>allkeys-lru</td><td>Evict LRU key from all keys</td><td>General-purpose cache; recommended default</td></tr>
+<tr><td>volatile-lru</td><td>Evict LRU key from keys with TTL set only</td><td>Mix of persistent + cacheable data in same Redis</td></tr>
+<tr><td>allkeys-lfu</td><td>Evict LFU key from all keys</td><td>When frequency matters (hot items should stay)</td></tr>
+<tr><td>volatile-lfu</td><td>Evict LFU key from keys with TTL only</td><td>Same as volatile-lru but frequency-based</td></tr>
+<tr><td>allkeys-random</td><td>Evict random key from all keys</td><td>When all keys are equally likely to be accessed (rare)</td></tr>
+<tr><td>volatile-random</td><td>Evict random key with TTL</td><td>Simple TTL-based cache with random eviction</td></tr>
+<tr><td>volatile-ttl</td><td>Evict key with shortest remaining TTL</td><td>Expire soonest-to-expire items first</td></tr>
+</table>
+
+<pre><code class="language-bash"># redis.conf
+maxmemory 2gb
+maxmemory-policy allkeys-lru</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="redis-vs-memcached">Redis vs Memcached</h2>
+
+<table>
+<tr><th>Feature</th><th>Redis</th><th>Memcached</th></tr>
+<tr><td>Data Structures</td><td>String, List, Hash, Set, Sorted Set, Stream, HyperLogLog, Geo, Bloom Filter</td><td>String (key-value) only</td></tr>
+<tr><td>Persistence</td><td>RDB + AOF + hybrid</td><td>No persistence — in-memory only</td></tr>
+<tr><td>Replication</td><td>Master-replica + Redis Cluster + Sentinel</td><td>No built-in replication (client-side consistent hashing)</td></tr>
+<tr><td>Transactions</td><td>MULTI/EXEC, WATCH, Lua scripts</td><td>CAS (Check And Set) only</td></tr>
+<tr><td>Pub/Sub</td><td>Yes (Pub/Sub + Streams)</td><td>No</td></tr>
+<tr><td>Lua Scripting</td><td>Yes (EVAL/EVALSHA)</td><td>No</td></tr>
+<tr><td>Clustering</td><td>Redis Cluster (native hash slots)</td><td>Client-side sharding only</td></tr>
+<tr><td>Memory Efficiency</td><td>Good; configurable encodings (ziplist, intset for small values)</td><td>Slightly better for pure string caching; less overhead per item</td></tr>
+<tr><td>Threading</td><td>Single-threaded command processing; I/O threads in Redis 6+</td><td>Multi-threaded; better CPU utilization</td></tr>
+<tr><td>Use Case</td><td>General caching + sessions + queues + leaderboards + rate limiting + pub/sub</td><td>Simple high-throughput string caching only; slightly lower latency for basic ops</td></tr>
+<tr><td>License</td><td>RSAL/SSPL (Redis 7.4+); older versions BSD</td><td>BSD</td></tr>
+</table>
+
+<div class="callout"><strong>When to choose Memcached:</strong> You need only simple string K-V caching, require multi-threaded performance at the commodity level, or your team specifically avoids Redis licensing concerns. In most cases, Redis is the better choice due to its richness.</div>
+
+<!-- ============================================================ LRU IMPL ======== -->
+<h2 id="lru-impl">Complete LRU Cache Implementation (JavaScript)</h2>
+
+<pre><code class="language-javascript">// Production-ready LRU with TTL support
+class LRUCacheWithTTL {
+  constructor(capacity) {
+    this.capacity = capacity;
+    this.cache = new Map(); // key → {value, expiry}
+  }
+
+  _isExpired(entry) {
+    return entry.expiry !== null && Date.now() > entry.expiry;
+  }
+
+  get(key) {
+    if (!this.cache.has(key)) return undefined;
+    const entry = this.cache.get(key);
+    if (this._isExpired(entry)) {
+      this.cache.delete(key);
+      return undefined;
+    }
+    // Move to end (MRU position)
+    this.cache.delete(key);
+    this.cache.set(key, entry);
+    return entry.value;
+  }
+
+  set(key, value, ttlMs = null) {
+    if (this.cache.has(key)) this.cache.delete(key);
+    else if (this.cache.size >= this.capacity) {
+      // Evict: find first non-expired LRU item
+      for (const [k, v] of this.cache) {
+        if (this._isExpired(v)) {
+          this.cache.delete(k);
+          break;
+        }
+      }
+      // If no expired items found, evict true LRU
+      if (this.cache.size >= this.capacity) {
+        this.cache.delete(this.cache.keys().next().value);
+      }
+    }
+    this.cache.set(key, {
+      value,
+      expiry: ttlMs ? Date.now() + ttlMs : null
+    });
+  }
+
+  delete(key) { return this.cache.delete(key); }
+  clear()     { this.cache.clear(); }
+  get size()  { return this.cache.size; }
+  get stats() {
+    let expired = 0;
+    for (const v of this.cache.values()) {
+      if (this._isExpired(v)) expired++;
+    }
+    return { size: this.cache.size, expired };
+  }
+}
+
+// Usage
+const cache = new LRUCacheWithTTL(1000);
+cache.set('user:1', { name: 'Alice' }, 5 * 60 * 1000); // 5 min TTL
+const user = cache.get('user:1');  // { name: 'Alice' }
+</code></pre>
+
+<!-- ============================================================ INTERVIEW Q&As == -->
+<h2 id="interview">Interview Q&amp;As — 20+ Questions</h2>
+
+<details>
+<summary>Q1. What is the difference between cache-aside and read-through patterns? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p>In <strong>cache-aside</strong> (lazy loading), the <em>application code</em> is responsible for managing the cache: check cache first, on miss fetch from DB and populate cache. The application controls what gets cached and when. In <strong>read-through</strong>, the <em>cache layer itself</em> is responsible: on a miss, the cache fetches from the DB automatically and returns the data. Application code always talks only to the cache. Cache-aside is more flexible and explicit; read-through is simpler for the application but requires a caching middleware that understands the data model. Cache-aside fails gracefully if cache goes down (app falls back to DB); read-through may fail if the cache layer is unavailable.</p>
+</div>
+</details>
+
+<details>
+<summary>Q2. What is a cache stampede and how do you prevent it? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>A cache stampede (thundering herd) occurs when a hot cache key expires and many concurrent requests simultaneously miss cache and all query the database simultaneously, potentially overloading it. Prevention strategies: (1) <strong>Mutex/Distributed lock:</strong> Only one process refreshes; others wait. Use Redis SET with NX+EX for an atomic distributed lock. (2) <strong>Probabilistic early expiration (XFetch):</strong> Probabilistically refresh the key before it expires, with probability increasing as TTL decreases. (3) <strong>Background refresh:</strong> Serve stale value instantly while an async job refreshes the cache. (4) <strong>Double-checked locking:</strong> After acquiring lock, re-check cache in case another process already refreshed it.</p>
+</div>
+</details>
+
+<details>
+<summary>Q3. Explain the difference between cache penetration, avalanche, and stampede. <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<ul>
+  <li><strong>Cache Penetration:</strong> Requests for keys that don't exist in cache OR database (invalid IDs). Cache is bypassed every time → DB hammered. Fix: Bloom filter to reject impossible keys; cache null values with short TTL.</li>
+  <li><strong>Cache Avalanche:</strong> Many keys expire at the same time → sudden surge of DB load. Fix: TTL jitter (random spread), cache warm-up, circuit breaker.</li>
+  <li><strong>Cache Stampede:</strong> One popular key expires → many concurrent requests all miss and hit DB simultaneously. Fix: mutex/lock, probabilistic early refresh, stale-while-revalidate.</li>
+</ul>
+</div>
+</details>
+
+<details>
+<summary>Q4. What Redis data structure would you use for a leaderboard? Why? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p>Redis <strong>Sorted Set (ZSET)</strong> is perfect for leaderboards. It stores member-score pairs and keeps members sorted by score. Operations: <code>ZADD leaderboard 1500 "player1"</code> to update a score; <code>ZREVRANGE leaderboard 0 9 WITHSCORES</code> for the top 10; <code>ZREVRANK leaderboard "player1"</code> for a player's rank — all O(log N). The score can be a float, and ZINCRBY atomically increments scores. For global leaderboards with millions of players, combine with periodic snapshots or use approximate ranking.</p>
+</div>
+</details>
+
+<details>
+<summary>Q5. How does Redis achieve atomic operations if it's single-threaded? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>Redis processes commands in a single-threaded event loop. Since commands execute serially, every individual command is atomic by design — no two commands interleave. For multi-command atomicity, use: (1) <strong>MULTI/EXEC:</strong> queue commands, execute them all as a batch without interleaving (no rollback on individual command failure though). (2) <strong>Lua scripts (EVAL):</strong> script runs atomically — Redis blocks other commands while Lua executes; scripts are the preferred way for complex atomic operations. (3) <strong>Atomic single commands:</strong> INCR, GETSET, SETNX — inherently atomic since single command. Note: Redis 6+ added I/O threads for network, but command processing remains single-threaded.</p>
+</div>
+</details>
+
+<details>
+<summary>Q6. When would you choose LFU over LRU eviction in Redis? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>LFU (allkeys-lfu) is better when your access pattern has a stable set of "hot" keys that are accessed very frequently and you need them to survive even brief periods of inactivity. For example: configuration data, permission tables, category trees — accessed thousands of times per second, but perhaps not in the last 10 seconds. LRU would evict a hot key if it happens to not be touched recently due to a traffic lull. LFU tracks long-term frequency and resists eviction of genuinely hot keys. Redis implements LFU with an 8-bit logarithmic counter per key and halves all counts every <code>lfu-decay-time</code> minutes to account for frequency changes over time.</p>
+</div>
+</details>
+
+<details>
+<summary>Q7. Explain the difference between RDB and AOF persistence. Which would you choose? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>RDB</strong> creates point-in-time snapshots of the dataset (dump.rdb). Fast restart, compact file, minimal I/O during operation. Downside: data since last snapshot is lost on crash. <strong>AOF</strong> appends every write command to a log file; with appendfsync=everysec, you lose at most 1 second of data. Slower restart (must replay all commands); larger file. <strong>Hybrid (RDB+AOF):</strong> AOF file begins with an RDB snapshot, then appends incremental commands. Best of both worlds — recommended for production. Recommendation: use hybrid for most production use cases. Use RDB-only if a few minutes of data loss is acceptable and fast restart is critical. Use AOF-only if you need minute-level durability guarantees without the hybrid overhead.</p>
+</div>
+</details>
+
+<details>
+<summary>Q8. What is a Bloom filter and how does it solve cache penetration? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>A Bloom filter is a space-efficient probabilistic data structure that answers "is this element definitely NOT in the set, or possibly in the set?" There are no false negatives — if the filter says "not present," it's definitely not present. There can be false positives (says "present" when it's not). For cache penetration: load all valid IDs into the Bloom filter at startup. Before hitting cache or DB for any ID, check the Bloom filter — if "not present," return null immediately (no DB hit). Only proceed to cache/DB if the filter says "possibly present." A 1% false positive rate requires ~10 bits per element. Redis has the RedisBloom module; in application code, use libraries like bloom-filters (JS) or Guava BloomFilter (Java).</p>
+</div>
+</details>
+
+<details>
+<summary>Q9. How does Redis Cluster handle a key that belongs to a different node? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>When a client sends a command for a key to the wrong node, that node calculates the key's hash slot and, if it doesn't own that slot, returns a <strong>MOVED error</strong>: <code>MOVED 7638 127.0.0.1:7002</code>. The client redirects the request to the correct node. Smart Redis clients (JedisCluster, StackExchange.Redis) maintain a slot-to-node mapping and route directly, only redirecting on MOVED (which means the cluster topology changed). During a slot migration (resharding), the source node returns <strong>ASK</strong> (temporary redirect) instead of MOVED — client sends ASKING + the command to the destination node for that single request only (doesn't update its routing table).</p>
+</div>
+</details>
+
+<details>
+<summary>Q10. What is the write-behind pattern and what are its risks? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>Write-behind (write-back) writes data to cache immediately and flushes to DB asynchronously. Risk: if the cache node crashes before the flush, the unflushed data is permanently lost — the DB has stale/missing data. Other risks: (1) ordering violations — if key A is written then deleted, async processing out of order could resurrect A in DB; requires careful sequencing. (2) DB schema changes between cache write and flush. (3) Dirty tracking overhead. Mitigation: use an async queue with retry/dead-letter; use write-ahead log semantics on the cache; consider Redis Streams as the async buffer. Best for counters, view counts, game scores — where some loss is acceptable and performance is critical.</p>
+</div>
+</details>
+
+<details>
+<summary>Q11. Explain the Cache-Control: no-cache header. Does it mean "don't cache"? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p>Counterintuitively, <code>no-cache</code> does NOT mean "never cache." It means "cache it, but always revalidate with the server before using the cached version." The browser stores the response but on every request sends a conditional request (If-None-Match/If-Modified-Since) to the server. If unchanged, server returns 304 Not Modified (no body) and the browser uses its cached copy. This saves bandwidth but not round-trips. If you truly want "never store this," use <code>no-store</code>. Use no-cache for dynamic pages that must always be fresh but where the content often hasn't changed (saves bandwidth on 304 responses).</p>
+</div>
+</details>
+
+<details>
+<summary>Q12. How would you implement a rate limiter using Redis? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<pre><code class="language-lua">-- Sliding window rate limiter using sorted set
+local key = KEYS[1]
+local limit = tonumber(ARGV[1])
+local window = tonumber(ARGV[2])  -- in milliseconds
+local now = tonumber(ARGV[3])     -- current timestamp in ms
+
+-- Remove entries outside the window
+redis.call('ZREMRANGEBYSCORE', key, 0, now - window)
+-- Count requests in window
+local count = redis.call('ZCARD', key)
+if count >= limit then
+  return 0  -- rate limited
+end
+-- Add current request
+redis.call('ZADD', key, now, now .. math.random())
+redis.call('PEXPIRE', key, window)
+return 1  -- allowed</code></pre>
+<p>Fixed window: simpler — INCR key (key = "ratelimit:userId:minuteTimestamp"), EXPIRE key 60. Problem: burst at window boundary (2x limit in 2 seconds). Sliding window (sorted set above): more accurate but uses more memory. Token bucket: complex but smoothest. For distributed environments, use Lua script for atomicity.</p>
+</div>
+</details>
+
+<details>
+<summary>Q13. What is the difference between WATCH/MULTI/EXEC and Lua scripting in Redis? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p><strong>WATCH/MULTI/EXEC (Optimistic Locking):</strong> Watch a key; if it changes before EXEC, the transaction aborts (EXEC returns nil). Application must retry. Good for low-contention scenarios. Works across multiple client connections. Cannot have conditional logic inside the transaction body.</p>
+<p><strong>Lua scripts:</strong> Execute atomically on the server (no interleaving). Can have conditional logic (if/else inside script). No optimistic retry needed. Scripts are cached by SHA hash (EVALSHA). Better for complex atomic operations. Cannot block on slow DB lookups inside Lua. Time-limited to prevent blocking Redis indefinitely.</p>
+<p>Choose WATCH+MULTI for simple CAS (compare-and-swap); choose Lua for complex atomic server-side logic.</p>
+</div>
+</details>
+
+<details>
+<summary>Q14. How does CDN cache invalidation work? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>CDN cache invalidation removes or updates stale content from edge nodes. Methods: (1) <strong>TTL expiry:</strong> Wait for Cache-Control max-age/s-maxage to expire — simplest but slow to propagate. (2) <strong>Cache purge API:</strong> Most CDNs (Cloudflare, Fastly, AWS CloudFront) offer an API to instantly purge by URL, path pattern, or cache tags. (3) <strong>Versioned URLs:</strong> Change the URL when content changes (append content hash to filename: <code>app.abc123.js</code>) — browser/CDN treat it as a new resource; no purge needed. (4) <strong>Surrogate keys/Cache tags:</strong> Tag responses with logical keys (e.g., product-id-42); purge all cached responses for that tag with one API call. Best practice: use versioned URLs for static assets (immutable) + purge API for dynamic content changes.</p>
+</div>
+</details>
+
+<details>
+<summary>Q15. What is TinyLFU and why is it better than traditional LRU for application caches? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>TinyLFU (used by Caffeine in Java) uses a Count-Min Sketch (a probabilistic frequency counter using 4-bit counters + multiple hash functions) to estimate access frequency with minimal memory overhead. W-TinyLFU adds a Window Cache: 1% of capacity is a small window LRU that acts as a probationary area for recently new items (recency buffer). Remaining 99% is a main SLRU (Segmented LRU with protected + probationary segments). When the window is full, the window's LRU candidate is compared against the main cache's LRU victim via frequency. The item with higher frequency wins a spot in main cache. This combines recency (new items get a chance via the window) with frequency (main cache keeps genuinely hot items). Result: 5-35% better hit rate than pure LRU in real-world access traces (Zipf/power-law distributions).</p>
+</div>
+</details>
+
+<details>
+<summary>Q16. How would you design a session store for 10 million concurrent users? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>Use Redis Cluster for horizontal scaling. Key design: <code>session:{sessionId}</code> → Hash with user_id, roles, preferences, expiry. TTL: 24h or sliding (EXPIRE reset on access). Cluster: 3+ masters with replicas, each owning ~5461 hash slots — auto-shards sessions by sessionId hash. Capacity math: 10M sessions × ~500 bytes/session = 5 GB data; with 3 replicas = 15 GB total. Use volatile-lru eviction; active sessions will be accessed and refreshed regularly. For session affinity (if needed), use sticky routing based on user_id. Consider Redis 7+ with ACL security and TLS. Also: SCAN with pattern for admin operations (never KEYS * in production). For cross-region: Redis Enterprise Active-Active geo-distribution.</p>
+</div>
+</details>
+
+<details>
+<summary>Q17. Explain the ARC (Adaptive Replacement Cache) algorithm. <span class="badge very-advanced">Very Advanced</span></summary>
+<div class="answer">
+<p>ARC maintains four lists: <strong>T1</strong> (pages seen once recently), <strong>T2</strong> (pages seen at least twice recently), <strong>B1</strong> (ghost entries: pages evicted from T1 — just keys, no data), <strong>B2</strong> (ghost entries: pages evicted from T2). Total T1+T2 = cache capacity. When a page is requested: hit in T1 → move to T2 (promote to frequent); hit in T2 → keep at head; hit in B1 (ghost) → increase c1 target (favor recency more); hit in B2 (ghost) → increase c2 target (favor frequency more); miss → evict from T1 or T2 based on current balance. ARC adapts its balance between recency and frequency based on observed workload patterns — no manual tuning needed. Used in ZFS filesystem cache (ARC was patented by IBM; Solaris/ZFS licensed it).</p>
+</div>
+</details>
+
+<details>
+<summary>Q18. When would you use Redis Streams instead of Pub/Sub? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>Use <strong>Streams</strong> when: (1) consumers can go offline and must not miss messages (pub/sub drops messages for disconnected subscribers); (2) you need exactly-once processing guarantees (XACK + PEL — pending entries list); (3) you need message history/replay (debug, new consumer catching up); (4) you have multiple competing consumers that should each process a distinct subset (consumer groups); (5) you need backpressure monitoring (check stream length). Use <strong>Pub/Sub</strong> when: (1) fire-and-forget is acceptable; (2) you need true fan-out (all subscribers get every message, not just one consumer group member); (3) extremely low latency matters (pub/sub has lower overhead); (4) messages are ephemeral notifications (WebSocket push, chat rooms).</p>
+</div>
+</details>
+
+<details>
+<summary>Q19. What is cache pollution and how do you detect it? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>Cache pollution occurs when cache fills with low-value items (accessed once or rarely) that displace frequently-accessed hot items, lowering the hit rate. Common causes: (1) Full table scans / batch jobs evicting hot keys via LRU; (2) Long-tail requests (rarely repeated unique queries); (3) Speculative pre-loading of data that's never accessed. Detection: monitor hit rate over time — sudden drop indicates pollution. Check Redis with <code>redis-cli --hotkeys</code> and <code>redis-cli --bigkeys</code>. Use <code>OBJECT FREQ keyname</code> with LFU policy to see access frequency. Remedies: switch to LFU/TinyLFU policy; use cache bypass for bulk operations; implement separate cache tiers (hot vs warm); use SCAN + TTL inspection to find orphaned keys.</p>
+</div>
+</details>
+
+<details>
+<summary>Q20. What is the Vary header and why is it critical for shared caches? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>The <code>Vary</code> header tells CDNs and proxies that the response content varies based on specified request headers. Example: <code>Vary: Accept-Encoding</code> means the server may return different content for gzip vs brotli vs uncompressed requests — CDN must cache a separate copy per encoding variant. <code>Vary: Accept-Language</code> caches separate copies per locale. <code>Vary: Authorization</code> effectively disables CDN caching (each user has different auth header). Pitfall: <code>Vary: User-Agent</code> creates thousands of cache variants (one per browser string) — cache efficiency collapses. Solution: normalize at origin (detect mobile/desktop and use a single clean variant header instead) or use <code>Vary: Sec-CH-UA-Mobile</code> (client hints) which has fewer variants.</p>
+</div>
+</details>
+
+<details>
+<summary>Q21. Describe how you would implement a distributed cache invalidation system. <span class="badge very-advanced">Very Advanced</span></summary>
+<div class="answer">
+<p>Challenge: when data changes in DB, invalidate cached copies across all nodes consistently. Approaches: (1) <strong>Event-driven invalidation:</strong> On DB write, publish an invalidation event to Redis Pub/Sub or Kafka; all cache nodes subscribe and delete their local copies. Risk: events may be lost. (2) <strong>Cache tags:</strong> Tag cached items with logical identifiers (product:42); on update, send a purge for that tag to all cache layers. (3) <strong>CDC (Change Data Capture) with Debezium:</strong> Capture DB changelog (MySQL binlog / Postgres WAL) and stream invalidation events to Kafka → cache invalidation consumers. Guarantees no events are missed. (4) <strong>Version-based invalidation:</strong> Store version number in DB; cache key includes version; on update, increment version → old keys become unreachable and expire via TTL. Avoid distributed cache invalidation entirely by using immutable versioned cache keys for static content.</p>
+</div>
+</details>
+
+<details>
+<summary>Q22. How does ETag caching work and when does a 304 response save bandwidth? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p>ETags (Entity Tags) are opaque identifiers (usually hash of content) that the server attaches to responses. The browser stores the ETag alongside the cached response. On the next request (after TTL expires), the browser sends <code>If-None-Match: "abc123"</code>. The server checks if the current content hash matches — if yes, returns <code>304 Not Modified</code> with no body (~200 bytes) instead of the full response. This saves bandwidth for the body but not the round-trip. A 304 is useful when: response body is large and content changes rarely; network bandwidth is constrained. It's NOT useful if the content always changes (generates new ETag every time) — you pay for a round-trip plus get the full body anyway. Combine with proper max-age: browser only revalidates after TTL expires, so most requests don't even need the 304 round-trip.</p>
+</div>
+</details>
+
+<footer>Caching Reference Guide — Patterns, Eviction Policies, Redis, CDN &amp; Browser Caching</footer>
+</main>
+</div>
+<script>hljs.highlightAll();mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Dinesh's Tech Learning Hub</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0d1117;color:#c9d1d9;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.6;min-height:100vh;display:flex;flex-direction:column}
+a{text-decoration:none;color:inherit}
+
+/* ---- Header ---- */
+header{background:linear-gradient(135deg,#161b22 0%,#0d1117 60%,#0d1117 100%);border-bottom:1px solid #30363d;padding:48px 24px 40px;text-align:center}
+header h1{font-size:2.5rem;color:#fff;letter-spacing:-0.5px;margin-bottom:10px}
+header h1 span{color:#58a6ff}
+header p.subtitle{color:#8b949e;font-size:1.05rem;margin-bottom:0}
+.stats-row{display:flex;justify-content:center;gap:24px;margin-top:20px;flex-wrap:wrap}
+.stat{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:10px 20px;text-align:center}
+.stat-num{display:block;font-size:1.6rem;font-weight:700;color:#58a6ff}
+.stat-label{font-size:0.78rem;color:#8b949e;text-transform:uppercase;letter-spacing:0.5px}
+
+/* ---- Controls ---- */
+.controls{max-width:1200px;margin:32px auto 0;padding:0 20px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.search-wrap{flex:1;min-width:200px;position:relative}
+.search-wrap input{width:100%;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:10px 14px 10px 40px;color:#c9d1d9;font-size:0.95rem;outline:none;transition:border-color 0.2s}
+.search-wrap input::placeholder{color:#484f58}
+.search-wrap input:focus{border-color:#58a6ff}
+.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#484f58;font-size:1rem;pointer-events:none}
+
+/* ---- Filter tabs ---- */
+.filters{max-width:1200px;margin:16px auto 0;padding:0 20px;display:flex;gap:8px;flex-wrap:wrap}
+.filter-btn{background:#161b22;border:1px solid #30363d;border-radius:20px;padding:6px 16px;font-size:0.85rem;color:#8b949e;cursor:pointer;transition:all 0.15s;white-space:nowrap}
+.filter-btn:hover{border-color:#58a6ff;color:#c9d1d9}
+.filter-btn.active{background:#1f6feb;border-color:#1f6feb;color:#fff;font-weight:600}
+
+/* ---- Grid ---- */
+.grid-wrap{max-width:1200px;margin:28px auto 0;padding:0 20px}
+.results-count{color:#8b949e;font-size:0.88rem;margin-bottom:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px}
+
+/* ---- Card ---- */
+.card{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:18px 20px;display:flex;flex-direction:column;gap:10px;transition:border-color 0.2s,transform 0.15s,box-shadow 0.2s;cursor:pointer}
+.card:hover{border-color:#58a6ff;transform:translateY(-2px);box-shadow:0 4px 20px rgba(88,166,255,0.08)}
+.card-header{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.card-title{font-size:1rem;font-weight:700;color:#e6edf3;line-height:1.3}
+.cat-badge{flex-shrink:0;font-size:0.7rem;font-weight:700;padding:2px 9px;border-radius:10px;letter-spacing:0.2px;white-space:nowrap}
+/* category colours */
+.cat-frontend    {background:#0d2a4a;color:#58a6ff;border:1px solid #1f4b7a}
+.cat-backend     {background:#0d3320;color:#3fb950;border:1px solid #1a5c34}
+.cat-architecture{background:#2d1b00;color:#d29922;border:1px solid #6e4200}
+.cat-infrastructure{background:#1e0d36;color:#d2a8ff;border:1px solid #553098}
+.cat-data        {background:#0d2a2a;color:#39d0d0;border:1px solid #0e5454}
+.cat-ai          {background:#2d0d2a;color:#f778ba;border:1px solid #7a2164}
+.cat-career      {background:#1a1a0d;color:#e3b341;border:1px solid #6e5c00}
+.card-desc{font-size:0.85rem;color:#8b949e;line-height:1.5}
+.card-link{display:inline-flex;align-items:center;gap:5px;font-size:0.83rem;font-weight:600;color:#58a6ff;margin-top:auto;padding-top:4px;transition:gap 0.15s}
+.card:hover .card-link{gap:8px}
+
+/* ---- No results ---- */
+.no-results{text-align:center;padding:60px 20px;color:#484f58}
+.no-results p{font-size:1.1rem;margin-bottom:8px;color:#8b949e}
+
+/* ---- Featured strip ---- */
+.featured-strip{background:#0d1f2d;border-top:1px solid #1f4b7a;border-bottom:1px solid #1f4b7a;padding:12px 20px}
+.featured-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.featured-label{font-size:0.72rem;font-weight:700;color:#58a6ff;text-transform:uppercase;letter-spacing:0.8px;flex-shrink:0}
+.featured-links{display:flex;gap:10px;flex-wrap:wrap}
+.feat-link{background:#0d1117;border:1px solid #30363d;border-radius:16px;padding:5px 13px;font-size:0.82rem;color:#c9d1d9;transition:all 0.15s;white-space:nowrap}
+.feat-link:hover{border-color:#58a6ff;color:#58a6ff;text-decoration:none}
+.feat-new{border-color:#1f4b7a;color:#79c0ff}
+.new-badge{background:#1f6feb;color:#fff;font-size:0.65rem;font-weight:700;padding:1px 6px;border-radius:8px;margin-left:4px;vertical-align:middle}
+
+/* ---- Footer ---- */
+footer{margin-top:auto;border-top:1px solid #21262d;padding:24px;text-align:center;color:#484f58;font-size:0.85rem}
+footer span{color:#58a6ff}
+
+.legend-wrap{background:#161b22;border-top:1px solid #21262d;padding:14px 20px;margin-top:40px}
+.legend-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.legend-title{font-size:0.78rem;font-weight:700;color:#8b949e;text-transform:uppercase;letter-spacing:0.5px;margin-right:4px}
+.legend-inner .cat-badge{font-size:0.75rem}
+
+@media(max-width:600px){
+  header h1{font-size:1.8rem}
+  .grid{grid-template-columns:1fr}
+  .controls{flex-direction:column}
+  .search-wrap{width:100%}
+  .featured-links{gap:6px}
+  .feat-link{font-size:0.78rem}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Dinesh's <span>Tech Learning Hub</span></h1>
+  <p class="subtitle">Complete Interview Prep &amp; Learning Reference | 37 Topics | 500+ Q&amp;As</p>
+  <div class="stats-row">
+    <div class="stat"><span class="stat-num">37</span><span class="stat-label">Topics</span></div>
+    <div class="stat"><span class="stat-num">500+</span><span class="stat-label">Q&amp;As</span></div>
+    <div class="stat"><span class="stat-num">7</span><span class="stat-label">Categories</span></div>
+    <div class="stat"><span class="stat-num">2024–25</span><span class="stat-label">Edition</span></div>
+  </div>
+</header>
+
+<!-- Featured strip -->
+<div class="featured-strip">
+  <div class="featured-inner">
+    <span class="featured-label">Pinned</span>
+    <div class="featured-links">
+      <a href="hld-system-design.html" class="feat-link">HLD &amp; System Design</a>
+      <a href="lld-design-patterns.html" class="feat-link">Design Patterns</a>
+      <a href="manager-architect-qa.html" class="feat-link feat-new">Manager &amp; Architect Q&amp;A <span class="new-badge">NEW</span></a>
+      <a href="temporal.html" class="feat-link feat-new">Temporal Workflows <span class="new-badge">NEW</span></a>
+      <a href="agentic-ai.html" class="feat-link">Agentic AI</a>
+      <a href="kubernetes.html" class="feat-link">Kubernetes</a>
+      <a href="kafka.html" class="feat-link">Kafka</a>
+    </div>
+  </div>
+</div>
+
+<div class="controls">
+  <div class="search-wrap">
+    <span class="search-icon">&#128269;</span>
+    <input type="text" id="searchInput" placeholder="Search topics, keywords, frameworks..." autocomplete="off"/>
+  </div>
+</div>
+
+<div class="filters" id="filters">
+  <button class="filter-btn active" data-cat="all">All</button>
+  <button class="filter-btn" data-cat="Frontend">Frontend</button>
+  <button class="filter-btn" data-cat="Backend">Backend</button>
+  <button class="filter-btn" data-cat="Architecture">Architecture</button>
+  <button class="filter-btn" data-cat="Infrastructure">Infrastructure</button>
+  <button class="filter-btn" data-cat="Data &amp; Storage">Data &amp; Storage</button>
+  <button class="filter-btn" data-cat="AI &amp; Emerging">AI &amp; Emerging</button>
+  <button class="filter-btn" data-cat="Career">Career</button>
+</div>
+
+<div class="grid-wrap">
+  <div class="results-count" id="resultsCount"></div>
+  <div class="grid" id="cardGrid"></div>
+  <div class="no-results" id="noResults" style="display:none">
+    <p>No topics match your search.</p>
+    <p style="font-size:0.9rem">Try a different keyword or clear the filter.</p>
+  </div>
+</div>
+
+<!-- Category legend -->
+<div class="legend-wrap">
+  <div class="legend-inner">
+    <span class="legend-title">Categories</span>
+    <span class="cat-badge cat-frontend">Frontend</span>
+    <span class="cat-badge cat-backend">Backend</span>
+    <span class="cat-badge cat-architecture">Architecture</span>
+    <span class="cat-badge cat-infrastructure">Infrastructure</span>
+    <span class="cat-badge cat-data">Data &amp; Storage</span>
+    <span class="cat-badge cat-ai">AI &amp; Emerging</span>
+    <span class="cat-badge cat-career">Career</span>
+  </div>
+</div>
+
+<!-- Study tips strip -->
+<div style="background:#0d1117;border-top:1px solid #21262d;padding:20px 20px 0">
+  <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;padding-bottom:24px">
+    <div style="background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px 16px">
+      <div style="color:#58a6ff;font-weight:700;font-size:0.88rem;margin-bottom:6px">Interview Prep Order</div>
+      <ol style="color:#8b949e;font-size:0.82rem;padding-left:16px;margin:0">
+        <li>JavaScript / TypeScript core</li>
+        <li>React / Angular (your stack)</li>
+        <li>Node.js / Java (backend)</li>
+        <li>HLD System Design</li>
+        <li>Design Patterns (LLD)</li>
+        <li>Manager &amp; Architect Q&amp;A</li>
+      </ol>
+    </div>
+    <div style="background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px 16px">
+      <div style="color:#d29922;font-weight:700;font-size:0.88rem;margin-bottom:6px">Must-Know for Senior Roles</div>
+      <ul style="color:#8b949e;font-size:0.82rem;padding-left:16px;margin:0">
+        <li>SOLID + Design Patterns</li>
+        <li>Kafka / event-driven architecture</li>
+        <li>Kubernetes + CI/CD</li>
+        <li>Observability (OTel, SLOs)</li>
+        <li>Microservices patterns</li>
+        <li>Temporal durable workflows</li>
+      </ul>
+    </div>
+    <div style="background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px 16px">
+      <div style="color:#3fb950;font-weight:700;font-size:0.88rem;margin-bottom:6px">AI / Emerging Tech Focus</div>
+      <ul style="color:#8b949e;font-size:0.82rem;padding-left:16px;margin:0">
+        <li>LLMs, RAG, Embeddings</li>
+        <li>LangChain &amp; LangGraph</li>
+        <li>Agentic AI patterns</li>
+        <li>Claude API &amp; tool use</li>
+        <li>Vector databases</li>
+        <li>MLOps &amp; model evaluation</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<footer>
+  Built for <span>Dinesh Kumar</span> &nbsp;|&nbsp; 2024–2025 &nbsp;|&nbsp; 37 Topics &nbsp;|&nbsp; Full-Stack Engineering Reference
+</footer>
+
+<script>
+const TOPICS = [
+  { file:'html.html',           name:'HTML5',                  cat:'Frontend',        desc:'Semantic HTML, accessibility, ARIA roles, forms, custom elements, Web Components, performance' },
+  { file:'css-scss.html',       name:'CSS &amp; SCSS',          cat:'Frontend',        desc:'Flexbox, Grid, custom properties, animations, SCSS modules, BEM, responsive design' },
+  { file:'javascript.html',     name:'JavaScript',             cat:'Frontend',        desc:'Closures, prototypes, async/await, event loop, generators, proxy, WeakMap, ES2024+' },
+  { file:'typescript.html',     name:'TypeScript',             cat:'Frontend',        desc:'Generics, conditional types, mapped types, utility types, decorators, satisfies operator' },
+  { file:'react.html',          name:'React',                  cat:'Frontend',        desc:'Hooks deep-dive, concurrent features, Server Components, React 19, patterns, testing' },
+  { file:'redux.html',          name:'Redux &amp; RTK',         cat:'Frontend',        desc:'RTK Query, Redux Saga, Redux Thunk, normalised state, slice patterns, state management' },
+  { file:'angular.html',        name:'Angular',                cat:'Frontend',        desc:'Signals, standalone components, RxJS operators, lazy loading, testing, Angular 17+' },
+  { file:'vuejs.html',          name:'Vue.js',                 cat:'Frontend',        desc:'Composition API, Pinia, Vue Router, Teleport, Suspense, script setup' },
+  { file:'nextjs.html',         name:'Next.js',                cat:'Frontend',        desc:'App Router, Server Components, RSC, caching strategies, ISR, middleware, Edge Runtime' },
+  { file:'react-native.html',   name:'React Native',           cat:'Frontend',        desc:'New Architecture (JSI/Fabric), Expo Router, Navigation v6, performance, animations' },
+  { file:'nodejs.html',         name:'Node.js',                cat:'Backend',         desc:'Event loop deep-dive, streams, clustering, Worker Threads, libuv, performance tuning' },
+  { file:'nestjs.html',         name:'Nest.js',                cat:'Backend',         desc:'Dependency injection, decorators, interceptors, microservices, GraphQL, testing' },
+  { file:'java.html',           name:'Java',                   cat:'Backend',         desc:'JVM internals, Java streams, concurrency, virtual threads, Spring Boot 3, records, sealed classes' },
+  { file:'python.html',         name:'Python',                 cat:'Backend',         desc:'async/await, dataclasses, FastAPI, match/case, type hints, Pydantic, performance' },
+  { file:'lld-design-patterns.html', name:'Design Patterns',   cat:'Architecture',    desc:'All 23 GoF patterns with TypeScript examples — Creational, Structural, Behavioural' },
+  { file:'hld-system-design.html',   name:'HLD &amp; System Design', cat:'Architecture', desc:'URL shortener, YouTube, Uber, WhatsApp, Twitter, distributed systems fundamentals' },
+  { file:'solid-principles.html',    name:'SOLID Principles',  cat:'Architecture',    desc:'SOLID + DRY, KISS, YAGNI, GRASP — with real-world refactoring examples' },
+  { file:'microservices.html',  name:'Microservices',          cat:'Architecture',    desc:'Saga, CQRS, event sourcing, service mesh, strangler fig, bulkhead, DDD integration' },
+  { file:'api-gateway.html',    name:'API Gateway',            cat:'Architecture',    desc:'REST, GraphQL, gRPC, OAuth2, JWT, rate limiting, API versioning, gateway patterns' },
+  { file:'docker.html',         name:'Docker',                 cat:'Infrastructure',  desc:'Dockerfile best practices, multi-stage builds, docker-compose, networking, security' },
+  { file:'kubernetes.html',     name:'Kubernetes',             cat:'Infrastructure',  desc:'Pods, Deployments, HPA, RBAC, ConfigMaps, Secrets, Helm charts, Istio service mesh' },
+  { file:'cicd-jenkins.html',   name:'CI/CD &amp; Jenkins',    cat:'Infrastructure',  desc:'GitHub Actions, GitLab CI, ArgoCD, Terraform, GitOps, blue-green, canary deployments' },
+  { file:'aws.html',            name:'AWS',                    cat:'Infrastructure',  desc:'EC2, S3, Lambda, DynamoDB, EKS, VPC, IAM, CloudFront, SQS/SNS, CDK — 15 core services' },
+  { file:'databases.html',      name:'Databases',              cat:'Data &amp; Storage', desc:'MySQL, PostgreSQL, MongoDB, Cassandra, DynamoDB, Vector DBs, sharding, replication' },
+  { file:'caching.html',        name:'Caching',                cat:'Data &amp; Storage', desc:'Redis data structures, eviction policies, LRU/LFU, distributed caching, cache stampede' },
+  { file:'kafka.html',          name:'Kafka',                  cat:'Data &amp; Storage', desc:'Producers, consumers, partitions, Kafka Streams, ksqlDB, Kafka Connect, exactly-once' },
+  { file:'elasticsearch.html',  name:'Elasticsearch',          cat:'Data &amp; Storage', desc:'Analyzers, mappings, aggregations, ELK Stack, Kibana dashboards, relevance tuning' },
+  { file:'ai-ml.html',          name:'AI &amp; Machine Learning', cat:'AI &amp; Emerging', desc:'ML fundamentals, deep learning, Transformers, LLMs, fine-tuning, MLOps, model evaluation' },
+  { file:'agentic-ai.html',     name:'Agentic AI',             cat:'AI &amp; Emerging', desc:'ReAct, multi-agent systems, human-in-the-loop, tool use, planning, memory architectures' },
+  { file:'langchain-langgraph.html', name:'LangChain &amp; LangGraph', cat:'AI &amp; Emerging', desc:'LCEL, RAG pipelines, StateGraph, agents, tools, vector stores, streaming' },
+  { file:'claude-guide.html',   name:'Claude API Guide',       cat:'AI &amp; Emerging', desc:'Messages API, tool use, streaming, prompt caching, vision, batch API, best practices' },
+  { file:'observability.html',  name:'Observability',          cat:'Infrastructure',  desc:'Metrics, logs, traces (RED/USE), Prometheus, Grafana, Jaeger, OpenTelemetry, SLOs' },
+  { file:'temporal.html',       name:'Temporal',               cat:'Infrastructure',  desc:'Durable workflows, activities, signals, queries, versioning, TypeScript SDK, testing' },
+  { file:'vault-dhp-sdlc.html', name:'Vault &amp; DHP &amp; SDLC', cat:'Infrastructure', desc:'HashiCorp Vault secrets management, DHP platform architecture, Scrum/Agile SDLC' },
+  { file:'career-interviews.html', name:'Career &amp; FDE Roadmap', cat:'Career',     desc:'Skills matrix, portfolio strategy, behavioural interviews, offer negotiation, roadmap' },
+  { file:'manager-architect-qa.html', name:'Manager &amp; Architect Q&amp;A', cat:'Career', desc:'15 Engineering Manager STAR answers + 15 Software Architect deep-dives' },
+  { file:'dsa.html',            name:'DSA',                    cat:'Architecture',    desc:'Arrays, trees, graphs, dynamic programming, sorting, complexity analysis, patterns' },
+];
+
+const CAT_CLASS = {
+  'Frontend':         'cat-frontend',
+  'Backend':          'cat-backend',
+  'Architecture':     'cat-architecture',
+  'Infrastructure':   'cat-infrastructure',
+  'Data &amp; Storage': 'cat-data',
+  'AI &amp; Emerging':  'cat-ai',
+  'Career':           'cat-career',
+};
+
+function catClass(cat){
+  return CAT_CLASS[cat] || 'cat-backend';
+}
+
+let currentCat = 'all';
+let currentSearch = '';
+
+function render(){
+  const grid = document.getElementById('cardGrid');
+  const noRes = document.getElementById('noResults');
+  const countEl = document.getElementById('resultsCount');
+
+  const searchLower = currentSearch.toLowerCase();
+  const filtered = TOPICS.filter(t => {
+    const catMatch = currentCat === 'all' || t.cat === currentCat;
+    const searchMatch = !searchLower ||
+      t.name.toLowerCase().includes(searchLower) ||
+      t.desc.toLowerCase().replace(/&amp;/g,'&').includes(searchLower) ||
+      t.cat.toLowerCase().includes(searchLower) ||
+      t.file.toLowerCase().includes(searchLower);
+    return catMatch && searchMatch;
+  });
+
+  if(filtered.length === 0){
+    grid.innerHTML = '';
+    noRes.style.display = 'block';
+    countEl.textContent = '';
+    return;
+  }
+
+  noRes.style.display = 'none';
+  countEl.textContent = `Showing ${filtered.length} of ${TOPICS.length} topics`;
+
+  grid.innerHTML = filtered.map(t => `
+    <a class="card" href="${t.file}">
+      <div class="card-header">
+        <div class="card-title">${t.name}</div>
+        <span class="cat-badge ${catClass(t.cat)}">${t.cat}</span>
+      </div>
+      <div class="card-desc">${t.desc}</div>
+      <span class="card-link">Open &nbsp;&#8594;</span>
+    </a>
+  `).join('');
+}
+
+// Filter buttons
+document.getElementById('filters').addEventListener('click', e => {
+  const btn = e.target.closest('.filter-btn');
+  if(!btn) return;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentCat = btn.dataset.cat;
+  render();
+});
+
+// Search
+document.getElementById('searchInput').addEventListener('input', e => {
+  currentSearch = e.target.value;
+  render();
+});
+
+// Initial render
+render();
+</script>
+</body>
+</html>

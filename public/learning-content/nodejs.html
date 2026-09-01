@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Node.js — Comprehensive Learning Reference</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6;display:flex;flex-direction:column}.topnav{background:#161b22;padding:10px 24px;border-bottom:1px solid #30363d;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100}.topnav a{color:#58a6ff;text-decoration:none;font-size:13px}.topnav h1{font-size:16px;color:#e6edf3;margin:0}.layout{display:flex;flex:1}.sidebar{width:260px;background:#161b22;border-right:1px solid #30363d;padding:16px;position:sticky;top:41px;height:calc(100vh - 41px);overflow-y:auto;flex-shrink:0}.sidebar a{display:block;padding:4px 8px;color:#8b949e;text-decoration:none;font-size:13px;border-radius:4px;margin-bottom:2px}.sidebar a:hover{background:#21262d;color:#c9d1d9}.sidebar .section-title{color:#58a6ff;font-size:11px;text-transform:uppercase;letter-spacing:.5px;margin:16px 0 6px;padding:0 8px;font-weight:600}main{flex:1;padding:32px 48px;max-width:960px}h1{font-size:2rem;color:#e6edf3;border-bottom:1px solid #30363d;padding-bottom:16px;margin-bottom:24px}h2{font-size:1.5rem;color:#e6edf3;margin:48px 0 16px;border-bottom:1px solid #21262d;padding-bottom:8px}h3{font-size:1.15rem;color:#79c0ff;margin:24px 0 10px}h4{font-size:1rem;color:#d2a8ff;margin:16px 0 8px}p{margin-bottom:12px}ul,ol{margin:0 0 16px 24px}li{margin-bottom:4px}pre{margin:16px 0;border-radius:6px;overflow-x:auto;font-size:13px}code:not(pre code){background:#161b22;padding:2px 6px;border-radius:4px;font-size:13px;color:#f0883e;border:1px solid #30363d}table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}th{background:#161b22;color:#58a6ff;padding:10px 14px;text-align:left;border:1px solid #30363d}td{padding:10px 14px;border:1px solid #30363d;vertical-align:top}tr:nth-child(even) td{background:#0a0d12}.mermaid{background:#161b22;padding:20px;border-radius:6px;margin:16px 0;text-align:center}details{border:1px solid #30363d;border-radius:6px;margin:10px 0;overflow:hidden}summary{padding:12px 16px;cursor:pointer;background:#161b22;color:#79c0ff;font-weight:600;list-style:none}details[open] summary{border-bottom:1px solid #30363d}.answer{padding:16px 20px;background:#0d1117}.badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:700;margin-left:8px}.easy{background:#1a4731;color:#3fb950}.intermediate{background:#2d2b00;color:#e3b341}.advanced{background:#3d1f00;color:#f0883e}.very-advanced{background:#3d0000;color:#ff7b72}.callout{background:#161b22;border-left:4px solid #58a6ff;padding:12px 16px;border-radius:0 6px 6px 0;margin:16px 0}footer{text-align:center;padding:24px;color:#8b949e;font-size:12px;border-top:1px solid #30363d;margin-top:40px}
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <h1>Node.js — Comprehensive Reference</h1>
+  <a href="react-native.html">React Native</a>
+  <a href="nestjs.html">NestJS</a>
+</nav>
+<div class="layout">
+<aside class="sidebar">
+  <div class="section-title">Core</div>
+  <a href="#what-is-nodejs">What is Node.js</a>
+  <a href="#event-loop">Event Loop</a>
+  <a href="#event-emitter">Event Emitter</a>
+  <div class="section-title">Streams &amp; I/O</div>
+  <a href="#streams">Streams</a>
+  <a href="#buffer">Buffer</a>
+  <a href="#filesystem">File System</a>
+  <div class="section-title">Server</div>
+  <a href="#http-server">HTTP/HTTPS Server</a>
+  <a href="#process">Process Object</a>
+  <div class="section-title">Concurrency</div>
+  <a href="#child-processes">Child Processes</a>
+  <a href="#worker-threads">Worker Threads</a>
+  <a href="#cluster">Cluster Module</a>
+  <div class="section-title">Modules</div>
+  <a href="#module-system">CommonJS vs ESM</a>
+  <a href="#package-managers">npm / yarn / pnpm</a>
+  <div class="section-title">Frameworks</div>
+  <a href="#express">Express.js</a>
+  <a href="#fastify">Fastify</a>
+  <div class="section-title">Security &amp; Ops</div>
+  <a href="#security">Security</a>
+  <a href="#error-handling">Error Handling</a>
+  <a href="#debugging">Debugging &amp; Profiling</a>
+  <a href="#versions">Version History</a>
+  <div class="section-title">Interview Q&amp;A</div>
+  <a href="#interview">20+ Q&amp;As</a>
+</aside>
+<main>
+<h1>Node.js — Comprehensive Learning Reference</h1>
+
+<!-- ==================== WHAT IS NODE ==================== -->
+<h2 id="what-is-nodejs">What is Node.js</h2>
+<p>Node.js is a runtime environment that executes JavaScript outside the browser. It is built on two core components:</p>
+<ul>
+  <li><strong>V8</strong> — Google's open-source JavaScript engine (also used in Chrome). Compiles JS to machine code using JIT compilation.</li>
+  <li><strong>libuv</strong> — A multi-platform C library that provides the event loop, async I/O, thread pool, timers, and OS-level abstractions (file system, DNS, networking).</li>
+</ul>
+<div class="callout">
+  <strong>Key design principle:</strong> Node.js is single-threaded on the JavaScript side but uses a thread pool (default 4 threads) internally via libuv for I/O operations that cannot be made asynchronous at the OS level (file I/O on some platforms, DNS, crypto).
+</div>
+
+<pre><code class="language-javascript">// Node.js internals
+// V8 handles: JS parsing, compilation, garbage collection
+// libuv handles: event loop, I/O, timers, thread pool
+// Node bindings: C++ glue connecting V8 + libuv + Node APIs
+
+// Thread pool size (default 4)
+process.env.UV_THREADPOOL_SIZE = '8';  // must be set before any I/O</code></pre>
+
+<!-- ==================== EVENT LOOP ==================== -->
+<h2 id="event-loop">Event Loop — Phase by Phase</h2>
+<p>The event loop is libuv's mechanism for handling asynchronous callbacks. It runs in a single thread and processes tasks in distinct phases.</p>
+
+<div class="mermaid">
+graph LR
+    A[Start] --> B[timers\nsetTimeout\nsetInterval]
+    B --> C[pending callbacks\nI/O errors from prev iter]
+    C --> D[idle / prepare\ninternal use]
+    D --> E[poll\nretrieve new I/O events\nexecute I/O callbacks]
+    E --> F[check\nsetImmediate callbacks]
+    F --> G[close callbacks\nsocket.on close]
+    G -->|next iteration| B
+
+    M[microtasks\nrun between every phase]
+    M -.->|process.nextTick| B
+    M -.->|Promise .then| B
+
+    style B fill:#1a4731,color:#3fb950
+    style E fill:#1f3358,color:#58a6ff
+    style F fill:#2d2b00,color:#e3b341
+    style M fill:#3d1f00,color:#f0883e
+</div>
+
+<h3>Phase Descriptions</h3>
+<table>
+<tr><th>Phase</th><th>What runs here</th><th>Notes</th></tr>
+<tr><td><strong>timers</strong></td><td><code>setTimeout</code>, <code>setInterval</code> callbacks</td><td>Minimum delay, not exact — depends on poll phase duration</td></tr>
+<tr><td><strong>pending callbacks</strong></td><td>I/O callbacks deferred from previous iteration</td><td>e.g., TCP errors (ECONNREFUSED)</td></tr>
+<tr><td><strong>idle / prepare</strong></td><td>Internal Node.js use</td><td>Not accessible by userland code</td></tr>
+<tr><td><strong>poll</strong></td><td>Retrieve new I/O events; execute I/O callbacks</td><td>Will block here if no timers pending and callback queue empty</td></tr>
+<tr><td><strong>check</strong></td><td><code>setImmediate</code> callbacks</td><td>Always runs after poll, before timers of next iteration</td></tr>
+<tr><td><strong>close callbacks</strong></td><td><code>'close'</code> events (socket, file handle)</td><td>e.g., <code>socket.on('close', ...)</code></td></tr>
+</table>
+
+<h3>Microtasks</h3>
+<p>Microtasks run <em>between</em> every event loop phase (and between each callback in a phase in Node 11+). They are processed in order:</p>
+<ol>
+  <li><code>process.nextTick</code> queue (all of them, before Promises)</li>
+  <li><code>Promise.then</code> / <code>queueMicrotask</code> queue</li>
+</ol>
+
+<pre><code class="language-javascript">// Event loop ordering demo
+console.log('1 - sync');
+
+setTimeout(() =&gt; console.log('5 - setTimeout'), 0);
+setImmediate(() =&gt; console.log('4 - setImmediate'));
+
+Promise.resolve().then(() =&gt; console.log('3 - Promise'));
+process.nextTick(() =&gt; console.log('2 - nextTick'));
+
+console.log('1b - sync');
+// Output: 1, 1b, 2, 3, 4, 5  (setImmediate before setTimeout when no I/O)
+
+// Inside I/O callback: setImmediate ALWAYS before setTimeout
+fs.readFile('file.txt', () =&gt; {
+  setTimeout(() =&gt; console.log('timer'), 0);
+  setImmediate(() =&gt; console.log('immediate'));
+  // "immediate" always prints first here
+});</code></pre>
+
+<!-- ==================== EVENT EMITTER ==================== -->
+<h2 id="event-emitter">Event Emitter Pattern</h2>
+<pre><code class="language-javascript">const { EventEmitter } = require('events');
+
+class OrderService extends EventEmitter {
+  placeOrder(order) {
+    // process...
+    this.emit('order:placed', order);
+    this.emit('order:placed', { ...order, quantity: -1 });  // emitting errors
+  }
+}
+
+const service = new OrderService();
+service.setMaxListeners(20);  // default 10, increase to avoid warning
+
+// on — persistent listener
+service.on('order:placed', (order) =&gt; console.log('New order:', order.id));
+
+// once — fires once then removes itself
+service.once('order:placed', (order) =&gt; sendWelcomeEmail(order));
+
+// off — remove specific listener
+const handler = (order) =&gt; console.log(order);
+service.on('order:placed', handler);
+service.off('order:placed', handler);
+
+// Error events are special — unhandled throws
+service.on('error', (err) =&gt; console.error('OrderService error:', err));
+
+// EventEmitter.listenerCount
+EventEmitter.listenerCount(service, 'order:placed');
+
+// Promisify events
+const { once } = require('events');
+const [data] = await once(emitter, 'data');</code></pre>
+
+<!-- ==================== STREAMS ==================== -->
+<h2 id="streams">Streams</h2>
+<p>Streams are Node's abstraction for processing data piece by piece without loading it all into memory. There are four types:</p>
+<table>
+<tr><th>Type</th><th>Description</th><th>Example</th></tr>
+<tr><td>Readable</td><td>Source of data</td><td><code>fs.createReadStream</code>, HTTP request body</td></tr>
+<tr><td>Writable</td><td>Destination for data</td><td><code>fs.createWriteStream</code>, HTTP response</td></tr>
+<tr><td>Transform</td><td>Read + write, transforms data</td><td><code>zlib.createGzip</code>, crypto cipher</td></tr>
+<tr><td>Duplex</td><td>Read + write, independent channels</td><td>TCP socket, <code>net.Socket</code></td></tr>
+</table>
+
+<h3>pipe vs pipeline</h3>
+<pre><code class="language-javascript">const { pipeline } = require('stream/promises');
+const { createReadStream, createWriteStream } = require('fs');
+const { createGzip } = require('zlib');
+
+// PREFER pipeline over pipe — handles errors and cleanup automatically
+await pipeline(
+  createReadStream('input.txt'),
+  createGzip(),
+  createWriteStream('output.txt.gz')
+);
+
+// Old pipe — does NOT handle errors on intermediate streams!
+// If gzip fails, input stream may leak
+readable.pipe(transform).pipe(writable);  // avoid in production</code></pre>
+
+<h3>Backpressure</h3>
+<pre><code class="language-javascript">// Backpressure — writable signals it can't keep up
+const writable = fs.createWriteStream('large.txt');
+
+readable.on('data', (chunk) =&gt; {
+  const canContinue = writable.write(chunk);
+  if (!canContinue) {
+    readable.pause();  // stop reading until writable drains
+    writable.once('drain', () =&gt; readable.resume());
+  }
+});
+
+// pipeline() handles backpressure automatically!</code></pre>
+
+<h3>Creating Custom Streams</h3>
+<pre><code class="language-javascript">const { Transform } = require('stream');
+
+class UpperCaseTransform extends Transform {
+  _transform(chunk, encoding, callback) {
+    this.push(chunk.toString().toUpperCase());
+    callback();  // signal ready for next chunk
+  }
+
+  _flush(callback) {
+    // called when input ends — emit any buffered data
+    this.push('\n[END]');
+    callback();
+  }
+}
+
+// Readable from async generator (Node 12+)
+const { Readable } = require('stream');
+async function* generate() {
+  yield 'Hello ';
+  await delay(100);
+  yield 'World';
+}
+const readable = Readable.from(generate());</code></pre>
+
+<!-- ==================== BUFFER ==================== -->
+<h2 id="buffer">Buffer</h2>
+<pre><code class="language-javascript">// Buffer — fixed-length raw binary data (like Uint8Array)
+const buf1 = Buffer.alloc(10);                     // zero-filled, 10 bytes
+const buf2 = Buffer.allocUnsafe(10);               // FAST, uninitialized (may contain old data)
+const buf3 = Buffer.from('Hello', 'utf8');         // from string
+const buf4 = Buffer.from([0x48, 0x65, 0x6c, 0x6c, 0x6f]);  // from array
+
+// Conversions
+buf3.toString('utf8');     // 'Hello'
+buf3.toString('hex');      // '48656c6c6f'
+buf3.toString('base64');   // 'SGVsbG8='
+
+// Operations
+const combined = Buffer.concat([buf3, buf4]);
+buf3.copy(buf1, 0, 0, 5);  // copy into buf1
+buf3.slice(0, 3);           // deprecated — use subarray
+buf3.subarray(0, 3);       // 'Hel'
+
+// Buffer is NOT resizable — use dynamic data with Uint8Array or streams for large data
+
+// Security: never expose Buffer.allocUnsafe content without zeroing first
+// Always prefer Buffer.alloc for untrusted size inputs</code></pre>
+
+<!-- ==================== FILE SYSTEM ==================== -->
+<h2 id="filesystem">File System</h2>
+<pre><code class="language-javascript">const fs = require('fs');
+const fsp = require('fs/promises');  // promise-based API (Node 10+)
+const path = require('path');
+
+// Async read/write with promises
+const data = await fsp.readFile('config.json', 'utf8');
+await fsp.writeFile('output.json', JSON.stringify(result, null, 2), 'utf8');
+
+// Watch for changes
+const watcher = fsp.watch('./src');
+for await (const { eventType, filename } of watcher) {
+  console.log(eventType, filename);
+}
+
+// Path utilities
+path.join('/home', 'user', 'docs');   // /home/user/docs
+path.resolve('../config.json');        // absolute path
+path.dirname('/home/user/file.txt');   // /home/user
+path.basename('/home/user/file.txt');  // file.txt
+path.extname('file.txt');              // .txt
+path.parse('/home/user/file.txt');     // { root, dir, base, ext, name }
+
+// __dirname / __filename not available in ESM
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Streaming large files
+const stream = fs.createReadStream('large.csv', { highWaterMark: 64 * 1024 });
+const rl = require('readline').createInterface({ input: stream });
+for await (const line of rl) {
+  processLine(line);
+}</code></pre>
+
+<!-- ==================== HTTP SERVER ==================== -->
+<h2 id="http-server">HTTP / HTTPS Server</h2>
+<pre><code class="language-javascript">const http = require('http');
+const https = require('https');
+const fs = require('fs');
+
+const server = http.createServer((req, res) =&gt; {
+  const url = new URL(req.url, `http://${req.headers.host}`);
+
+  // Read body
+  const chunks = [];
+  req.on('data', chunk =&gt; chunks.push(chunk));
+  req.on('end', () =&gt; {
+    const body = Buffer.concat(chunks).toString();
+
+    res.writeHead(200, {
+      'Content-Type': 'application/json',
+      'X-Request-ID': crypto.randomUUID(),
+    });
+    res.end(JSON.stringify({ path: url.pathname, body }));
+  });
+});
+
+server.listen(3000, '0.0.0.0', () =&gt; {
+  console.log('Server on port 3000');
+});
+
+// HTTPS
+const tlsServer = https.createServer({
+  key: fs.readFileSync('server.key'),
+  cert: fs.readFileSync('server.cert'),
+}, requestHandler);
+
+// HTTP/2
+const http2 = require('http2');
+const h2server = http2.createSecureServer({ key, cert });
+h2server.on('stream', (stream, headers) =&gt; {
+  stream.respond({ ':status': 200, 'content-type': 'text/plain' });
+  stream.end('Hello HTTP/2');
+});</code></pre>
+
+<!-- ==================== PROCESS ==================== -->
+<h2 id="process">Process Object</h2>
+<pre><code class="language-javascript">// Environment variables
+const port = process.env.PORT ?? '3000';
+const nodeEnv = process.env.NODE_ENV ?? 'development';
+
+// Command-line arguments
+// node app.js --port 4000 --env prod
+process.argv;         // ['node', 'app.js', '--port', '4000', '--env', 'prod']
+process.argv[2];      // '--port'
+
+// Exit
+process.exit(0);      // success
+process.exit(1);      // failure
+
+// Signal handling
+process.on('SIGTERM', async () =&gt; {
+  console.log('SIGTERM received — graceful shutdown');
+  await server.close();
+  await db.disconnect();
+  process.exit(0);
+});
+
+process.on('SIGINT', () =&gt; {
+  console.log('Ctrl+C pressed');
+  process.exit(0);
+});
+
+// Uncaught exceptions — last resort, always exit after
+process.on('uncaughtException', (err, origin) =&gt; {
+  console.error('Uncaught:', err, origin);
+  process.exit(1);  // MUST exit — process state is undefined
+});
+
+process.on('unhandledRejection', (reason, promise) =&gt; {
+  console.error('Unhandled rejection at:', promise, 'reason:', reason);
+  process.exit(1);
+});
+
+// Process info
+process.pid;          // process ID
+process.ppid;         // parent process ID
+process.platform;     // 'linux', 'darwin', 'win32'
+process.version;      // 'v20.11.0'
+process.memoryUsage(); // { rss, heapTotal, heapUsed, external, arrayBuffers }
+process.cpuUsage();    // { user, system } in microseconds
+process.uptime();      // seconds since process started
+
+// Standard streams
+process.stdin.resume();
+process.stdout.write('output\n');
+process.stderr.write('error\n');</code></pre>
+
+<!-- ==================== CHILD PROCESSES ==================== -->
+<h2 id="child-processes">Child Processes</h2>
+<table>
+<tr><th>Function</th><th>Use Case</th><th>Shell?</th><th>Streaming?</th></tr>
+<tr><td><code>spawn</code></td><td>Long-running processes, streaming I/O</td><td>No (by default)</td><td>Yes</td></tr>
+<tr><td><code>exec</code></td><td>Short commands, need full output as string</td><td>Yes</td><td>No (buffered)</td></tr>
+<tr><td><code>execFile</code></td><td>Execute a file directly (safer than exec)</td><td>No</td><td>No (buffered)</td></tr>
+<tr><td><code>fork</code></td><td>Spawn a new Node.js process with IPC channel</td><td>No</td><td>Yes + IPC</td></tr>
+</table>
+
+<pre><code class="language-javascript">const { spawn, exec, execFile, fork } = require('child_process');
+const { promisify } = require('util');
+const execAsync = promisify(exec);
+
+// spawn — streaming
+const ls = spawn('ls', ['-la', '/tmp'], { cwd: '/tmp' });
+ls.stdout.on('data', chunk =&gt; process.stdout.write(chunk));
+ls.stderr.on('data', chunk =&gt; process.stderr.write(chunk));
+ls.on('close', code =&gt; console.log('Exit code:', code));
+
+// exec — buffered, shell interpolation (DANGER: user input)
+const { stdout } = await execAsync('git log --oneline -10');
+
+// execFile — safer than exec, no shell
+const { stdout: out } = await promisify(execFile)('git', ['log', '--oneline', '-10']);
+
+// fork — Node.js child with IPC
+const child = fork('./worker.js', [], { silent: true });
+child.send({ task: 'compute', data: [1, 2, 3] });
+child.on('message', (result) =&gt; console.log('Result:', result));
+child.on('exit', (code) =&gt; console.log('Worker exited:', code));
+
+// In worker.js
+process.on('message', ({ task, data }) =&gt; {
+  const result = data.reduce((a, b) =&gt; a + b, 0);
+  process.send({ result });
+});</code></pre>
+
+<!-- ==================== WORKER THREADS ==================== -->
+<h2 id="worker-threads">Worker Threads</h2>
+<p>Worker Threads enable true parallel JavaScript execution. Each worker has its own V8 instance and event loop. Unlike child processes, workers share memory via <code>SharedArrayBuffer</code>.</p>
+<pre><code class="language-javascript">// main.js
+const { Worker, isMainThread, parentPort, workerData, MessageChannel } = require('worker_threads');
+
+if (isMainThread) {
+  const worker = new Worker(__filename, {
+    workerData: { numbers: [1, 2, 3, 4, 5, 6, 7, 8] }
+  });
+
+  worker.on('message', (result) =&gt; console.log('Sum:', result));
+  worker.on('error', console.error);
+  worker.on('exit', (code) =&gt; { if (code !== 0) throw new Error(`Worker exited ${code}`); });
+} else {
+  // Worker thread code
+  const sum = workerData.numbers.reduce((a, b) =&gt; a + b, 0);
+  parentPort.postMessage(sum);
+}
+
+// SharedArrayBuffer + Atomics — shared memory between threads
+const sharedBuffer = new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT * 4);
+const sharedArray = new Int32Array(sharedBuffer);
+
+// In worker — atomic operations prevent race conditions
+Atomics.add(sharedArray, 0, 1);       // atomic increment
+Atomics.load(sharedArray, 0);          // atomic read
+Atomics.store(sharedArray, 0, 42);     // atomic write
+Atomics.compareExchange(sharedArray, 0, 42, 0);  // CAS operation
+
+// Atomics.wait / Atomics.notify — mutex pattern
+Atomics.wait(sharedArray, 0, 0);       // block thread until value changes
+Atomics.notify(sharedArray, 0, 1);    // wake 1 waiting thread
+
+// MessageChannel — direct worker-to-worker communication
+const { port1, port2 } = new MessageChannel();
+worker1.postMessage({ port: port1 }, [port1]);
+worker2.postMessage({ port: port2 }, [port2]);</code></pre>
+
+<!-- ==================== CLUSTER ==================== -->
+<h2 id="cluster">Cluster Module</h2>
+<pre><code class="language-javascript">const cluster = require('cluster');
+const os = require('os');
+
+if (cluster.isPrimary) {
+  const numCPUs = os.availableParallelism();  // Node 18+ (os.cpus().length before)
+  console.log(`Primary ${process.pid} forking ${numCPUs} workers`);
+
+  for (let i = 0; i &lt; numCPUs; i++) {
+    cluster.fork();
+  }
+
+  cluster.on('exit', (worker, code, signal) =&gt; {
+    console.log(`Worker ${worker.process.pid} died — respawning`);
+    cluster.fork();  // auto-restart
+  });
+
+  // Zero-downtime reload
+  cluster.on('listening', (worker) =&gt; {
+    console.log(`Worker ${worker.id} listening`);
+  });
+} else {
+  // Worker process — each has its own event loop
+  const http = require('http');
+  http.createServer((req, res) =&gt; {
+    res.end(`Worker ${process.pid}`);
+  }).listen(3000);
+}
+
+// Cluster vs Worker Threads:
+// Cluster: separate processes, separate memory, OS load-balancing of TCP connections
+// Worker Threads: same process, shared memory option, manual work distribution</code></pre>
+
+<!-- ==================== MODULE SYSTEM ==================== -->
+<h2 id="module-system">Module System: CommonJS vs ESM</h2>
+<table>
+<tr><th>Aspect</th><th>CommonJS (CJS)</th><th>ES Modules (ESM)</th></tr>
+<tr><td>Syntax</td><td><code>require()</code> / <code>module.exports</code></td><td><code>import</code> / <code>export</code></td></tr>
+<tr><td>Loading</td><td>Synchronous, dynamic</td><td>Asynchronous, static analysis</td></tr>
+<tr><td>File extension</td><td><code>.js</code>, <code>.cjs</code></td><td><code>.mjs</code>, or <code>.js</code> with <code>"type":"module"</code></td></tr>
+<tr><td>Top-level await</td><td>Not supported</td><td>Supported</td></tr>
+<tr><td>Tree shaking</td><td>Limited (dynamic)</td><td>Full (static imports)</td></tr>
+<tr><td><code>__dirname</code></td><td>Available</td><td>Not available (use <code>import.meta.url</code>)</td></tr>
+<tr><td>Conditional require</td><td>Yes (anywhere)</td><td>No (<code>import()</code> dynamic for runtime)</td></tr>
+</table>
+
+<pre><code class="language-javascript">// CJS
+const express = require('express');
+const { readFile } = require('fs/promises');
+module.exports = { handler };
+module.exports.helper = helperFn;
+
+// ESM
+import express from 'express';
+import { readFile } from 'fs/promises';
+export const handler = async () =&gt; {};
+export default class Server {}
+
+// Dynamic import (works in both CJS and ESM at runtime)
+const module = await import('./heavy-module.js');
+
+// CJS require ESM — NOT directly possible
+// ESM import CJS — YES, default import only
+import cjsModule from './legacy.cjs';  // gets module.exports
+
+// Node 22: require(ESM) is now supported for synchronous ESM files
+// (no top-level await, no conditional exports with async)
+const esmMod = require('./sync-esm.js');  // Node 22+
+
+// Interop patterns
+const pkg = await import('esm-only-package');
+// or wrap in async function in CJS file</code></pre>
+
+<!-- ==================== PACKAGE MANAGERS ==================== -->
+<h2 id="package-managers">npm / yarn / pnpm</h2>
+<table>
+<tr><th>Feature</th><th>npm</th><th>yarn (v1/classic)</th><th>yarn (berry v2+)</th><th>pnpm</th></tr>
+<tr><td>Lock file</td><td><code>package-lock.json</code></td><td><code>yarn.lock</code></td><td><code>yarn.lock</code></td><td><code>pnpm-lock.yaml</code></td></tr>
+<tr><td>Disk space</td><td>Copies to each project</td><td>Copies to each project</td><td>Zero-installs (PnP)</td><td>Hard links from global store — very efficient</td></tr>
+<tr><td>Workspaces</td><td>Yes (npm 7+)</td><td>Yes</td><td>Yes</td><td>Yes + strict isolation</td></tr>
+<tr><td>Phantom deps</td><td>Yes (flat node_modules)</td><td>Yes (flat)</td><td>No (PnP)</td><td>No (symlinked, not flat)</td></tr>
+</table>
+
+<pre><code class="language-json">// package.json scripts
+{
+  "scripts": {
+    "start": "node dist/index.js",
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "test": "node --test",
+    "test:watch": "node --test --watch",
+    "lint": "eslint src",
+    "prepare": "husky install"
+  },
+  "engines": { "node": "&gt;=20.0.0" }
+}</code></pre>
+
+<pre><code class="language-bash"># npm workspaces
+npm init -w ./packages/utils
+npm install lodash -w packages/utils      # install in specific workspace
+npm run build --workspaces               # run in all workspaces
+npm run build --workspace=packages/utils
+
+# pnpm workspace (pnpm-workspace.yaml)
+packages:
+  - 'packages/*'
+  - 'apps/*'
+
+pnpm add lodash --filter utils
+pnpm -r run build  # recursive</code></pre>
+
+<!-- ==================== EXPRESS ==================== -->
+<h2 id="express">Express.js</h2>
+<pre><code class="language-javascript">const express = require('express');
+const app = express();
+
+// Middleware — executed in order for every request
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true }));
+
+// Custom middleware
+app.use((req, res, next) =&gt; {
+  req.requestId = crypto.randomUUID();
+  next();
+});
+
+// Router
+const userRouter = express.Router();
+
+userRouter.get('/', async (req, res, next) =&gt; {
+  try {
+    const users = await UserService.findAll(req.query);
+    res.json({ data: users });
+  } catch (err) {
+    next(err);  // pass to error handler
+  }
+});
+
+userRouter.post('/', validate(createUserSchema), async (req, res, next) =&gt; {
+  try {
+    const user = await UserService.create(req.body);
+    res.status(201).json(user);
+  } catch (err) { next(err); }
+});
+
+app.use('/api/users', userRouter);
+
+// Error handling middleware — MUST have 4 params
+app.use((err, req, res, next) =&gt; {
+  const status = err.status ?? err.statusCode ?? 500;
+  res.status(status).json({
+    error: { message: err.message, code: err.code }
+  });
+});
+
+app.listen(3000);</code></pre>
+
+<!-- ==================== FASTIFY ==================== -->
+<h2 id="fastify">Fastify</h2>
+<p>Fastify is a high-performance Node.js framework (~2x faster than Express in benchmarks). Key features: schema-based validation/serialization via JSON Schema, plugin system with dependency isolation, TypeScript-first, built-in Pino logger.</p>
+<pre><code class="language-javascript">import Fastify from 'fastify';
+
+const app = Fastify({ logger: true });
+
+// Schema validation + serialization (JSON Schema)
+const schema = {
+  body: {
+    type: 'object',
+    required: ['name', 'email'],
+    properties: {
+      name: { type: 'string', minLength: 2 },
+      email: { type: 'string', format: 'email' },
+    },
+  },
+  response: {
+    201: {
+      type: 'object',
+      properties: { id: { type: 'string' }, name: { type: 'string' } },
+    },
+  },
+};
+
+app.post('/users', { schema }, async (request, reply) =&gt; {
+  const user = await createUser(request.body);
+  return reply.code(201).send(user);
+});
+
+// Plugins (encapsulated with fastify-plugin to share context)
+app.register(require('@fastify/cors'), { origin: true });
+app.register(require('@fastify/jwt'), { secret: process.env.JWT_SECRET });
+app.register(require('@fastify/rate-limit'), { max: 100, timeWindow: '1 minute' });
+
+// Hooks
+app.addHook('onRequest', async (request, reply) =&gt; {
+  // authentication, logging
+});
+app.addHook('onSend', async (request, reply, payload) =&gt; payload);
+
+await app.listen({ port: 3000, host: '0.0.0.0' });</code></pre>
+
+<!-- ==================== SECURITY ==================== -->
+<h2 id="security">Security</h2>
+<pre><code class="language-javascript">// Helmet — sets security HTTP headers
+const helmet = require('helmet');
+app.use(helmet());
+// Sets: X-Content-Type-Options, X-Frame-Options, HSTS, CSP, etc.
+
+// CORS
+const cors = require('cors');
+app.use(cors({
+  origin: ['https://app.example.com'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,
+  maxAge: 86400,
+}));
+
+// Rate limiting
+const rateLimit = require('express-rate-limit');
+app.use('/api/', rateLimit({
+  windowMs: 15 * 60 * 1000,  // 15 minutes
+  max: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: (req, res) =&gt; res.status(429).json({ error: 'Too many requests' }),
+}));
+
+// Input validation with Joi / Zod
+const { z } = require('zod');
+const CreateUserSchema = z.object({
+  name: z.string().min(2).max(100),
+  email: z.string().email(),
+  age: z.number().int().min(0).max(120).optional(),
+});
+
+function validate(schema) {
+  return (req, res, next) =&gt; {
+    const result = schema.safeParse(req.body);
+    if (!result.success) return res.status(400).json({ error: result.error.flatten() });
+    req.body = result.data;  // coerced + validated
+    next();
+  };
+}
+
+// Prototype pollution prevention
+// JSON.parse is safe, but be careful with deep merge libraries
+const safeObj = Object.create(null);  // no prototype chain
+// Or use: const safeAssign = (target, src) =&gt; Object.assign(Object.create(null), src);
+
+// Path traversal prevention
+const safePath = require('path').resolve('/safe/root', userInput);
+if (!safePath.startsWith('/safe/root')) throw new Error('Path traversal detected');
+
+// SQL injection — always use parameterized queries
+// BAD:  db.query(`SELECT * FROM users WHERE id = ${userId}`)
+// GOOD: db.query('SELECT * FROM users WHERE id = $1', [userId])</code></pre>
+
+<!-- ==================== ERROR HANDLING ==================== -->
+<h2 id="error-handling">Error Handling Patterns</h2>
+<pre><code class="language-javascript">// Custom error classes
+class AppError extends Error {
+  constructor(message, statusCode = 500, code = 'INTERNAL_ERROR') {
+    super(message);
+    this.name = this.constructor.name;
+    this.statusCode = statusCode;
+    this.code = code;
+    this.isOperational = true;
+    Error.captureStackTrace(this, this.constructor);
+  }
+}
+
+class NotFoundError extends AppError {
+  constructor(resource) {
+    super(`${resource} not found`, 404, 'NOT_FOUND');
+  }
+}
+
+class ValidationError extends AppError {
+  constructor(details) {
+    super('Validation failed', 422, 'VALIDATION_ERROR');
+    this.details = details;
+  }
+}
+
+// Async error wrapper (avoid try/catch in every route)
+const asyncHandler = (fn) =&gt; (req, res, next) =&gt; Promise.resolve(fn(req, res, next)).catch(next);
+
+app.get('/users/:id', asyncHandler(async (req, res) =&gt; {
+  const user = await User.findById(req.params.id);
+  if (!user) throw new NotFoundError('User');
+  res.json(user);
+}));
+
+// Result pattern (functional error handling)
+type Result&lt;T, E = Error&gt; = { ok: true; value: T } | { ok: false; error: E };
+
+async function safeFind(id: string): Promise&lt;Result&lt;User&gt;&gt; {
+  try {
+    const user = await User.findById(id);
+    return user ? { ok: true, value: user } : { ok: false, error: new NotFoundError('User') };
+  } catch (e) {
+    return { ok: false, error: e as Error };
+  }
+}</code></pre>
+
+<!-- ==================== DEBUGGING ==================== -->
+<h2 id="debugging">Debugging &amp; Profiling</h2>
+<pre><code class="language-bash"># Node.js inspector (Chrome DevTools)
+node --inspect src/index.js             # attach debugger
+node --inspect-brk src/index.js        # break on first line
+
+# Connect at: chrome://inspect (DevTools for Node)
+# Or VS Code: launch.json with "type": "node", "request": "attach"
+
+# CPU profiling
+node --prof src/index.js               # generates isolate-*.log
+node --prof-process isolate-*.log &gt; profile.txt
+
+# Heap snapshot
+node --expose-gc src/index.js
+# In app: const v8 = require('v8'); v8.writeHeapSnapshot()
+# Or via DevTools Memory tab
+
+# 0x — flame graphs
+npm install -g 0x
+0x src/index.js
+# Opens interactive flame graph in browser
+
+# clinic.js suite
+npm install -g clinic
+clinic doctor -- node src/index.js    # auto-detect issues
+clinic flame -- node src/index.js     # flame graph
+clinic bubbleprof -- node src/index.js # async profiler
+clinic heapprofiler -- node src/index.js</code></pre>
+
+<h3>Memory Profiling</h3>
+<pre><code class="language-javascript">// Track heap usage
+setInterval(() =&gt; {
+  const { heapUsed, heapTotal, rss, external } = process.memoryUsage();
+  console.log({
+    heapUsed: `${(heapUsed / 1024 / 1024).toFixed(1)} MB`,
+    heapTotal: `${(heapTotal / 1024 / 1024).toFixed(1)} MB`,
+    rss: `${(rss / 1024 / 1024).toFixed(1)} MB`,
+  });
+}, 5000);
+
+// Force GC (requires --expose-gc flag)
+global.gc?.();  // optional chaining — safe if flag not present</code></pre>
+
+<!-- ==================== VERSIONS ==================== -->
+<h2 id="versions">Version History</h2>
+<table>
+<tr><th>Version</th><th>LTS</th><th>Key Features</th></tr>
+<tr><td>Node 18 (Apr 2022)</td><td>Yes</td><td>Native <code>fetch</code> API (experimental), <code>node:test</code> runner (experimental), V8 10.2, <code>findLast</code>/<code>findLastIndex</code>, Blob/FormData</td></tr>
+<tr><td>Node 19 (Oct 2022)</td><td>No (odd)</td><td><code>--watch</code> flag (built-in file watcher, replaces nodemon for simple cases), WebCrypto stable, <code>node:http</code> keepAlive default true</td></tr>
+<tr><td>Node 20 (Apr 2023)</td><td>Yes</td><td>Permission Model (<code>--experimental-permission</code> — deny FS/net/process/worker), <code>node:test</code> runner stable, V8 11.3, stable <code>URL.canParse()</code>, <code>import.meta.resolve</code></td></tr>
+<tr><td>Node 21 (Oct 2023)</td><td>No (odd)</td><td>WebSocket client (experimental, built-in), V8 11.8, stable <code>fetch</code>, <code>node:test</code> glob patterns, <code>--input-type</code> flag</td></tr>
+<tr><td>Node 22 (Apr 2024)</td><td>Yes</td><td><code>require(ESM)</code> synchronous ESM support, WebSocket stable, <code>node:sqlite</code> (experimental), V8 12.4, <code>--run</code> flag for package.json scripts, <code>glob</code>/<code>globSync</code> in <code>node:fs</code></td></tr>
+</table>
+
+<!-- ==================== INTERVIEW ==================== -->
+<h2 id="interview">Interview Q&amp;A</h2>
+
+<details>
+<summary>Q1: What is the Node.js event loop and why is Node single-threaded? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p>Node.js uses a single-threaded event loop to handle all JavaScript execution. However, it is not truly single-threaded at the system level — libuv uses a thread pool (default 4 threads) for blocking I/O operations (file system, DNS, crypto) that cannot be made async by the OS.</p>
+<p>The event loop continuously checks queues of callbacks to execute. When your JS code makes an async call (e.g., <code>fs.readFile</code>), it registers a callback and returns immediately. The I/O happens on a thread pool thread. When done, the callback is enqueued on the event loop and executed when the JS thread is free.</p>
+<p>This model is efficient for I/O-bound workloads (many concurrent connections with little CPU work per request) but poor for CPU-bound workloads (heavy computation blocks the single JS thread).</p>
+</div>
+</details>
+
+<details>
+<summary>Q2: What is the difference between <code>process.nextTick</code> and <code>Promise.then</code>? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>Both schedule microtasks, but <code>process.nextTick</code> has higher priority — its queue is drained completely before any <code>Promise</code> microtasks run.</p>
+<pre><code class="language-javascript">Promise.resolve().then(() =&gt; console.log('Promise'));
+process.nextTick(() =&gt; console.log('nextTick'));
+// Output: nextTick, Promise</code></pre>
+<p>Overuse of <code>nextTick</code> can starve I/O — if you keep queuing <code>nextTick</code> callbacks, the event loop never advances to the poll phase. Use <code>nextTick</code> for: ensuring callbacks are called asynchronously (after current operation), or for emitting events before the end of the current tick.</p>
+<p>Use <code>setImmediate</code> or <code>queueMicrotask</code>/<code>Promise</code> for most scheduling needs.</p>
+</div>
+</details>
+
+<details>
+<summary>Q3: What is backpressure in streams and how do you handle it? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>Backpressure occurs when a writable stream's internal buffer is full and cannot accept more data. <code>writable.write(chunk)</code> returns <code>false</code> when the buffer is full. If you ignore this and keep writing, the buffer grows unboundedly — causing memory leaks.</p>
+<p>The correct pattern: pause the readable when writable returns <code>false</code>, and resume on the <code>'drain'</code> event. <code>stream.pipeline()</code> handles this automatically — it is the recommended approach for production use.</p>
+<p><code>highWaterMark</code> controls buffer size: default 16KB for byte streams, 16 objects for object mode streams.</p>
+</div>
+</details>
+
+<details>
+<summary>Q4: What is the difference between <code>spawn</code>, <code>exec</code>, <code>execFile</code>, and <code>fork</code>? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<ul>
+<li><strong><code>spawn</code></strong>: Launches a process. Returns a <code>ChildProcess</code> with streaming <code>stdin/stdout/stderr</code>. No shell by default. Best for long-running processes or when you need streaming output.</li>
+<li><strong><code>exec</code></strong>: Runs command in a shell. Buffers all output into memory. Callback with <code>(error, stdout, stderr)</code>. Dangerous with unsanitized user input (shell injection).</li>
+<li><strong><code>execFile</code></strong>: Like <code>exec</code> but no shell — executes the file directly. Safer, no shell injection risk. Still buffers.</li>
+<li><strong><code>fork</code></strong>: Spawns a new Node.js process. Automatically sets up an IPC channel for <code>process.send()</code>/<code>process.on('message')</code>. Used for parallelizing Node.js work.</li>
+</ul>
+</div>
+</details>
+
+<details>
+<summary>Q5: What is the difference between Worker Threads and the Cluster module? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>Cluster</strong>: Creates child <em>processes</em>. Each worker is a separate OS process with its own memory space. The OS load-balances incoming TCP connections across workers. Good for scaling HTTP servers across CPU cores. Uses more memory (separate V8 heaps).</p>
+<p><strong>Worker Threads</strong>: Creates threads within the same process. Threads share memory via <code>SharedArrayBuffer</code>. Good for CPU-intensive tasks (image processing, crypto, data transformation) without spawning a full process. The thread pool can be managed manually. Not suitable for distributing HTTP traffic — use Cluster for that.</p>
+<p>In practice: Cluster for HTTP scaling, Worker Threads for CPU-bound parallelism within a single Node instance.</p>
+</div>
+</details>
+
+<details>
+<summary>Q6: What is the CommonJS vs ESM module difference and how does interop work? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>CJS uses <code>require()</code> (synchronous) and <code>module.exports</code>. ESM uses <code>import</code>/<code>export</code> (parsed statically, loaded asynchronously).</p>
+<p><strong>Interop rules:</strong></p>
+<ul>
+<li>ESM can <code>import</code> CJS modules — they get the <code>module.exports</code> value as the default import</li>
+<li>CJS cannot <code>require()</code> ESM modules directly (except Node 22+ synchronous ESM)</li>
+<li>Use <code>import()</code> (dynamic, async) in CJS to load ESM packages</li>
+<li><code>"type": "module"</code> in package.json makes all <code>.js</code> files ESM; use <code>.cjs</code> for CommonJS</li>
+</ul>
+</div>
+</details>
+
+<details>
+<summary>Q7: How does Node.js handle CPU-intensive tasks without blocking the event loop? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>Options from simplest to most capable:</p>
+<ol>
+<li><strong>Break work into chunks</strong>: Use <code>setImmediate</code> to yield between iterations, giving the event loop a chance to process other callbacks between chunks.</li>
+<li><strong>Worker Threads</strong>: Offload the computation to a worker thread. Communicate results via <code>postMessage</code>. The main event loop remains responsive.</li>
+<li><strong>Child Process</strong>: <code>child_process.fork</code> a separate Node process for isolation.</li>
+<li><strong>Native addons (N-API)</strong>: Write the hot path in C++ with async NAN/N-API calls.</li>
+</ol>
+<pre><code class="language-javascript">// Chunk approach with setImmediate
+async function processLargeArray(arr) {
+  const CHUNK = 1000;
+  for (let i = 0; i &lt; arr.length; i += CHUNK) {
+    processChunk(arr.slice(i, i + CHUNK));
+    await new Promise(resolve =&gt; setImmediate(resolve));  // yield
+  }
+}</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q8: What causes "MaxListenersExceededWarning" and how do you fix it? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p>EventEmitter emits a warning when more than 10 listeners are registered for the same event on the same emitter (default limit). This is a memory leak detector — it usually means you're adding listeners in a loop or inside a function that runs many times without removing old listeners.</p>
+<p><strong>Fixes:</strong></p>
+<ul>
+<li>Remove listeners when done: <code>emitter.off('event', handler)</code></li>
+<li>Use <code>emitter.once()</code> for one-time listeners</li>
+<li>Increase limit if legitimate: <code>emitter.setMaxListeners(20)</code></li>
+<li>Set globally: <code>EventEmitter.defaultMaxListeners = 20</code></li>
+</ul>
+</div>
+</details>
+
+<details>
+<summary>Q9: How does the Node.js permission model work in Node 20+? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>The Permission Model (experimental in Node 20, stabilizing in later versions) restricts what a Node process can access. Launched with <code>--experimental-permission</code> or <code>--permission</code> flags:</p>
+<pre><code class="language-bash">node --permission --allow-fs-read=/tmp --allow-fs-write=/tmp --allow-net app.js</code></pre>
+<p>Without flags, all access is denied. Permissions can be checked at runtime:</p>
+<pre><code class="language-javascript">process.permission.has('fs.read', '/tmp/file.txt')
+process.permission.has('net')
+process.permission.has('child_process')</code></pre>
+<p>Categories: <code>fs.read</code>, <code>fs.write</code>, <code>net</code>, <code>child_process</code>, <code>worker</code>, <code>inspect</code>. Useful for defense-in-depth with untrusted plugin code.</p>
+</div>
+</details>
+
+<details>
+<summary>Q10: What is prototype pollution and how do you prevent it in Node.js? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>Prototype pollution occurs when an attacker can set properties on <code>Object.prototype</code> (or other base prototypes) via user-supplied data, affecting all objects in the process. Classic vector: deep merge with unsanitized input containing <code>__proto__</code> key.</p>
+<pre><code class="language-javascript">// VULNERABLE
+function merge(target, src) {
+  for (const key in src) target[key] = src[key];  // __proto__ is enumerable
+}
+merge({}, JSON.parse('{"__proto__": {"isAdmin": true}}'));
+({}).isAdmin;  // true — ALL objects now have isAdmin!</code></pre>
+<p><strong>Prevention:</strong></p>
+<ul>
+<li>Use <code>Object.create(null)</code> for dictionaries (no prototype)</li>
+<li>Validate/sanitize keys: <code>if (key === '__proto__' || key === 'constructor') continue</code></li>
+<li>Use safe merge: <code>structuredClone</code>, <code>JSON.parse(JSON.stringify(x))</code>, or lodash's <code>mergeWith</code> with sanitization</li>
+<li>Use <code>Object.hasOwn(obj, key)</code> instead of <code>hasOwnProperty</code></li>
+<li>Freeze the prototype: <code>Object.freeze(Object.prototype)</code></li>
+</ul>
+</div>
+</details>
+
+<details>
+<summary>Q11: Explain the difference between <code>setImmediate</code> and <code>setTimeout(fn, 0)</code> <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><code>setTimeout(fn, 0)</code> schedules in the <strong>timers</strong> phase of the next event loop iteration. <code>setImmediate</code> schedules in the <strong>check</strong> phase of the current iteration (after poll).</p>
+<p>When called outside I/O callbacks: order is non-deterministic (depends on OS timer resolution).</p>
+<p>When called inside an I/O callback: <code>setImmediate</code> <em>always</em> fires before <code>setTimeout(fn, 0)</code> — because check phase comes before timers in the loop ordering from poll's perspective.</p>
+<p>Use <code>setImmediate</code> when you want to run after the current I/O phase, use <code>process.nextTick</code> when you want to run before any I/O (within same iteration).</p>
+</div>
+</details>
+
+<details>
+<summary>Q12: What is a Transform stream and when would you use one? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>A Transform stream is both Readable and Writable — it receives data, transforms it, and outputs transformed data. It sits in the middle of a pipeline.</p>
+<p>Use cases: compression/decompression (<code>zlib</code>), encryption/decryption, CSV parsing, JSON line parsing, text encoding, data aggregation.</p>
+<pre><code class="language-javascript">// CSV line counter Transform
+class LineCounter extends Transform {
+  constructor() { super({ objectMode: true }); this.count = 0; }
+  _transform(chunk, _, cb) {
+    this.count += chunk.toString().split('\n').length - 1;
+    this.push(chunk);  // pass through unchanged
+    cb();
+  }
+  _flush(cb) {
+    console.log(`Lines: ${this.count}`);
+    cb();
+  }
+}</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q13: How does pnpm's symlink-based node_modules work? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>npm/yarn use a flat <code>node_modules</code> — all packages hoisted to the top level. This enables "phantom dependencies" (packages you can require but didn't declare).</p>
+<p>pnpm uses a two-level structure:</p>
+<ol>
+<li>A global content-addressable store (<code>~/.pnpm-store</code>) with hard-linked files</li>
+<li><code>node_modules/.pnpm</code> contains the full dependency graph with each package's own <code>node_modules</code> containing only its declared dependencies</li>
+<li>Top-level <code>node_modules</code> has only symlinks to packages declared in your <code>package.json</code></li>
+</ol>
+<p>Benefits: disk efficient (hard links share inodes), strict (cannot use undeclared deps), faster installs (copy-on-write via hard links).</p>
+</div>
+</details>
+
+<details>
+<summary>Q14: What is graceful shutdown and how do you implement it? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<pre><code class="language-javascript">async function gracefulShutdown(signal) {
+  console.log(`${signal} received — graceful shutdown`);
+
+  // 1. Stop accepting new connections
+  await new Promise((resolve, reject) =&gt;
+    server.close((err) =&gt; err ? reject(err) : resolve())
+  );
+
+  // 2. Wait for existing requests to complete (with timeout)
+  const timeout = setTimeout(() =&gt; {
+    console.error('Forced shutdown after 30s');
+    process.exit(1);
+  }, 30_000);
+
+  // 3. Close DB connections, flush caches, etc.
+  await db.destroy();
+  await redis.quit();
+  await messageQueue.close();
+
+  clearTimeout(timeout);
+  console.log('Graceful shutdown complete');
+  process.exit(0);
+}
+
+process.on('SIGTERM', () =&gt; gracefulShutdown('SIGTERM'));
+process.on('SIGINT', () =&gt; gracefulShutdown('SIGINT'));</code></pre>
+<p>In Kubernetes: the pod receives SIGTERM → waits up to <code>terminationGracePeriodSeconds</code> → sends SIGKILL. Your handler must finish within that window.</p>
+</div>
+</details>
+
+<details>
+<summary>Q15: What is libuv's thread pool and what operations use it? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>libuv's thread pool (default size 4, max 1024 via <code>UV_THREADPOOL_SIZE</code>) handles operations that cannot be done asynchronously by the OS:</p>
+<ul>
+<li>File system operations (on all platforms — even Linux's io_uring is a layer above)</li>
+<li>DNS resolution (<code>dns.lookup</code> — <code>dns.resolve</code> uses the OS async resolver)</li>
+<li>Crypto operations (via Node's crypto module — AES, hashing)</li>
+<li>Zlib compression</li>
+<li>User native addons that use <code>uv_queue_work</code></li>
+</ul>
+<p>TCP/UDP networking does NOT use the thread pool — it uses OS-level async I/O (epoll/kqueue/IOCP).</p>
+<p>Thread pool exhaustion shows up as: all file I/O operations queuing up, DNS lookups stalling. Increase <code>UV_THREADPOOL_SIZE</code> if needed (but each thread costs ~1MB stack).</p>
+</div>
+</details>
+
+<details>
+<summary>Q16: How do you prevent event loop starvation from <code>process.nextTick</code>? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>If a <code>nextTick</code> callback schedules another <code>nextTick</code>, and that one schedules another, the event loop never moves forward — all I/O, timers, and promises starve. This is called <em>nextTick recursion</em>.</p>
+<p>Node will execute all <code>nextTick</code> callbacks before moving to the next phase, even newly enqueued ones. A recursive <code>nextTick</code> loop will DoS the server.</p>
+<pre><code class="language-javascript">// DANGEROUS — infinite loop on the nextTick queue
+function bad() { process.nextTick(bad); }
+
+// SAFE alternative — use setImmediate (yields to the event loop between calls)
+function good() { setImmediate(good); }
+// Or async iteration with await:</code></pre>
+<p>Recommendation: Use <code>process.nextTick</code> only once per call, never recursively. Use <code>setImmediate</code> or yielding async patterns for iterative work.</p>
+</div>
+</details>
+
+<details>
+<summary>Q17: What does <code>--watch</code> do in Node 19+ and how does it compare to <code>nodemon</code>? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p><code>node --watch server.js</code> is a built-in file watcher that restarts the process when any file loaded by the module system changes. Added in Node 19 (unstable), stabilized in Node 22.</p>
+<p><strong>vs nodemon:</strong></p>
+<ul>
+<li>No installation required</li>
+<li>Watches only files actually imported (not the whole directory)</li>
+<li>Supports <code>--watch-path</code> to add specific directories</li>
+<li>Less configurable than nodemon (no delay, no exec, no ignore globs until newer versions)</li>
+</ul>
+<p>Sufficient for simple development servers; use nodemon for advanced patterns (TypeScript exec, custom ignore rules).</p>
+</div>
+</details>
+
+<details>
+<summary>Q18: How does Node.js native <code>fetch</code> differ from <code>node-fetch</code>? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>Node 18 added native <code>fetch</code> (stable in Node 21). Based on the WHATWG Fetch spec, implemented via <code>undici</code> under the hood.</p>
+<p>Key differences from <code>node-fetch</code> v2:</p>
+<ul>
+<li>Native fetch follows the browser spec more closely (proper Headers, Request, Response)</li>
+<li>Supports streaming response bodies natively</li>
+<li>No need for extra package installation</li>
+<li>Does not follow <code>http_proxy</code> env var by default (use <code>undici.ProxyAgent</code> or <code>global-agent</code>)</li>
+<li>Cookies not persisted by default (no jar); use <code>undici.CookieAgent</code></li>
+</ul>
+</div>
+</details>
+
+<details>
+<summary>Q19: What is the Node.js built-in test runner and how do you use it? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<pre><code class="language-javascript">// node:test (stable in Node 20)
+import { test, describe, it, beforeEach, afterEach, mock } from 'node:test';
+import assert from 'node:assert/strict';
+
+describe('UserService', () =&gt; {
+  let service;
+  beforeEach(() =&gt; { service = new UserService(); });
+
+  it('creates a user', async (t) =&gt; {
+    const user = await service.create({ name: 'Alice', email: 'alice@example.com' });
+    assert.equal(user.name, 'Alice');
+    assert.match(user.id, /^[0-9a-f-]{36}$/);
+  });
+
+  it('throws on duplicate email', async () =&gt; {
+    await assert.rejects(
+      () =&gt; service.create({ name: 'Bob', email: 'exists@example.com' }),
+      { code: 'DUPLICATE_EMAIL' }
+    );
+  });
+});
+
+// Run: node --test src/**/*.test.js
+// Coverage: node --test --experimental-test-coverage
+// Watch: node --test --watch</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q20: How do SharedArrayBuffer and Atomics enable lock-free data structures? <span class="badge very-advanced">Very Advanced</span></summary>
+<div class="answer">
+<p><code>SharedArrayBuffer</code> allocates memory accessible from multiple Worker Threads simultaneously. Without synchronization, concurrent reads/writes cause data races.</p>
+<p><code>Atomics</code> provides CPU-level atomic operations:</p>
+<ul>
+<li><code>Atomics.add/sub/and/or/xor</code> — read-modify-write atomically</li>
+<li><code>Atomics.compareExchange</code> — CAS (Compare-And-Swap) for lock-free algorithms</li>
+<li><code>Atomics.wait</code> — block thread until value changes (mutex sleep)</li>
+<li><code>Atomics.notify</code> — wake waiting threads (mutex wakeup)</li>
+<li><code>Atomics.load/store</code> — with memory ordering guarantees</li>
+</ul>
+<p>Use case: a work-stealing queue where multiple workers atomically claim items from a shared index without a mutex, or a ring buffer for producer-consumer patterns between workers.</p>
+</div>
+</details>
+
+<details>
+<summary>Q21: What is the difference between <code>dns.lookup</code> and <code>dns.resolve</code>? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p><strong><code>dns.lookup</code></strong>: Uses the OS resolver (<code>getaddrinfo</code>) — reads <code>/etc/hosts</code>, respects system DNS config, local mDNS. Runs on the libuv thread pool. Can cause thread pool contention in high-DNS-volume apps.</p>
+<p><strong><code>dns.resolve</code></strong> (and <code>dns.resolve4</code>, <code>dns.resolveCname</code>, etc.): Queries DNS directly using Node's async DNS client (c-ares). Bypasses <code>/etc/hosts</code>. Non-blocking (no thread pool). Supports all DNS record types.</p>
+<p>HTTP clients like <code>axios</code> and Node's <code>http.request</code> use <code>dns.lookup</code> by default. To avoid thread pool saturation, use a custom lookup with caching, or configure HTTP agents with <code>c-ares</code>-based lookup.</p>
+</div>
+</details>
+
+<footer>Node.js Comprehensive Reference &mdash; covers Node 18 through Node 22</footer>
+</main>
+</div>
+<script>hljs.highlightAll();mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

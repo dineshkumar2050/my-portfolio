@@ -1,0 +1,2568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>React — Comprehensive Learning Reference</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6;display:flex;flex-direction:column}.topnav{background:#161b22;padding:10px 24px;border-bottom:1px solid #30363d;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100}.topnav a{color:#58a6ff;text-decoration:none;font-size:13px}.topnav h1{font-size:16px;color:#e6edf3;margin:0}.layout{display:flex;flex:1}.sidebar{width:260px;background:#161b22;border-right:1px solid #30363d;padding:16px;position:sticky;top:41px;height:calc(100vh - 41px);overflow-y:auto;flex-shrink:0}.sidebar a{display:block;padding:4px 8px;color:#8b949e;text-decoration:none;font-size:13px;border-radius:4px;margin-bottom:2px}.sidebar a:hover{background:#21262d;color:#c9d1d9}.sidebar .section-title{color:#58a6ff;font-size:11px;text-transform:uppercase;letter-spacing:.5px;margin:16px 0 6px;padding:0 8px;font-weight:600}main{flex:1;padding:32px 48px;max-width:960px}h1{font-size:2rem;color:#e6edf3;border-bottom:1px solid #30363d;padding-bottom:16px;margin-bottom:24px}h2{font-size:1.5rem;color:#e6edf3;margin:48px 0 16px;border-bottom:1px solid #21262d;padding-bottom:8px}h3{font-size:1.15rem;color:#79c0ff;margin:24px 0 10px}h4{font-size:1rem;color:#d2a8ff;margin:16px 0 8px}p{margin-bottom:12px}ul,ol{margin:0 0 16px 24px}li{margin-bottom:4px}pre{margin:16px 0;border-radius:6px;overflow-x:auto;font-size:13px}code:not(pre code){background:#161b22;padding:2px 6px;border-radius:4px;font-size:13px;color:#f0883e;border:1px solid #30363d}table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}th{background:#161b22;color:#58a6ff;padding:10px 14px;text-align:left;border:1px solid #30363d}td{padding:10px 14px;border:1px solid #30363d;vertical-align:top}tr:nth-child(even) td{background:#0a0d12}.mermaid{background:#161b22;padding:20px;border-radius:6px;margin:16px 0;text-align:center}details{border:1px solid #30363d;border-radius:6px;margin:10px 0;overflow:hidden}summary{padding:12px 16px;cursor:pointer;background:#161b22;color:#79c0ff;font-weight:600;list-style:none}details[open] summary{border-bottom:1px solid #30363d}.answer{padding:16px 20px;background:#0d1117}.badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:700;margin-left:8px}.easy{background:#1a4731;color:#3fb950}.intermediate{background:#2d2b00;color:#e3b341}.advanced{background:#3d1f00;color:#f0883e}.very-advanced{background:#3d0000;color:#ff7b72}.callout{background:#161b22;border-left:4px solid #58a6ff;padding:12px 16px;border-radius:0 6px 6px 0;margin:16px 0;font-size:14px}footer{text-align:center;padding:24px;color:#8b949e;font-size:12px;border-top:1px solid #30363d;margin-top:40px}
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <h1>React — Comprehensive Learning Reference</h1>
+  <a href="redux.html">Redux Reference</a>
+</nav>
+<div class="layout">
+<nav class="sidebar">
+  <div class="section-title">Fundamentals</div>
+  <a href="#overview">Overview</a>
+  <a href="#versions">Version History</a>
+  <a href="#components">Components</a>
+  <a href="#props-state">Props &amp; State</a>
+  <div class="section-title">Hooks</div>
+  <a href="#hooks">All Hooks Overview</a>
+  <a href="#usestate">useState</a>
+  <a href="#useeffect">useEffect</a>
+  <a href="#usecontext">useContext</a>
+  <a href="#usereducer">useReducer</a>
+  <a href="#usememo">useMemo</a>
+  <a href="#usecallback">useCallback</a>
+  <a href="#useref">useRef</a>
+  <a href="#uselayouteffect">useLayoutEffect</a>
+  <a href="#useimperativehandle">useImperativeHandle</a>
+  <a href="#useid">useId</a>
+  <a href="#usetransition">useTransition</a>
+  <a href="#usedeferredvalue">useDeferredValue</a>
+  <a href="#usesyncexternalstore">useSyncExternalStore</a>
+  <a href="#custom-hooks">Custom Hooks</a>
+  <div class="section-title">Advanced Topics</div>
+  <a href="#rendering">Rendering &amp; Reconciliation</a>
+  <a href="#performance">Performance Optimization</a>
+  <a href="#context-api">Context API</a>
+  <a href="#error-boundaries">Error Boundaries</a>
+  <a href="#refs-dom">Refs &amp; DOM</a>
+  <a href="#concurrent">Concurrent Features</a>
+  <a href="#patterns">Patterns</a>
+  <div class="section-title">Interview Q&amp;A</div>
+  <a href="#qa-easy">Easy</a>
+  <a href="#qa-intermediate">Intermediate</a>
+  <a href="#qa-advanced">Advanced</a>
+  <a href="#qa-very-advanced">Very Advanced</a>
+</nav>
+<main>
+
+<h1 id="top">React — Comprehensive Learning Reference</h1>
+
+<!-- ===== 1. OVERVIEW ===== -->
+<h2 id="overview">1. Overview</h2>
+<p><strong>React</strong> is a declarative, component-based JavaScript library for building user interfaces, created by Meta (Facebook). It focuses solely on the View layer and can integrate with any architecture or stack.</p>
+
+<h3>Core Concepts</h3>
+<ul>
+  <li><strong>Declarative</strong>: Describe what the UI should look like; React handles how to update the DOM efficiently</li>
+  <li><strong>Component-based</strong>: Build encapsulated components that manage their own state, then compose them to build complex UIs</li>
+  <li><strong>Learn once, write anywhere</strong>: Render to DOM, native mobile (React Native), server (SSR), canvas, VR (React 360)</li>
+</ul>
+
+<h3>Virtual DOM</h3>
+<p>React maintains a lightweight in-memory representation of the real DOM called the <strong>Virtual DOM (VDOM)</strong>. When state/props change:</p>
+<ol>
+  <li>React creates a new VDOM tree by calling your component functions</li>
+  <li><strong>Diffing</strong>: Compares new tree vs previous tree using an O(n) heuristic algorithm</li>
+  <li><strong>Reconciliation</strong>: Computes the minimal set of mutations needed</li>
+  <li><strong>Commit</strong>: Applies only the necessary changes to the actual DOM in a batch</li>
+</ol>
+
+<h3>Reconciliation Heuristics</h3>
+<ul>
+  <li>Elements of different types produce entirely different trees (full subtree replace)</li>
+  <li>Same type DOM elements: React updates changed attributes only, recurses on children</li>
+  <li>Same type component elements: React keeps the instance alive, updates props, re-renders</li>
+  <li><code>key</code> prop signals stable identity across renders — critical for lists</li>
+</ul>
+
+<h3>When to Use React</h3>
+<table>
+  <tr><th>Use React When</th><th>Consider Alternatives When</th></tr>
+  <tr><td>Complex, interactive UIs with frequent state changes</td><td>Simple static/content sites (Astro, plain HTML)</td></tr>
+  <tr><td>Large teams needing enforced component boundaries</td><td>Tiny interactivity only (Alpine.js, vanilla JS)</td></tr>
+  <tr><td>Need rich ecosystem: Next.js, Remix, React Native</td><td>Bundle size is critical (Preact, Svelte)</td></tr>
+  <tr><td>Code reuse across web and mobile platforms</td><td>SEO-critical content-only pages without SSR</td></tr>
+</table>
+
+<!-- ===== 2. VERSION HISTORY ===== -->
+<h2 id="versions">2. Version History</h2>
+
+<h3>React 16 — Fiber Architecture (Sept 2017)</h3>
+<p>Complete rewrite of React's core using the <strong>Fiber reconciler</strong>, enabling incremental rendering.</p>
+<ul>
+  <li><strong>Fiber</strong>: Unit of work that can be paused, prioritized, reused, or aborted. Enables future concurrent features</li>
+  <li><strong>Error Boundaries</strong>: <code>componentDidCatch</code> + <code>getDerivedStateFromError</code> — catch JS errors in component trees</li>
+  <li><strong>Portals</strong>: <code>ReactDOM.createPortal(child, container)</code> — render outside parent DOM hierarchy (modals, tooltips)</li>
+  <li><strong>Fragments</strong>: <code>&lt;React.Fragment&gt;</code> / <code>&lt;&gt;&lt;/&gt;</code> — return multiple sibling elements without extra DOM node</li>
+  <li><strong>Return arrays and strings</strong> from render methods</li>
+  <li><strong>Streaming SSR</strong>: <code>renderToNodeStream()</code> for faster TTFB</li>
+  <li><strong>Custom DOM attributes</strong>: unknown attributes pass through to DOM instead of being ignored</li>
+</ul>
+
+<h3>React 16.8 — Hooks (Feb 2019)</h3>
+<p>The most significant addition since React's creation. Hooks allow function components to use state and lifecycle features without classes.</p>
+<ul>
+  <li>Basic: <code>useState</code>, <code>useEffect</code>, <code>useContext</code>, <code>useReducer</code></li>
+  <li>Performance: <code>useMemo</code>, <code>useCallback</code></li>
+  <li>DOM/Ref: <code>useRef</code>, <code>useLayoutEffect</code>, <code>useImperativeHandle</code></li>
+  <li>Dev: <code>useDebugValue</code></li>
+  <li>Fully backwards-compatible — class components continue to work</li>
+</ul>
+
+<h3>React 17 — Platform Release (Oct 2020)</h3>
+<p>Focused on upgrading React itself rather than adding developer features.</p>
+<ul>
+  <li><strong>Gradual upgrade support</strong>: Multiple React versions on the same page</li>
+  <li><strong>New JSX Transform</strong>: No longer need <code>import React from 'react'</code> — compiler handles the import</li>
+  <li><strong>Event delegation moved to root</strong>: Events attach to the React root container, not <code>document</code></li>
+  <li><strong>Removed event pooling</strong>: <code>SyntheticEvent</code> objects are no longer reused/nullified</li>
+  <li><strong>useEffect cleanup timing</strong>: Cleanup functions run asynchronously (matching mount behavior)</li>
+</ul>
+
+<h3>React 18 — Concurrent React (Mar 2022)</h3>
+<p>The most transformative release since Hooks. Introduces <strong>Concurrent Mode</strong> — React can prepare multiple versions of the UI simultaneously and interrupt/prioritize work.</p>
+<ul>
+  <li><strong>New Root API</strong>: <code>ReactDOM.createRoot()</code> replaces <code>ReactDOM.render()</code> to opt into concurrent features</li>
+  <li><strong>Automatic Batching</strong>: State updates in timeouts, promises, native events now batched (previously only React synthetic events)</li>
+  <li><strong>startTransition</strong>: Mark updates as non-urgent so React can deprioritize them</li>
+  <li><strong>useTransition</strong>: Hook providing <code>isPending</code> flag + <code>startTransition</code></li>
+  <li><strong>useDeferredValue</strong>: Defer rerendering of a value during high-priority updates</li>
+  <li><strong>useId</strong>: Generate stable IDs consistent between SSR and hydration</li>
+  <li><strong>useSyncExternalStore</strong>: Subscribe to external stores safely (prevents tearing)</li>
+  <li><strong>useInsertionEffect</strong>: For CSS-in-JS libraries to inject styles before DOM mutations</li>
+  <li><strong>Suspense SSR Streaming</strong>: Stream HTML with <code>renderToPipeableStream</code>, selective hydration</li>
+  <li><strong>Strict Mode</strong>: Double-invokes effects to surface concurrency bugs</li>
+</ul>
+
+<h3>React 18.2 / 18.3</h3>
+<ul>
+  <li>Improved <code>act()</code> for async tests in concurrent mode</li>
+  <li>Deprecation warnings for legacy patterns (<code>ReactDOM.render</code>, <code>findDOMNode</code>, string refs)</li>
+  <li>React Compiler (React Forget) announced — automatically memoizes components</li>
+  <li>React 19 prep: server components integration improvements</li>
+</ul>
+
+<!-- ===== 3. COMPONENTS ===== -->
+<h2 id="components">3. Components</h2>
+
+<h3>Functional vs Class Components</h3>
+<table>
+  <tr><th>Aspect</th><th>Functional Component</th><th>Class Component</th></tr>
+  <tr><td>Syntax</td><td>Plain JS function or arrow function</td><td><code>class Foo extends React.Component</code></td></tr>
+  <tr><td>State</td><td>useState / useReducer hooks</td><td><code>this.state</code>, <code>this.setState()</code></td></tr>
+  <tr><td>Lifecycle</td><td>useEffect and other hooks</td><td>componentDidMount/Update/Unmount, etc.</td></tr>
+  <tr><td>Context</td><td>useContext hook</td><td><code>static contextType</code> or <code>&lt;Context.Consumer&gt;</code></td></tr>
+  <tr><td>Error Boundaries</td><td>Not supported (must use class)</td><td>Supported via componentDidCatch</td></tr>
+  <tr><td>Performance</td><td>React.memo for shallow comparison</td><td>shouldComponentUpdate / PureComponent</td></tr>
+  <tr><td>Recommended</td><td>Yes — modern React</td><td>Legacy code and error boundaries only</td></tr>
+</table>
+
+<pre><code class="language-jsx">// Functional Component (modern)
+function Greeting({ name, age = 0 }) {
+  const [count, setCount] = useState(0);
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;Hello, {name} (age {age})!&lt;/h1&gt;
+      &lt;button onClick={() =&gt; setCount(c =&gt; c + 1)}&gt;Clicked {count} times&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+
+// Class Component (legacy equivalent)
+class Greeting extends React.Component {
+  state = { count: 0 };
+  static defaultProps = { age: 0 };
+
+  render() {
+    const { name, age } = this.props;
+    const { count } = this.state;
+    return (
+      &lt;div&gt;
+        &lt;h1&gt;Hello, {name} (age {age})!&lt;/h1&gt;
+        &lt;button onClick={() =&gt; this.setState(s =&gt; ({ count: s.count + 1 }))}&gt;
+          Clicked {count} times
+        &lt;/button&gt;
+      &lt;/div&gt;
+    );
+  }
+}
+</code></pre>
+
+<h3>JSX Deep Dive</h3>
+<pre><code class="language-jsx">// JSX compiles to React.createElement() or _jsx() (new transform)
+const el = &lt;div className="box" onClick={handler}&gt;Hello&lt;/div&gt;;
+// New transform compiles to:
+import { jsx as _jsx } from 'react/jsx-runtime';
+const el = _jsx("div", { className: "box", onClick: handler, children: "Hello" });
+
+// JSX Rules
+// 1. Single root element (use Fragment for multiple)
+// 2. className (not class), htmlFor (not for), tabIndex (not tabindex)
+// 3. Self-closing: &lt;img /&gt;, &lt;br /&gt;, &lt;MyComponent /&gt;
+// 4. Expressions in {}: {user.name}, {count + 1}, {condition ? a : b}
+// 5. NOT statements: no if/for directly — use ternary, &&, or extract to var
+
+// Fragments
+function List() {
+  return (
+    &lt;&gt;
+      &lt;dt&gt;Term&lt;/dt&gt;
+      &lt;dd&gt;Definition&lt;/dd&gt;
+    &lt;/&gt;
+  );
+}
+
+// Fragment with key (only long-form supports key prop)
+items.map(item =&gt; (
+  &lt;React.Fragment key={item.id}&gt;
+    &lt;dt&gt;{item.term}&lt;/dt&gt;
+    &lt;dd&gt;{item.def}&lt;/dd&gt;
+  &lt;/React.Fragment&gt;
+))
+</code></pre>
+
+<h3>Conditional Rendering Patterns</h3>
+<pre><code class="language-jsx">// 1. Ternary operator
+{isLoggedIn ? &lt;UserDashboard /&gt; : &lt;LoginPage /&gt;}
+
+// 2. Logical AND — careful: 0 renders "0"!
+{items.length &gt; 0 &amp;&amp; &lt;ItemList items={items} /&gt;}
+{!!items.length &amp;&amp; &lt;ItemList items={items} /&gt;}  // safe boolean conversion
+
+// 3. Early return pattern
+function Content({ loading, error, data }) {
+  if (loading) return &lt;Spinner /&gt;;
+  if (error) return &lt;ErrorMessage error={error} /&gt;;
+  if (!data) return null;
+  return &lt;DataView data={data} /&gt;;
+}
+
+// 4. Enum/object lookup pattern
+const STATUS_VIEWS = {
+  loading: &lt;Spinner /&gt;,
+  error: &lt;Error /&gt;,
+  success: &lt;Success /&gt;,
+  empty: &lt;Empty /&gt;,
+};
+return STATUS_VIEWS[status] ?? null;
+</code></pre>
+
+<h3>Keys and List Rendering</h3>
+<pre><code class="language-jsx">// Keys must be: stable, unique among siblings, predictable
+// BAD: index as key causes bugs on reorder/insert/delete
+{items.map((item, i) =&gt; &lt;Item key={i} data={item} /&gt;)}
+
+// GOOD: use a stable unique ID from your data
+{items.map(item =&gt; &lt;Item key={item.id} data={item} /&gt;)}
+
+// Why keys matter: React uses keys to decide if an element
+// was moved, added, removed, or is the same between renders.
+// Wrong keys can cause: wrong component state, animation glitches,
+// performance issues (full re-mounts instead of updates).
+</code></pre>
+
+<h3>Component Composition</h3>
+<pre><code class="language-jsx">// Children prop
+function Card({ title, children }) {
+  return (
+    &lt;div className="card"&gt;
+      &lt;div className="card-header"&gt;&lt;h3&gt;{title}&lt;/h3&gt;&lt;/div&gt;
+      &lt;div className="card-body"&gt;{children}&lt;/div&gt;
+    &lt;/div&gt;
+  );
+}
+
+// Named slots
+function Layout({ header, sidebar, content, footer }) {
+  return (
+    &lt;div className="layout"&gt;
+      &lt;header&gt;{header}&lt;/header&gt;
+      &lt;aside&gt;{sidebar}&lt;/aside&gt;
+      &lt;main&gt;{content}&lt;/main&gt;
+      &lt;footer&gt;{footer}&lt;/footer&gt;
+    &lt;/div&gt;
+  );
+}
+
+// Usage
+&lt;Layout
+  header={&lt;NavBar /&gt;}
+  sidebar={&lt;FilterPanel /&gt;}
+  content={&lt;ProductGrid /&gt;}
+  footer={&lt;FooterLinks /&gt;}
+/&gt;
+</code></pre>
+
+<!-- ===== 4. PROPS & STATE ===== -->
+<h2 id="props-state">4. Props &amp; State</h2>
+
+<h3>Props</h3>
+<pre><code class="language-jsx">// Props are read-only inputs to components
+function Button({ label, onClick, disabled = false, variant = 'primary', size = 'md' }) {
+  return (
+    &lt;button
+      className={`btn btn-${variant} btn-${size}`}
+      onClick={onClick}
+      disabled={disabled}
+    &gt;
+      {label}
+    &lt;/button&gt;
+  );
+}
+
+// Spread operator for forwarding props to DOM element
+function Input({ className = '', ...rest }) {
+  return &lt;input className={`base-input ${className}`} {...rest} /&gt;;
+}
+
+// Children as render prop
+function Collapsible({ trigger, children }) {
+  const [open, setOpen] = useState(false);
+  return (
+    &lt;div&gt;
+      &lt;div onClick={() =&gt; setOpen(o =&gt; !o)}&gt;{trigger}&lt;/div&gt;
+      {open &amp;&amp; &lt;div&gt;{children}&lt;/div&gt;}
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+
+<h3>Prop Drilling Problem and Solutions</h3>
+<pre><code class="language-jsx">// PROBLEM: theme passed through 3 levels, but only Button uses it
+function App() {
+  const [theme] = useState('dark');
+  return &lt;Page theme={theme} /&gt;;
+}
+function Page({ theme }) {
+  return &lt;Sidebar theme={theme} /&gt;;  // doesn't use theme
+}
+function Sidebar({ theme }) {
+  return &lt;Button theme={theme} /&gt;;   // doesn't use theme
+}
+function Button({ theme }) {
+  return &lt;button className={theme}&gt;Click&lt;/button&gt;;
+}
+
+// SOLUTION 1: Context API
+const ThemeContext = createContext('light');
+function App() {
+  return (
+    &lt;ThemeContext.Provider value="dark"&gt;
+      &lt;Page /&gt;
+    &lt;/ThemeContext.Provider&gt;
+  );
+}
+function Button() {
+  const theme = useContext(ThemeContext);
+  return &lt;button className={theme}&gt;Click&lt;/button&gt;;
+}
+
+// SOLUTION 2: Component composition (Button moved up)
+function App() {
+  const [theme] = useState('dark');
+  return &lt;Page sidebar={&lt;Button theme={theme} /&gt;} /&gt;;
+}
+</code></pre>
+
+<h3>State Immutability</h3>
+<pre><code class="language-jsx">// WRONG — direct mutation
+const [user, setUser] = useState({ name: 'Alice', age: 25 });
+user.age = 26;      // mutating object
+setUser(user);      // same reference, React may skip re-render
+
+// CORRECT — always create new references
+setUser(prev =&gt; ({ ...prev, age: 26 }));
+
+// Arrays — use non-mutating methods
+const [list, setList] = useState([1, 2, 3]);
+setList(prev =&gt; [...prev, 4]);                          // add
+setList(prev =&gt; prev.filter(x =&gt; x !== 2));            // remove
+setList(prev =&gt; prev.map(x =&gt; x === 2 ? 99 : x));      // update
+setList(prev =&gt; [...prev].sort());                       // sort (copy first!)
+
+// Deeply nested — use immer or manual spread
+import produce from 'immer';
+setConfig(produce(draft =&gt; { draft.server.port = 8080; }));
+</code></pre>
+
+<h3>Controlled vs Uncontrolled Components</h3>
+<pre><code class="language-jsx">// Controlled: React state is the single source of truth
+function ControlledForm() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleSubmit = (e) =&gt; {
+    e.preventDefault();
+    console.log({ email, password });
+  };
+
+  return (
+    &lt;form onSubmit={handleSubmit}&gt;
+      &lt;input type="email" value={email} onChange={e =&gt; setEmail(e.target.value)} /&gt;
+      &lt;input type="password" value={password} onChange={e =&gt; setPassword(e.target.value)} /&gt;
+      &lt;button&gt;Submit&lt;/button&gt;
+    &lt;/form&gt;
+  );
+}
+
+// Uncontrolled: DOM is the source of truth, read via ref
+function UncontrolledForm() {
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+
+  const handleSubmit = (e) =&gt; {
+    e.preventDefault();
+    console.log({ email: emailRef.current.value, password: passwordRef.current.value });
+  };
+
+  return (
+    &lt;form onSubmit={handleSubmit}&gt;
+      &lt;input type="email" ref={emailRef} defaultValue="" /&gt;
+      &lt;input type="password" ref={passwordRef} /&gt;
+      &lt;button&gt;Submit&lt;/button&gt;
+    &lt;/form&gt;
+  );
+}
+// Prefer controlled for: validation, conditional fields, real-time feedback
+// Prefer uncontrolled for: simple forms, file inputs, integrating with non-React libs
+</code></pre>
+
+<!-- ===== 5. HOOKS ===== -->
+<h2 id="hooks">5. All React Hooks</h2>
+<div class="callout">Rules of Hooks: (1) Only call hooks at the top level — never inside loops, conditions, or nested functions. (2) Only call hooks from React function components or custom hooks. ESLint plugin: eslint-plugin-react-hooks enforces these rules.</div>
+
+<table>
+  <tr><th>Hook</th><th>Purpose</th><th>When to Use</th></tr>
+  <tr><td><code>useState</code></td><td>Local component state</td><td>Any simple state value</td></tr>
+  <tr><td><code>useEffect</code></td><td>Side effects after render</td><td>Data fetching, subscriptions, DOM manipulation</td></tr>
+  <tr><td><code>useContext</code></td><td>Read context value</td><td>Avoid prop drilling for shared data</td></tr>
+  <tr><td><code>useReducer</code></td><td>Complex state logic</td><td>Multiple related state fields, complex transitions</td></tr>
+  <tr><td><code>useMemo</code></td><td>Memoize computed values</td><td>Expensive calculations, stable object references</td></tr>
+  <tr><td><code>useCallback</code></td><td>Memoize functions</td><td>Stable callbacks for memo'd children, effect deps</td></tr>
+  <tr><td><code>useRef</code></td><td>Mutable ref, DOM access</td><td>DOM refs, timers, previous values, instance vars</td></tr>
+  <tr><td><code>useLayoutEffect</code></td><td>Synchronous effect before paint</td><td>DOM measurements, tooltip positioning</td></tr>
+  <tr><td><code>useImperativeHandle</code></td><td>Customize ref interface</td><td>Expose methods on components via forwardRef</td></tr>
+  <tr><td><code>useId</code></td><td>Stable unique IDs</td><td>Accessibility (label/input pairing), SSR</td></tr>
+  <tr><td><code>useTransition</code></td><td>Non-urgent state updates</td><td>Navigation, heavy filter/search operations</td></tr>
+  <tr><td><code>useDeferredValue</code></td><td>Defer value re-rendering</td><td>When value comes from props/parent</td></tr>
+  <tr><td><code>useSyncExternalStore</code></td><td>Subscribe to external stores</td><td>Redux, browser APIs, custom store integrations</td></tr>
+  <tr><td><code>useInsertionEffect</code></td><td>Insert CSS before DOM mutations</td><td>CSS-in-JS library internals</td></tr>
+</table>
+
+<h3 id="usestate">useState</h3>
+<pre><code class="language-jsx">// Basic
+const [count, setCount] = useState(0);
+
+// Lazy initializer — function runs ONCE on mount (expensive computation)
+const [state, setState] = useState(() =&gt; {
+  const saved = localStorage.getItem('state');
+  return saved ? JSON.parse(saved) : { user: null, prefs: {} };
+});
+
+// Functional updates — use when new value depends on old value
+// Avoids stale closure issues in callbacks and async code
+setCount(prev =&gt; prev + 1);  // CORRECT
+setCount(count + 1);          // RISKY — stale closure if called multiple times
+
+// Object state — always spread, never mutate
+const [form, setForm] = useState({ name: '', email: '' });
+const handleChange = (e) =&gt; {
+  setForm(prev =&gt; ({ ...prev, [e.target.name]: e.target.value }));
+};
+
+// Resetting state — give component a new key
+function App() {
+  const [key, setKey] = useState(0);
+  return (
+    &lt;div&gt;
+      &lt;Form key={key} /&gt;
+      &lt;button onClick={() =&gt; setKey(k =&gt; k + 1)}&gt;Reset Form&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+
+<h3 id="useeffect">useEffect</h3>
+<pre><code class="language-jsx">// Pattern 1: Runs after every render (no dep array — rarely needed)
+useEffect(() =&gt; { document.title = count.toString(); });
+
+// Pattern 2: Run once on mount (empty dep array)
+useEffect(() =&gt; {
+  const handler = () =&gt; setOnline(navigator.onLine);
+  window.addEventListener('online', handler);
+  window.addEventListener('offline', handler);
+  return () =&gt; {
+    window.removeEventListener('online', handler);
+    window.removeEventListener('offline', handler);
+  };
+}, []);
+
+// Pattern 3: Run when specific values change
+useEffect(() =&gt; {
+  if (!userId) return;
+  let cancelled = false;
+  const controller = new AbortController();
+  fetch(`/api/users/${userId}`, { signal: controller.signal })
+    .then(r =&gt; r.json())
+    .then(data =&gt; { if (!cancelled) setUser(data); })
+    .catch(err =&gt; { if (err.name !== 'AbortError' &amp;&amp; !cancelled) setError(err); });
+  return () =&gt; {
+    cancelled = true;
+    controller.abort();
+  };
+}, [userId]);
+
+// COMMON MISTAKES
+// 1. Missing dep = stale closure; Extra dep = too many runs
+// 2. Objects/functions as deps cause infinite loop — use useMemo/useCallback first
+// 3. Not returning cleanup = memory leaks, state updates on unmounted components
+// 4. Fetching data without abort = race conditions, stale data on fast navigation
+
+// WHEN NOT TO USE useEffect
+// Transforming data for render: compute inline or with useMemo
+// Resetting state when prop changes: use key prop or compute during render
+// Initializing application-level state: do it outside components
+</code></pre>
+
+<h3 id="usecontext">useContext</h3>
+<pre><code class="language-jsx">// Step 1: Create context with type-safe default
+const AuthContext = createContext(null);
+
+// Step 2: Provider component
+function AuthProvider({ children }) {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() =&gt; {
+    checkSession().then(u =&gt; { setUser(u); setLoading(false); });
+  }, []);
+
+  // Memoize value to prevent unnecessary re-renders of all consumers
+  const value = useMemo(() =&gt; ({
+    user,
+    loading,
+    login: async (creds) =&gt; { const u = await loginApi(creds); setUser(u); },
+    logout: () =&gt; { logoutApi(); setUser(null); },
+  }), [user, loading]);
+
+  return &lt;AuthContext.Provider value={value}&gt;{children}&lt;/AuthContext.Provider&gt;;
+}
+
+// Step 3: Custom hook with guard
+function useAuth() {
+  const ctx = useContext(AuthContext);
+  if (ctx === null) throw new Error('useAuth must be used within AuthProvider');
+  return ctx;
+}
+
+// Step 4: Usage anywhere in the tree
+function UserMenu() {
+  const { user, logout } = useAuth();
+  if (!user) return null;
+  return (
+    &lt;div&gt;
+      &lt;span&gt;{user.name}&lt;/span&gt;
+      &lt;button onClick={logout}&gt;Sign out&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+
+// Avoiding re-render problem: split read/write contexts
+const CountStateContext = createContext(0);
+const CountDispatchContext = createContext(() =&gt; {});
+
+// Components that only dispatch won't re-render when count changes
+</code></pre>
+
+<h3 id="usereducer">useReducer</h3>
+<pre><code class="language-jsx">// Define actions as constants
+const TODO_ACTIONS = {
+  ADD: 'ADD',
+  TOGGLE: 'TOGGLE',
+  DELETE: 'DELETE',
+  EDIT: 'EDIT',
+};
+
+// Pure reducer function — easy to test in isolation
+function todoReducer(state, action) {
+  switch (action.type) {
+    case TODO_ACTIONS.ADD:
+      return {
+        ...state,
+        todos: [...state.todos, { id: Date.now(), text: action.payload, done: false }]
+      };
+    case TODO_ACTIONS.TOGGLE:
+      return {
+        ...state,
+        todos: state.todos.map(t =&gt;
+          t.id === action.payload ? { ...t, done: !t.done } : t
+        )
+      };
+    case TODO_ACTIONS.DELETE:
+      return { ...state, todos: state.todos.filter(t =&gt; t.id !== action.payload) };
+    case TODO_ACTIONS.EDIT:
+      return {
+        ...state,
+        todos: state.todos.map(t =&gt;
+          t.id === action.payload.id ? { ...t, text: action.payload.text } : t
+        )
+      };
+    default:
+      throw new Error(`Unknown action: ${action.type}`);
+  }
+}
+
+function TodoApp() {
+  const [state, dispatch] = useReducer(todoReducer, { todos: [] });
+  const [input, setInput] = useState('');
+
+  const addTodo = () =&gt; {
+    if (!input.trim()) return;
+    dispatch({ type: TODO_ACTIONS.ADD, payload: input });
+    setInput('');
+  };
+
+  return (
+    &lt;div&gt;
+      &lt;input value={input} onChange={e =&gt; setInput(e.target.value)} /&gt;
+      &lt;button onClick={addTodo}&gt;Add&lt;/button&gt;
+      {state.todos.map(todo =&gt; (
+        &lt;div key={todo.id}&gt;
+          &lt;span style={{ textDecoration: todo.done ? 'line-through' : 'none' }}&gt;
+            {todo.text}
+          &lt;/span&gt;
+          &lt;button onClick={() =&gt; dispatch({ type: TODO_ACTIONS.TOGGLE, payload: todo.id })}&gt;
+            Toggle
+          &lt;/button&gt;
+          &lt;button onClick={() =&gt; dispatch({ type: TODO_ACTIONS.DELETE, payload: todo.id })}&gt;
+            Delete
+          &lt;/button&gt;
+        &lt;/div&gt;
+      ))}
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+
+<h3 id="usememo">useMemo</h3>
+<pre><code class="language-jsx">// Memoize expensive calculation
+function SearchResults({ data, query, sortKey }) {
+  const results = useMemo(() =&gt; {
+    if (!query) return data;
+    const lower = query.toLowerCase();
+    return data
+      .filter(item =&gt; item.name.toLowerCase().includes(lower) ||
+                      item.description.toLowerCase().includes(lower))
+      .sort((a, b) =&gt; {
+        if (sortKey === 'name') return a.name.localeCompare(b.name);
+        if (sortKey === 'price') return a.price - b.price;
+        return 0;
+      });
+  }, [data, query, sortKey]);  // recompute only when these change
+
+  return &lt;ResultGrid items={results} /&gt;;
+}
+
+// Stabilize object references to prevent downstream hook re-runs
+function UserProfile({ userId }) {
+  const requestConfig = useMemo(() =&gt; ({
+    headers: { Authorization: `Bearer ${getToken()}` },
+    cache: 'no-store',
+  }), []);  // stable reference unless deps change
+
+  const { data } = useFetch(`/api/users/${userId}`, requestConfig);
+  return &lt;div&gt;{data?.name}&lt;/div&gt;;
+}
+
+// Anti-patterns — DON'T use useMemo for:
+// - Trivial operations: useMemo(() =&gt; a + b, [a, b])  // overhead not worth it
+// - When deps change every render anyway
+// - As a correctness mechanism (it's a performance hint, not a guarantee)
+</code></pre>
+
+<h3 id="usecallback">useCallback</h3>
+<pre><code class="language-jsx">// useCallback(fn, deps) === useMemo(() =&gt; fn, deps)
+// Returns the same function reference unless deps change
+
+function TaskManager() {
+  const [tasks, setTasks] = useState([]);
+  const [filter, setFilter] = useState('all');
+
+  // Stable reference — deps never change (setTasks is always stable)
+  const addTask = useCallback((text) =&gt; {
+    setTasks(prev =&gt; [...prev, { id: crypto.randomUUID(), text, done: false }]);
+  }, []);
+
+  // Depends on nothing mutable — stable
+  const toggleTask = useCallback((id) =&gt; {
+    setTasks(prev =&gt; prev.map(t =&gt; t.id === id ? { ...t, done: !t.done } : t));
+  }, []);
+
+  // Depends on filter — new function when filter changes
+  const deleteTask = useCallback((id) =&gt; {
+    setTasks(prev =&gt; prev.filter(t =&gt; t.id !== id));
+    if (filter === 'done') console.log('Removing done task');
+  }, [filter]);
+
+  return (
+    &lt;div&gt;
+      {/* TaskList is memoized — won't re-render unless callbacks or tasks change */}
+      &lt;TaskList tasks={tasks} onAdd={addTask} onToggle={toggleTask} onDelete={deleteTask} /&gt;
+    &lt;/div&gt;
+  );
+}
+
+const TaskList = React.memo(({ tasks, onAdd, onToggle, onDelete }) =&gt; {
+  return (
+    &lt;ul&gt;
+      {tasks.map(t =&gt; (
+        &lt;li key={t.id}&gt;
+          &lt;span&gt;{t.text}&lt;/span&gt;
+          &lt;button onClick={() =&gt; onToggle(t.id)}&gt;Toggle&lt;/button&gt;
+          &lt;button onClick={() =&gt; onDelete(t.id)}&gt;Delete&lt;/button&gt;
+        &lt;/li&gt;
+      ))}
+    &lt;/ul&gt;
+  );
+});
+</code></pre>
+
+<h3 id="useref">useRef</h3>
+<pre><code class="language-jsx">// Use case 1: DOM access
+function AutoFocusSearch() {
+  const inputRef = useRef(null);
+  useEffect(() =&gt; { inputRef.current?.focus(); }, []);
+  return &lt;input ref={inputRef} type="search" placeholder="Search..." /&gt;;
+}
+
+// Use case 2: Mutable instance variable (no re-render on change)
+function DebounceSearch() {
+  const [query, setQuery] = useState('');
+  const timerRef = useRef(null);
+
+  const handleChange = (e) =&gt; {
+    clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(() =&gt; {
+      setQuery(e.target.value);  // only this triggers re-render
+    }, 300);
+  };
+
+  return &lt;input onChange={handleChange} /&gt;;
+}
+
+// Use case 3: Capture previous value
+function usePrevious(value) {
+  const ref = useRef(undefined);
+  useEffect(() =&gt; { ref.current = value; });
+  return ref.current;  // returns value from PREVIOUS render
+}
+
+// Use case 4: forwardRef — pass ref through component
+const TextInput = React.forwardRef(function TextInput({ label, ...props }, ref) {
+  const id = useId();
+  return (
+    &lt;div&gt;
+      &lt;label htmlFor={id}&gt;{label}&lt;/label&gt;
+      &lt;input id={id} ref={ref} {...props} /&gt;
+    &lt;/div&gt;
+  );
+});
+
+// Parent uses ref as if TextInput were a plain input
+function SignUpForm() {
+  const emailRef = useRef(null);
+  const submit = () =&gt; console.log(emailRef.current.value);
+  return (
+    &lt;form onSubmit={submit}&gt;
+      &lt;TextInput ref={emailRef} label="Email" type="email" /&gt;
+    &lt;/form&gt;
+  );
+}
+</code></pre>
+
+<h3 id="uselayouteffect">useLayoutEffect</h3>
+<pre><code class="language-jsx">// Fires synchronously AFTER DOM mutations but BEFORE browser paint
+// Prevents visual flicker when reading layout dimensions
+
+function MeasuredDiv({ children }) {
+  const ref = useRef(null);
+  const [height, setHeight] = useState(0);
+
+  useLayoutEffect(() =&gt; {
+    // Safe to read layout here — DOM is updated, browser hasn't painted yet
+    setHeight(ref.current.getBoundingClientRect().height);
+  });  // runs after every render to track height changes
+
+  return (
+    &lt;div&gt;
+      &lt;div ref={ref}&gt;{children}&lt;/div&gt;
+      &lt;p&gt;Height: {height}px&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}
+
+// Popover positioning — avoid flicker by measuring before paint
+function Popover({ anchor, children }) {
+  const popoverRef = useRef(null);
+  const [style, setStyle] = useState({});
+
+  useLayoutEffect(() =&gt; {
+    if (!anchor || !popoverRef.current) return;
+    const anchorRect = anchor.getBoundingClientRect();
+    const popoverRect = popoverRef.current.getBoundingClientRect();
+    setStyle({
+      position: 'fixed',
+      top: anchorRect.bottom + 4,
+      left: Math.min(anchorRect.left, window.innerWidth - popoverRect.width - 8),
+    });
+  }, [anchor]);
+
+  return &lt;div ref={popoverRef} style={style}&gt;{children}&lt;/div&gt;;
+}
+
+// RULE: Start with useEffect; switch to useLayoutEffect only if you see visual flicker
+</code></pre>
+
+<h3 id="useimperativehandle">useImperativeHandle</h3>
+<pre><code class="language-jsx">// Expose a limited, custom API to parent via ref
+// Must be used with React.forwardRef
+
+const RichEditor = React.forwardRef(function RichEditor(props, ref) {
+  const editorRef = useRef(null);
+  const [content, setContent] = useState('');
+
+  useImperativeHandle(ref, () =&gt; ({
+    // Expose these methods to the parent
+    clear() { setContent(''); },
+    focus() { editorRef.current?.focus(); },
+    getContent() { return content; },
+    insertText(text) {
+      setContent(prev =&gt; prev + text);
+    },
+  }), [content]);  // recreate if content changes (getContent needs current content)
+
+  return (
+    &lt;textarea
+      ref={editorRef}
+      value={content}
+      onChange={e =&gt; setContent(e.target.value)}
+      {...props}
+    /&gt;
+  );
+});
+
+// Parent — only sees the exposed API, not the internal textarea ref
+function BlogPost() {
+  const editorRef = useRef(null);
+  return (
+    &lt;div&gt;
+      &lt;RichEditor ref={editorRef} /&gt;
+      &lt;button onClick={() =&gt; editorRef.current.clear()}&gt;Clear&lt;/button&gt;
+      &lt;button onClick={() =&gt; editorRef.current.insertText('\n---\n')}&gt;Divider&lt;/button&gt;
+      &lt;button onClick={() =&gt; alert(editorRef.current.getContent())}&gt;Preview&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+
+<h3 id="useid">useId</h3>
+<pre><code class="language-jsx">// Generates stable, unique IDs — consistent between server and client renders
+// Critical for SSR hydration — Math.random() would cause mismatch
+
+function FormField({ label, type = 'text', error, required }) {
+  const id = useId();
+  const errorId = `${id}-error`;
+
+  return (
+    &lt;div&gt;
+      &lt;label htmlFor={id}&gt;
+        {label} {required &amp;&amp; &lt;span aria-hidden&gt;*&lt;/span&gt;}
+      &lt;/label&gt;
+      &lt;input
+        id={id}
+        type={type}
+        required={required}
+        aria-describedby={error ? errorId : undefined}
+        aria-invalid={error ? 'true' : undefined}
+      /&gt;
+      {error &amp;&amp; &lt;span id={errorId} role="alert"&gt;{error}&lt;/span&gt;}
+    &lt;/div&gt;
+  );
+}
+
+// Multiple related IDs
+function RadioGroup({ name, options }) {
+  const baseId = useId();
+  return (
+    &lt;fieldset&gt;
+      {options.map((opt, i) =&gt; (
+        &lt;div key={opt.value}&gt;
+          &lt;input type="radio" name={name} id={`${baseId}-${i}`} value={opt.value} /&gt;
+          &lt;label htmlFor={`${baseId}-${i}`}&gt;{opt.label}&lt;/label&gt;
+        &lt;/div&gt;
+      ))}
+    &lt;/fieldset&gt;
+  );
+}
+</code></pre>
+
+<h3 id="usetransition">useTransition</h3>
+<pre><code class="language-jsx">// Mark updates as non-urgent — React can interrupt them for urgent updates
+// Urgent: typing, clicking (must respond immediately)
+// Non-urgent: rendering heavy results list (can lag slightly)
+
+function TabPanel() {
+  const [tab, setTab] = useState('home');
+  const [isPending, startTransition] = useTransition();
+
+  const switchTab = (newTab) =&gt; {
+    startTransition(() =&gt; {
+      setTab(newTab);  // non-urgent — may be deferred if user keeps clicking
+    });
+  };
+
+  return (
+    &lt;div&gt;
+      &lt;nav&gt;
+        {['home', 'profile', 'settings'].map(t =&gt; (
+          &lt;button
+            key={t}
+            onClick={() =&gt; switchTab(t)}
+            style={{ fontWeight: tab === t ? 'bold' : 'normal' }}
+          &gt;
+            {t}
+          &lt;/button&gt;
+        ))}
+      &lt;/nav&gt;
+      {isPending ? (
+        &lt;div className="skeleton"&gt;Loading...&lt;/div&gt;
+      ) : (
+        &lt;TabContent tab={tab} /&gt;
+      )}
+    &lt;/div&gt;
+  );
+}
+
+// Also useful for: search filtering large datasets, paginating results
+function LiveSearch({ items }) {
+  const [query, setQuery] = useState('');
+  const [filtered, setFiltered] = useState(items);
+  const [isPending, startTransition] = useTransition();
+
+  const handleSearch = (e) =&gt; {
+    const q = e.target.value;
+    setQuery(q);  // urgent — input updates immediately
+    startTransition(() =&gt; {
+      setFiltered(items.filter(item =&gt;
+        item.name.toLowerCase().includes(q.toLowerCase())
+      ));
+    });
+  };
+
+  return (
+    &lt;div&gt;
+      &lt;input value={query} onChange={handleSearch} placeholder="Search..." /&gt;
+      &lt;div style={{ opacity: isPending ? 0.6 : 1 }}&gt;
+        {filtered.map(item =&gt; &lt;div key={item.id}&gt;{item.name}&lt;/div&gt;)}
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+
+<h3 id="usedeferredvalue">useDeferredValue</h3>
+<pre><code class="language-jsx">// Defers re-rendering a derived value — React renders stale content
+// while preparing the updated content in background
+// Use when you receive the value from outside (props) and can't wrap in startTransition
+
+function SearchPage() {
+  const [query, setQuery] = useState('');
+  const deferredQuery = useDeferredValue(query);
+
+  // Visual indicator that results are stale
+  const isStale = query !== deferredQuery;
+
+  return (
+    &lt;div&gt;
+      &lt;input
+        value={query}
+        onChange={e =&gt; setQuery(e.target.value)}
+        placeholder="Search products..."
+      /&gt;
+      &lt;div style={{ transition: 'opacity 0.2s', opacity: isStale ? 0.5 : 1 }}&gt;
+        {/* Results component gets deferred query — won't block input typing */}
+        &lt;SearchResults query={deferredQuery} /&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}
+
+// SearchResults can be heavy without hurting input responsiveness
+const SearchResults = React.memo(function SearchResults({ query }) {
+  const results = useMemo(() =&gt; expensiveSearch(query), [query]);
+  return (
+    &lt;ul&gt;
+      {results.map(r =&gt; &lt;li key={r.id}&gt;{r.name}&lt;/li&gt;)}
+    &lt;/ul&gt;
+  );
+});
+
+// useTransition vs useDeferredValue
+// useTransition: you OWN the state update — wrap setState in startTransition
+// useDeferredValue: value comes from OUTSIDE — wrap received value in useDeferredValue
+</code></pre>
+
+<h3 id="usesyncexternalstore">useSyncExternalStore</h3>
+<pre><code class="language-jsx">// Subscribe to external (non-React) stores safely in concurrent mode
+// Prevents "tearing" — UI showing inconsistent snapshots of the same store
+
+// Example 1: Browser window dimensions
+function useWindowSize() {
+  const getSnapshot = () =&gt; ({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+
+  return useSyncExternalStore(
+    (notify) =&gt; {
+      window.addEventListener('resize', notify);
+      return () =&gt; window.removeEventListener('resize', notify);
+    },
+    getSnapshot,                          // client snapshot
+    () =&gt; ({ width: 1200, height: 800 }) // server snapshot for SSR
+  );
+}
+
+// Example 2: Custom event-driven store
+class EventStore {
+  #state;
+  #listeners = new Set();
+
+  constructor(initial) { this.#state = initial; }
+
+  getState() { return this.#state; }
+
+  setState(updater) {
+    this.#state = typeof updater === 'function' ? updater(this.#state) : updater;
+    this.#listeners.forEach(fn =&gt; fn());
+  }
+
+  subscribe(listener) {
+    this.#listeners.add(listener);
+    return () =&gt; this.#listeners.delete(listener);
+  }
+}
+
+const notificationStore = new EventStore({ count: 0, items: [] });
+
+function NotificationBell() {
+  const { count } = useSyncExternalStore(
+    notificationStore.subscribe.bind(notificationStore),
+    notificationStore.getState.bind(notificationStore),
+    () =&gt; ({ count: 0, items: [] })
+  );
+  return &lt;span&gt;{count} notifications&lt;/span&gt;;
+}
+</code></pre>
+
+<h3 id="custom-hooks">Custom Hooks</h3>
+<pre><code class="language-jsx">// Custom hooks encapsulate stateful logic — must start with "use"
+
+// 1. useFetch — fetch with loading/error/abort
+function useFetch(url, options) {
+  const [state, setState] = useState({ data: null, loading: true, error: null });
+
+  useEffect(() =&gt; {
+    if (!url) return;
+    const controller = new AbortController();
+    setState({ data: null, loading: true, error: null });
+
+    fetch(url, { ...options, signal: controller.signal })
+      .then(r =&gt; { if (!r.ok) throw new Error(`${r.status} ${r.statusText}`); return r.json(); })
+      .then(data =&gt; setState({ data, loading: false, error: null }))
+      .catch(err =&gt; {
+        if (err.name !== 'AbortError') setState({ data: null, loading: false, error: err.message });
+      });
+
+    return () =&gt; controller.abort();
+  }, [url]);
+
+  return state;
+}
+
+// 2. useLocalStorage — persistent state
+function useLocalStorage(key, initialValue) {
+  const [value, setValue] = useState(() =&gt; {
+    try { return JSON.parse(localStorage.getItem(key) ?? 'null') ?? initialValue; }
+    catch { return initialValue; }
+  });
+
+  const setStoredValue = useCallback((newValue) =&gt; {
+    const resolved = typeof newValue === 'function' ? newValue(value) : newValue;
+    setValue(resolved);
+    try { localStorage.setItem(key, JSON.stringify(resolved)); }
+    catch (e) { console.error('localStorage write failed:', e); }
+  }, [key, value]);
+
+  return [value, setStoredValue];
+}
+
+// 3. useDebounce — delay value update
+function useDebounce(value, delay = 300) {
+  const [debounced, setDebounced] = useState(value);
+  useEffect(() =&gt; {
+    const id = setTimeout(() =&gt; setDebounced(value), delay);
+    return () =&gt; clearTimeout(id);
+  }, [value, delay]);
+  return debounced;
+}
+
+// 4. useIntersectionObserver — lazy loading / infinite scroll
+function useIntersection(options = {}) {
+  const [entry, setEntry] = useState(null);
+  const ref = useRef(null);
+
+  useEffect(() =&gt; {
+    if (!ref.current) return;
+    const observer = new IntersectionObserver(([e]) =&gt; setEntry(e), options);
+    observer.observe(ref.current);
+    return () =&gt; observer.disconnect();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [options.threshold, options.rootMargin]);
+
+  return [ref, entry?.isIntersecting ?? false];
+}
+
+// Usage
+function LazyCard({ src }) {
+  const [ref, visible] = useIntersection({ threshold: 0.1 });
+  const debouncedQuery = useDebounce(visible, 100);
+  return (
+    &lt;div ref={ref} style={{ minHeight: 200 }}&gt;
+      {debouncedQuery &amp;&amp; &lt;img src={src} alt="" loading="lazy" /&gt;}
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+
+<!-- ===== 6. RENDERING ===== -->
+<h2 id="rendering">6. React Rendering &amp; Reconciliation</h2>
+
+<h3>Render Phases</h3>
+<p>React rendering is split into two distinct phases:</p>
+<ul>
+  <li><strong>Render Phase</strong> (can be paused, resumed, aborted in concurrent mode): React calls your component function, builds the new VDOM tree, runs the diffing algorithm. Must be pure — no side effects.</li>
+  <li><strong>Commit Phase</strong> (synchronous, cannot be interrupted): React applies the computed DOM changes, runs <code>useLayoutEffect</code> (synchronous), then schedules <code>useEffect</code> (asynchronous) after paint.</li>
+</ul>
+
+<div class="mermaid">
+flowchart TD
+  A[State or Prop Change] --> B[Render Phase]
+  B --> C{Output changed?}
+  C -->|No - bailout| D[Skip Commit - no DOM change]
+  C -->|Yes| E[Reconciliation / Diffing]
+  E --> F[Commit Phase]
+  F --> G[Apply DOM Mutations]
+  G --> H[Run useLayoutEffect cleanup]
+  H --> I[Run useLayoutEffect setup]
+  I --> J[Browser Paint]
+  J --> K[Run useEffect cleanup]
+  K --> L[Run useEffect setup]
+</div>
+
+<h3>When Do Components Re-Render?</h3>
+<ul>
+  <li>Its own state changes (useState / useReducer dispatch)</li>
+  <li>Its parent re-renders (even if props didn't change — unless wrapped in React.memo)</li>
+  <li>Its context value changes</li>
+  <li>Custom hooks it uses return new values</li>
+</ul>
+
+<h3>Reconciliation Algorithm</h3>
+<ul>
+  <li><strong>Same element type at same position</strong>: React updates the existing DOM node's attributes/props</li>
+  <li><strong>Different element type</strong>: React destroys old subtree (including state), mounts new subtree from scratch</li>
+  <li><strong>Lists</strong>: React compares by key; without keys uses index; key mismatch = destroy + remount</li>
+</ul>
+
+<pre><code class="language-jsx">// React.memo — skip re-render if props are shallowly equal
+const ExpensiveList = React.memo(function ExpensiveList({ items }) {
+  return &lt;ul&gt;{items.map(i =&gt; &lt;li key={i.id}&gt;{i.name}&lt;/li&gt;)}&lt;/ul&gt;;
+});
+
+// Custom comparison
+const SmartComponent = React.memo(MyComponent, (prevProps, nextProps) =&gt; {
+  return prevProps.data.id === nextProps.data.id;  // return true to skip render
+});
+
+// Batching — React 18 batches ALL state updates
+function handleClick() {
+  setA(1);  // these 3 updates are batched into one render
+  setB(2);
+  setC(3);
+}
+
+// To opt out of batching (rarely needed)
+import { flushSync } from 'react-dom';
+flushSync(() =&gt; setA(1));  // renders immediately
+flushSync(() =&gt; setB(2));  // renders again
+</code></pre>
+
+<!-- ===== 7. PERFORMANCE ===== -->
+<h2 id="performance">7. Performance Optimization</h2>
+
+<h3>React.memo</h3>
+<pre><code class="language-jsx">// Prevents re-render when parent re-renders but props haven't changed
+const Avatar = React.memo(({ user }) =&gt; {
+  console.log('Avatar rendered');
+  return &lt;img src={user.avatar} alt={user.name} /&gt;;
+});
+
+// IMPORTANT: Only helps if:
+// 1. Component renders often with the same props
+// 2. Re-render is expensive (heavy computation or large JSX tree)
+// 3. Props are primitives or stable references (use useMemo/useCallback for objects/functions)
+</code></pre>
+
+<h3>Code Splitting with React.lazy + Suspense</h3>
+<pre><code class="language-jsx">// Split your bundle — load component only when needed
+const HeavyDashboard = React.lazy(() =&gt; import('./HeavyDashboard'));
+const ReportViewer = React.lazy(() =&gt; import('./ReportViewer'));
+
+function App() {
+  const [view, setView] = useState('home');
+
+  return (
+    &lt;Suspense fallback={&lt;div&gt;Loading...&lt;/div&gt;}&gt;
+      {view === 'dashboard' &amp;&amp; &lt;HeavyDashboard /&gt;}
+      {view === 'reports' &amp;&amp; &lt;ReportViewer /&gt;}
+    &lt;/Suspense&gt;
+  );
+}
+
+// Route-based splitting (React Router)
+const routes = [
+  { path: '/dashboard', component: React.lazy(() =&gt; import('./pages/Dashboard')) },
+  { path: '/profile', component: React.lazy(() =&gt; import('./pages/Profile')) },
+];
+</code></pre>
+
+<h3>Virtualization with react-window</h3>
+<pre><code class="language-jsx">import { FixedSizeList, VariableSizeList } from 'react-window';
+
+// Only renders visible rows — critical for 1000+ item lists
+function VirtualList({ items }) {
+  const Row = ({ index, style }) =&gt; (
+    &lt;div style={style}&gt;
+      {items[index].name}
+    &lt;/div&gt;
+  );
+
+  return (
+    &lt;FixedSizeList
+      height={400}
+      width="100%"
+      itemCount={items.length}
+      itemSize={50}
+    &gt;
+      {Row}
+    &lt;/FixedSizeList&gt;
+  );
+}
+</code></pre>
+
+<h3>React Profiler</h3>
+<pre><code class="language-jsx">// Programmatic profiling
+import { Profiler } from 'react';
+
+function onRenderCallback(id, phase, actualDuration, baseDuration, startTime, commitTime) {
+  console.log({ id, phase, actualDuration, baseDuration });
+}
+
+&lt;Profiler id="Navigation" onRender={onRenderCallback}&gt;
+  &lt;Navigation /&gt;
+&lt;/Profiler&gt;
+
+// DevTools Profiler: Records renders, flame graph, ranked chart
+// Key metrics: why did this render? How long did it take?
+</code></pre>
+
+<h3>Common Performance Pitfalls</h3>
+<table>
+  <tr><th>Pitfall</th><th>Problem</th><th>Fix</th></tr>
+  <tr><td>Inline object/array in JSX</td><td>New reference every render</td><td>useMemo or move outside component</td></tr>
+  <tr><td>Inline arrow functions as callbacks</td><td>New function every render breaks React.memo</td><td>useCallback</td></tr>
+  <tr><td>Context with changing value</td><td>All consumers re-render</td><td>Split contexts, memoize value</td></tr>
+  <tr><td>Unnecessary useEffect</td><td>Extra renders, hard to debug</td><td>Compute during render if possible</td></tr>
+  <tr><td>No key on list items</td><td>Wrong reconciliation, state bugs</td><td>Stable unique keys</td></tr>
+  <tr><td>Rendering 1000+ items</td><td>Slow initial render and updates</td><td>react-window / react-virtual</td></tr>
+</table>
+
+<!-- ===== 8. CONTEXT API ===== -->
+<h2 id="context-api">8. Context API</h2>
+<pre><code class="language-jsx">// Full context pattern with performance optimization
+
+// 1. Create separate contexts for state and dispatch
+const UserStateContext = createContext(null);
+const UserDispatchContext = createContext(null);
+
+// 2. Reducer
+function userReducer(state, action) {
+  switch (action.type) {
+    case 'SET_USER': return { ...state, user: action.payload };
+    case 'SET_LOADING': return { ...state, loading: action.payload };
+    default: return state;
+  }
+}
+
+// 3. Provider
+function UserProvider({ children }) {
+  const [state, dispatch] = useReducer(userReducer, { user: null, loading: true });
+
+  return (
+    &lt;UserStateContext.Provider value={state}&gt;
+      &lt;UserDispatchContext.Provider value={dispatch}&gt;
+        {children}
+      &lt;/UserDispatchContext.Provider&gt;
+    &lt;/UserStateContext.Provider&gt;
+  );
+}
+
+// 4. Hooks
+function useUserState() {
+  const ctx = useContext(UserStateContext);
+  if (!ctx) throw new Error('useUserState must be within UserProvider');
+  return ctx;
+}
+function useUserDispatch() {
+  const ctx = useContext(UserDispatchContext);
+  if (!ctx) throw new Error('useUserDispatch must be within UserProvider');
+  return ctx;
+}
+
+// Components that only dispatch don't re-render when state changes
+function LogoutButton() {
+  const dispatch = useUserDispatch();  // stable — UserDispatchContext doesn't change
+  return &lt;button onClick={() =&gt; dispatch({ type: 'SET_USER', payload: null })}&gt;Logout&lt;/button&gt;;
+}
+
+function UserName() {
+  const { user } = useUserState();  // only re-renders when state changes
+  return &lt;span&gt;{user?.name}&lt;/span&gt;;
+}
+</code></pre>
+
+<!-- ===== 9. ERROR BOUNDARIES ===== -->
+<h2 id="error-boundaries">9. Error Boundaries</h2>
+<pre><code class="language-jsx">// Class-based error boundary (only way in React currently)
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  // Called during render phase — use to update state
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+
+  // Called in commit phase — use for logging
+  componentDidCatch(error, errorInfo) {
+    console.error('Caught error:', error, errorInfo.componentStack);
+    logErrorToService(error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return this.props.fallback || &lt;div&gt;Something went wrong.&lt;/div&gt;;
+    }
+    return this.props.children;
+  }
+}
+
+// Usage
+&lt;ErrorBoundary fallback={&lt;ErrorPage /&gt;}&gt;
+  &lt;App /&gt;
+&lt;/ErrorBoundary&gt;
+
+// react-error-boundary library (recommended)
+import { ErrorBoundary, useErrorBoundary } from 'react-error-boundary';
+
+function ErrorFallback({ error, resetErrorBoundary }) {
+  return (
+    &lt;div role="alert"&gt;
+      &lt;p&gt;Something went wrong:&lt;/p&gt;
+      &lt;pre&gt;{error.message}&lt;/pre&gt;
+      &lt;button onClick={resetErrorBoundary}&gt;Try again&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+
+&lt;ErrorBoundary
+  FallbackComponent={ErrorFallback}
+  onError={(error, info) =&gt; logError(error, info)}
+  onReset={() =&gt; resetAppState()}
+&gt;
+  &lt;Component /&gt;
+&lt;/ErrorBoundary&gt;
+
+// Programmatically throw error to nearest boundary
+function DataFetcher() {
+  const { showBoundary } = useErrorBoundary();
+  useEffect(() =&gt; {
+    fetchData().catch(showBoundary);
+  }, []);
+}
+
+// What error boundaries DON'T catch:
+// - Errors in event handlers (use try/catch)
+// - Async errors (setTimeout, promises — use showBoundary or try/catch)
+// - Server-side rendering errors
+// - Errors in the error boundary itself
+</code></pre>
+
+<!-- ===== 10. REFS & DOM ===== -->
+<h2 id="refs-dom">10. Refs &amp; the DOM</h2>
+<pre><code class="language-jsx">// createRef (class components) vs useRef (function components)
+class ClassComponent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.inputRef = React.createRef();  // new Ref object each render if called outside constructor
+  }
+  focus() { this.inputRef.current.focus(); }
+  render() { return &lt;input ref={this.inputRef} /&gt;; }
+}
+
+// Callback refs — called with DOM node when mounted, null when unmounted
+function MeasureDiv() {
+  const [width, setWidth] = useState(0);
+  const measuredRef = useCallback(node =&gt; {
+    if (node !== null) setWidth(node.getBoundingClientRect().width);
+  }, []);
+  return &lt;div ref={measuredRef}&gt;Width: {Math.round(width)}px&lt;/div&gt;;
+}
+
+// forwardRef — expose DOM element to parent
+const Input = React.forwardRef(({ label, ...props }, ref) =&gt; (
+  &lt;label&gt;
+    {label}
+    &lt;input ref={ref} {...props} /&gt;
+  &lt;/label&gt;
+));
+
+// When to use refs:
+// Focusing, text selection, media playback control
+// Triggering imperative animations
+// Integrating with non-React DOM libraries (charts, maps)
+// Reading DOM measurements (scrollHeight, getBoundingClientRect)
+
+// WHEN NOT TO USE refs:
+// State that should trigger re-renders
+// Derived data (compute from props/state instead)
+// Cross-component communication (use props/callbacks/context)
+</code></pre>
+
+<!-- ===== 11. CONCURRENT FEATURES ===== -->
+<h2 id="concurrent">11. Concurrent Features (React 18)</h2>
+
+<h3>Concurrent Mode</h3>
+<p>Concurrent React can work on multiple tasks simultaneously and interrupt low-priority work to handle high-priority updates. Enabled automatically when using <code>createRoot()</code>.</p>
+
+<pre><code class="language-jsx">// Migration to concurrent mode
+// Before (React 17):
+ReactDOM.render(&lt;App /&gt;, document.getElementById('root'));
+
+// After (React 18):
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(&lt;App /&gt;);
+</code></pre>
+
+<h3>Suspense &amp; Streaming SSR</h3>
+<pre><code class="language-jsx">// Suspense wraps components that "suspend" while loading
+function ProfilePage({ userId }) {
+  return (
+    &lt;div&gt;
+      &lt;Suspense fallback={&lt;ProfileSkeleton /&gt;}&gt;
+        &lt;UserProfile userId={userId} /&gt;
+      &lt;/Suspense&gt;
+      &lt;Suspense fallback={&lt;PostsSkeleton /&gt;}&gt;
+        &lt;UserPosts userId={userId} /&gt;
+      &lt;/Suspense&gt;
+    &lt;/div&gt;
+  );
+}
+
+// Server-side Streaming (React 18)
+// Server sends HTML progressively; client hydrates each piece as it arrives
+import { renderToPipeableStream } from 'react-dom/server';
+
+app.get('/', (req, res) =&gt; {
+  const { pipe } = renderToPipeableStream(&lt;App /&gt;, {
+    bootstrapScripts: ['/main.js'],
+    onShellReady() {
+      res.setHeader('content-type', 'text/html');
+      pipe(res);  // stream HTML to client
+    },
+    onError(error) { console.error(error); }
+  });
+});
+
+// Selective hydration: Suspense boundaries each hydrate independently
+// Browser can prioritize hydrating components the user is interacting with
+</code></pre>
+
+<!-- ===== 12. PATTERNS ===== -->
+<h2 id="patterns">12. Patterns</h2>
+
+<h3>Compound Components</h3>
+<pre><code class="language-jsx">// Components that work together sharing implicit state
+const TabsContext = createContext(null);
+
+function Tabs({ children, defaultTab }) {
+  const [activeTab, setActiveTab] = useState(defaultTab);
+  return (
+    &lt;TabsContext.Provider value={{ activeTab, setActiveTab }}&gt;
+      &lt;div className="tabs"&gt;{children}&lt;/div&gt;
+    &lt;/TabsContext.Provider&gt;
+  );
+}
+Tabs.List = function TabList({ children }) {
+  return &lt;div className="tab-list" role="tablist"&gt;{children}&lt;/div&gt;;
+};
+Tabs.Tab = function Tab({ id, children }) {
+  const { activeTab, setActiveTab } = useContext(TabsContext);
+  return (
+    &lt;button
+      role="tab"
+      aria-selected={activeTab === id}
+      onClick={() =&gt; setActiveTab(id)}
+    &gt;
+      {children}
+    &lt;/button&gt;
+  );
+};
+Tabs.Panel = function TabPanel({ id, children }) {
+  const { activeTab } = useContext(TabsContext);
+  if (activeTab !== id) return null;
+  return &lt;div role="tabpanel"&gt;{children}&lt;/div&gt;;
+};
+
+// Usage — flexible, declarative
+&lt;Tabs defaultTab="profile"&gt;
+  &lt;Tabs.List&gt;
+    &lt;Tabs.Tab id="profile"&gt;Profile&lt;/Tabs.Tab&gt;
+    &lt;Tabs.Tab id="settings"&gt;Settings&lt;/Tabs.Tab&gt;
+  &lt;/Tabs.List&gt;
+  &lt;Tabs.Panel id="profile"&gt;&lt;ProfileForm /&gt;&lt;/Tabs.Panel&gt;
+  &lt;Tabs.Panel id="settings"&gt;&lt;SettingsForm /&gt;&lt;/Tabs.Panel&gt;
+&lt;/Tabs&gt;
+</code></pre>
+
+<h3>Render Props</h3>
+<pre><code class="language-jsx">// Share stateful logic by passing a render function as prop
+function MouseTracker({ render }) {
+  const [pos, setPos] = useState({ x: 0, y: 0 });
+  return (
+    &lt;div onMouseMove={e =&gt; setPos({ x: e.clientX, y: e.clientY })}&gt;
+      {render(pos)}
+    &lt;/div&gt;
+  );
+}
+// Usage
+&lt;MouseTracker render={({ x, y }) =&gt; &lt;Cursor x={x} y={y} /&gt;} /&gt;
+// Modern: replace with custom hook (useMousePosition)
+</code></pre>
+
+<h3>HOC (Higher-Order Components)</h3>
+<pre><code class="language-jsx">// A function that takes a component and returns an enhanced component
+function withAuth(WrappedComponent) {
+  return function AuthenticatedComponent(props) {
+    const { user, loading } = useAuth();
+    if (loading) return &lt;Spinner /&gt;;
+    if (!user) return &lt;Navigate to="/login" /&gt;;
+    return &lt;WrappedComponent {...props} user={user} /&gt;;
+  };
+}
+
+// Usage
+const ProtectedDashboard = withAuth(Dashboard);
+
+// With display name for DevTools
+function withLogger(WrappedComponent) {
+  function WithLogger(props) {
+    useEffect(() =&gt; { console.log(`${WrappedComponent.displayName} mounted`); }, []);
+    return &lt;WrappedComponent {...props} /&gt;;
+  }
+  WithLogger.displayName = `WithLogger(${WrappedComponent.displayName || WrappedComponent.name})`;
+  return WithLogger;
+}
+// Modern: prefer custom hooks over HOCs for logic reuse
+</code></pre>
+
+<h3>Provider Pattern</h3>
+<pre><code class="language-jsx">// Compose multiple providers cleanly
+function AppProviders({ children }) {
+  return (
+    &lt;QueryClientProvider client={queryClient}&gt;
+      &lt;AuthProvider&gt;
+        &lt;ThemeProvider&gt;
+          &lt;NotificationProvider&gt;
+            {children}
+          &lt;/NotificationProvider&gt;
+        &lt;/ThemeProvider&gt;
+      &lt;/AuthProvider&gt;
+    &lt;/QueryClientProvider&gt;
+  );
+}
+
+// Or use a compose utility
+const compose = (...providers) =&gt; ({ children }) =&gt;
+  providers.reduceRight((acc, Provider) =&gt; &lt;Provider&gt;{acc}&lt;/Provider&gt;, children);
+
+const AppProviders = compose(QueryClientProvider, AuthProvider, ThemeProvider);
+</code></pre>
+
+<!-- ===== 13-16. INTERVIEW Q&A ===== -->
+<h2 id="qa-easy">13. Interview Q&amp;A — Easy <span class="badge easy">Easy</span></h2>
+
+<details>
+<summary>Q1. What is the difference between state and props in React?</summary>
+<div class="answer">
+<p><strong>Props</strong> are read-only inputs passed from a parent component to a child. They are immutable from the child's perspective — a component cannot change its own props.</p>
+<p><strong>State</strong> is mutable data managed inside a component. When state changes, React re-renders the component and its children.</p>
+<pre><code class="language-jsx">function ParentCounter() {
+  const [count, setCount] = useState(0);  // state — mutable, owned by Parent
+
+  return (
+    &lt;div&gt;
+      &lt;button onClick={() =&gt; setCount(c =&gt; c + 1)}&gt;Increment&lt;/button&gt;
+      {/* count passed as prop — read-only inside DisplayCount */}
+      &lt;DisplayCount count={count} /&gt;
+    &lt;/div&gt;
+  );
+}
+
+function DisplayCount({ count }) {
+  // count is a prop — cannot do count++ here
+  return &lt;p&gt;Current count: {count}&lt;/p&gt;;
+}
+</code></pre>
+<p><strong>Key rules:</strong> Props flow down (parent to child). State stays local. To share state between siblings, lift state up to their common parent.</p>
+</div>
+</details>
+
+<details>
+<summary>Q2. What is the Virtual DOM and why does React use it?</summary>
+<div class="answer">
+<p>The <strong>Virtual DOM (VDOM)</strong> is a lightweight JavaScript object tree that mirrors the real DOM structure. React keeps this in memory to minimize expensive real DOM operations.</p>
+<p><strong>Why it matters:</strong> Real DOM manipulation is slow (triggers layout, paint, composite). React batches all necessary changes and applies them in one operation by:</p>
+<ol>
+  <li>Rendering to VDOM (cheap JS operations)</li>
+  <li>Diffing new VDOM vs previous VDOM (O(n) algorithm)</li>
+  <li>Computing minimal DOM mutations</li>
+  <li>Applying only those changes to the real DOM</li>
+</ol>
+<pre><code class="language-jsx">// React computes the diff and only updates what changed
+// Before:
+&lt;ul&gt;
+  &lt;li&gt;Alice&lt;/li&gt;
+  &lt;li&gt;Bob&lt;/li&gt;
+&lt;/ul&gt;
+
+// After state change (added Charlie):
+&lt;ul&gt;
+  &lt;li&gt;Alice&lt;/li&gt;
+  &lt;li&gt;Bob&lt;/li&gt;
+  &lt;li&gt;Charlie&lt;/li&gt;  {/* only this DOM node is added */}
+&lt;/ul&gt;
+</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q3. What are React Hooks and why were they introduced?</summary>
+<div class="answer">
+<p>Hooks are functions that let function components use React features that previously required class components.</p>
+<p><strong>Problems hooks solved:</strong></p>
+<ul>
+  <li><strong>Complex class components</strong>: Lifecycle methods mixed unrelated logic (subscriptions in componentDidMount AND componentWillUnmount)</li>
+  <li><strong>Logic reuse</strong>: HOCs and render props created "wrapper hell" and made component trees hard to follow</li>
+  <li><strong>Class confusion</strong>: <code>this</code> binding was a constant source of bugs</li>
+</ul>
+<pre><code class="language-jsx">// Class: subscription logic split across lifecycle methods
+class Timer extends React.Component {
+  componentDidMount() { this.interval = setInterval(this.tick, 1000); }
+  componentWillUnmount() { clearInterval(this.interval); }
+  tick = () =&gt; this.setState(s =&gt; ({ count: s.count + 1 }));
+  render() { return &lt;div&gt;{this.state.count}&lt;/div&gt;; }
+}
+
+// Hook: subscription logic co-located
+function Timer() {
+  const [count, setCount] = useState(0);
+  useEffect(() =&gt; {
+    const id = setInterval(() =&gt; setCount(c =&gt; c + 1), 1000);
+    return () =&gt; clearInterval(id);  // cleanup right next to setup
+  }, []);
+  return &lt;div&gt;{count}&lt;/div&gt;;
+}
+</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q4. When would you use useEffect? What does the dependency array do?</summary>
+<div class="answer">
+<p>Use <code>useEffect</code> for <strong>side effects</strong> — operations that affect things outside the component: data fetching, subscriptions, manually changing the DOM, logging.</p>
+<p>The <strong>dependency array</strong> controls when the effect runs:</p>
+<table>
+  <tr><th>Dependency Array</th><th>When Effect Runs</th></tr>
+  <tr><td>Omitted</td><td>After every render</td></tr>
+  <tr><td><code>[]</code> (empty)</td><td>Once on mount only</td></tr>
+  <tr><td><code>[a, b]</code></td><td>After mount, and whenever a or b changes</td></tr>
+</table>
+<pre><code class="language-jsx">function UserCard({ userId }) {
+  const [user, setUser] = useState(null);
+
+  useEffect(() =&gt; {
+    // Effect: fetch user when userId changes
+    fetch(`/api/users/${userId}`)
+      .then(r =&gt; r.json())
+      .then(setUser);
+
+    // Cleanup: if userId changes before fetch completes,
+    // cancel/ignore previous fetch
+    return () =&gt; { /* abort controller or cancelled flag */ };
+  }, [userId]);  // re-run whenever userId changes
+
+  return user ? &lt;div&gt;{user.name}&lt;/div&gt; : &lt;Spinner /&gt;;
+}
+</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q5. What is the key prop and why is it important?</summary>
+<div class="answer">
+<p>The <code>key</code> prop is a special attribute that helps React identify which items in a list have changed, been added, or removed during reconciliation.</p>
+<pre><code class="language-jsx">// WITHOUT stable keys — React may re-mount components unnecessarily
+// or apply state to wrong components
+items.map((item, index) =&gt; &lt;TodoItem key={index} item={item} /&gt;)
+// Problem: if you insert an item at position 0, all subsequent
+// items get new keys (index shifted) → re-mount of all components!
+
+// WITH stable keys — React knows exactly which item changed
+items.map(item =&gt; &lt;TodoItem key={item.id} item={item} /&gt;)
+// React can: reuse DOM, preserve component state, animate correctly
+
+// Keys must be: unique among siblings, stable across renders
+// Never use Math.random() as a key — new key every render = remount every render
+</code></pre>
+<p><strong>Hidden use of key</strong>: Give a component a new key to force complete reset of its state:</p>
+<pre><code class="language-jsx">// Force reset user form when switching users
+&lt;UserForm key={userId} userId={userId} /&gt;
+// When userId changes, React destroys and recreates UserForm — clean state
+</code></pre>
+</div>
+</details>
+
+<h2 id="qa-intermediate">14. Interview Q&amp;A — Intermediate <span class="badge intermediate">Intermediate</span></h2>
+
+<details>
+<summary>Q1. Explain React's reconciliation algorithm. How does React decide what to update?</summary>
+<div class="answer">
+<p>React's reconciliation uses a <strong>heuristic O(n) algorithm</strong> with two key assumptions:</p>
+<ol>
+  <li>Two elements of different types produce different trees</li>
+  <li>Developers can hint at stable identities with <code>key</code></li>
+</ol>
+<p><strong>Algorithm steps:</strong></p>
+<ul>
+  <li><strong>Comparing root elements</strong>: If types differ (e.g., <code>&lt;div&gt;</code> → <code>&lt;span&gt;</code>), React tears down the entire old tree and builds new one from scratch. Component state is destroyed.</li>
+  <li><strong>Same type DOM elements</strong>: React keeps the DOM node and only updates changed attributes. Then recurses on children.</li>
+  <li><strong>Same type component elements</strong>: React keeps the component instance alive (preserving state), updates its props, and calls render. Then recurses on children.</li>
+  <li><strong>Lists</strong>: React compares by position (or key if provided). Keys allow React to match elements across positions — critical for reordering.</li>
+</ul>
+<pre><code class="language-jsx">// Example: React's decision tree
+// Before:
+&lt;Counter color="blue" /&gt;   // instance A, state = 5
+
+// After (same type): instance A kept, props updated, re-rendered
+&lt;Counter color="red" /&gt;    // same instance A, state still = 5!
+
+// After (different type): instance A destroyed, new instance B created
+&lt;Timer color="red" /&gt;      // new instance B, state reset to initial
+</code></pre>
+<p><strong>Why O(n) instead of O(n³)</strong>: A general tree edit distance algorithm is O(n³). React's two assumptions allow an O(n) heuristic — React only compares at the same level, never across levels.</p>
+</div>
+</details>
+
+<details>
+<summary>Q2. What is prop drilling and how do you solve it?</summary>
+<div class="answer">
+<p><strong>Prop drilling</strong> occurs when props must be passed through multiple intermediate components that don't need the data, just to reach a deeply nested component.</p>
+<pre><code class="language-jsx">// Problem: user passed through 3 levels, only ProfilePic needs it
+function App() {
+  const user = useCurrentUser();
+  return &lt;Page user={user} /&gt;;
+}
+function Page({ user }) {
+  return &lt;Header user={user} /&gt;;  // doesn't use user
+}
+function Header({ user }) {
+  return &lt;Nav user={user} /&gt;;     // doesn't use user
+}
+function Nav({ user }) {
+  return &lt;ProfilePic user={user} /&gt;;  // only this needs it
+}
+</code></pre>
+<p><strong>Solutions:</strong></p>
+<pre><code class="language-jsx">// 1. Context API — best for truly global/cross-cutting data
+const UserContext = createContext(null);
+function App() {
+  const user = useCurrentUser();
+  return (
+    &lt;UserContext.Provider value={user}&gt;
+      &lt;Page /&gt;
+    &lt;/UserContext.Provider&gt;
+  );
+}
+function ProfilePic() {
+  const user = useContext(UserContext);  // no prop drilling!
+  return &lt;img src={user.avatar} /&gt;;
+}
+
+// 2. Component composition — pass the fully assembled component down
+function App() {
+  const user = useCurrentUser();
+  return &lt;Page headerContent={&lt;ProfilePic user={user} /&gt;} /&gt;;
+}
+function Page({ headerContent }) {
+  return &lt;Header&gt;{headerContent}&lt;/Header&gt;;  // no user prop
+}
+
+// 3. State management — Redux, Zustand, Jotai
+// Global store accessible from any component
+</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q3. How does useMemo differ from useCallback? When do you use each?</summary>
+<div class="answer">
+<p><strong>useMemo</strong> memoizes a <em>computed value</em>. <strong>useCallback</strong> memoizes a <em>function</em>. In fact: <code>useCallback(fn, deps)</code> is exactly <code>useMemo(() =&gt; fn, deps)</code>.</p>
+<pre><code class="language-jsx">// useMemo: for expensive computations or stabilizing object/array references
+function Component({ list, filter }) {
+  // Expensive: only recompute when list or filter changes
+  const filtered = useMemo(() =&gt;
+    list.filter(item =&gt; item.category === filter).sort(complexSort),
+    [list, filter]
+  );
+
+  // Stabilize object reference so it doesn't change every render
+  const config = useMemo(() =&gt; ({ timeout: 5000, retries: 3 }), []);
+
+  return &lt;DataGrid items={filtered} config={config} /&gt;;
+}
+
+// useCallback: for stable function references
+// Needed when:
+// 1. Passing to memoized children (React.memo won't help without stable callbacks)
+// 2. Function is a dependency of useEffect/useMemo
+
+function Parent() {
+  const [items, setItems] = useState([]);
+
+  const handleDelete = useCallback((id) =&gt; {
+    setItems(prev =&gt; prev.filter(i =&gt; i.id !== id));
+  }, []);  // deps empty — setItems is stable, no other deps
+
+  return &lt;MemoizedList items={items} onDelete={handleDelete} /&gt;;
+}
+
+// When NOT to use either:
+// - Simple operations: const sum = useMemo(() =&gt; a + b, [a, b])  // not worth it
+// - When deps change every render anyway (no memoization benefit)
+// - Without profiler evidence of actual performance problem
+</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q4. What are controlled and uncontrolled components? When do you use each?</summary>
+<div class="answer">
+<p><strong>Controlled</strong>: React state is the single source of truth for the input value. Every keystroke triggers state update → re-render.</p>
+<p><strong>Uncontrolled</strong>: The DOM manages its own state. React reads the value via refs when needed.</p>
+<pre><code class="language-jsx">// CONTROLLED — React owns the value
+function ControlledSearch() {
+  const [query, setQuery] = useState('');
+  const debouncedQuery = useDebounce(query, 300);
+
+  // Can derive/validate: real-time feedback
+  const isValid = query.length &gt;= 3 || query.length === 0;
+
+  return (
+    &lt;div&gt;
+      &lt;input
+        value={query}
+        onChange={e =&gt; setQuery(e.target.value)}
+        className={isValid ? '' : 'error'}
+      /&gt;
+      {!isValid &amp;&amp; &lt;p&gt;At least 3 characters&lt;/p&gt;}
+    &lt;/div&gt;
+  );
+}
+
+// UNCONTROLLED — DOM owns the value
+function SimpleUploadForm() {
+  const fileRef = useRef(null);
+  const nameRef = useRef(null);
+
+  const handleSubmit = (e) =&gt; {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append('name', nameRef.current.value);
+    formData.append('file', fileRef.current.files[0]);
+    uploadFile(formData);
+  };
+
+  return (
+    &lt;form onSubmit={handleSubmit}&gt;
+      &lt;input ref={nameRef} type="text" defaultValue="" /&gt;
+      &lt;input ref={fileRef} type="file" /&gt;  {/* file inputs must be uncontrolled */}
+      &lt;button&gt;Upload&lt;/button&gt;
+    &lt;/form&gt;
+  );
+}
+</code></pre>
+<p><strong>Use controlled when:</strong> Real-time validation, conditional fields, instant UI feedback, form state submitted from parent, using react-hook-form or Formik.</p>
+<p><strong>Use uncontrolled when:</strong> File inputs (always), integrating with third-party DOM libraries, simple one-time-read forms, performance-critical scenarios with very frequent updates.</p>
+</div>
+</details>
+
+<details>
+<summary>Q5. Explain React.memo. How is it different from useMemo?</summary>
+<div class="answer">
+<p><code>React.memo</code> is a HOC that memoizes an entire <strong>component</strong> — it skips re-rendering if props haven't shallowly changed. <code>useMemo</code> memoizes a <strong>computed value</strong> inside a component.</p>
+<pre><code class="language-jsx">// React.memo — component level
+const ExpensiveChart = React.memo(function Chart({ data, colors }) {
+  // This function is only called when data or colors actually change
+  return &lt;canvas ref={renderChart(data, colors)} /&gt;;
+});
+
+// Custom comparison function
+const SmartItem = React.memo(
+  function Item({ user, settings }) {
+    return &lt;div&gt;{user.name}&lt;/div&gt;;
+  },
+  (prevProps, nextProps) =&gt; {
+    // Return true to SKIP re-render (props are "equal")
+    return prevProps.user.id === nextProps.user.id &amp;&amp;
+           prevProps.settings.theme === nextProps.settings.theme;
+  }
+);
+
+// For React.memo to work, props must be stable:
+function Parent() {
+  const [count, setCount] = useState(0);
+
+  // BUG: new object/array/function every render = React.memo useless
+  return &lt;ExpensiveChart data={[1,2,3]} colors={{ line: 'red' }} /&gt;;
+
+  // FIX: stabilize references
+  const data = useMemo(() =&gt; [1, 2, 3], []);
+  const colors = useMemo(() =&gt; ({ line: 'red' }), []);
+  return &lt;ExpensiveChart data={data} colors={colors} /&gt;;
+}
+</code></pre>
+</div>
+</details>
+
+<h2 id="qa-advanced">15. Interview Q&amp;A — Advanced <span class="badge advanced">Advanced</span></h2>
+
+<details>
+<summary>Q1. How does React Fiber work? What problems did it solve?</summary>
+<div class="answer">
+<p><strong>Before Fiber (Stack Reconciler)</strong>: React used a recursive, synchronous algorithm. Once started, it couldn't be paused. On large component trees, this would block the main thread for 100ms+ causing dropped frames and unresponsive UIs.</p>
+<p><strong>Fiber</strong> is a reimplementation of the reconciler using a <strong>linked list of "fiber nodes"</strong> instead of the call stack. Each fiber represents a unit of work.</p>
+<p><strong>Key capabilities unlocked:</strong></p>
+<ul>
+  <li><strong>Incremental rendering</strong>: Break work into chunks, pause between chunks</li>
+  <li><strong>Prioritization</strong>: Assign priority to different updates (user input &gt; data fetch &gt; background)</li>
+  <li><strong>Reuse work</strong>: Pause and resume where left off</li>
+  <li><strong>Abort work</strong>: Discard partially done work if a newer update supersedes it</li>
+</ul>
+<pre><code class="language-jsx">// Each fiber node has:
+// type: component function or DOM tag
+// key: for reconciliation
+// child, sibling, return: linked list pointers
+// pendingProps, memoizedProps: props
+// memoizedState: hooks state
+// effectTag: what DOM mutation is needed
+// lanes: priority bitmask
+
+// React processes fibers using a work loop:
+function workLoop(deadline) {
+  while (nextUnitOfWork &amp;&amp; !shouldYield(deadline)) {
+    nextUnitOfWork = performUnitOfWork(nextUnitOfWork);
+  }
+  if (nextUnitOfWork) {
+    requestIdleCallback(workLoop);  // yield, schedule continuation
+  } else {
+    commitRoot();  // no more work — commit to DOM
+  }
+}
+</code></pre>
+<p><strong>Two trees</strong>: Fiber maintains a "work-in-progress" tree alongside the current tree. Only when work completes does it swap (double buffering), ensuring the UI never shows a half-finished state.</p>
+</div>
+</details>
+
+<details>
+<summary>Q2. Explain useEffect cleanup and common memory leak patterns</summary>
+<div class="answer">
+<p>The cleanup function returned from <code>useEffect</code> runs:</p>
+<ul>
+  <li>Before the effect runs again (when deps change)</li>
+  <li>When the component unmounts</li>
+</ul>
+<pre><code class="language-jsx">// Pattern 1: Event listener leak — WRONG
+useEffect(() =&gt; {
+  document.addEventListener('keydown', handler);
+  // Missing: return () =&gt; document.removeEventListener('keydown', handler);
+}, []);
+// Result: handler called even after component unmounts, holding closure references
+
+// CORRECT:
+useEffect(() =&gt; {
+  document.addEventListener('keydown', handler);
+  return () =&gt; document.removeEventListener('keydown', handler);
+}, [handler]);
+
+// Pattern 2: Async state update on unmounted component
+useEffect(() =&gt; {
+  let isMounted = true;
+  fetchUser(id).then(user =&gt; {
+    if (isMounted) setUser(user);  // guard against setting state after unmount
+  });
+  return () =&gt; { isMounted = false; };
+}, [id]);
+
+// Pattern 3: AbortController for fetch
+useEffect(() =&gt; {
+  const controller = new AbortController();
+  fetch(url, { signal: controller.signal })
+    .then(r =&gt; r.json())
+    .then(setData)
+    .catch(e =&gt; { if (e.name !== 'AbortError') setError(e); });
+  return () =&gt; controller.abort();
+}, [url]);
+
+// Pattern 4: WebSocket cleanup
+useEffect(() =&gt; {
+  const ws = new WebSocket('wss://api.example.com');
+  ws.onmessage = (e) =&gt; dispatch({ type: 'WS_MESSAGE', payload: JSON.parse(e.data) });
+  return () =&gt; ws.close();
+}, []);
+
+// React 18 Strict Mode DOUBLE-INVOKES effects in development
+// to surface bugs with missing cleanup. If your effect breaks on
+// mount→unmount→remount, your cleanup is incomplete.
+</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q3. How does Context API affect performance and how do you optimize it?</summary>
+<div class="answer">
+<p><strong>Problem</strong>: Every component that calls <code>useContext(MyContext)</code> re-renders whenever the context value changes — even if that component only cares about one field.</p>
+<pre><code class="language-jsx">// PROBLEM: everything re-renders when any part of context changes
+const AppContext = createContext();
+function AppProvider({ children }) {
+  const [user, setUser] = useState(null);
+  const [theme, setTheme] = useState('light');
+  const [notifications, setNotifications] = useState([]);
+  // Any state change re-renders ALL consumers
+  return (
+    &lt;AppContext.Provider value={{ user, theme, notifications, setUser, setTheme }}&gt;
+      {children}
+    &lt;/AppContext.Provider&gt;
+  );
+}
+
+// SOLUTION 1: Split contexts by update frequency
+const UserContext = createContext(null);
+const ThemeContext = createContext('light');
+const NotificationContext = createContext([]);
+
+// ThemeButton only subscribes to ThemeContext — unaffected by user/notification changes
+
+// SOLUTION 2: Separate state and dispatch contexts
+const StateContext = createContext(null);
+const DispatchContext = createContext(null);
+
+function Provider({ children }) {
+  const [state, dispatch] = useReducer(reducer, initialState);
+  return (
+    &lt;DispatchContext.Provider value={dispatch}&gt;   {/* stable — never changes */}
+      &lt;StateContext.Provider value={state}&gt;
+        {children}
+      &lt;/StateContext.Provider&gt;
+    &lt;/DispatchContext.Provider&gt;
+  );
+}
+// Action dispatchers only need DispatchContext — never re-render due to state changes
+
+// SOLUTION 3: use-context-selector (library)
+// Subscribes to only specific fields
+const user = useContextSelector(AppContext, ctx =&gt; ctx.user);
+// Only re-renders when user specifically changes
+
+// SOLUTION 4: Memoize provider value
+const value = useMemo(() =&gt; ({ user, login, logout }), [user]);
+return &lt;AuthContext.Provider value={value}&gt;{children}&lt;/AuthContext.Provider&gt;;
+</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q4. What is the difference between useEffect and useLayoutEffect? When would you use useLayoutEffect?</summary>
+<div class="answer">
+<p>Both are called after render, but at different times in the browser's lifecycle:</p>
+<table>
+  <tr><th>Aspect</th><th>useEffect</th><th>useLayoutEffect</th></tr>
+  <tr><td>Timing</td><td>After browser paint (async)</td><td>After DOM mutation, before paint (sync)</td></tr>
+  <tr><td>Blocks paint?</td><td>No</td><td>Yes</td></tr>
+  <tr><td>SSR</td><td>Works (no-op on server)</td><td>Warning on server (use useEffect instead)</td></tr>
+  <tr><td>Use case</td><td>Data fetching, subscriptions, logging</td><td>DOM measurements, positioning, animations</td></tr>
+</table>
+<pre><code class="language-jsx">// useLayoutEffect needed: tooltip positioning
+// Without it: tooltip flickers at wrong position, then jumps
+function DropdownMenu({ trigger, items }) {
+  const menuRef = useRef(null);
+  const [style, setStyle] = useState({ visibility: 'hidden' });
+
+  useLayoutEffect(() =&gt; {
+    const triggerRect = trigger.current.getBoundingClientRect();
+    const menuRect = menuRef.current.getBoundingClientRect();
+
+    // Calculate position BEFORE paint — no flicker
+    const top = triggerRect.bottom;
+    const left = Math.min(
+      triggerRect.left,
+      window.innerWidth - menuRect.width - 8
+    );
+    setStyle({ visibility: 'visible', position: 'fixed', top, left });
+  });
+
+  return (
+    &lt;ul ref={menuRef} style={style}&gt;
+      {items.map(item =&gt; &lt;li key={item.id}&gt;{item.label}&lt;/li&gt;)}
+    &lt;/ul&gt;
+  );
+}
+
+// Also needed for: animations that start from measured DOM state,
+// reading scroll position before paint, third-party DOM library integration
+</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q5. How does automatic batching work in React 18?</summary>
+<div class="answer">
+<p><strong>Batching</strong> means React groups multiple state updates into a single re-render for performance.</p>
+<p><strong>Before React 18</strong>: Only batched updates inside React synthetic event handlers. Updates in <code>setTimeout</code>, <code>Promise</code> callbacks, or native events triggered separate renders.</p>
+<p><strong>React 18</strong>: Automatically batches ALL state updates, regardless of where they occur (timeout, promise, native event, etc.).</p>
+<pre><code class="language-jsx">// REACT 17 — 3 separate renders for setTimeout
+setTimeout(() =&gt; {
+  setCount(c =&gt; c + 1);  // render 1
+  setUser(u =&gt; ({ ...u, score: u.score + 1 }));  // render 2
+  setVisible(true);  // render 3
+}, 1000);
+
+// REACT 18 — 1 render (automatic batching)
+setTimeout(() =&gt; {
+  setCount(c =&gt; c + 1);
+  setUser(u =&gt; ({ ...u, score: u.score + 1 }));
+  setVisible(true);
+  // All batched — only 1 render!
+}, 1000);
+
+// Promise batching (React 18 only)
+async function handleSave() {
+  await saveToServer(data);
+  setLoading(false);  // React 18: batched
+  setSuccess(true);   // React 18: batched with above
+}
+
+// Opt OUT of batching (rare — e.g., need DOM measurement between updates)
+import { flushSync } from 'react-dom';
+flushSync(() =&gt; setCount(c =&gt; c + 1));  // renders immediately
+// Now DOM is updated — can measure
+flushSync(() =&gt; setHeight(ref.current.offsetHeight));
+
+// Batching is always safe: React guarantees all state updates within
+// an event are committed together — you never see a partial state.
+</code></pre>
+</div>
+</details>
+
+<h2 id="qa-very-advanced">16. Interview Q&amp;A — Very Advanced <span class="badge very-advanced">Very Advanced</span></h2>
+
+<details>
+<summary>Q1. What is React's concurrent mode and how does startTransition/useDeferredValue enable it?</summary>
+<div class="answer">
+<p><strong>Concurrent Mode</strong> allows React to interrupt rendering to handle more urgent updates. Instead of one synchronous render per update, React can work on renders in the background, pause them, and prioritize user interactions.</p>
+<p><strong>Without concurrent features</strong>: A heavy state update (e.g., filtering 10,000 items) blocks input typing for 500ms.</p>
+<p><strong>With startTransition</strong>: React marks the filter update as low-priority. High-priority updates (typing) interrupt it.</p>
+<pre><code class="language-jsx">// Deep dive: how startTransition works internally
+function SearchApp() {
+  const [input, setInput] = useState('');         // HIGH priority lane
+  const [query, setQuery] = useState('');         // transition lane (low priority)
+  const [isPending, startTransition] = useTransition();
+
+  function handleChange(e) {
+    const value = e.target.value;
+
+    // This update goes into the high-priority lane
+    // React commits it synchronously before painting
+    setInput(value);
+
+    // This update goes into a transition lane
+    // React can: interrupt it if new input arrives, batch multiple transitions,
+    // show isPending=true while working, discard if superseded
+    startTransition(() =&gt; {
+      setQuery(value);  // triggers heavy re-render of results
+    });
+  }
+
+  return (
+    &lt;div&gt;
+      &lt;input value={input} onChange={handleChange} /&gt;
+      {/* Input always responsive; results may lag slightly */}
+      &lt;div style={{ opacity: isPending ? 0.7 : 1 }}&gt;
+        &lt;HeavyResultsList query={query} /&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}
+
+// useDeferredValue — when you don't own the state update
+function SearchResults({ query }) {
+  // deferredQuery "sticks" to the last committed value until React
+  // has capacity to render the new value
+  const deferredQuery = useDeferredValue(query);
+  const isStale = query !== deferredQuery;
+
+  // React renders this with LOWER priority
+  // Main thread is free for user interactions
+  const items = useMemo(() =&gt; heavyFilter(deferredQuery), [deferredQuery]);
+
+  return (
+    &lt;ul style={{ opacity: isStale ? 0.5 : 1 }}&gt;
+      {items.map(i =&gt; &lt;li key={i.id}&gt;{i.name}&lt;/li&gt;)}
+    &lt;/ul&gt;
+  );
+}
+</code></pre>
+<p><strong>Lanes model</strong>: React 18 uses a bitmask "lanes" system for priority. SyncLane (user input) always beats TransitionLane. React processes lanes from highest priority to lowest, potentially rendering the same component multiple times with different state.</p>
+</div>
+</details>
+
+<details>
+<summary>Q2. How would you implement a custom hook that prevents state updates after unmount with proper TypeScript types?</summary>
+<div class="answer">
+<pre><code class="language-typescript">import { useCallback, useEffect, useRef, useState, Dispatch, SetStateAction } from 'react';
+
+// Custom hook: safe state that won't update after unmount
+function useSafeState&lt;T&gt;(initialState: T | (() =&gt; T)): [T, Dispatch&lt;SetStateAction&lt;T&gt;&gt;] {
+  const [state, setState] = useState&lt;T&gt;(initialState);
+  const mountedRef = useRef(true);
+
+  useEffect(() =&gt; {
+    mountedRef.current = true;
+    return () =&gt; { mountedRef.current = false; };
+  }, []);
+
+  const safeSetState: Dispatch&lt;SetStateAction&lt;T&gt;&gt; = useCallback((value) =&gt; {
+    if (mountedRef.current) setState(value);
+  }, []);
+
+  return [state, safeSetState];
+}
+
+// More powerful: useAsync hook
+type AsyncState&lt;T&gt; =
+  | { status: 'idle'; data: null; error: null }
+  | { status: 'loading'; data: null; error: null }
+  | { status: 'success'; data: T; error: null }
+  | { status: 'error'; data: null; error: Error };
+
+function useAsync&lt;T&gt;(asyncFn: () =&gt; Promise&lt;T&gt;, deps: React.DependencyList) {
+  const [state, setState] = useSafeState&lt;AsyncState&lt;T&gt;&gt;({
+    status: 'idle', data: null, error: null
+  });
+
+  useEffect(() =&gt; {
+    let cancelled = false;
+    setState({ status: 'loading', data: null, error: null });
+
+    asyncFn()
+      .then(data =&gt; {
+        if (!cancelled) setState({ status: 'success', data, error: null });
+      })
+      .catch(error =&gt; {
+        if (!cancelled) setState({
+          status: 'error',
+          data: null,
+          error: error instanceof Error ? error : new Error(String(error))
+        });
+      });
+
+    return () =&gt; { cancelled = true; };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, deps);
+
+  return state;
+}
+
+// Usage
+function UserProfile({ id }: { id: string }) {
+  const result = useAsync(() =&gt; fetchUser(id), [id]);
+
+  if (result.status === 'loading') return &lt;Spinner /&gt;;
+  if (result.status === 'error') return &lt;ErrorView error={result.error} /&gt;;
+  if (result.status === 'idle') return null;
+  return &lt;UserCard user={result.data} /&gt;;
+}
+</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q3. Explain the React rendering optimization techniques and when each applies</summary>
+<div class="answer">
+<pre><code class="language-jsx">// Layer 1: React.memo — component-level memoization
+// Use when: component is expensive to render AND props are stable
+const Chart = React.memo(({ data, config }) =&gt; {
+  const canvas = useRef(null);
+  useEffect(() =&gt; { drawChart(canvas.current, data, config); }, [data, config]);
+  return &lt;canvas ref={canvas} /&gt;;
+}, (prev, next) =&gt;
+  prev.data === next.data &amp;&amp; prev.config.type === next.config.type
+);
+
+// Layer 2: useMemo — value memoization
+// Use when: computation is genuinely expensive OR you need stable reference
+const processedData = useMemo(() =&gt;
+  rawData.flatMap(group =&gt;
+    group.items.map(item =&gt; ({ ...item, groupId: group.id, computed: expensiveCalc(item) }))
+  ).filter(item =&gt; item.visible),
+  [rawData]  // O(n²) operation — worth memoizing
+);
+
+// Layer 3: useCallback — function memoization
+// Use when: function passed to memo'd component or is in effect deps
+const handleSort = useCallback((column) =&gt; {
+  setSortConfig(prev =&gt;
+    prev.column === column
+      ? { column, direction: prev.direction === 'asc' ? 'desc' : 'asc' }
+      : { column, direction: 'asc' }
+  );
+}, []);  // setSortConfig is stable
+
+// Layer 4: Code splitting — reduce initial bundle size
+const HeavyFeature = React.lazy(() =&gt;
+  import(/* webpackChunkName: "heavy-feature" */ './HeavyFeature')
+);
+
+// Layer 5: Virtualization — reduce DOM nodes
+import { VariableSizeList } from 'react-window';
+const getItemSize = index =&gt; items[index].expanded ? 200 : 60;
+&lt;VariableSizeList height={500} itemCount={items.length} itemSize={getItemSize}&gt;
+  {ItemRenderer}
+&lt;/VariableSizeList&gt;
+
+// Layer 6: useTransition — deprioritize heavy updates
+const [isPending, startTransition] = useTransition();
+startTransition(() =&gt; setFilter(newFilter));
+
+// Decision matrix:
+// Slow initial load?    → Code splitting + Suspense
+// Long list?            → Virtualization
+// Expensive computation? → useMemo
+// Parent re-renders too much? → React.memo + useCallback
+// Input lag during heavy update? → useTransition / useDeferredValue
+</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q4. How does React Suspense work with data fetching? Explain the "render-as-you-fetch" pattern.</summary>
+<div class="answer">
+<p>Suspense works through a <strong>throwing promises</strong> mechanism. When a component is not ready to render, it throws a Promise. React catches it, shows the nearest Suspense fallback, and re-renders when the promise resolves.</p>
+<pre><code class="language-jsx">// HOW SUSPENSE WORKS INTERNALLY
+// 1. Component throws a Promise (the "suspend" signal)
+// 2. React catches it at the nearest Suspense boundary
+// 3. Renders fallback UI
+// 4. Promise resolves → React re-renders the suspended component
+// 5. Component returns JSX → replaced in tree
+
+// Simple suspense-compatible resource factory
+function createResource(promise) {
+  let status = 'pending';
+  let result;
+  const suspender = promise.then(
+    data =&gt; { status = 'success'; result = data; },
+    error =&gt; { status = 'error'; result = error; }
+  );
+  return {
+    read() {
+      if (status === 'pending') throw suspender;  // tell React "not ready"
+      if (status === 'error') throw result;        // throw to Error Boundary
+      return result;                               // return data when ready
+    }
+  };
+}
+
+// "Render-as-you-fetch" pattern (vs "fetch-on-render")
+// FETCH-ON-RENDER (old pattern — causes waterfall):
+function UserProfile({ id }) {
+  const [user, setUser] = useState(null);
+  useEffect(() =&gt; { fetchUser(id).then(setUser); }, [id]);  // fetch starts AFTER render
+  if (!user) return &lt;Spinner /&gt;;
+  return &lt;UserDetails user={user} /&gt;;
+}
+
+// RENDER-AS-YOU-FETCH (Suspense pattern — no waterfall):
+// Start fetch BEFORE render — outside component, during routing
+const userResource = createResource(fetchUser(userId));  // fetch starts NOW
+const postsResource = createResource(fetchUserPosts(userId));  // parallel fetch
+
+function UserProfile() {
+  const user = userResource.read();  // throws if not ready, returns data when ready
+  return &lt;UserDetails user={user} /&gt;;
+}
+
+function UserPosts() {
+  const posts = postsResource.read();
+  return &lt;PostList posts={posts} /&gt;;
+}
+
+// Both fetch in parallel, each reveals when ready
+function ProfilePage() {
+  return (
+    &lt;div&gt;
+      &lt;Suspense fallback={&lt;ProfileSkeleton /&gt;}&gt;
+        &lt;UserProfile /&gt;
+      &lt;/Suspense&gt;
+      &lt;Suspense fallback={&lt;PostsSkeleton /&gt;}&gt;
+        &lt;UserPosts /&gt;
+      &lt;/Suspense&gt;
+    &lt;/div&gt;
+  );
+}
+
+// In practice: TanStack Query, SWR, Relay handle this pattern
+// Their hooks throw promises automatically when data isn't cached
+</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q5. How would you architect a large React application? Discuss state management, code organization, and performance strategy.</summary>
+<div class="answer">
+<p><strong>State Management Strategy</strong> — use the right tool for each kind of state:</p>
+<pre><code class="language-jsx">// 1. SERVER STATE (async, cached, stale-while-revalidate)
+//    Tool: TanStack Query or SWR
+const { data: user, isLoading } = useQuery({
+  queryKey: ['user', userId],
+  queryFn: () =&gt; fetchUser(userId),
+  staleTime: 5 * 60 * 1000,  // 5 minutes
+});
+
+// 2. GLOBAL CLIENT STATE (shared across routes, persisted)
+//    Tool: Zustand (simple) or Redux Toolkit (complex)
+const useAppStore = create((set) =&gt; ({
+  user: null,
+  setUser: (user) =&gt; set({ user }),
+  preferences: {},
+  updatePreference: (key, value) =&gt; set(s =&gt; ({
+    preferences: { ...s.preferences, [key]: value }
+  })),
+}));
+
+// 3. LOCAL UI STATE (component/feature-local, ephemeral)
+//    Tool: useState / useReducer
+const [isModalOpen, setIsModalOpen] = useState(false);
+
+// 4. URL STATE (shareable, back-button-friendly)
+//    Tool: React Router search params, nuqs
+const [page, setPage] = useSearchParams('page', 1);
+</code></pre>
+<p><strong>Folder Structure (feature-based):</strong></p>
+<pre><code class="language-plaintext">src/
+  features/           # feature-first organization
+    auth/
+      components/     # AuthForm, LoginButton
+      hooks/          # useAuth, usePermissions
+      api/            # authApi.ts
+      store/          # authSlice.ts
+      index.ts        # public API (barrel export)
+    products/
+      components/
+      hooks/
+      api/
+      store/
+  shared/             # truly reusable
+    components/       # Button, Modal, Input
+    hooks/            # useDebounce, useFetch
+    utils/            # formatDate, parseQuery
+  app/                # app-level setup
+    providers.tsx     # compose providers
+    router.tsx        # route definitions
+    store.ts          # Redux/Zustand setup
+</code></pre>
+<p><strong>Performance Architecture:</strong></p>
+<pre><code class="language-jsx">// Route-based code splitting
+const routes = [
+  { path: '/dashboard', component: React.lazy(() =&gt; import('../features/dashboard')) },
+  { path: '/analytics', component: React.lazy(() =&gt; import('../features/analytics')) },
+];
+
+// Selective SSR/SSG with Next.js
+export async function getStaticProps() {
+  return { props: { initialData }, revalidate: 60 };  // ISR
+}
+
+// Component boundary for Suspense
+function Dashboard() {
+  return (
+    &lt;ErrorBoundary FallbackComponent={ErrorPage}&gt;
+      &lt;Suspense fallback={&lt;DashboardSkeleton /&gt;}&gt;
+        &lt;DashboardContent /&gt;
+      &lt;/Suspense&gt;
+    &lt;/ErrorBoundary&gt;
+  );
+}
+</code></pre>
+</div>
+</details>
+
+<footer>React — Comprehensive Learning Reference | Last updated 2026 | For interview preparation and daily reference</footer>
+</main>
+</div>
+
+<script>hljs.highlightAll();mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

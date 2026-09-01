@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Comprehensive HTML reference covering fundamentals, semantics, accessibility, performance, and advanced topics." />
+  <title>HTML — Complete Reference</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0d1117;
+      --bg-card: #161b22;
+      --bg-code: #1c2128;
+      --border: #30363d;
+      --text: #c9d1d9;
+      --text-muted: #8b949e;
+      --accent: #58a6ff;
+      --accent2: #3fb950;
+      --accent3: #f78166;
+      --accent4: #d2a8ff;
+      --accent5: #ffa657;
+      --tag: #79c0ff;
+      --radius: 8px;
+    }
+    body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; font-size: 15px; line-height: 1.7; padding: 0 16px 60px; }
+    .container { max-width: 960px; margin: 0 auto; }
+    h1 { font-size: 2.2rem; color: var(--accent); text-align: center; padding: 40px 0 8px; }
+    .subtitle { text-align: center; color: var(--text-muted); margin-bottom: 40px; font-size: 0.95rem; }
+    h2 { font-size: 1.35rem; color: var(--accent4); margin: 40px 0 12px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+    h3 { font-size: 1.05rem; color: var(--accent5); margin: 20px 0 8px; }
+    h4 { font-size: 0.95rem; color: var(--accent2); margin: 14px 0 6px; }
+    p { margin-bottom: 10px; }
+    ul, ol { padding-left: 22px; margin-bottom: 10px; }
+    li { margin-bottom: 4px; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    code { background: var(--bg-code); color: var(--accent3); padding: 2px 6px; border-radius: 4px; font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; font-size: 0.88em; }
+    pre { background: var(--bg-code) !important; border: 1px solid var(--border); border-radius: var(--radius); overflow-x: auto; margin: 12px 0; }
+    pre code { background: transparent !important; color: inherit !important; padding: 0; font-size: 0.875em; }
+    .hljs { padding: 16px 18px !important; }
+    .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 20px; margin-bottom: 14px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+    @media (max-width: 640px) { .grid-2 { grid-template-columns: 1fr; } }
+    table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.9rem; }
+    th { background: var(--bg-code); color: var(--accent4); padding: 8px 12px; text-align: left; border: 1px solid var(--border); }
+    td { padding: 7px 12px; border: 1px solid var(--border); vertical-align: top; }
+    tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; margin: 2px; }
+    .badge-blue { background: rgba(88,166,255,0.15); color: var(--accent); border: 1px solid rgba(88,166,255,0.3); }
+    .badge-green { background: rgba(63,185,80,0.15); color: var(--accent2); border: 1px solid rgba(63,185,80,0.3); }
+    .badge-red { background: rgba(247,129,102,0.15); color: var(--accent3); border: 1px solid rgba(247,129,102,0.3); }
+    .badge-purple { background: rgba(210,168,255,0.15); color: var(--accent4); border: 1px solid rgba(210,168,255,0.3); }
+    .badge-orange { background: rgba(255,166,87,0.15); color: var(--accent5); border: 1px solid rgba(255,166,87,0.3); }
+    details { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; }
+    summary { padding: 13px 18px; cursor: pointer; font-weight: 600; color: var(--accent); list-style: none; display: flex; align-items: center; gap: 8px; }
+    summary::before { content: "▶"; font-size: 0.7rem; color: var(--text-muted); transition: transform 0.2s; flex-shrink: 0; }
+    details[open] summary::before { transform: rotate(90deg); }
+    summary::-webkit-details-marker { display: none; }
+    .details-body { padding: 4px 18px 16px; border-top: 1px solid var(--border); }
+    .callout { border-left: 3px solid var(--accent); background: rgba(88,166,255,0.06); padding: 10px 14px; border-radius: 0 var(--radius) var(--radius) 0; margin: 10px 0; font-size: 0.9rem; }
+    .callout.warn { border-color: var(--accent5); background: rgba(255,166,87,0.06); }
+    .callout.success { border-color: var(--accent2); background: rgba(63,185,80,0.06); }
+    .callout.danger { border-color: var(--accent3); background: rgba(247,129,102,0.06); }
+    .tag-pill { display: inline-block; background: rgba(121,192,255,0.12); color: var(--tag); border: 1px solid rgba(121,192,255,0.25); border-radius: 4px; padding: 1px 7px; font-size: 0.82rem; font-family: monospace; margin: 2px; }
+    .section-divider { border: none; border-top: 1px solid var(--border); margin: 36px 0; }
+    .diff-good { color: var(--accent2); }
+    .diff-bad { color: var(--accent3); }
+    .mermaid { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin: 14px 0; text-align: center; }
+  </style>
+</head>
+<body>
+<div class="container">
+
+<h1>HTML — Complete Reference</h1>
+<p class="subtitle">Fundamentals · Semantics · Accessibility · Performance · Advanced Topics</p>
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>1. HTML Fundamentals</h2>
+
+<div class="card">
+  <h3>Document Structure</h3>
+  <p>Every HTML document begins with a DOCTYPE declaration, followed by a root <code>&lt;html&gt;</code> element containing <code>&lt;head&gt;</code> (metadata) and <code>&lt;body&gt;</code> (content).</p>
+  <pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;meta charset="UTF-8" /&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0" /&gt;
+    &lt;title&gt;Page Title&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;Hello, World&lt;/h1&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+</div>
+
+<div class="grid-2">
+  <div class="card">
+    <h3>Block vs Inline</h3>
+    <table>
+      <tr><th>Block</th><th>Inline</th></tr>
+      <tr><td>Starts new line, full width</td><td>Flows within text</td></tr>
+      <tr><td><code>div, p, h1–h6, ul, li, section</code></td><td><code>span, a, strong, em, img</code></td></tr>
+      <tr><td>Can contain block &amp; inline</td><td>Should not wrap block elements</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h3>Semantic vs Non-Semantic</h3>
+    <p><span class="diff-good">Semantic</span> — communicates meaning to browsers, assistive tech, and search engines.</p>
+    <p><span class="diff-bad">Non-semantic</span> — generic containers with no inherent meaning.</p>
+    <pre><code class="language-html">&lt;!-- Non-semantic --&gt;
+&lt;div class="nav"&gt;...&lt;/div&gt;
+
+&lt;!-- Semantic --&gt;
+&lt;nav aria-label="Main"&gt;...&lt;/nav&gt;</code></pre>
+  </div>
+</div>
+
+<hr class="section-divider" />
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>2. Semantic HTML5 Elements</h2>
+
+<div class="mermaid">
+graph TD
+  A["&lt;body&gt;"] --> B["&lt;header&gt;"]
+  A --> C["&lt;nav&gt;"]
+  A --> D["&lt;main&gt;"]
+  A --> E["&lt;aside&gt;"]
+  A --> F["&lt;footer&gt;"]
+  D --> G["&lt;article&gt;"]
+  D --> H["&lt;section&gt;"]
+  G --> I["&lt;figure&gt;"]
+  G --> J["&lt;time&gt;"]
+  G --> K["&lt;mark&gt;"]
+</div>
+
+<table>
+  <tr><th>Element</th><th>Purpose</th><th>Key Rule</th></tr>
+  <tr><td><span class="tag-pill">header</span></td><td>Introductory content or navigational aids for its nearest sectioning ancestor</td><td>Can appear multiple times; not just page header</td></tr>
+  <tr><td><span class="tag-pill">nav</span></td><td>Major navigation block (site nav, breadcrumbs)</td><td>Not every link group — only primary nav sets</td></tr>
+  <tr><td><span class="tag-pill">main</span></td><td>Dominant content of the document</td><td>Only ONE per page; skip-nav target</td></tr>
+  <tr><td><span class="tag-pill">aside</span></td><td>Tangentially related content (sidebars, callout boxes)</td><td>Related but removable without breaking main flow</td></tr>
+  <tr><td><span class="tag-pill">footer</span></td><td>Footer for nearest sectioning element</td><td>Can appear inside articles too</td></tr>
+  <tr><td><span class="tag-pill">article</span></td><td>Self-contained, independently distributable content</td><td>Blog post, news item, comment, widget</td></tr>
+  <tr><td><span class="tag-pill">section</span></td><td>Thematic grouping of content, usually with a heading</td><td>Don't use as a generic wrapper — that's <code>div</code></td></tr>
+  <tr><td><span class="tag-pill">figure</span> + <span class="tag-pill">figcaption</span></td><td>Self-contained content with optional caption</td><td>Images, charts, code snippets, quotes</td></tr>
+  <tr><td><span class="tag-pill">time</span></td><td>Machine-readable date/time</td><td>Use <code>datetime</code> attribute for parseable value</td></tr>
+  <tr><td><span class="tag-pill">mark</span></td><td>Highlighted/relevant text in current context</td><td>Search results highlight; not for generic emphasis</td></tr>
+</table>
+
+<pre><code class="language-html">&lt;article&gt;
+  &lt;header&gt;
+    &lt;h2&gt;Post Title&lt;/h2&gt;
+    &lt;time datetime="2024-03-15"&gt;March 15, 2024&lt;/time&gt;
+  &lt;/header&gt;
+  &lt;p&gt;Search found &lt;mark&gt;HTML semantics&lt;/mark&gt; in 42 results.&lt;/p&gt;
+  &lt;figure&gt;
+    &lt;img src="chart.png" alt="Bar chart showing usage" /&gt;
+    &lt;figcaption&gt;Semantic element adoption 2024&lt;/figcaption&gt;
+  &lt;/figure&gt;
+&lt;/article&gt;</code></pre>
+
+<hr class="section-divider" />
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>3. HTML5 New Features</h2>
+
+<div class="grid-2">
+  <div class="card">
+    <h3>Audio &amp; Video</h3>
+    <pre><code class="language-html">&lt;video controls width="640" preload="metadata"
+  poster="thumb.jpg"&gt;
+  &lt;source src="clip.mp4" type="video/mp4" /&gt;
+  &lt;source src="clip.webm" type="video/webm" /&gt;
+  &lt;track kind="subtitles" src="en.vtt"
+    srclang="en" label="English" /&gt;
+  Your browser does not support video.
+&lt;/video&gt;</code></pre>
+  </div>
+  <div class="card">
+    <h3>Canvas (2D)</h3>
+    <pre><code class="language-html">&lt;canvas id="c" width="300" height="150"&gt;&lt;/canvas&gt;
+&lt;script&gt;
+  const ctx = document
+    .getElementById('c').getContext('2d');
+  ctx.fillStyle = '#58a6ff';
+  ctx.fillRect(20, 20, 100, 60);
+  ctx.font = '16px sans-serif';
+  ctx.fillText('Canvas 2D', 30, 90);
+&lt;/script&gt;</code></pre>
+  </div>
+</div>
+
+<div class="grid-2">
+  <div class="card">
+    <h3>Web Storage</h3>
+    <pre><code class="language-javascript">// localStorage — persists across sessions
+localStorage.setItem('theme', 'dark');
+const theme = localStorage.getItem('theme');
+localStorage.removeItem('theme');
+
+// sessionStorage — tab lifetime only
+sessionStorage.setItem('token', 'abc123');
+</code></pre>
+    <div class="callout">localStorage vs sessionStorage: both store ~5 MB per origin; sessionStorage is cleared when the tab closes.</div>
+  </div>
+  <div class="card">
+    <h3>Geolocation</h3>
+    <pre><code class="language-javascript">navigator.geolocation.getCurrentPosition(
+  (pos) => {
+    const { latitude, longitude } = pos.coords;
+    console.log(latitude, longitude);
+  },
+  (err) => console.error(err.message),
+  { enableHighAccuracy: true, timeout: 5000 }
+);</code></pre>
+    <div class="callout warn">Requires user permission. HTTPS mandatory in production.</div>
+  </div>
+</div>
+
+<div class="grid-2">
+  <div class="card">
+    <h3>Drag &amp; Drop</h3>
+    <pre><code class="language-html">&lt;div draggable="true" id="item"&gt;Drag me&lt;/div&gt;
+&lt;div id="zone"&gt;Drop here&lt;/div&gt;
+&lt;script&gt;
+item.addEventListener('dragstart', e =&gt;
+  e.dataTransfer.setData('text/plain', 'item'));
+zone.addEventListener('dragover', e =&gt; e.preventDefault());
+zone.addEventListener('drop', e =&gt;
+  zone.textContent = e.dataTransfer.getData('text'));
+&lt;/script&gt;</code></pre>
+  </div>
+  <div class="card">
+    <h3>WebSocket</h3>
+    <pre><code class="language-javascript">const ws = new WebSocket('wss://api.example.com/ws');
+
+ws.addEventListener('open', () =>
+  ws.send(JSON.stringify({ type: 'subscribe' })));
+
+ws.addEventListener('message', ({ data }) =>
+  console.log('Received:', JSON.parse(data)));
+
+ws.addEventListener('close', () =>
+  console.log('Connection closed'));</code></pre>
+  </div>
+</div>
+
+<hr class="section-divider" />
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>4. HTML Forms</h2>
+
+<div class="card">
+  <h3>All Input Types</h3>
+  <pre><code class="language-html">&lt;form method="POST" action="/submit" novalidate&gt;
+  &lt;fieldset&gt;
+    &lt;legend&gt;Account Details&lt;/legend&gt;
+    &lt;input type="text"     name="username" required minlength="3" /&gt;
+    &lt;input type="email"    name="email"    required /&gt;
+    &lt;input type="password" name="pwd"      required pattern=".{8,}" /&gt;
+    &lt;input type="number"   name="age"      min="18" max="120" /&gt;
+    &lt;input type="date"     name="dob"      /&gt;
+    &lt;input type="range"    name="volume"   min="0" max="100" step="5" /&gt;
+    &lt;input type="color"    name="theme"    value="#58a6ff" /&gt;
+    &lt;input type="file"     name="avatar"   accept="image/*" /&gt;
+    &lt;input type="checkbox" name="terms"    required /&gt; Accept terms
+    &lt;input type="radio"    name="plan" value="free" /&gt; Free
+    &lt;input type="radio"    name="plan" value="pro"  /&gt; Pro
+  &lt;/fieldset&gt;
+&lt;/form&gt;</code></pre>
+</div>
+
+<div class="grid-2">
+  <div class="card">
+    <h3>Datalist &amp; Output</h3>
+    <pre><code class="language-html">&lt;input list="browsers" name="browser" /&gt;
+&lt;datalist id="browsers"&gt;
+  &lt;option value="Chrome"&gt;
+  &lt;option value="Firefox"&gt;
+  &lt;option value="Safari"&gt;
+&lt;/datalist&gt;
+
+&lt;form oninput="res.value = +a.value + +b.value"&gt;
+  &lt;input type="number" id="a" value="0" /&gt; +
+  &lt;input type="number" id="b" value="0" /&gt; =
+  &lt;output name="res" for="a b"&gt;0&lt;/output&gt;
+&lt;/form&gt;</code></pre>
+  </div>
+  <div class="card">
+    <h3>Validation Attributes</h3>
+    <table>
+      <tr><th>Attribute</th><th>Use</th></tr>
+      <tr><td><code>required</code></td><td>Field must not be empty</td></tr>
+      <tr><td><code>pattern</code></td><td>Regex must match value</td></tr>
+      <tr><td><code>min / max</code></td><td>Numeric/date bounds</td></tr>
+      <tr><td><code>minlength / maxlength</code></td><td>String length bounds</td></tr>
+      <tr><td><code>step</code></td><td>Granularity of numbers</td></tr>
+      <tr><td><code>novalidate</code></td><td>Disable native validation on <code>&lt;form&gt;</code></td></tr>
+    </table>
+  </div>
+</div>
+
+<hr class="section-divider" />
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>5. Accessibility (a11y)</h2>
+
+<div class="card">
+  <h3>ARIA Roles &amp; Attributes</h3>
+  <pre><code class="language-html">&lt;!-- Role overrides implicit semantics --&gt;
+&lt;div role="button" tabindex="0"
+  aria-pressed="false"
+  aria-label="Toggle sidebar"&gt;&#9776;&lt;/div&gt;
+
+&lt;div role="dialog" aria-modal="true"
+  aria-labelledby="dlg-title"
+  aria-describedby="dlg-desc"&gt;
+  &lt;h2 id="dlg-title"&gt;Confirm Delete&lt;/h2&gt;
+  &lt;p id="dlg-desc"&gt;This action cannot be undone.&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div role="tablist"&gt;
+  &lt;button role="tab" aria-selected="true"&gt;Tab 1&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+</div>
+
+<table>
+  <tr><th>Attribute</th><th>Purpose</th><th>Example</th></tr>
+  <tr><td><code>aria-label</code></td><td>Accessible name when no visible text</td><td><code>aria-label="Close"</code></td></tr>
+  <tr><td><code>aria-labelledby</code></td><td>Points to element providing the label</td><td><code>aria-labelledby="form-title"</code></td></tr>
+  <tr><td><code>aria-describedby</code></td><td>Points to element with description</td><td><code>aria-describedby="hint-text"</code></td></tr>
+  <tr><td><code>aria-hidden</code></td><td>Hides decorative content from AT</td><td><code>aria-hidden="true"</code></td></tr>
+  <tr><td><code>aria-live</code></td><td>Announces dynamic updates</td><td><code>aria-live="polite"</code></td></tr>
+  <tr><td><code>aria-expanded</code></td><td>Disclosure state of a control</td><td><code>aria-expanded="false"</code></td></tr>
+  <tr><td><code>tabindex</code></td><td><code>0</code>=focusable, <code>-1</code>=programmatic only, <code>&gt;0</code>=avoid</td><td><code>tabindex="0"</code></td></tr>
+</table>
+
+<div class="grid-2">
+  <div class="card">
+    <h3>Alt Text Rules</h3>
+    <ul>
+      <li>Informative image: describe what it conveys, not "image of"</li>
+      <li>Decorative image: <code>alt=""</code> (empty string, NOT omitted)</li>
+      <li>Linked image: describe the destination, not the image</li>
+      <li>Complex image (chart): provide extended description via <code>aria-describedby</code> or <code>longdesc</code></li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>Focus Management</h3>
+    <pre><code class="language-javascript">// Move focus to modal on open
+const modal = document.getElementById('modal');
+modal.removeAttribute('hidden');
+modal.focus();
+
+// Trap focus inside modal
+modal.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeModal();
+});</code></pre>
+  </div>
+</div>
+
+<div class="callout success">Rule of thumb: prefer native HTML elements over ARIA roles. A <code>&lt;button&gt;</code> is better than <code>&lt;div role="button"&gt;</code> — it's keyboard accessible, focusable, and announced correctly for free.</div>
+
+<hr class="section-divider" />
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>6. Meta Tags</h2>
+
+<pre><code class="language-html">&lt;head&gt;
+  &lt;!-- Core --&gt;
+  &lt;meta charset="UTF-8" /&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0" /&gt;
+  &lt;meta name="description" content="150-character page description for SEO." /&gt;
+  &lt;meta name="robots" content="index, follow" /&gt;
+  &lt;link rel="canonical" href="https://example.com/page" /&gt;
+
+  &lt;!-- Open Graph (Facebook / LinkedIn / Slack) --&gt;
+  &lt;meta property="og:title"       content="Page Title" /&gt;
+  &lt;meta property="og:description" content="Brief description" /&gt;
+  &lt;meta property="og:image"       content="https://example.com/og.jpg" /&gt;
+  &lt;meta property="og:url"         content="https://example.com/page" /&gt;
+  &lt;meta property="og:type"        content="article" /&gt;
+
+  &lt;!-- Twitter Cards --&gt;
+  &lt;meta name="twitter:card"        content="summary_large_image" /&gt;
+  &lt;meta name="twitter:title"       content="Page Title" /&gt;
+  &lt;meta name="twitter:image"       content="https://example.com/tw.jpg" /&gt;
+&lt;/head&gt;</code></pre>
+
+<table>
+  <tr><th>Meta</th><th>Value / Notes</th></tr>
+  <tr><td><code>viewport</code></td><td><code>width=device-width, initial-scale=1</code> — enables responsive layout on mobile. Without it, mobile browsers render at 980 px virtual width.</td></tr>
+  <tr><td><code>robots</code></td><td><code>noindex</code> prevents crawling; <code>nofollow</code> disallows following links; <code>noarchive</code> suppresses cached copy.</td></tr>
+  <tr><td><code>canonical</code></td><td>Tells search engines the "true" URL for duplicate/paginated content.</td></tr>
+  <tr><td><code>og:image</code></td><td>Minimum 1200×630 px for most platforms. Must be absolute URL.</td></tr>
+</table>
+
+<hr class="section-divider" />
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>7. Performance</h2>
+
+<div class="card">
+  <h3>Lazy Loading</h3>
+  <pre><code class="language-html">&lt;!-- Images and iframes only load when near viewport --&gt;
+&lt;img src="hero.jpg"    alt="Hero"    loading="eager" /&gt;
+&lt;img src="below.jpg"  alt="Below"   loading="lazy"  /&gt;
+&lt;iframe src="map.html" loading="lazy" title="Map"&gt;&lt;/iframe&gt;</code></pre>
+  <div class="callout">Never lazy-load above-the-fold images — it delays Largest Contentful Paint (LCP).</div>
+</div>
+
+<div class="card">
+  <h3>Resource Hints</h3>
+  <pre><code class="language-html">&lt;!-- preconnect: early DNS+TCP+TLS to critical origins --&gt;
+&lt;link rel="preconnect" href="https://fonts.googleapis.com" /&gt;
+
+&lt;!-- preload: fetch current page's critical resource immediately --&gt;
+&lt;link rel="preload" href="/fonts/inter.woff2" as="font"
+  type="font/woff2" crossorigin /&gt;
+
+&lt;!-- prefetch: fetch resource likely needed for NEXT navigation --&gt;
+&lt;link rel="prefetch" href="/next-page-bundle.js" as="script" /&gt;</code></pre>
+</div>
+
+<div class="card">
+  <h3>Script Loading: defer vs async</h3>
+  <table>
+    <tr><th>Attribute</th><th>Download</th><th>Execution</th><th>Order</th><th>DOMContentLoaded</th></tr>
+    <tr><td><em>none</em></td><td>Blocks parsing</td><td>Immediately, blocks render</td><td>In order</td><td>Waits</td></tr>
+    <tr><td><code>defer</code></td><td>Parallel</td><td>After HTML parsed, before DCL</td><td>In order</td><td>Waits</td></tr>
+    <tr><td><code>async</code></td><td>Parallel</td><td>ASAP — may interrupt parsing</td><td>Not guaranteed</td><td>Does not wait</td></tr>
+  </table>
+  <div class="callout success">Use <code>defer</code> for most scripts. Use <code>async</code> only for fully independent scripts (analytics, ads).</div>
+</div>
+
+<hr class="section-divider" />
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>8. HTML Entities</h2>
+
+<table>
+  <tr><th>Entity</th><th>Code</th><th>Name</th></tr>
+  <tr><td>&amp;</td><td><code>&amp;amp;</code></td><td>Ampersand</td></tr>
+  <tr><td>&lt;</td><td><code>&amp;lt;</code></td><td>Less-than</td></tr>
+  <tr><td>&gt;</td><td><code>&amp;gt;</code></td><td>Greater-than</td></tr>
+  <tr><td>&nbsp;</td><td><code>&amp;nbsp;</code></td><td>Non-breaking space</td></tr>
+  <tr><td>&copy;</td><td><code>&amp;copy;</code></td><td>Copyright</td></tr>
+  <tr><td>&mdash;</td><td><code>&amp;mdash;</code></td><td>Em dash</td></tr>
+  <tr><td>&ndash;</td><td><code>&amp;ndash;</code></td><td>En dash</td></tr>
+  <tr><td>&ldquo;&rdquo;</td><td><code>&amp;ldquo; &amp;rdquo;</code></td><td>Curly double quotes</td></tr>
+  <tr><td>&laquo;&raquo;</td><td><code>&amp;laquo; &amp;raquo;</code></td><td>Guillemets</td></tr>
+  <tr><td>&#128;</td><td><code>&amp;#128512;</code></td><td>Numeric (decimal) reference</td></tr>
+</table>
+
+<hr class="section-divider" />
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>9. Tables</h2>
+
+<pre><code class="language-html">&lt;table&gt;
+  &lt;caption&gt;Q1 Sales by Region&lt;/caption&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th scope="col"&gt;Region&lt;/th&gt;
+      &lt;th scope="col"&gt;Jan&lt;/th&gt;
+      &lt;th scope="col" colspan="2"&gt;Feb–Mar&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;th scope="row"&gt;North&lt;/th&gt;
+      &lt;td&gt;$12k&lt;/td&gt;
+      &lt;td rowspan="2"&gt;Combined&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+  &lt;tfoot&gt;
+    &lt;tr&gt;&lt;td colspan="3"&gt;Total: $98k&lt;/td&gt;&lt;/tr&gt;
+  &lt;/tfoot&gt;
+&lt;/table&gt;</code></pre>
+
+<div class="grid-2">
+  <div class="card">
+    <h4>Accessible Table Patterns</h4>
+    <ul>
+      <li>Always use <code>&lt;caption&gt;</code> or <code>aria-label</code> to identify the table</li>
+      <li><code>scope="col"</code> on column headers, <code>scope="row"</code> on row headers</li>
+      <li>For complex tables with <code>colspan/rowspan</code>, use <code>headers</code> attribute pointing to <code>id</code>s</li>
+      <li>Avoid layout tables; use CSS Grid/Flexbox instead</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>thead / tbody / tfoot</h4>
+    <ul>
+      <li><code>thead</code> — repeated on print across page breaks</li>
+      <li><code>tbody</code> — scrollable independently when table has fixed height</li>
+      <li><code>tfoot</code> — can appear before tbody in markup; browsers still render at bottom</li>
+      <li>Multiple <code>tbody</code> groups are valid for logical row grouping</li>
+    </ul>
+  </div>
+</div>
+
+<hr class="section-divider" />
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>10. Iframe &amp; Embeds</h2>
+
+<pre><code class="language-html">&lt;!-- Minimal safe iframe --&gt;
+&lt;iframe
+  src="https://example.com/widget"
+  title="Interactive widget"
+  width="600" height="400"
+  loading="lazy"
+  sandbox="allow-scripts allow-same-origin allow-forms"
+  allow="camera 'none'; microphone 'none'"
+  referrerpolicy="no-referrer"&gt;
+&lt;/iframe&gt;</code></pre>
+
+<table>
+  <tr><th>sandbox value</th><th>Enables</th></tr>
+  <tr><td><code>allow-scripts</code></td><td>JavaScript execution</td></tr>
+  <tr><td><code>allow-same-origin</code></td><td>Treat content as same origin (required for cookies/storage)</td></tr>
+  <tr><td><code>allow-forms</code></td><td>Form submission</td></tr>
+  <tr><td><code>allow-popups</code></td><td>window.open, target=_blank</td></tr>
+  <tr><td><code>allow-top-navigation</code></td><td>Navigate the top-level browsing context</td></tr>
+  <tr><td><em>(empty)</em></td><td>Maximum isolation — JS disabled, origin opaque</td></tr>
+</table>
+
+<div class="callout danger">Never use <code>allow-same-origin</code> + <code>allow-scripts</code> together on untrusted content — together they let scripts escape the sandbox by removing it.</div>
+
+<div class="card">
+  <h3>Permissions Policy (allow attribute)</h3>
+  <pre><code class="language-html">&lt;iframe
+  allow="fullscreen; payment 'none'; geolocation 'self'"
+  src="..."&gt;&lt;/iframe&gt;</code></pre>
+  <p>Controls access to browser features. <code>'none'</code> blocks entirely; <code>'self'</code> restricts to the iframe's own origin.</p>
+</div>
+
+<hr class="section-divider" />
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>11. HTML Version History</h2>
+
+<div class="mermaid">
+timeline
+    title HTML Evolution
+    1993 : HTML 1.0 — Tim Berners-Lee informal spec
+    1995 : HTML 2.0 — First formal RFC standard
+    1997 : HTML 3.2 — Tables, applets, scripting
+    1997 : HTML 4.0 — CSS separation, frames
+    1999 : HTML 4.01 — Bug fixes, three DTDs
+    2000 : XHTML 1.0 — XML-strict HTML4 rewrite
+    2008 : HTML5 Draft — WHATWG / W3C collaboration
+    2014 : HTML5 W3C Rec — Video, canvas, semantics
+    2016 : HTML 5.1 — picture element, menu
+    2017 : HTML 5.2 — dialog, payment API
+    2019+ : Living Standard — Continuous WHATWG updates
+</div>
+
+<table>
+  <tr><th>Version</th><th>Year</th><th>Key Changes</th></tr>
+  <tr><td>HTML 4.01</td><td>1999</td><td>Strict/Transitional/Frameset DTDs; CSS separation; forms; scripting hooks</td></tr>
+  <tr><td>XHTML 1.0</td><td>2000</td><td>XML serialization of HTML4; mandatory lowercase, quoted attrs, closed tags; strict error handling</td></tr>
+  <tr><td>HTML5</td><td>2014</td><td>Semantic elements, video/audio/canvas, Web Storage, Geolocation, WebWorkers, WebSockets, form input types, no more DTD variants</td></tr>
+  <tr><td>HTML 5.1</td><td>2016</td><td><code>&lt;picture&gt;</code> responsive images, <code>srcset</code> / <code>sizes</code>, <code>&lt;details&gt;</code>/<code>&lt;summary&gt;</code>, <code>reversed</code> on <code>&lt;ol&gt;</code></td></tr>
+  <tr><td>HTML 5.2</td><td>2017</td><td><code>&lt;dialog&gt;</code>, Payment Request API integration, removed obsolete features</td></tr>
+  <tr><td>Living Standard</td><td>2019+</td><td>WHATWG continuous spec: <code>loading="lazy"</code>, <code>&lt;portal&gt;</code>, Declarative Shadow DOM, <code>inert</code> attribute, <code>popover</code> API</td></tr>
+</table>
+
+<hr class="section-divider" />
+
+<!-- ═══════════════════════════════════════════════ -->
+<h2>Q &amp; A</h2>
+
+<h3><span class="badge badge-green">Easy</span></h3>
+
+<details>
+  <summary>Q1: What is a DOCTYPE declaration and why is it needed?</summary>
+  <div class="details-body">
+    <p><code>&lt;!DOCTYPE html&gt;</code> is an instruction to the browser telling it which version of HTML the document uses. It must appear as the very first line, before the <code>&lt;html&gt;</code> tag.</p>
+    <p><strong>Why it matters:</strong> Without a DOCTYPE, browsers enter <em>quirks mode</em> — they emulate bugs from old browsers (Netscape 4, IE 5) to avoid breaking legacy pages. With <code>&lt;!DOCTYPE html&gt;</code>, the browser enters <em>standards mode</em>, rendering the page according to current specifications.</p>
+    <ul>
+      <li>HTML5 DOCTYPE is deliberately simple — it's not a reference to a DTD file, just a mode switch.</li>
+      <li>HTML 4.01 required a full URL referencing the W3C DTD: <code>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://..."&gt;</code></li>
+      <li>There is also a near-standards mode ("almost standards") triggered by certain older doctypes.</li>
+    </ul>
+    <div class="callout">Always use <code>&lt;!DOCTYPE html&gt;</code>. It is valid for both HTML5 and future HTML Living Standard documents.</div>
+  </div>
+</details>
+
+<details>
+  <summary>Q2: What is the difference between semantic elements and generic div/span?</summary>
+  <div class="details-body">
+    <p><strong>Semantic elements</strong> carry meaning about the role of their content. <strong>div</strong> and <strong>span</strong> are purely structural — they exist to group elements for styling or scripting without conveying any meaning.</p>
+    <table>
+      <tr><th>Aspect</th><th>Semantic (<code>nav</code>, <code>article</code>…)</th><th>Generic (<code>div</code>, <code>span</code>)</th></tr>
+      <tr><td>Meaning</td><td>Describes content purpose</td><td>No inherent meaning</td></tr>
+      <tr><td>Accessibility</td><td>Provides implicit ARIA landmark roles</td><td>Requires explicit ARIA to be useful to AT</td></tr>
+      <tr><td>SEO</td><td>Helps crawlers understand page structure</td><td>No structural signal</td></tr>
+      <tr><td>Readability</td><td>Self-documenting HTML</td><td>Requires class names to convey intent</td></tr>
+    </table>
+    <p>Use <code>div</code> when no semantic element applies — for pure layout grouping or JS hooks. Use <code>span</code> for inline styling when no semantic inline element (<code>em</code>, <code>strong</code>, <code>code</code>) fits.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q3: What is the purpose of the alt attribute on images?</summary>
+  <div class="details-body">
+    <p>The <code>alt</code> attribute provides a <strong>text alternative</strong> for an image. It serves multiple audiences:</p>
+    <ul>
+      <li><strong>Screen readers</strong> announce the alt text to visually impaired users</li>
+      <li><strong>Search engine crawlers</strong> use it to understand image content</li>
+      <li><strong>Broken image fallback</strong> — displayed when the image fails to load</li>
+      <li><strong>Low-bandwidth / text-only browsers</strong> can display the text alternative</li>
+    </ul>
+    <p><strong>Rules for writing good alt text:</strong></p>
+    <ul>
+      <li>Describe what the image communicates, not its visual appearance literally</li>
+      <li>Decorative images: use <code>alt=""</code> — screen readers skip the element entirely</li>
+      <li>Omitting <code>alt</code> entirely is different: some ATs will announce the filename</li>
+      <li>For complex images (charts, diagrams): supplement with an extended description</li>
+    </ul>
+    <pre><code class="language-html">&lt;!-- Informative --&gt;
+&lt;img src="graph.png" alt="Bar chart: revenue grew 40% in Q3" /&gt;
+
+&lt;!-- Decorative --&gt;
+&lt;img src="divider.svg" alt="" role="presentation" /&gt;</code></pre>
+  </div>
+</details>
+
+<details>
+  <summary>Q4: What is the difference between defer and async on script tags?</summary>
+  <div class="details-body">
+    <p>Both attributes make the browser download the script in parallel with HTML parsing, but they differ in <em>when</em> the script executes:</p>
+    <table>
+      <tr><th></th><th><code>defer</code></th><th><code>async</code></th></tr>
+      <tr><td>Download</td><td>Parallel to parsing</td><td>Parallel to parsing</td></tr>
+      <tr><td>Execution</td><td>After full HTML is parsed, just before DOMContentLoaded</td><td>As soon as downloaded — may pause parser</td></tr>
+      <tr><td>Order</td><td>In document order, always</td><td>Whichever downloads first</td></tr>
+      <tr><td>DOM access</td><td>Safe — DOM is complete</td><td>Risky — DOM may be incomplete</td></tr>
+      <tr><td>Best for</td><td>App bundles, UI scripts that need the DOM</td><td>Completely independent scripts (analytics)</td></tr>
+    </table>
+    <div class="callout">Placing scripts at the end of <code>&lt;body&gt;</code> is the old workaround. Using <code>defer</code> in <code>&lt;head&gt;</code> is modern best practice — it keeps metadata and resource hints together.</div>
+  </div>
+</details>
+
+<h3><span class="badge badge-blue">Intermediate</span></h3>
+
+<details>
+  <summary>Q5: What are the key accessibility best practices when building a web page?</summary>
+  <div class="details-body">
+    <p>Accessibility (a11y) ensures everyone, including people using assistive technologies, can use your page. Key practices:</p>
+    <h4>Structure</h4>
+    <ul>
+      <li>Use one <code>&lt;main&gt;</code> per page with a skip-nav link (<code>&lt;a href="#main"&gt;Skip to content&lt;/a&gt;</code>)</li>
+      <li>Use proper heading hierarchy — one <code>h1</code>, logical nesting of h2→h3</li>
+      <li>Use semantic HTML so landmarks are available for free</li>
+    </ul>
+    <h4>Keyboard</h4>
+    <ul>
+      <li>All interactive elements must be reachable by Tab and activatable by Enter/Space</li>
+      <li>Visible focus indicators — never <code>outline: none</code> without a replacement</li>
+      <li>Logical tab order following visual reading flow</li>
+    </ul>
+    <h4>Color &amp; Contrast</h4>
+    <ul>
+      <li>WCAG AA: 4.5:1 for normal text, 3:1 for large text and UI components</li>
+      <li>Never convey information by color alone — use icons, text labels, patterns</li>
+    </ul>
+    <h4>ARIA</h4>
+    <ul>
+      <li>First rule of ARIA: don't use ARIA if a native element exists</li>
+      <li>Use <code>aria-live="polite"</code> for dynamic notifications (toast messages, form errors)</li>
+      <li>Manage focus when dialogs open/close</li>
+    </ul>
+  </div>
+</details>
+
+<details>
+  <summary>Q6: What does the meta viewport tag do and why is it essential?</summary>
+  <div class="details-body">
+    <p><code>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</code></p>
+    <p><strong>Without it:</strong> Mobile browsers (iOS Safari, Chrome Android) render pages at a virtual width of ~980px to avoid breaking desktop-only sites, then scale the result down. Everything looks tiny and users must pinch-zoom.</p>
+    <p><strong>With it:</strong> The browser sets the viewport width to match the physical CSS pixel width of the device. Combined with responsive CSS (media queries, flexible layouts), the page fills the screen correctly at 1:1 scale.</p>
+    <p><strong>Common values explained:</strong></p>
+    <ul>
+      <li><code>width=device-width</code> — viewport equals device CSS pixel width</li>
+      <li><code>initial-scale=1.0</code> — no zoom on load</li>
+      <li><code>maximum-scale=1</code> — prevents user zoom (avoid: accessibility violation)</li>
+      <li><code>user-scalable=no</code> — disables pinch-zoom (avoid: violates WCAG 1.4.4)</li>
+    </ul>
+    <div class="callout warn">Never set <code>user-scalable=no</code> — it breaks accessibility for low-vision users and violates WCAG 2.1 Success Criterion 1.4.4.</div>
+  </div>
+</details>
+
+<details>
+  <summary>Q7: What is the difference between preload, prefetch, and preconnect?</summary>
+  <div class="details-body">
+    <p>All three are resource hints that improve performance by changing when the browser fetches resources, but they serve different purposes:</p>
+    <table>
+      <tr><th>Hint</th><th>When to fetch</th><th>Use case</th><th>Priority</th></tr>
+      <tr><td><code>preconnect</code></td><td>Immediately</td><td>Warm up a third-party origin (DNS + TCP + TLS) without fetching yet</td><td>Highest — free TCP handshake</td></tr>
+      <tr><td><code>preload</code></td><td>Immediately</td><td>Fetch a critical resource for the <em>current</em> page (fonts, hero image, critical CSS)</td><td>High — required, will warn if unused</td></tr>
+      <tr><td><code>prefetch</code></td><td>Idle time</td><td>Fetch a resource likely needed on the <em>next</em> navigation</td><td>Low — best-effort, browser may ignore</td></tr>
+    </table>
+    <p><strong>Key rules:</strong></p>
+    <ul>
+      <li><code>preload</code> with <code>as</code> attribute is mandatory — tells browser correct priority and CORS mode</li>
+      <li>Cross-origin fonts need <code>crossorigin</code> attribute even if same CDN</li>
+      <li>Over-preloading hurts performance — each preload competes for bandwidth</li>
+    </ul>
+    <pre><code class="language-html">&lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /&gt;
+&lt;link rel="preload" href="/hero.jpg" as="image" fetchpriority="high" /&gt;
+&lt;link rel="prefetch" href="/next-page.js" as="script" /&gt;</code></pre>
+  </div>
+</details>
+
+<details>
+  <summary>Q8: How does HTML5 native form validation work and what are its limitations?</summary>
+  <div class="details-body">
+    <p>HTML5 form validation runs in the browser before submission, using constraint attributes on input elements. The browser shows native error popups styled to the OS.</p>
+    <p><strong>How it works:</strong></p>
+    <ul>
+      <li>Browser validates on <code>submit</code> (and progressively on <code>blur</code>/<code>input</code> depending on browser)</li>
+      <li>First invalid field receives focus; form submission is blocked</li>
+      <li>CSS pseudo-classes <code>:valid</code>, <code>:invalid</code>, <code>:required</code> reflect constraint state</li>
+    </ul>
+    <p><strong>Constraint API in JS:</strong></p>
+    <pre><code class="language-javascript">const input = document.querySelector('#email');
+input.setCustomValidity('Email already registered');
+input.reportValidity(); // Shows browser tooltip
+
+// Clear custom message
+input.setCustomValidity('');</code></pre>
+    <p><strong>Limitations:</strong></p>
+    <ul>
+      <li>Native error UI is not styleable beyond CSS (tooltip position, colors vary by OS)</li>
+      <li>No cross-field validation (e.g., "password confirm must match")</li>
+      <li>No async validation (e.g., check username availability via API)</li>
+      <li>Error messages not always ARIA-announced; custom UI needed for a11y compliance</li>
+    </ul>
+    <div class="callout">Use <code>novalidate</code> on the form when building custom validation UI, then use the Constraint Validation API to check validity programmatically.</div>
+  </div>
+</details>
+
+<h3><span class="badge badge-orange">Advanced</span></h3>
+
+<details>
+  <summary>Q9: What is the Critical Rendering Path and how does HTML affect it?</summary>
+  <div class="details-body">
+    <p>The <strong>Critical Rendering Path (CRP)</strong> is the sequence of steps the browser performs to convert HTML, CSS, and JS into rendered pixels on screen:</p>
+    <div class="mermaid">
+flowchart LR
+  A[HTML bytes] --> B[DOM]
+  C[CSS bytes] --> D[CSSOM]
+  B & D --> E[Render Tree]
+  E --> F[Layout]
+  F --> G[Paint]
+  G --> H[Composite]
+    </div>
+    <p><strong>HTML decisions that impact CRP:</strong></p>
+    <ul>
+      <li><strong>Parser-blocking scripts:</strong> <code>&lt;script src="..."&gt;</code> without <code>defer/async</code> stops DOM construction entirely until the script downloads and executes</li>
+      <li><strong>Render-blocking CSS:</strong> All <code>&lt;link rel="stylesheet"&gt;</code> block rendering until CSSOM is built — minimize render-blocking CSS by inlining critical CSS</li>
+      <li><strong>Resource hints:</strong> <code>preload</code> moves resource fetches earlier in the waterfall, shortening CRP</li>
+      <li><strong>DOM size:</strong> Large DOMs (&gt;1500 nodes) slow layout recalculation and paint</li>
+      <li><strong>Image dimensions:</strong> Setting explicit <code>width</code>/<code>height</code> attributes prevents Cumulative Layout Shift (CLS) by reserving space before image loads</li>
+    </ul>
+    <p><strong>Key metrics (Core Web Vitals):</strong></p>
+    <ul>
+      <li><code>LCP</code> — Largest Contentful Paint: time to render largest above-fold element. Optimize with <code>fetchpriority="high"</code> on hero image.</li>
+      <li><code>CLS</code> — Cumulative Layout Shift: prevent with explicit image dimensions and font-display.</li>
+      <li><code>INP</code> — Interaction to Next Paint: minimize main-thread blocking.</li>
+    </ul>
+  </div>
+</details>
+
+<details>
+  <summary>Q10: When should you use ARIA roles vs native HTML elements?</summary>
+  <div class="details-body">
+    <p><strong>The five rules of ARIA (W3C):</strong></p>
+    <ol>
+      <li>Don't use ARIA if a native HTML element can do the job</li>
+      <li>Don't change native semantics unless you absolutely have to</li>
+      <li>All interactive ARIA controls must be keyboard operable</li>
+      <li>Don't use <code>role="presentation"</code> or <code>aria-hidden="true"</code> on focusable elements</li>
+      <li>All interactive elements must have an accessible name</li>
+    </ol>
+    <table>
+      <tr><th>Use ARIA when…</th><th>Prefer native HTML when…</th></tr>
+      <tr><td>No native element exists for the widget (e.g., <code>role="tree"</code>, <code>role="combobox"</code>)</td><td>The element exists: <code>&lt;button&gt;</code>, <code>&lt;input&gt;</code>, <code>&lt;select&gt;</code>, <code>&lt;details&gt;</code></td></tr>
+      <tr><td>You must use a <code>&lt;div&gt;</code> for layout reasons but need semantics</td><td>You can reach for <code>&lt;nav&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;aside&gt;</code></td></tr>
+      <tr><td>Communicating dynamic state changes (<code>aria-live</code>)</td><td>Static, non-interactive content</td></tr>
+    </table>
+    <div class="callout danger">Using ARIA incorrectly is worse than using no ARIA at all. A <code>&lt;div role="button"&gt;</code> without <code>tabindex="0"</code> and keyboard event handlers creates an inaccessible control.</div>
+    <pre><code class="language-html">&lt;!-- Bad: ARIA-only with missing keyboard support --&gt;
+&lt;div role="button" onclick="submit()"&gt;Submit&lt;/div&gt;
+
+&lt;!-- Good: Native element, all behavior built-in --&gt;
+&lt;button type="submit"&gt;Submit&lt;/button&gt;</code></pre>
+  </div>
+</details>
+
+<details>
+  <summary>Q11: How do custom data attributes (data-*) work and what are good patterns?</summary>
+  <div class="details-body">
+    <p><code>data-*</code> attributes let you embed custom data in HTML elements without non-standard attributes. They create a private data namespace that doesn't affect browser rendering or semantics.</p>
+    <pre><code class="language-html">&lt;button
+  data-action="delete"
+  data-item-id="42"
+  data-confirm="true"
+  data-analytics-event="cta_click"&gt;
+  Delete
+&lt;/button&gt;</code></pre>
+    <pre><code class="language-javascript">const btn = document.querySelector('[data-action="delete"]');
+// Access via dataset (camelCased)
+const id = btn.dataset.itemId;       // "42"
+const confirm = btn.dataset.confirm; // "true" (string, not boolean)
+
+// Set
+btn.dataset.status = 'loading';
+// Remove
+delete btn.dataset.confirm;</code></pre>
+    <p><strong>Good patterns:</strong></p>
+    <ul>
+      <li>Event delegation: one listener on a container reads <code>data-action</code> to dispatch behavior</li>
+      <li>JS/CSS communication: CSS <code>[data-state="open"]</code> selectors driven by JS <code>dataset.state = 'open'</code></li>
+      <li>Analytics hooks: <code>data-analytics-*</code> for tracking without polluting class names</li>
+      <li>Server-side templating: embed IDs or config from the server for JS to consume</li>
+    </ul>
+    <p><strong>Anti-patterns:</strong></p>
+    <ul>
+      <li>Storing sensitive data (tokens, PII) — all HTML is visible to the user</li>
+      <li>Using as a CSS-only styling hook when a class is cleaner</li>
+      <li>Replacing proper state management in large applications</li>
+    </ul>
+  </div>
+</details>
+
+<details>
+  <summary>Q12: What are Web Components and Custom Elements in HTML?</summary>
+  <div class="details-body">
+    <p>Web Components is a suite of browser standards for creating reusable, encapsulated custom HTML elements without a framework.</p>
+    <p><strong>Four technologies:</strong></p>
+    <ul>
+      <li><strong>Custom Elements API</strong> — define new HTML tags (<code>&lt;my-tooltip&gt;</code>)</li>
+      <li><strong>Shadow DOM</strong> — scoped DOM subtree with encapsulated styles</li>
+      <li><strong>HTML Templates</strong> — <code>&lt;template&gt;</code> and <code>&lt;slot&gt;</code> for inert, reusable markup</li>
+      <li><strong>ES Modules</strong> — import component definitions as JS modules</li>
+    </ul>
+    <pre><code class="language-javascript">class MyTooltip extends HTMLElement {
+  connectedCallback() {
+    const shadow = this.attachShadow({ mode: 'open' });
+    shadow.innerHTML = `
+      &lt;style&gt;:host { display: inline-block; }&lt;/style&gt;
+      &lt;slot&gt;&lt;/slot&gt;
+      &lt;span class="tip"&gt;${this.getAttribute('text')}&lt;/span&gt;`;
+  }
+}
+customElements.define('my-tooltip', MyTooltip);</code></pre>
+    <pre><code class="language-html">&lt;my-tooltip text="Helpful info"&gt;Hover me&lt;/my-tooltip&gt;</code></pre>
+    <p><strong>Browser support:</strong> All modern browsers. IE11 is unsupported without polyfills. Declarative Shadow DOM (HTML-only, no JS) landed in Chrome 90+ and Firefox 123+.</p>
+    <div class="callout">Custom elements work alongside frameworks — React, Angular, and Vue all support web components as leaf-level elements, making them ideal for design system tokens shared across stacks.</div>
+  </div>
+</details>
+
+<h3><span class="badge badge-red">Very Advanced</span></h3>
+
+<details>
+  <summary>Q13: What is Progressive Enhancement and how does it differ from Graceful Degradation?</summary>
+  <div class="details-body">
+    <p>Both strategies address how to handle environments where features are unsupported, but they take opposite starting points.</p>
+    <table>
+      <tr><th></th><th>Progressive Enhancement</th><th>Graceful Degradation</th></tr>
+      <tr><td>Start with</td><td>Minimal working HTML baseline</td><td>Full-featured modern version</td></tr>
+      <tr><td>Direction</td><td>Layer up: CSS → JS → advanced features</td><td>Fall back: strip features for old browsers</td></tr>
+      <tr><td>Baseline</td><td>Semantic HTML works everywhere always</td><td>Modern version is canonical</td></tr>
+      <tr><td>Mindset</td><td>Inclusion-first; every user gets something useful</td><td>Exceptions-first; patch edge cases</td></tr>
+    </table>
+    <p><strong>Practical Progressive Enhancement strategy:</strong></p>
+    <ol>
+      <li><strong>Layer 1 — HTML:</strong> All content and core functionality accessible via plain HTML (forms POST to server, links navigate)</li>
+      <li><strong>Layer 2 — CSS:</strong> Visual presentation and layout. Page is usable even with CSS disabled.</li>
+      <li><strong>Layer 3 — JavaScript:</strong> Enhanced interactivity, SPA routing, real-time updates. Use feature detection, not browser detection.</li>
+    </ol>
+    <pre><code class="language-javascript">// Feature detection pattern
+if ('IntersectionObserver' in window) {
+  // Enhanced lazy-loading with IntersectionObserver
+} else {
+  // Baseline: load all images immediately
+}</code></pre>
+    <p><strong>Why it matters today:</strong> Progressive enhancement isn't just about old browsers. It addresses flaky networks (JS fails to load), corporate proxies stripping scripts, crawlers and bots, assistive technology, and search engine indexing.</p>
+    <div class="callout success">HTML forms that POST to a server URL and refresh the page are the ultimate progressive enhancement baseline — they work without CSS, JS, or even a graphical browser.</div>
+  </div>
+</details>
+
+<details>
+  <summary>Q14: How do you technically optimize HTML for SEO (beyond just content)?</summary>
+  <div class="details-body">
+    <p>Technical SEO at the HTML level goes beyond keywords — it's about making your content machine-readable and performant:</p>
+    <h4>Structured Data (Schema.org)</h4>
+    <pre><code class="language-html">&lt;script type="application/ld+json"&gt;
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "HTML Best Practices",
+  "author": { "@type": "Person", "name": "Jane Doe" },
+  "datePublished": "2024-03-15"
+}
+&lt;/script&gt;</code></pre>
+    <p>JSON-LD enables rich results (star ratings, breadcrumbs, FAQs) in Google SERPs.</p>
+    <h4>Canonical &amp; Hreflang</h4>
+    <ul>
+      <li><code>&lt;link rel="canonical"&gt;</code> — prevents duplicate content penalties for paginated or filtered URLs</li>
+      <li><code>&lt;link rel="alternate" hreflang="fr" href="..."&gt;</code> — tells Google which language/regional version to serve</li>
+    </ul>
+    <h4>Core Web Vitals (HTML contribution)</h4>
+    <ul>
+      <li>Explicit <code>width</code>/<code>height</code> on all images prevents CLS</li>
+      <li><code>fetchpriority="high"</code> on LCP image improves LCP score</li>
+      <li><code>loading="lazy"</code> reduces initial page weight (but not on LCP image)</li>
+    </ul>
+    <h4>Open Graph completeness</h4>
+    <p>Incomplete OG tags cause social unfurls to fall back to unoptimized data. Always provide: <code>og:title</code>, <code>og:description</code>, <code>og:image</code> (1200×630), <code>og:url</code>, <code>og:type</code>.</p>
+    <h4>Heading hierarchy</h4>
+    <p>One <code>h1</code> per page matching the title tag. Don't skip levels. Headings are the document outline crawlers use to understand topic hierarchy.</p>
+    <h4>Semantic landmarks</h4>
+    <p>Google's crawlers understand <code>&lt;article&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;nav&gt;</code> for content boundaries — they help identify the primary content versus navigation/ads.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q15: Explain the browser rendering pipeline in detail — from bytes to pixels.</summary>
+  <div class="details-body">
+    <p>The browser rendering pipeline converts raw bytes into the pixels you see. Understanding it helps you make targeted performance optimizations.</p>
+    <div class="mermaid">
+flowchart TD
+  A["1. Bytes → Characters\n(HTTP response decoded)"] --> B["2. Tokenization\n(chars → HTML tokens)"]
+  B --> C["3. Tree Construction\n(tokens → DOM nodes)"]
+  D["CSS bytes → CSSOM"] --> E["4. Render Tree\n(DOM + CSSOM, visible nodes only)"]
+  C --> E
+  E --> F["5. Layout / Reflow\n(geometry: position, size)"]
+  F --> G["6. Paint\n(fill pixels per layer)"]
+  G --> H["7. Compositing\n(GPU: layer order, transforms)"]
+    </div>
+    <p><strong>Step-by-step breakdown:</strong></p>
+    <ol>
+      <li><strong>Bytes → Tokens:</strong> The HTML parser tokenizes the byte stream. It handles invalid HTML gracefully via error-correction algorithms (unlike XHTML).</li>
+      <li><strong>DOM construction:</strong> Tokens become DOM nodes in a tree. Parser encounters <code>&lt;script&gt;</code> without <code>defer/async</code> — pauses, downloads, executes, then resumes.</li>
+      <li><strong>CSSOM construction:</strong> CSS bytes parse into a separate CSSOM tree. CSS is render-blocking — the browser won't build the render tree until all stylesheets are processed.</li>
+      <li><strong>Render tree:</strong> DOM + CSSOM are merged. Nodes with <code>display: none</code> are excluded. Each visible node gets its computed styles.</li>
+      <li><strong>Layout (Reflow):</strong> Browser calculates exact position and size of every element in device pixels. Expensive — triggered by reading layout properties (<code>offsetWidth</code>, <code>getBoundingClientRect</code>) after DOM changes.</li>
+      <li><strong>Paint:</strong> The browser fills in pixels for each layer — backgrounds, borders, text, shadows. Some properties (color, background) only trigger paint, not layout.</li>
+      <li><strong>Compositing:</strong> The GPU assembles painted layers in the correct order. CSS transforms, opacity, and <code>will-change: transform</code> promote elements to their own compositor layer, skipping layout and paint on animation.</li>
+    </ol>
+    <p><strong>Performance implications:</strong></p>
+    <ul>
+      <li>Avoid <strong>forced synchronous layouts</strong>: reading then writing layout properties in a loop triggers reflow each iteration</li>
+      <li>Prefer <strong>transforms and opacity</strong> for animations — they only trigger compositing (cheapest)</li>
+      <li>Use <code>will-change: transform</code> to promote stable animated elements, but sparingly — each compositor layer uses GPU memory</li>
+      <li><code>contain: layout paint</code> scopes reflow/repaint to the element's subtree</li>
+    </ul>
+    <div class="callout">The fastest rendering optimization is reducing DOM size. Every extra DOM node adds to layout complexity. Keep the DOM under 1500 total nodes for best performance.</div>
+  </div>
+</details>
+
+</div><!-- end .container -->
+
+<script>
+  hljs.highlightAll();
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'dark',
+    themeVariables: {
+      background: '#161b22',
+      primaryColor: '#1c2128',
+      primaryTextColor: '#c9d1d9',
+      primaryBorderColor: '#30363d',
+      lineColor: '#58a6ff',
+      secondaryColor: '#0d1117',
+      tertiaryColor: '#161b22',
+      edgeLabelBackground: '#0d1117',
+      fontSize: '13px'
+    }
+  });
+</script>
+</body>
+</html>

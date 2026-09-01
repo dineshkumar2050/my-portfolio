@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TypeScript — Complete Reference</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/typescript.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --surface2: #21262d;
+      --border: #30363d;
+      --text: #c9d1d9;
+      --text-muted: #8b949e;
+      --accent: #58a6ff;
+      --accent2: #79c0ff;
+      --green: #3fb950;
+      --orange: #d29922;
+      --red: #f85149;
+      --purple: #bc8cff;
+      --teal: #39d353;
+      --tag-bg: #1f3c5a;
+      --tag-text: #79c0ff;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    .page-header {
+      background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #0d1117 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 48px 24px 36px;
+      text-align: center;
+    }
+    .page-header h1 { font-size: 2.4rem; color: var(--accent); letter-spacing: -0.5px; }
+    .page-header p { color: var(--text-muted); margin-top: 8px; font-size: 1rem; }
+
+    nav {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.78rem;
+      margin-right: 16px;
+      transition: color 0.15s;
+    }
+    nav a:hover { color: var(--accent); }
+
+    main { max-width: 1060px; margin: 0 auto; padding: 32px 24px 64px; }
+
+    section { margin-bottom: 52px; scroll-margin-top: 64px; }
+
+    h2 {
+      font-size: 1.35rem;
+      color: var(--accent2);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+      margin-bottom: 20px;
+    }
+    h3 { font-size: 1.05rem; color: var(--text); margin: 20px 0 10px; }
+
+    p { margin-bottom: 12px; color: var(--text); }
+
+    code {
+      background: var(--surface2);
+      color: #e06c75;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+      font-size: 0.85em;
+    }
+
+    pre {
+      background: #1a1f29 !important;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 18px 20px;
+      overflow-x: auto;
+      margin: 14px 0;
+      font-size: 0.88rem;
+      line-height: 1.6;
+    }
+    pre code { background: none; color: inherit; padding: 0; font-size: inherit; }
+
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 720px) { .grid2 { grid-template-columns: 1fr; } }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 18px;
+    }
+    .card h4 { color: var(--accent); margin-bottom: 8px; font-size: 0.92rem; }
+
+    .tag {
+      display: inline-block;
+      background: var(--tag-bg);
+      color: var(--tag-text);
+      font-size: 0.72rem;
+      padding: 2px 8px;
+      border-radius: 12px;
+      margin: 2px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+    .tag.green { background: #1a3a23; color: var(--green); }
+    .tag.orange { background: #3a2a0a; color: var(--orange); }
+    .tag.red { background: #3a1a1a; color: var(--red); }
+    .tag.purple { background: #2a1a3a; color: var(--purple); }
+
+    .callout {
+      border-left: 3px solid var(--accent);
+      background: #0f1923;
+      padding: 12px 16px;
+      border-radius: 0 6px 6px 0;
+      margin: 14px 0;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+    .callout.warn { border-color: var(--orange); background: #1a1505; }
+    .callout.tip { border-color: var(--green); background: #051a0a; }
+
+    table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 0.88rem; }
+    th { background: var(--surface2); color: var(--accent); text-align: left; padding: 10px 14px; border: 1px solid var(--border); }
+    td { padding: 9px 14px; border: 1px solid var(--border); color: var(--text); vertical-align: top; }
+    tr:nth-child(even) td { background: #0f1218; }
+
+    details {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+    summary {
+      cursor: pointer;
+      padding: 14px 18px;
+      font-weight: 600;
+      color: var(--text);
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      user-select: none;
+      transition: background 0.15s;
+    }
+    summary:hover { background: var(--surface2); }
+    summary::before { content: '▶'; font-size: 0.7rem; color: var(--accent); transition: transform 0.2s; }
+    details[open] summary::before { transform: rotate(90deg); }
+    .qa-body { padding: 0 18px 16px; color: var(--text-muted); font-size: 0.92rem; line-height: 1.7; }
+    .qa-body pre { font-size: 0.84rem; }
+
+    .diff-old { color: var(--red); }
+    .diff-new { color: var(--green); }
+
+    .mermaid { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin: 14px 0; text-align: center; }
+
+    .badge-row { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
+
+    .version-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--purple);
+      border-radius: 0 8px 8px 0;
+      padding: 12px 16px;
+      margin-bottom: 10px;
+    }
+    .version-card .ver { color: var(--purple); font-weight: 700; font-size: 0.92rem; }
+    .version-card .feat { color: var(--text-muted); font-size: 0.88rem; margin-top: 4px; }
+
+    footer {
+      text-align: center;
+      padding: 32px;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      border-top: 1px solid var(--border);
+      margin-top: 32px;
+    }
+  </style>
+</head>
+<body>
+
+<header class="page-header">
+  <h1>TypeScript</h1>
+  <p>Typed superset of JavaScript — complete reference with examples, patterns, and Q&amp;A</p>
+  <div class="badge-row" style="justify-content:center;margin-top:14px;">
+    <span class="tag">Strongly Typed</span>
+    <span class="tag green">Structural Typing</span>
+    <span class="tag purple">Generics</span>
+    <span class="tag orange">Compiles to JS</span>
+    <span class="tag">Type Inference</span>
+    <span class="tag green">ES2022+</span>
+  </div>
+</header>
+
+<nav>
+  <a href="#why-ts">1. Why TS</a>
+  <a href="#basic-types">2. Basic Types</a>
+  <a href="#annotations">3. Annotations</a>
+  <a href="#interfaces">4. Interfaces</a>
+  <a href="#union-intersection">5. Union &amp; Intersection</a>
+  <a href="#generics">6. Generics</a>
+  <a href="#utility-types">7. Utility Types</a>
+  <a href="#type-guards">8. Type Guards</a>
+  <a href="#classes">9. Classes</a>
+  <a href="#enums">10. Enums</a>
+  <a href="#mapped-types">11. Mapped Types</a>
+  <a href="#declarations">12. Declaration Files</a>
+  <a href="#tsconfig">13. tsconfig</a>
+  <a href="#react">14. React</a>
+  <a href="#versions">15. Versions</a>
+  <a href="#qa">Q&amp;A</a>
+</nav>
+
+<main>
+
+<!-- ─── 1. WHY TYPESCRIPT ─────────────────────────────────────────────────── -->
+<section id="why-ts">
+  <h2>1. Why TypeScript</h2>
+  <p>TypeScript adds a static type system on top of JavaScript. The compiler catches errors at <strong>build time</strong>, IDE tooling becomes dramatically more helpful, and code becomes self-documenting through its own type signatures.</p>
+
+  <div class="grid2">
+    <div class="card">
+      <h4>JavaScript — runtime error</h4>
+<pre><code class="language-javascript">function greet(user) {
+  return "Hello, " + user.naem; // typo
+}
+// Only fails at runtime
+greet({ name: "Alice" });
+// → "Hello, undefined"</code></pre>
+    </div>
+    <div class="card">
+      <h4>TypeScript — compile-time error</h4>
+<pre><code class="language-typescript">interface User { name: string }
+function greet(user: User): string {
+  return "Hello, " + user.naem;
+  // Error: Property 'naem' does not exist
+}
+greet({ name: "Alice" }); // OK</code></pre>
+    </div>
+  </div>
+
+  <h3>Core Benefits</h3>
+  <table>
+    <tr><th>Benefit</th><th>What It Gives You</th></tr>
+    <tr><td>Type Safety</td><td>Catch null dereferences, wrong argument types, missing properties before shipping</td></tr>
+    <tr><td>IDE Support</td><td>Autocomplete, go-to-definition, inline docs, safe refactoring across the whole codebase</td></tr>
+    <tr><td>Self-Documenting</td><td>Function signatures encode intent — no need to read implementation to know what a function expects</td></tr>
+    <tr><td>Gradual Adoption</td><td>Rename <code>.js</code> to <code>.ts</code>, enable <code>strict</code> incrementally — works alongside existing JS</td></tr>
+    <tr><td>Future JS</td><td>Transpiles modern syntax (decorators, class fields) down to any target ES version</td></tr>
+  </table>
+
+  <div class="callout tip">TypeScript is a superset: every valid JavaScript program is a valid TypeScript program. Types are erased at compile time — zero runtime overhead.</div>
+</section>
+
+<!-- ─── 2. BASIC TYPES ────────────────────────────────────────────────────── -->
+<section id="basic-types">
+  <h2>2. Basic Types</h2>
+
+  <div class="grid2">
+    <div>
+<pre><code class="language-typescript">// Primitives
+let name: string    = "Alice";
+let age: number     = 30;
+let active: boolean = true;
+let u: undefined    = undefined;
+let n: null         = null;
+
+// Escape hatches
+let x: any     = "anything goes";
+let y: unknown = fetchData(); // safer any</code></pre>
+    </div>
+    <div>
+<pre><code class="language-typescript">// Special return types
+function fail(): never {
+  throw new Error("fatal");
+}
+function log(): void {
+  console.log("hi"); // returns undefined
+}
+
+// Object literal
+let pt: { x: number; y: number } = { x:1, y:2 };
+</code></pre>
+    </div>
+  </div>
+
+  <h3>Arrays and Tuples</h3>
+<pre><code class="language-typescript">// Arrays — two equivalent syntaxes
+const nums: number[]       = [1, 2, 3];
+const strs: Array&lt;string&gt; = ["a", "b"];
+
+// Tuple — fixed length, known positions
+type Point3D = [number, number, number];
+const p: Point3D = [1.0, 2.5, -3.0];
+
+// Named tuple elements (TS 4.0+)
+type Range = [start: number, end: number];
+const r: Range = [0, 100];
+
+// Readonly tuple
+const immutable: readonly [string, number] = ["Alice", 30];</code></pre>
+
+  <h3>any vs unknown</h3>
+  <div class="grid2">
+    <div class="card">
+      <h4>any — disables type checking</h4>
+<pre><code class="language-typescript">let v: any = 42;
+v.foo.bar.baz; // No error — dangerous</code></pre>
+    </div>
+    <div class="card">
+      <h4>unknown — must narrow first</h4>
+<pre><code class="language-typescript">let v: unknown = fetchData();
+if (typeof v === "string") {
+  v.toUpperCase(); // OK after guard
+}</code></pre>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 3. ANNOTATIONS & INFERENCE ───────────────────────────────────────── -->
+<section id="annotations">
+  <h2>3. Type Annotations &amp; Inference</h2>
+  <p>TypeScript infers types wherever it has enough context. Explicit annotations add clarity or override inference.</p>
+
+<pre><code class="language-typescript">// Inference — let TS figure it out
+const count = 5;           // inferred: number
+const items = ["a", "b"]; // inferred: string[]
+const ratio = count / 2;  // inferred: number
+
+// Annotate when inference is too wide
+const ids = [];            // inferred: any[] — bad!
+const ids2: number[] = []; // explicit — good
+
+// Function: annotate params, infer return
+function add(a: number, b: number) {
+  return a + b; // return type inferred as number
+}
+
+// Explicit return type — documents intent + catches bugs
+function divide(a: number, b: number): number {
+  return a / b;
+}
+
+// Object destructuring with types
+function render({ title, count }: { title: string; count: number }) {
+  console.log(title, count);
+}</code></pre>
+
+  <div class="callout">Annotate function parameters always. Annotate return types on public API functions. Let inference work everywhere else.</div>
+</section>
+
+<!-- ─── 4. INTERFACES VS TYPES ─────────────────────────────────────────────── -->
+<section id="interfaces">
+  <h2>4. Interfaces vs Types</h2>
+
+  <div class="grid2">
+    <div>
+<pre><code class="language-typescript">// Interface — extends, merges
+interface Animal {
+  name: string;
+}
+interface Dog extends Animal {
+  breed: string;
+}
+
+// Interface merging (declaration merging)
+interface Window {
+  myPlugin: () => void;
+}
+// Both declarations merge into one type</code></pre>
+    </div>
+    <div>
+<pre><code class="language-typescript">// Type alias — more flexible
+type ID = string | number;
+type Nullable&lt;T&gt; = T | null;
+type Callback = (err: Error | null) => void;
+
+// Type can alias primitives, unions, tuples
+type Pair = [string, number];
+
+// Both can describe objects
+type Point = { x: number; y: number };
+interface Point2 { x: number; y: number }</code></pre>
+    </div>
+  </div>
+
+  <h3>Structural Typing</h3>
+<pre><code class="language-typescript">interface Printable { print(): void }
+
+class Document {
+  print() { console.log("doc"); }
+  // No 'implements Printable' needed!
+}
+
+function output(p: Printable) { p.print(); }
+output(new Document()); // OK — structurally compatible</code></pre>
+
+  <table>
+    <tr><th>Feature</th><th>interface</th><th>type</th></tr>
+    <tr><td>Object shape</td><td>Yes</td><td>Yes</td></tr>
+    <tr><td>Union / Intersection</td><td>No</td><td>Yes</td></tr>
+    <tr><td>Declaration merging</td><td>Yes</td><td>No</td></tr>
+    <tr><td>Extends / implements</td><td>Yes</td><td>Limited</td></tr>
+    <tr><td>Primitive alias</td><td>No</td><td>Yes</td></tr>
+    <tr><td>Preferred for</td><td>Public API, OOP</td><td>Unions, utilities, complex types</td></tr>
+  </table>
+</section>
+
+<!-- ─── 5. UNION & INTERSECTION ──────────────────────────────────────────── -->
+<section id="union-intersection">
+  <h2>5. Union &amp; Intersection Types</h2>
+
+  <div class="grid2">
+    <div>
+<pre><code class="language-typescript">// Union — A OR B
+type StringOrNum = string | number;
+
+function format(val: StringOrNum) {
+  if (typeof val === "string") {
+    return val.toUpperCase();
+  }
+  return val.toFixed(2);
+}</code></pre>
+    </div>
+    <div>
+<pre><code class="language-typescript">// Intersection — A AND B
+interface Named  { name: string }
+interface Aged   { age: number  }
+type Person = Named & Aged;
+
+const p: Person = { name: "Ali", age: 25 };
+// Must satisfy BOTH interfaces</code></pre>
+    </div>
+  </div>
+
+  <h3>Discriminated Unions</h3>
+<pre><code class="language-typescript">type Shape =
+  | { kind: "circle";    radius: number }
+  | { kind: "rectangle"; w: number; h: number }
+  | { kind: "triangle";  base: number; height: number };
+
+function area(s: Shape): number {
+  switch (s.kind) {
+    case "circle":    return Math.PI * s.radius ** 2;
+    case "rectangle": return s.w * s.h;
+    case "triangle":  return 0.5 * s.base * s.height;
+    default:
+      const _exhaustive: never = s; // compile error if new kind added
+      return _exhaustive;
+  }
+}</code></pre>
+
+  <div class="callout tip">The <code>never</code> exhaustiveness check is the most important pattern with discriminated unions — it breaks the build if you add a new variant without updating the switch.</div>
+</section>
+
+<!-- ─── 6. GENERICS ───────────────────────────────────────────────────────── -->
+<section id="generics">
+  <h2>6. Generics</h2>
+
+  <div class="grid2">
+    <div>
+<pre><code class="language-typescript">// Generic function
+function identity&lt;T&gt;(x: T): T { return x; }
+
+// Generic with constraint
+function getProperty&lt;T, K extends keyof T&gt;(
+  obj: T, key: K
+): T[K] {
+  return obj[key];
+}
+getProperty({ name: "Bob", age: 20 }, "name"); // string</code></pre>
+    </div>
+    <div>
+<pre><code class="language-typescript">// Generic class
+class Stack&lt;T&gt; {
+  private items: T[] = [];
+  push(item: T) { this.items.push(item); }
+  pop(): T | undefined { return this.items.pop(); }
+  peek(): T | undefined {
+    return this.items[this.items.length - 1];
+  }
+}</code></pre>
+    </div>
+  </div>
+
+  <h3>Generic with Default and Multiple Params</h3>
+<pre><code class="language-typescript">// Default type parameter
+type ApiResponse&lt;T = unknown&gt; = {
+  data: T;
+  status: number;
+  message: string;
+};
+
+// Multiple type params + constraint
+function merge&lt;T extends object, U extends object&gt;(a: T, b: U): T & U {
+  return { ...a, ...b };
+}
+const result = merge({ name: "Ali" }, { age: 30 });
+// result: { name: string } & { age: number }</code></pre>
+</section>
+
+<!-- ─── 7. UTILITY TYPES ───────────────────────────────────────────────────── -->
+<section id="utility-types">
+  <h2>7. Built-in Utility Types</h2>
+
+<pre><code class="language-typescript">interface User {
+  id: number;
+  name: string;
+  email: string;
+  role: "admin" | "user";
+}
+
+type A = Partial&lt;User&gt;;      // all props optional
+type B = Required&lt;User&gt;;     // all props required
+type C = Readonly&lt;User&gt;;     // all props readonly
+type D = Pick&lt;User, "id" | "name"&gt;;   // subset
+type E = Omit&lt;User, "email"&gt;;         // exclude
+type F = Record&lt;string, User&gt;;        // index type
+type G = Exclude&lt;"a"|"b"|"c", "a"&gt;;  // "b" | "c"
+type H = Extract&lt;"a"|"b"|"c", "a"|"d"&gt;; // "a"
+type I = NonNullable&lt;string | null | undefined&gt;; // string</code></pre>
+
+  <div class="grid2">
+    <div>
+<pre><code class="language-typescript">// ReturnType & Parameters
+function fetchUser(id: number): Promise&lt;User&gt; {
+  return fetch(`/users/${id}`).then(r => r.json());
+}
+type FR = ReturnType&lt;typeof fetchUser&gt;;
+// Promise&lt;User&gt;
+type FP = Parameters&lt;typeof fetchUser&gt;;
+// [id: number]</code></pre>
+    </div>
+    <div>
+<pre><code class="language-typescript">// ConstructorParameters & InstanceType
+class Manager {
+  constructor(public name: string, public dept: string) {}
+}
+type CP = ConstructorParameters&lt;typeof Manager&gt;;
+// [name: string, dept: string]
+type IT = InstanceType&lt;typeof Manager&gt;;
+// Manager</code></pre>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 8. TYPE GUARDS ─────────────────────────────────────────────────────── -->
+<section id="type-guards">
+  <h2>8. Type Guards &amp; Narrowing</h2>
+
+<pre><code class="language-typescript">// typeof guard
+function process(input: string | number) {
+  if (typeof input === "string") {
+    return input.trim(); // string here
+  }
+  return input * 2; // number here
+}
+
+// instanceof guard
+function area(shape: Circle | Rectangle) {
+  if (shape instanceof Circle) {
+    return Math.PI * shape.radius ** 2;
+  }
+  return shape.width * shape.height;
+}
+
+// in guard
+type Cat = { meow(): void };
+type Dog2 = { bark(): void };
+function speak(pet: Cat | Dog2) {
+  if ("meow" in pet) pet.meow();
+  else pet.bark();
+}
+
+// Custom type predicate
+function isString(val: unknown): val is string {
+  return typeof val === "string";
+}
+
+// Assertion function
+function assert(cond: unknown): asserts cond {
+  if (!cond) throw new Error("Assertion failed");
+}</code></pre>
+
+  <div class="callout tip"><code>val is Type</code> predicates narrow the type for the caller — they don't add runtime safety on their own; the body must actually check it.</div>
+</section>
+
+<!-- ─── 9. CLASSES ─────────────────────────────────────────────────────────── -->
+<section id="classes">
+  <h2>9. Classes</h2>
+
+<pre><code class="language-typescript">abstract class Vehicle {
+  abstract getFuelType(): string;
+
+  constructor(
+    public readonly make: string,      // public + readonly
+    protected model: string,           // accessible in subclasses
+    private _mileage: number = 0       // private
+  ) {}
+
+  get mileage() { return this._mileage; }
+
+  drive(km: number): void {
+    this._mileage += km;
+    console.log(`Drove ${km}km in ${this.make} ${this.model}`);
+  }
+}
+
+interface Electric { chargeLevel: number }
+
+class Tesla extends Vehicle implements Electric {
+  chargeLevel = 80;
+  getFuelType() { return "electric"; }
+}
+
+const t = new Tesla("Tesla", "Model 3");
+t.drive(50);
+console.log(t.mileage);    // 50
+// t._mileage              // Error: private
+// t.model                 // Error: protected</code></pre>
+</section>
+
+<!-- ─── 10. ENUMS VS CONST ASSERTIONS ─────────────────────────────────────── -->
+<section id="enums">
+  <h2>10. Enums vs Const Assertions</h2>
+
+  <div class="grid2">
+    <div>
+<pre><code class="language-typescript">// String enum — safe, readable
+enum Direction {
+  Up    = "UP",
+  Down  = "DOWN",
+  Left  = "LEFT",
+  Right = "RIGHT",
+}
+
+// const enum — inlined at compile time
+const enum Status {
+  Active   = "ACTIVE",
+  Inactive = "INACTIVE",
+}</code></pre>
+    </div>
+    <div>
+<pre><code class="language-typescript">// as const — preferred over enums
+const DIRECTION = {
+  Up:    "UP",
+  Down:  "DOWN",
+  Left:  "LEFT",
+  Right: "RIGHT",
+} as const;
+
+type Direction2 = typeof DIRECTION[keyof typeof DIRECTION];
+// "UP" | "DOWN" | "LEFT" | "RIGHT"</code></pre>
+    </div>
+  </div>
+
+  <h3>Why prefer <code>as const</code></h3>
+  <table>
+    <tr><th>Feature</th><th>enum</th><th>as const</th></tr>
+    <tr><td>Tree-shakeable</td><td>No (emits JS object)</td><td>Yes</td></tr>
+    <tr><td>Const enum pitfalls</td><td>Yes (ambient/isolatedModules)</td><td>No</td></tr>
+    <tr><td>Serializes cleanly</td><td>Depends</td><td>Yes (plain string/number)</td></tr>
+    <tr><td>Works with switch</td><td>Yes</td><td>Yes (with type)</td></tr>
+    <tr><td>Numeric auto-increment</td><td>Yes</td><td>No</td></tr>
+  </table>
+</section>
+
+<!-- ─── 11. MAPPED TYPES ──────────────────────────────────────────────────── -->
+<section id="mapped-types">
+  <h2>11. Mapped Types, Template Literals &amp; Conditional Types</h2>
+
+  <h3>Mapped Types</h3>
+<pre><code class="language-typescript">// Basic mapped type
+type Nullable&lt;T&gt; = { [K in keyof T]: T[K] | null };
+
+// Add readonly and optional modifiers
+type DeepPartial&lt;T&gt; = {
+  readonly [K in keyof T]?: T[K] extends object
+    ? DeepPartial&lt;T[K]&gt;
+    : T[K];
+};
+
+// Remove readonly with -readonly
+type Mutable&lt;T&gt; = { -readonly [K in keyof T]: T[K] };</code></pre>
+
+  <h3>Template Literal Types</h3>
+<pre><code class="language-typescript">type EventName = "click" | "focus" | "blur";
+type Handler = `on${Capitalize&lt;EventName&gt;}`;
+// "onClick" | "onFocus" | "onBlur"
+
+type Route = "/users" | "/posts";
+type ApiRoute = `GET ${Route}` | `POST ${Route}`;
+// "GET /users" | "GET /posts" | ...</code></pre>
+
+  <h3>Conditional Types &amp; infer</h3>
+<pre><code class="language-typescript">// Conditional type
+type IsArray&lt;T&gt; = T extends any[] ? true : false;
+type R1 = IsArray&lt;number[]&gt;; // true
+type R2 = IsArray&lt;string&gt;;   // false
+
+// infer — extract a type from a structure
+type UnpackPromise&lt;T&gt; = T extends Promise&lt;infer U&gt; ? U : T;
+type R3 = UnpackPromise&lt;Promise&lt;string&gt;&gt;; // string
+type R4 = UnpackPromise&lt;number&gt;;           // number
+
+type FirstArg&lt;F&gt; = F extends (first: infer A, ...rest: any[]) => any ? A : never;</code></pre>
+</section>
+
+<!-- ─── 12. DECLARATION FILES ─────────────────────────────────────────────── -->
+<section id="declarations">
+  <h2>12. Declaration Files (.d.ts)</h2>
+  <p>Declaration files describe the shape of existing JavaScript without providing implementations — essential for consuming JS libraries from TypeScript.</p>
+
+<pre><code class="language-typescript">// math-utils.d.ts
+declare module "math-utils" {
+  export function add(a: number, b: number): number;
+  export function clamp(val: number, min: number, max: number): number;
+  export const PI: number;
+}
+
+// Augment an existing module (e.g. Express Request)
+declare module "express" {
+  interface Request {
+    user?: { id: string; role: string };
+  }
+}
+
+// Global augmentation
+declare global {
+  interface Window {
+    analytics: { track(event: string): void };
+  }
+  const __DEV__: boolean;
+}</code></pre>
+
+  <div class="callout">Install community types with <code>npm i -D @types/lodash</code>. Check availability at <strong>definitelytyped.org</strong>. For packages that include their own types (e.g. <code>axios</code>), no <code>@types</code> install is needed.</div>
+</section>
+
+<!-- ─── 13. TSCONFIG ───────────────────────────────────────────────────────── -->
+<section id="tsconfig">
+  <h2>13. tsconfig.json</h2>
+
+<pre><code class="language-json">{
+  "compilerOptions": {
+    // Language level
+    "target":  "ES2022",          // output JS version
+    "lib":     ["ES2022", "DOM"], // built-in type defs
+
+    // Module system
+    "module":           "ESNext",
+    "moduleResolution": "Bundler", // or "Node16" for Node apps
+
+    // Quality (enable all in strict)
+    "strict":                    true,  // enables all below
+    "noUncheckedIndexedAccess":  true,  // arr[0] → T | undefined
+    "exactOptionalPropertyTypes": true,
+
+    // Emit
+    "outDir":      "./dist",
+    "declaration": true,         // emit .d.ts files
+    "sourceMap":   true,
+
+    // Paths (module aliases)
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+
+    // JS interop
+    "allowJs":          false,
+    "esModuleInterop":  true,
+    "isolatedModules":  true  // required by Vite/esbuild
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
+}</code></pre>
+
+  <div class="callout warn"><code>strict: true</code> enables: <code>strictNullChecks</code>, <code>strictFunctionTypes</code>, <code>strictBindCallApply</code>, <code>strictPropertyInitialization</code>, <code>noImplicitAny</code>, <code>noImplicitThis</code>, <code>alwaysStrict</code>. Never disable these in new projects.</div>
+</section>
+
+<!-- ─── 14. TYPESCRIPT WITH REACT ─────────────────────────────────────────── -->
+<section id="react">
+  <h2>14. TypeScript with React</h2>
+
+  <h3>Component Typing</h3>
+<pre><code class="language-typescript">// Prefer plain function over React.FC
+interface ButtonProps {
+  label: string;
+  onClick: () => void;
+  variant?: "primary" | "secondary";
+  disabled?: boolean;
+}
+
+function Button({ label, onClick, variant = "primary", disabled }: ButtonProps) {
+  return &lt;button onClick={onClick} disabled={disabled} className={variant}&gt;{label}&lt;/button&gt;;
+}
+
+// React.FC — less preferred (wraps children, harder to type)
+const Label: React.FC&lt;{ text: string }&gt; = ({ text }) =&gt; &lt;span&gt;{text}&lt;/span&gt;;</code></pre>
+
+  <h3>Events and Refs</h3>
+<pre><code class="language-typescript">// Event handler types
+function handleChange(e: React.ChangeEvent&lt;HTMLInputElement&gt;) {
+  console.log(e.target.value);
+}
+function handleSubmit(e: React.FormEvent&lt;HTMLFormElement&gt;) {
+  e.preventDefault();
+}
+function handleClick(e: React.MouseEvent&lt;HTMLButtonElement&gt;) {
+  console.log(e.clientX);
+}
+
+// useRef with DOM element
+const inputRef = React.useRef&lt;HTMLInputElement&gt;(null);
+// inputRef.current could be null — must check
+
+// useRef as mutable container (no null)
+const timerRef = React.useRef&lt;ReturnType&lt;typeof setTimeout&gt;&gt;();</code></pre>
+
+  <h3>Generic Hooks</h3>
+<pre><code class="language-typescript">// Generic useState (usually inferred)
+const [count, setCount] = React.useState&lt;number&gt;(0);
+const [user,  setUser]  = React.useState&lt;User | null&gt;(null);
+
+// Custom generic hook
+function useLocalStorage&lt;T&gt;(key: string, init: T): [T, (v: T) => void] {
+  const [val, setVal] = React.useState&lt;T&gt;(() => {
+    const stored = localStorage.getItem(key);
+    return stored ? JSON.parse(stored) : init;
+  });
+  const set = (v: T) => { localStorage.setItem(key, JSON.stringify(v)); setVal(v); };
+  return [val, set];
+}</code></pre>
+</section>
+
+<!-- ─── 15. TYPESCRIPT VERSIONS ───────────────────────────────────────────── -->
+<section id="versions">
+  <h2>15. TypeScript Version History (4.7 → 5.x)</h2>
+
+  <div class="version-card">
+    <div class="ver">TypeScript 4.7 (May 2022)</div>
+    <div class="feat">Native ESM support in Node.js (<code>.mts</code> / <code>.cts</code> extensions), improved function inference on generic instantiation, <code>moduleSuffixes</code> for React Native.</div>
+  </div>
+
+  <div class="version-card">
+    <div class="ver">TypeScript 4.9 (Nov 2022)</div>
+    <div class="feat"><code>satisfies</code> operator — validates expression against a type without widening it. <code>accessor</code> keyword for auto-accessors. Improved narrowing for <code>in</code> operator.</div>
+<pre><code class="language-typescript">const palette = {
+  red:   [255, 0, 0],
+  green: "#00ff00",
+} satisfies Record&lt;string, string | number[]&gt;;
+palette.red.map(x => x);  // OK — still typed as number[], not string|number[]</code></pre>
+  </div>
+
+  <div class="version-card">
+    <div class="ver">TypeScript 5.0 (Mar 2023)</div>
+    <div class="feat">Decorators (ECMAScript stage 3 — replaces experimental decorators), <code>const</code> type parameters, all enums now allowed as literal types, bundle size reduction.</div>
+<pre><code class="language-typescript">// New decorators
+function logged(target: any, ctx: ClassMethodDecoratorContext) {
+  return function(this: any, ...args: any[]) {
+    console.log(`Calling ${String(ctx.name)}`);
+    return target.apply(this, args);
+  };
+}</code></pre>
+  </div>
+
+  <div class="version-card">
+    <div class="ver">TypeScript 5.1 (Jun 2023)</div>
+    <div class="feat">Unrelated types for getters and setters (<code>get</code> can return a wider type than <code>set</code> accepts). Improved JSX element return types. Linked cursors for JSX tags in editors.</div>
+  </div>
+
+  <div class="version-card">
+    <div class="ver">TypeScript 5.2 (Aug 2023)</div>
+    <div class="feat"><code>using</code> and <code>await using</code> — Explicit Resource Management (TC39 proposal). <code>[Symbol.dispose]</code> / <code>[Symbol.asyncDispose]</code> for automatic cleanup.</div>
+<pre><code class="language-typescript">function getDbConnection(): Connection & Disposable {
+  const conn = openConnection();
+  return { ...conn, [Symbol.dispose]: () => conn.close() };
+}
+{
+  using conn = getDbConnection(); // auto-closed at block exit
+  conn.query("SELECT 1");
+}</code></pre>
+  </div>
+
+  <div class="version-card">
+    <div class="ver">TypeScript 5.3 (Nov 2023)</div>
+    <div class="feat">Import attributes (<code>import x from "y" with { type: "json" }</code>), narrowing improvements for <code>switch(true)</code>, interactive inlay hints for types.</div>
+  </div>
+
+  <div class="version-card">
+    <div class="ver">TypeScript 5.4 (Mar 2024)</div>
+    <div class="feat"><code>NoInfer&lt;T&gt;</code> utility type — suppresses type inference from a position. Preserved narrowing in closures after last assignment. <code>Object.groupBy</code> / <code>Map.groupBy</code> types.</div>
+<pre><code class="language-typescript">function createTranslator&lt;T extends string&gt;(
+  langs: T[], defaultLang: NoInfer&lt;T&gt;
+) { /* defaultLang must be from langs */ }
+createTranslator(["en","fr"], "en"); // OK
+// createTranslator(["en","fr"], "de"); // Error</code></pre>
+  </div>
+
+  <div class="version-card">
+    <div class="ver">TypeScript 5.5 (Jun 2024)</div>
+    <div class="feat">Inferred type predicates — TS automatically infers <code>x is T</code> return type for filter-style functions. Regular expression syntax checking. Isolated declarations support (<code>isolatedDeclarations</code>).</div>
+<pre><code class="language-typescript">// Before 5.5 — had to write: (x): x is number
+const nums = [1, null, 2, undefined, 3];
+const clean = nums.filter(x => x !== null && x !== undefined);
+// clean: number[] — automatically inferred!</code></pre>
+  </div>
+</section>
+
+<!-- ─── Q&A ────────────────────────────────────────────────────────────────── -->
+<section id="qa">
+  <h2>Q&amp;A — 15 Questions</h2>
+
+  <!-- EASY -->
+  <h3 style="color:var(--green);margin-bottom:12px;">Easy</h3>
+
+  <details>
+    <summary><span class="tag green">Easy</span> What is the difference between <code>any</code> and <code>unknown</code>?</summary>
+    <div class="qa-body">
+      <p><code>any</code> completely opts out of type checking — you can call any method, index any property, and pass it anywhere without error. It's an escape hatch that silences TypeScript.</p>
+      <p><code>unknown</code> is the type-safe counterpart. It also accepts any value, but you cannot perform operations on it until you narrow it to a specific type via a type guard.</p>
+<pre><code class="language-typescript">let a: any     = "hello";
+a.toUpperCase(); // OK — TS doesn't check
+
+let b: unknown = "hello";
+// b.toUpperCase();            // Error — must narrow first
+if (typeof b === "string") {
+  b.toUpperCase(); // OK — narrowed to string
+}</code></pre>
+      <p>Prefer <code>unknown</code> over <code>any</code> whenever you're receiving data from an external source (API, user input) and want TS to enforce safe usage.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary><span class="tag green">Easy</span> What does <code>strictNullChecks</code> do and why does it matter?</summary>
+    <div class="qa-body">
+      <p>Without <code>strictNullChecks</code>, <code>null</code> and <code>undefined</code> are assignable to every type — meaning you can pass <code>null</code> as a <code>string</code> and TypeScript won't complain, leaving the classic billion-dollar mistake uncaught.</p>
+      <p>With <code>strictNullChecks: true</code> (included in <code>strict</code>), <code>null</code> and <code>undefined</code> are their own types and must be handled explicitly:</p>
+<pre><code class="language-typescript">function greet(name: string) {
+  return "Hello, " + name.toUpperCase();
+}
+// strictNullChecks OFF: greet(null) compiles, crashes at runtime
+// strictNullChecks ON:
+greet(null); // Error: Argument of type 'null' is not assignable to 'string'
+
+// Correct signature:
+function greet2(name: string | null) {
+  if (name === null) return "Hello, stranger";
+  return "Hello, " + name.toUpperCase();
+}</code></pre>
+    </div>
+  </details>
+
+  <details>
+    <summary><span class="tag green">Easy</span> When should you use a <code>type</code> alias vs an <code>interface</code>?</summary>
+    <div class="qa-body">
+      <p>Use <strong>interface</strong> when describing the shape of an object that may be extended or implemented by classes, or when you need declaration merging (e.g. augmenting third-party types).</p>
+      <p>Use <strong>type</strong> for union types, intersection types, primitive aliases, tuples, and computed types using utility types or conditional types.</p>
+      <p>The most important rule: be consistent within a codebase. Many teams default to <code>interface</code> for objects and <code>type</code> for everything else.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary><span class="tag green">Easy</span> What is type inference and when does it fail?</summary>
+    <div class="qa-body">
+      <p>TypeScript's type inference automatically assigns types based on assigned values, return statements, and context — you don't always have to write annotations.</p>
+      <p>Inference fails (becomes too wide or resolves to <code>any</code>) in these common cases:</p>
+      <ul style="margin-left:18px;line-height:2;">
+        <li>Empty array: <code>const arr = []</code> → <code>any[]</code></li>
+        <li>Uninitialized variable: <code>let x;</code> → <code>any</code></li>
+        <li>Function parameter with no default or annotation</li>
+        <li>Return type of recursive function (sometimes)</li>
+      </ul>
+      <p>Always annotate function parameters and public API surface. Let inference handle local variables and simple return types.</p>
+    </div>
+  </details>
+
+  <!-- INTERMEDIATE -->
+  <h3 style="color:var(--accent);margin: 20px 0 12px;">Intermediate</h3>
+
+  <details>
+    <summary><span class="tag">Intermediate</span> Explain structural typing and why it matters.</summary>
+    <div class="qa-body">
+      <p>TypeScript uses <strong>structural typing</strong> (duck typing): two types are compatible if their shapes match, regardless of their declared names. This is fundamentally different from Java/C# which use <em>nominal typing</em>.</p>
+<pre><code class="language-typescript">interface Point { x: number; y: number }
+interface Vector { x: number; y: number }
+
+function move(p: Point) { return p; }
+const v: Vector = { x: 1, y: 2 };
+move(v); // OK — structurally compatible even though it's named 'Vector'
+
+class Cat  { meow() {} }
+class Dog3 { meow() {} bark() {} }
+
+const c: Cat = new Dog3(); // OK — Dog3 is a structural supertype of Cat</code></pre>
+      <p>This enables powerful patterns like passing plain objects where interfaces are expected, and it's why you don't need <code>implements</code> on every class.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary><span class="tag">Intermediate</span> How do discriminated unions enable exhaustiveness checking?</summary>
+    <div class="qa-body">
+      <p>A discriminated union has a common literal property (the "discriminant") on each variant. TypeScript narrows based on this discriminant in switch/if statements.</p>
+      <p>Exhaustiveness checking uses the <code>never</code> type: after all valid cases are handled, any remaining case must be <code>never</code>. Assigning it to a <code>never</code>-typed variable catches missing cases at compile time — meaning adding a new variant to the union forces you to update every switch over it.</p>
+<pre><code class="language-typescript">type Action =
+  | { type: "INCREMENT" }
+  | { type: "DECREMENT" }
+  | { type: "RESET"; to: number };
+
+function reducer(state: number, action: Action): number {
+  switch (action.type) {
+    case "INCREMENT": return state + 1;
+    case "DECREMENT": return state - 1;
+    case "RESET":     return action.to;
+    default:
+      const _never: never = action; // add new type → compile error here
+      return state;
+  }
+}</code></pre>
+    </div>
+  </details>
+
+  <details>
+    <summary><span class="tag">Intermediate</span> What are generic constraints and why use them?</summary>
+    <div class="qa-body">
+      <p>Generic constraints (<code>T extends SomeType</code>) restrict which types a generic can be instantiated with, and also unlock the constrained type's properties within the generic function.</p>
+<pre><code class="language-typescript">// Without constraint: TS doesn't know T has .length
+function getLength&lt;T&gt;(x: T): number {
+  return x.length; // Error: Property 'length' does not exist on type 'T'
+}
+
+// With constraint: T must have .length
+function getLength2&lt;T extends { length: number }&gt;(x: T): number {
+  return x.length; // OK
+}
+getLength2("hello"); // 5
+getLength2([1,2,3]); // 3
+// getLength2(42);   // Error: number doesn't have .length
+
+// keyof constraint prevents invalid property access
+function pluck&lt;T, K extends keyof T&gt;(arr: T[], key: K): T[K][] {
+  return arr.map(item => item[key]);
+}</code></pre>
+    </div>
+  </details>
+
+  <details>
+    <summary><span class="tag">Intermediate</span> How does <code>Partial</code> work internally? Implement it yourself.</summary>
+    <div class="qa-body">
+      <p><code>Partial&lt;T&gt;</code> uses a mapped type that iterates over every key of <code>T</code> and makes the corresponding property optional (<code>?</code>):</p>
+<pre><code class="language-typescript">// Built-in definition (simplified)
+type MyPartial&lt;T&gt; = {
+  [K in keyof T]?: T[K];
+};
+
+// Usage
+interface Config { host: string; port: number; debug: boolean }
+type PartialConfig = MyPartial&lt;Config&gt;;
+// { host?: string; port?: number; debug?: boolean }
+
+// DeepPartial — recursive variant
+type DeepPartial&lt;T&gt; = T extends object
+  ? { [K in keyof T]?: DeepPartial&lt;T[K]&gt; }
+  : T;</code></pre>
+      <p>The <code>[K in keyof T]</code> is the mapped type syntax. <code>?</code> after the key adds optionality. <code>-?</code> removes it (that's how <code>Required</code> works).</p>
+    </div>
+  </details>
+
+  <details>
+    <summary><span class="tag">Intermediate</span> What is the <code>satisfies</code> operator (TS 4.9) and when should you use it?</summary>
+    <div class="qa-body">
+      <p><code>satisfies</code> validates that an expression matches a type but preserves the most specific (narrowest) inferred type — unlike a type annotation which widens the type to the annotation.</p>
+<pre><code class="language-typescript">type Colors = Record&lt;string, [number,number,number] | string&gt;;
+
+// With annotation — too wide, loses specific type info
+const c1: Colors = { red: [255,0,0], blue: "#0000ff" };
+c1.red; // [number,number,number] | string — can't call .map
+
+// With satisfies — validates shape, keeps specific types
+const c2 = {
+  red:  [255, 0, 0],
+  blue: "#0000ff",
+} satisfies Colors;
+c2.red.map(x => x * 2); // OK — still [number,number,number]
+c2.blue.toUpperCase();   // OK — still string</code></pre>
+      <p>Use <code>satisfies</code> for configuration objects, palette definitions, route maps — anywhere you want both compile-time validation and narrow inference.</p>
+    </div>
+  </details>
+
+  <!-- ADVANCED -->
+  <h3 style="color:var(--orange);margin: 20px 0 12px;">Advanced</h3>
+
+  <details>
+    <summary><span class="tag orange">Advanced</span> Explain conditional types and the <code>infer</code> keyword with practical examples.</summary>
+    <div class="qa-body">
+      <p>Conditional types (<code>T extends U ? X : Y</code>) choose between types based on whether a type satisfies a condition. <code>infer</code> introduces a type variable to capture part of a matched type.</p>
+<pre><code class="language-typescript">// Unwrap array element type
+type ElementType&lt;T&gt; = T extends (infer E)[] ? E : never;
+type E1 = ElementType&lt;string[]&gt;; // string
+type E2 = ElementType&lt;number&gt;;   // never
+
+// Extract promise value
+type Awaited2&lt;T&gt; = T extends Promise&lt;infer U&gt;
+  ? Awaited2&lt;U&gt; // recursive for nested promises
+  : T;
+
+// Extract function parameters and return type
+type ReturnType2&lt;T extends (...args: any) => any&gt; =
+  T extends (...args: any) => infer R ? R : never;
+
+// Distributive conditional types — distributes over union
+type Unwrap&lt;T&gt; = T extends Array&lt;infer U&gt; ? U : T;
+type R = Unwrap&lt;string[] | number&gt;; // string | number (distributes)</code></pre>
+    </div>
+  </details>
+
+  <details>
+    <summary><span class="tag orange">Advanced</span> How do mapped types with template literals enable type-safe event systems?</summary>
+    <div class="qa-body">
+      <p>Combining mapped types with template literal types generates typed event maps from a plain interface definition:</p>
+<pre><code class="language-typescript">interface AppEvents {
+  userLogin:  { userId: string };
+  userLogout: { userId: string };
+  pageView:   { path: string; duration: number };
+}
+
+// Generate on*/off* handler pairs
+type EventMap&lt;T&gt; = {
+  [K in keyof T as `on${Capitalize&lt;string & K&gt;}`]:
+    (payload: T[K]) => void;
+};
+
+type Handlers = EventMap&lt;AppEvents&gt;;
+// {
+//   onUserLogin:  (payload: { userId: string }) => void;
+//   onUserLogout: (payload: { userId: string }) => void;
+//   onPageView:   (payload: { path: string; duration: number }) => void;
+// }
+
+function createEmitter&lt;T&gt;() {
+  const handlers: Partial&lt;EventMap&lt;T&gt;&gt; = {};
+  return { on: &lt;K extends keyof EventMap&lt;T&gt;&gt;(k: K, fn: EventMap&lt;T&gt;[K]) =>
+    { (handlers as any)[k] = fn; }
+  };
+}</code></pre>
+    </div>
+  </details>
+
+  <details>
+    <summary><span class="tag orange">Advanced</span> What is <code>NoInfer&lt;T&gt;</code> (TS 5.4) and what problem does it solve?</summary>
+    <div class="qa-body">
+      <p>When TypeScript infers a type parameter, it considers all inference sites. Sometimes you want a parameter to be inferred from one specific place and validated against that inference elsewhere. <code>NoInfer&lt;T&gt;</code> marks a position as "do not use this for inference".</p>
+<pre><code class="language-typescript">// Before NoInfer — defaultLang inferred as "en"|"fr"|"de" not caught
+function createTranslator&lt;T extends string&gt;(
+  langs: T[],
+  defaultLang: T  // also infers T, widening it
+) { return defaultLang; }
+createTranslator(["en","fr"], "de"); // No error! "de" widens T
+
+// With NoInfer — only langs[] drives inference
+function createTranslator2&lt;T extends string&gt;(
+  langs: T[],
+  defaultLang: NoInfer&lt;T&gt; // excluded from inference
+) { return defaultLang; }
+createTranslator2(["en","fr"], "de"); // Error — "de" not in T
+createTranslator2(["en","fr"], "en"); // OK</code></pre>
+    </div>
+  </details>
+
+  <!-- VERY ADVANCED -->
+  <h3 style="color:var(--red);margin: 20px 0 12px;">Very Advanced</h3>
+
+  <details>
+    <summary><span class="tag red">Very Advanced</span> Implement a type-safe builder pattern using method chaining with generics.</summary>
+    <div class="qa-body">
+      <p>The builder pattern accumulates state across chained calls. Each <code>.set()</code> call adds a new field to the accumulated type, and the <code>.build()</code> method is only callable when all required fields are present.</p>
+<pre><code class="language-typescript">type Builder&lt;T extends Record&lt;string,unknown&gt; = {}&gt; = {
+  set&lt;K extends string, V&gt;(key: K, val: V): Builder&lt;T & Record&lt;K,V&gt;&gt;;
+  build(): T;
+};
+
+function createBuilder&lt;T extends Record&lt;string,unknown&gt; = {}&gt;(
+  data: T = {} as T
+): Builder&lt;T&gt; {
+  return {
+    set(key, val) {
+      return createBuilder({ ...data, [key]: val } as any);
+    },
+    build() { return data; },
+  };
+}
+
+const user = createBuilder()
+  .set("name", "Alice")
+  .set("age", 30)
+  .set("role", "admin" as const)
+  .build();
+
+type Result = typeof user;
+// { name: string; age: number; role: "admin" }
+user.name; // string
+user.role; // "admin"</code></pre>
+    </div>
+  </details>
+
+  <details>
+    <summary><span class="tag red">Very Advanced</span> How would you type a deep-readonly recursive type and handle edge cases like arrays, functions, and <code>Date</code>?</summary>
+    <div class="qa-body">
+      <p>A naive recursive <code>Readonly</code> doesn't handle arrays correctly (they need <code>ReadonlyArray</code>) or leaf types like <code>Date</code> and functions which shouldn't be traversed:</p>
+<pre><code class="language-typescript">type DeepReadonly&lt;T&gt; =
+  T extends (infer U)[]         ? ReadonlyArray&lt;DeepReadonly&lt;U&gt;&gt;
+  : T extends Map&lt;infer K, infer V&gt; ? ReadonlyMap&lt;DeepReadonly&lt;K&gt;, DeepReadonly&lt;V&gt;&gt;
+  : T extends Set&lt;infer U&gt;     ? ReadonlySet&lt;DeepReadonly&lt;U&gt;&gt;
+  : T extends Date | Function  ? T                        // leaf types — don't recurse
+  : T extends object           ? { readonly [K in keyof T]: DeepReadonly&lt;T[K]&gt; }
+  : T;                                                     // primitive — identity
+
+interface Config {
+  db: { host: string; port: number; replicas: string[] };
+  created: Date;
+}
+
+type FrozenConfig = DeepReadonly&lt;Config&gt;;
+// FrozenConfig.db.replicas → ReadonlyArray&lt;string&gt;
+// FrozenConfig.created → Date (unchanged)
+// Cannot assign to any property — compile error</code></pre>
+      <p>The key insight is using conditional type ordering: specific structural types (Array, Map, Set) before the generic <code>object</code> branch, and known leaf types before recursing.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary><span class="tag red">Very Advanced</span> Explain how TypeScript's type system can simulate basic arithmetic using recursive conditional types.</summary>
+    <div class="qa-body">
+      <p>TypeScript's type-level computation can represent natural numbers as tuple lengths and implement addition/comparison using recursive types. This is mostly a demonstration of the type system's power, not production code:</p>
+<pre><code class="language-typescript">// Represent N as a tuple of length N
+type BuildTuple&lt;N extends number, T extends unknown[] = []&gt; =
+  T["length"] extends N ? T : BuildTuple&lt;N, [...T, unknown]&gt;;
+
+// Add two numbers at the type level
+type Add&lt;A extends number, B extends number&gt; =
+  [...BuildTuple&lt;A&gt;, ...BuildTuple&lt;B&gt;]["length"];
+
+type Sum = Add&lt;3, 4&gt;; // 7
+
+// Compare: is A less than B?
+type LessThan&lt;A extends number, B extends number,
+  TA extends unknown[] = BuildTuple&lt;A&gt;,
+  TB extends unknown[] = BuildTuple&lt;B&gt;
+&gt; = TA["length"] extends TB["length"] ? false
+  : TB extends [unknown, ...infer Rest]
+    ? TA extends [unknown, ...infer RestA]
+      ? LessThan&lt;never, never, RestA, Rest&gt;
+      : true
+    : false;
+
+type R = LessThan&lt;3, 5&gt;; // true</code></pre>
+      <p>TypeScript has a recursion depth limit (~1000 levels) so this works for small numbers. The same technique underlies typed routing libraries and SQL query builders that operate entirely at the type level.</p>
+    </div>
+  </details>
+
+</section>
+
+</main>
+
+<footer>
+  TypeScript Complete Reference &nbsp;|&nbsp; Covers TS 4.7 through TS 5.5 &nbsp;|&nbsp; Generated 2026
+</footer>
+
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: "dark" });
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll("pre code").forEach(block => {
+      hljs.highlightElement(block);
+    });
+  });
+</script>
+</body>
+</html>

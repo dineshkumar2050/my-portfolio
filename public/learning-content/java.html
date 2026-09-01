@@ -1,0 +1,1553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Java Comprehensive Reference</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6;display:flex;flex-direction:column}.topnav{background:#161b22;padding:10px 24px;border-bottom:1px solid #30363d;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100}.topnav a{color:#58a6ff;text-decoration:none;font-size:13px}.topnav h1{font-size:16px;color:#e6edf3;margin:0}.layout{display:flex;flex:1}.sidebar{width:260px;background:#161b22;border-right:1px solid #30363d;padding:16px;position:sticky;top:41px;height:calc(100vh - 41px);overflow-y:auto;flex-shrink:0}.sidebar a{display:block;padding:4px 8px;color:#8b949e;text-decoration:none;font-size:13px;border-radius:4px;margin-bottom:2px}.sidebar a:hover{background:#21262d;color:#c9d1d9}.sidebar .section-title{color:#58a6ff;font-size:11px;text-transform:uppercase;letter-spacing:.5px;margin:16px 0 6px;padding:0 8px;font-weight:600}main{flex:1;padding:32px 48px;max-width:960px}h1{font-size:2rem;color:#e6edf3;border-bottom:1px solid #30363d;padding-bottom:16px;margin-bottom:24px}h2{font-size:1.5rem;color:#e6edf3;margin:48px 0 16px;border-bottom:1px solid #21262d;padding-bottom:8px}h3{font-size:1.15rem;color:#79c0ff;margin:24px 0 10px}h4{font-size:1rem;color:#d2a8ff;margin:16px 0 8px}p{margin-bottom:12px}ul,ol{margin:0 0 16px 24px}li{margin-bottom:4px}pre{margin:16px 0;border-radius:6px;overflow-x:auto;font-size:13px}code:not(pre code){background:#161b22;padding:2px 6px;border-radius:4px;font-size:13px;color:#f0883e;border:1px solid #30363d}table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}th{background:#161b22;color:#58a6ff;padding:10px 14px;text-align:left;border:1px solid #30363d}td{padding:10px 14px;border:1px solid #30363d;vertical-align:top}tr:nth-child(even) td{background:#0a0d12}.mermaid{background:#161b22;padding:20px;border-radius:6px;margin:16px 0;text-align:center}details{border:1px solid #30363d;border-radius:6px;margin:10px 0;overflow:hidden}summary{padding:12px 16px;cursor:pointer;background:#161b22;color:#79c0ff;font-weight:600;list-style:none}details[open] summary{border-bottom:1px solid #30363d}.answer{padding:16px 20px;background:#0d1117}.badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:700;margin-left:8px}.easy{background:#1a4731;color:#3fb950}.intermediate{background:#2d2b00;color:#e3b341}.advanced{background:#3d1f00;color:#f0883e}.very-advanced{background:#3d0000;color:#ff7b72}.callout{background:#161b22;border-left:4px solid #58a6ff;padding:12px 16px;border-radius:0 6px 6px 0;margin:16px 0}footer{text-align:center;padding:24px;color:#8b949e;font-size:12px;border-top:1px solid #30363d;margin-top:40px}
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <h1>Java Comprehensive Reference</h1>
+  <a href="index.html">Home</a>
+  <a href="python.html">Python</a>
+  <a href="react.html">React</a>
+</nav>
+<div class="layout">
+<aside class="sidebar">
+  <div class="section-title">Foundations</div>
+  <a href="#overview">Overview</a>
+  <a href="#versions">Version History</a>
+  <a href="#oop">OOP</a>
+  <a href="#generics">Generics</a>
+  <div class="section-title">Collections & Streams</div>
+  <a href="#collections">Collections Framework</a>
+  <a href="#streams">Streams API</a>
+  <a href="#optional">Optional</a>
+  <a href="#functional">Functional Interfaces</a>
+  <a href="#lambda">Lambda & Method Refs</a>
+  <div class="section-title">Concurrency</div>
+  <a href="#multithreading">Multithreading</a>
+  <a href="#synchronization">Synchronization</a>
+  <a href="#jmm">Java Memory Model</a>
+  <div class="section-title">JVM & Internals</div>
+  <a href="#gc">Garbage Collection</a>
+  <a href="#jvm">JVM Internals</a>
+  <a href="#exceptions">Exception Handling</a>
+  <a href="#reflection">Reflection & Annotations</a>
+  <div class="section-title">Modern Java</div>
+  <a href="#records">Records</a>
+  <a href="#sealed">Sealed Classes</a>
+  <a href="#patternmatching">Pattern Matching</a>
+  <a href="#textblocks">Text Blocks</a>
+  <a href="#springboot">Spring Boot</a>
+  <div class="section-title">Interview</div>
+  <a href="#interview">Interview Q&amp;A</a>
+</aside>
+<main>
+<h1>Java Comprehensive Reference</h1>
+
+<!-- ==================== OVERVIEW ==================== -->
+<h2 id="overview">Overview</h2>
+<p>Java is a statically typed, object-oriented, compiled-to-bytecode language that runs on the Java Virtual Machine (JVM). It follows the principle of <strong>"Write Once, Run Anywhere"</strong>.</p>
+
+<h3>JVM, JDK, JRE</h3>
+<table>
+<tr><th>Component</th><th>Full Name</th><th>Description</th></tr>
+<tr><td><code>JVM</code></td><td>Java Virtual Machine</td><td>Abstract machine that executes Java bytecode. Platform-specific but provides platform independence for Java programs.</td></tr>
+<tr><td><code>JRE</code></td><td>Java Runtime Environment</td><td>JVM + standard class libraries. Required to run Java applications.</td></tr>
+<tr><td><code>JDK</code></td><td>Java Development Kit</td><td>JRE + development tools (javac, javadoc, jdb). Required to develop Java applications.</td></tr>
+</table>
+
+<h3>Bytecode & Platform Independence</h3>
+<p>Java source code (<code>.java</code>) is compiled by <code>javac</code> into <strong>bytecode</strong> (<code>.class</code> files). The JVM interprets/JIT-compiles this bytecode into native machine code at runtime. Since bytecode is platform-neutral, any JVM on any OS can run it.</p>
+
+<div class="mermaid">
+flowchart LR
+    A[Java Source\n.java] -->|javac| B[Bytecode\n.class]
+    B -->|ClassLoader| C[JVM Runtime]
+    C --> D[JIT Compiler]
+    D --> E[Native Machine Code]
+    C --> F[Interpreter]
+    subgraph JVM Architecture
+        C
+        D
+        F
+        G[Heap Memory]
+        H[Stack Memory]
+        I[Metaspace]
+        J[Garbage Collector]
+    end
+</div>
+
+<h3>JVM Architecture Diagram</h3>
+<div class="mermaid">
+flowchart TD
+    A[Class Files] --> B[Class Loader Subsystem]
+    B --> B1[Loading]
+    B --> B2[Linking\nVerify/Prepare/Resolve]
+    B --> B3[Initialization]
+    B3 --> C[Runtime Data Areas]
+    subgraph C[Runtime Data Areas]
+        C1[Method Area / Metaspace\nClass metadata, static fields]
+        C2[Heap\nObjects, instance fields]
+        C3[JVM Stack\nStack frames per thread]
+        C4[PC Register\nCurrent instruction ptr]
+        C5[Native Method Stack]
+    end
+    C --> D[Execution Engine]
+    subgraph D[Execution Engine]
+        D1[Interpreter]
+        D2[JIT Compiler\nC1/C2 tiers]
+        D3[Garbage Collector\nG1, ZGC, Shenandoah]
+    end
+    D --> E[Native Interface JNI]
+    E --> F[Native Libraries]
+</div>
+
+<!-- ==================== VERSION HISTORY ==================== -->
+<h2 id="versions">Version History</h2>
+<table>
+<tr><th>Version</th><th>Type</th><th>Key Features</th></tr>
+<tr><td>Java 17</td><td>LTS</td><td>Records (stable), Sealed Classes (stable), Pattern Matching instanceof (stable), Text Blocks (stable), Switch Expressions (stable), Strong encapsulation of JDK internals</td></tr>
+<tr><td>Java 18</td><td>Non-LTS</td><td>UTF-8 by default, Simple Web Server (<code>jwebserver</code>), Code Snippets in Javadoc (<code>@snippet</code>), Reimplemented Core Reflection with Method Handles</td></tr>
+<tr><td>Java 19</td><td>Non-LTS</td><td>Virtual Threads (Preview - JEP 425), Structured Concurrency (Incubator), Record Patterns (Preview), Linux/RISC-V Port</td></tr>
+<tr><td>Java 20</td><td>Non-LTS</td><td>Scoped Values (Incubator), Record Patterns (2nd Preview), Pattern Matching for switch (4th Preview), Virtual Threads (2nd Preview), Structured Concurrency (2nd Incubator)</td></tr>
+<tr><td>Java 21</td><td>LTS</td><td>Virtual Threads (stable), Pattern Matching for switch (stable), Record Patterns (stable), Sequenced Collections, String Templates (Preview), Unnamed Classes & Instance Main Methods (Preview), Unnamed Patterns & Variables (Preview)</td></tr>
+</table>
+
+<!-- ==================== OOP ==================== -->
+<h2 id="oop">Object-Oriented Programming</h2>
+
+<h3>Classes & Objects</h3>
+<pre><code class="language-java">public class Animal {
+    // Instance fields
+    private String name;
+    private int age;
+
+    // Static field
+    private static int count = 0;
+
+    // Constructor
+    public Animal(String name, int age) {
+        this.name = name;
+        this.age = age;
+        count++;
+    }
+
+    // Getter/setter (encapsulation)
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    // Instance method
+    public String describe() {
+        return name + " is " + age + " years old";
+    }
+
+    // Static method
+    public static int getCount() { return count; }
+
+    // toString override
+    @Override
+    public String toString() {
+        return "Animal{name='" + name + "', age=" + age + "}";
+    }
+}</code></pre>
+
+<h3>Interfaces</h3>
+<pre><code class="language-java">public interface Drawable {
+    // Abstract method (implicitly public abstract)
+    void draw();
+
+    // Default method (Java 8+)
+    default void resize(int factor) {
+        System.out.println("Resizing by " + factor);
+    }
+
+    // Static method (Java 8+)
+    static Drawable empty() {
+        return () -> System.out.println("Empty drawable");
+    }
+
+    // Private method (Java 9+)
+    private void helper() {
+        // shared logic for default methods
+    }
+
+    // Constant
+    int MAX_SIZE = 100; // implicitly public static final
+}
+
+// Functional interface
+@FunctionalInterface
+public interface Transformer&lt;T, R&gt; {
+    R transform(T input);
+}</code></pre>
+
+<h3>Abstract Classes</h3>
+<pre><code class="language-java">public abstract class Shape {
+    protected String color;
+
+    public Shape(String color) {
+        this.color = color;
+    }
+
+    // Abstract method — subclass must implement
+    public abstract double area();
+
+    // Concrete method
+    public void printInfo() {
+        System.out.println("Shape: " + getClass().getSimpleName()
+            + ", Color: " + color + ", Area: " + area());
+    }
+}
+
+public class Circle extends Shape {
+    private double radius;
+
+    public Circle(String color, double radius) {
+        super(color);
+        this.radius = radius;
+    }
+
+    @Override
+    public double area() {
+        return Math.PI * radius * radius;
+    }
+}
+
+public class Rectangle extends Shape {
+    private double width, height;
+
+    public Rectangle(String color, double w, double h) {
+        super(color);
+        this.width = w; this.height = h;
+    }
+
+    @Override
+    public double area() { return width * height; }
+}</code></pre>
+
+<h3>Inheritance & Polymorphism</h3>
+<pre><code class="language-java">// Polymorphism via interface
+List&lt;Shape&gt; shapes = List.of(
+    new Circle("red", 5.0),
+    new Rectangle("blue", 4.0, 6.0)
+);
+
+shapes.forEach(shape -> shape.printInfo()); // dynamic dispatch
+
+// instanceof (classic and pattern matching)
+Object obj = "Hello";
+if (obj instanceof String s) { // Java 16+ pattern matching
+    System.out.println(s.length()); // s is already cast
+}
+
+// Method overloading (compile-time polymorphism)
+public int add(int a, int b) { return a + b; }
+public double add(double a, double b) { return a + b; }
+public String add(String a, String b) { return a + b; }</code></pre>
+
+<h3>The Four Pillars</h3>
+<table>
+<tr><th>Pillar</th><th>Description</th><th>Java Mechanism</th></tr>
+<tr><td>Encapsulation</td><td>Bundling data + behavior; restricting direct access</td><td>private fields + public getters/setters</td></tr>
+<tr><td>Abstraction</td><td>Hiding implementation details, exposing essentials</td><td>abstract classes, interfaces</td></tr>
+<tr><td>Inheritance</td><td>Deriving new types from existing types</td><td>extends, implements</td></tr>
+<tr><td>Polymorphism</td><td>One interface, many implementations</td><td>method overriding (runtime), overloading (compile-time)</td></tr>
+</table>
+
+<!-- ==================== GENERICS ==================== -->
+<h2 id="generics">Generics</h2>
+
+<h3>Generic Classes & Methods</h3>
+<pre><code class="language-java">// Generic class
+public class Box&lt;T&gt; {
+    private T value;
+    public Box(T value) { this.value = value; }
+    public T get() { return value; }
+}
+
+// Generic method
+public &lt;T extends Comparable&lt;T&gt;&gt; T max(T a, T b) {
+    return a.compareTo(b) &gt; 0 ? a : b;
+}
+
+// Multiple type parameters
+public class Pair&lt;A, B&gt; {
+    private final A first;
+    private final B second;
+    public Pair(A first, B second) { this.first = first; this.second = second; }
+}</code></pre>
+
+<h3>Bounded Wildcards & PECS</h3>
+<pre><code class="language-java">// Upper bounded wildcard: ? extends T (Producer Extends)
+// Use when you only READ from the collection
+public double sumList(List&lt;? extends Number&gt; list) {
+    return list.stream().mapToDouble(Number::doubleValue).sum();
+}
+
+// Lower bounded wildcard: ? super T (Consumer Super)
+// Use when you only WRITE to the collection
+public void addNumbers(List&lt;? super Integer&gt; list) {
+    list.add(1);
+    list.add(2);
+    list.add(3);
+}
+
+// PECS: Producer Extends, Consumer Super
+public &lt;T&gt; void copy(List&lt;? extends T&gt; src, List&lt;? super T&gt; dst) {
+    for (T item : src) dst.add(item);
+}</code></pre>
+
+<h3>Type Erasure</h3>
+<div class="callout">
+Type parameters are erased at compile time. <code>List&lt;String&gt;</code> and <code>List&lt;Integer&gt;</code> are both just <code>List</code> at runtime. This means you cannot: instantiate generic types (<code>new T()</code>), use instanceof with generic types, or create generic arrays directly.
+</div>
+
+<!-- ==================== COLLECTIONS ==================== -->
+<h2 id="collections">Collections Framework</h2>
+
+<h3>Core Hierarchy</h3>
+<div class="mermaid">
+classDiagram
+    Iterable <|-- Collection
+    Collection <|-- List
+    Collection <|-- Set
+    Collection <|-- Queue
+    List <|.. ArrayList
+    List <|.. LinkedList
+    Set <|.. HashSet
+    Set <|.. LinkedHashSet
+    Set <|-- SortedSet
+    SortedSet <|.. TreeSet
+    Queue <|-- Deque
+    Deque <|.. LinkedList
+    Deque <|.. ArrayDeque
+    Map <|.. HashMap
+    Map <|.. LinkedHashMap
+    Map <|-- SortedMap
+    SortedMap <|.. TreeMap
+</div>
+
+<h3>List</h3>
+<pre><code class="language-java">// ArrayList — dynamic array, O(1) random access, O(n) insert/delete
+List&lt;String&gt; list = new ArrayList&lt;&gt;(List.of("a", "b", "c"));
+list.add("d");
+list.add(0, "z");       // insert at index
+list.remove("b");       // remove by value
+list.remove(0);         // remove by index
+list.set(1, "X");       // replace
+list.subList(1, 3);     // view, not copy
+
+// LinkedList — doubly linked, O(1) insert/delete at ends, O(n) random access
+LinkedList&lt;Integer&gt; ll = new LinkedList&lt;&gt;();
+ll.addFirst(1); ll.addLast(2);
+ll.peekFirst(); ll.pollFirst();
+
+// Immutable list (Java 9+)
+List&lt;String&gt; immutable = List.of("a", "b", "c"); // no nulls, no modifications
+List&lt;String&gt; copy = List.copyOf(list); // defensive copy</code></pre>
+
+<h3>Set</h3>
+<pre><code class="language-java">// HashSet — O(1) add/remove/contains, no order, allows one null
+Set&lt;String&gt; hs = new HashSet&lt;&gt;(Set.of("apple", "banana", "cherry"));
+
+// LinkedHashSet — insertion order preserved
+Set&lt;String&gt; lhs = new LinkedHashSet&lt;&gt;();
+
+// TreeSet — sorted order (natural or Comparator), O(log n)
+TreeSet&lt;Integer&gt; ts = new TreeSet&lt;&gt;();
+ts.add(5); ts.add(1); ts.add(3);
+ts.first(); ts.last(); ts.headSet(3); ts.tailSet(3);
+ts.floor(4);  // greatest element &lt;= 4
+ts.ceiling(4); // smallest element &gt;= 4</code></pre>
+
+<h3>Map</h3>
+<pre><code class="language-java">// HashMap — O(1) avg, no order, one null key
+Map&lt;String, Integer&gt; map = new HashMap&lt;&gt;();
+map.put("a", 1);
+map.getOrDefault("b", 0);
+map.putIfAbsent("a", 99);          // won't overwrite
+map.computeIfAbsent("c", k -> k.length()); // compute if missing
+map.compute("a", (k, v) -> v == null ? 1 : v + 1); // update
+map.merge("a", 1, Integer::sum);    // merge with function
+
+// Iterate
+for (Map.Entry&lt;String, Integer&gt; e : map.entrySet()) {
+    System.out.println(e.getKey() + "=" + e.getValue());
+}
+map.forEach((k, v) -> System.out.println(k + "=" + v));
+
+// LinkedHashMap — insertion or access order
+Map&lt;String, Integer&gt; lhm = new LinkedHashMap&lt;&gt;(16, 0.75f, true); // access-order
+
+// TreeMap — sorted keys
+TreeMap&lt;String, Integer&gt; tm = new TreeMap&lt;&gt;();
+tm.firstKey(); tm.lastKey();
+tm.subMap("a", "d"); // keys from "a" inclusive to "d" exclusive
+
+// ConcurrentHashMap — thread-safe, no null keys/values
+ConcurrentHashMap&lt;String, Integer&gt; chm = new ConcurrentHashMap&lt;&gt;();
+chm.putIfAbsent("x", 1);
+chm.computeIfPresent("x", (k, v) -> v + 1);</code></pre>
+
+<h3>Queue & Deque</h3>
+<pre><code class="language-java">// PriorityQueue — heap-based, natural order or Comparator
+PriorityQueue&lt;Integer&gt; pq = new PriorityQueue&lt;&gt;(); // min-heap
+PriorityQueue&lt;Integer&gt; maxPq = new PriorityQueue&lt;&gt;(Comparator.reverseOrder());
+pq.offer(3); pq.offer(1); pq.offer(2);
+pq.peek(); // 1 (min), does not remove
+pq.poll(); // 1, removes
+
+// ArrayDeque — stack/queue operations, more efficient than LinkedList
+Deque&lt;String&gt; deque = new ArrayDeque&lt;&gt;();
+deque.push("a");     // addFirst (stack push)
+deque.pop();         // removeFirst (stack pop)
+deque.offer("b");    // addLast (queue enqueue)
+deque.poll();        // removeFirst (queue dequeue)</code></pre>
+
+<h3>Collections Utility</h3>
+<pre><code class="language-java">List&lt;Integer&gt; nums = new ArrayList&lt;&gt;(List.of(3,1,4,1,5,9,2,6));
+Collections.sort(nums);
+Collections.sort(nums, Comparator.reverseOrder());
+Collections.shuffle(nums);
+Collections.reverse(nums);
+int idx = Collections.binarySearch(nums, 5); // list must be sorted
+Collections.min(nums); Collections.max(nums);
+Collections.frequency(nums, 1);
+Collections.nCopies(5, "hello");
+Collections.unmodifiableList(nums);
+Collections.synchronizedList(nums);</code></pre>
+
+<!-- ==================== STREAMS ==================== -->
+<h2 id="streams">Streams API</h2>
+
+<h3>Stream Pipeline</h3>
+<pre><code class="language-java">// Source -> Intermediate ops (lazy) -> Terminal op (triggers evaluation)
+List&lt;String&gt; names = List.of("Alice", "Bob", "Charlie", "David", "Eve");
+
+// Basic pipeline
+List&lt;String&gt; result = names.stream()
+    .filter(n -> n.length() &gt; 3)          // intermediate
+    .map(String::toUpperCase)             // intermediate
+    .sorted()                              // intermediate
+    .collect(Collectors.toList());        // terminal
+
+// Method chaining
+long count = IntStream.rangeClosed(1, 100)
+    .filter(n -> n % 2 == 0)
+    .count();</code></pre>
+
+<h3>Intermediate Operations</h3>
+<pre><code class="language-java">Stream&lt;String&gt; stream = Stream.of("hello", "world", "hello", "java");
+
+stream.distinct();                          // remove duplicates
+stream.filter(s -> s.startsWith("h"));      // predicate filter
+stream.map(String::toUpperCase);            // transform
+stream.flatMap(s -> Arrays.stream(s.split(""))); // flatten
+stream.sorted();                            // natural order
+stream.sorted(Comparator.comparingInt(String::length));
+stream.limit(3);                            // first 3
+stream.skip(2);                             // skip first 2
+stream.peek(System.out::println);           // debug, doesn't consume
+stream.takeWhile(s -> s.length() &lt; 5);     // Java 9+
+stream.dropWhile(s -> s.length() &lt; 5);     // Java 9+</code></pre>
+
+<h3>Terminal Operations</h3>
+<pre><code class="language-java">List&lt;Integer&gt; nums = List.of(1, 2, 3, 4, 5, 6);
+
+// Collection
+nums.stream().collect(Collectors.toList());
+nums.stream().toList(); // Java 16+, immutable
+
+// Reduction
+int sum = nums.stream().reduce(0, Integer::sum);
+Optional&lt;Integer&gt; max = nums.stream().max(Integer::compareTo);
+Optional&lt;Integer&gt; min = nums.stream().min(Integer::compareTo);
+long count = nums.stream().count();
+
+// Short-circuit terminal
+Optional&lt;Integer&gt; first = nums.stream().filter(n -> n &gt; 3).findFirst();
+Optional&lt;Integer&gt; any   = nums.stream().filter(n -> n &gt; 3).findAny(); // parallel-friendly
+boolean allEven = nums.stream().allMatch(n -> n % 2 == 0);
+boolean anyEven = nums.stream().anyMatch(n -> n % 2 == 0);
+boolean noneNeg = nums.stream().noneMatch(n -> n &lt; 0);
+
+// ForEach
+nums.stream().forEach(System.out::println);</code></pre>
+
+<h3>Collectors</h3>
+<pre><code class="language-java">List&lt;String&gt; words = List.of("apple", "banana", "avocado", "blueberry", "cherry");
+
+// Joining
+String joined = words.stream().collect(Collectors.joining(", ", "[", "]"));
+
+// Grouping
+Map&lt;Character, List&lt;String&gt;&gt; byFirstLetter = words.stream()
+    .collect(Collectors.groupingBy(w -> w.charAt(0)));
+
+// Partitioning
+Map&lt;Boolean, List&lt;String&gt;&gt; partition = words.stream()
+    .collect(Collectors.partitioningBy(w -> w.length() &gt; 5));
+
+// Counting downstream
+Map&lt;Character, Long&gt; countByLetter = words.stream()
+    .collect(Collectors.groupingBy(w -> w.charAt(0), Collectors.counting()));
+
+// Mapping downstream
+Map&lt;Character, List&lt;Integer&gt;&gt; lengthsByLetter = words.stream()
+    .collect(Collectors.groupingBy(
+        w -> w.charAt(0),
+        Collectors.mapping(String::length, Collectors.toList())));
+
+// Statistics
+IntSummaryStatistics stats = words.stream()
+    .collect(Collectors.summarizingInt(String::length));
+
+// Teeing collector (Java 12+) — split into two collectors, merge results
+Map.Entry&lt;Long, Optional&lt;String&gt;&gt; result = words.stream()
+    .collect(Collectors.teeing(
+        Collectors.counting(),
+        Collectors.minBy(Comparator.naturalOrder()),
+        Map::entry));</code></pre>
+
+<!-- ==================== OPTIONAL ==================== -->
+<h2 id="optional">Optional</h2>
+<pre><code class="language-java">// Creation
+Optional&lt;String&gt; empty = Optional.empty();
+Optional&lt;String&gt; present = Optional.of("hello");       // throws if null
+Optional&lt;String&gt; nullable = Optional.ofNullable(null); // wraps null as empty
+
+// Checking
+present.isPresent();    // true
+present.isEmpty();      // false (Java 11+)
+
+// Retrieval
+present.get();                          // throws NoSuchElementException if empty
+present.orElse("default");             // return default if empty
+present.orElseGet(() -> computeDefault()); // lazy default
+present.orElseThrow();                 // throws if empty (Java 10+)
+present.orElseThrow(IllegalStateException::new);
+
+// Transforming
+Optional&lt;Integer&gt; length = present.map(String::length);
+Optional&lt;String&gt; upper = present.filter(s -> s.length() &gt; 3).map(String::toUpperCase);
+Optional&lt;Integer&gt; flatMapped = present.flatMap(s ->
+    s.isEmpty() ? Optional.empty() : Optional.of(s.length()));
+
+// Side effects
+present.ifPresent(System.out::println);
+present.ifPresentOrElse(                // Java 9+
+    System.out::println,
+    () -> System.out.println("empty"));
+
+// Chaining
+Optional&lt;String&gt; fallback = empty.or(() -> Optional.of("fallback")); // Java 9+
+
+// Stream
+optional.stream().collect(Collectors.toList()); // 0 or 1 element</code></pre>
+
+<!-- ==================== FUNCTIONAL INTERFACES ==================== -->
+<h2 id="functional">Functional Interfaces</h2>
+<table>
+<tr><th>Interface</th><th>Signature</th><th>Use Case</th></tr>
+<tr><td><code>Function&lt;T,R&gt;</code></td><td><code>R apply(T t)</code></td><td>Transform T to R</td></tr>
+<tr><td><code>BiFunction&lt;T,U,R&gt;</code></td><td><code>R apply(T t, U u)</code></td><td>Two inputs, one output</td></tr>
+<tr><td><code>Predicate&lt;T&gt;</code></td><td><code>boolean test(T t)</code></td><td>Test condition</td></tr>
+<tr><td><code>BiPredicate&lt;T,U&gt;</code></td><td><code>boolean test(T t, U u)</code></td><td>Two-arg predicate</td></tr>
+<tr><td><code>Consumer&lt;T&gt;</code></td><td><code>void accept(T t)</code></td><td>Consume value, no return</td></tr>
+<tr><td><code>BiConsumer&lt;T,U&gt;</code></td><td><code>void accept(T t, U u)</code></td><td>Two-arg consumer</td></tr>
+<tr><td><code>Supplier&lt;T&gt;</code></td><td><code>T get()</code></td><td>Produce value, no input</td></tr>
+<tr><td><code>UnaryOperator&lt;T&gt;</code></td><td><code>T apply(T t)</code></td><td>Same type in/out</td></tr>
+<tr><td><code>BinaryOperator&lt;T&gt;</code></td><td><code>T apply(T t1, T t2)</code></td><td>Two same-type args</td></tr>
+<tr><td><code>Comparator&lt;T&gt;</code></td><td><code>int compare(T o1, T o2)</code></td><td>Ordering</td></tr>
+</table>
+
+<pre><code class="language-java">// Composing functions
+Function&lt;String, String&gt; trim = String::trim;
+Function&lt;String, String&gt; upper = String::toUpperCase;
+Function&lt;String, String&gt; process = trim.andThen(upper); // trim first, then upper
+Function&lt;String, String&gt; reversed = trim.compose(upper); // upper first, then trim
+
+// Composing predicates
+Predicate&lt;Integer&gt; isEven = n -> n % 2 == 0;
+Predicate&lt;Integer&gt; isPositive = n -> n &gt; 0;
+Predicate&lt;Integer&gt; isPositiveEven = isEven.and(isPositive);
+Predicate&lt;Integer&gt; isEvenOrPositive = isEven.or(isPositive);
+Predicate&lt;Integer&gt; isOdd = isEven.negate();
+
+// Comparator composition
+Comparator&lt;String&gt; byLength = Comparator.comparingInt(String::length);
+Comparator&lt;String&gt; byLengthThenAlpha = byLength.thenComparing(Comparator.naturalOrder());
+Comparator&lt;String&gt; reversed2 = byLength.reversed();</code></pre>
+
+<!-- ==================== LAMBDA ==================== -->
+<h2 id="lambda">Lambda &amp; Method References</h2>
+
+<h3>Lambda Syntax</h3>
+<pre><code class="language-java">// No parameters
+Runnable r = () -> System.out.println("Hello");
+
+// One parameter (parens optional)
+Consumer&lt;String&gt; print = s -> System.out.println(s);
+
+// Multiple parameters
+BiFunction&lt;Integer, Integer, Integer&gt; add = (a, b) -> a + b;
+
+// Block body
+Function&lt;Integer, String&gt; classify = n -> {
+    if (n &lt; 0) return "negative";
+    if (n == 0) return "zero";
+    return "positive";
+};</code></pre>
+
+<h3>Four Types of Method References</h3>
+<pre><code class="language-java">// 1. Static method reference: ClassName::staticMethod
+Function&lt;String, Integer&gt; parseInt = Integer::parseInt;
+
+// 2. Instance method of a particular instance: instance::instanceMethod
+String prefix = "Hello, ";
+Function&lt;String, String&gt; greet = prefix::concat;
+
+// 3. Instance method of an arbitrary instance of a type: ClassName::instanceMethod
+Function&lt;String, String&gt; toUpper = String::toUpperCase;
+Comparator&lt;String&gt; compare = String::compareTo;
+
+// 4. Constructor reference: ClassName::new
+Supplier&lt;ArrayList&lt;String&gt;&gt; listFactory = ArrayList::new;
+Function&lt;Integer, int[]&gt; arrayFactory = int[]::new;</code></pre>
+
+<!-- ==================== MULTITHREADING ==================== -->
+<h2 id="multithreading">Multithreading</h2>
+
+<h3>Thread Lifecycle</h3>
+<div class="mermaid">
+stateDiagram-v2
+    [*] --> NEW : Thread created
+    NEW --> RUNNABLE : start()
+    RUNNABLE --> RUNNING : Scheduler picks
+    RUNNING --> RUNNABLE : yield() / time slice
+    RUNNING --> BLOCKED : waiting for lock
+    RUNNING --> WAITING : wait() / join()
+    RUNNING --> TIMED_WAITING : sleep(n) / wait(n)
+    BLOCKED --> RUNNABLE : lock acquired
+    WAITING --> RUNNABLE : notify() / notifyAll()
+    TIMED_WAITING --> RUNNABLE : timeout / notify
+    RUNNING --> TERMINATED : run() completes
+</div>
+
+<h3>Runnable vs Callable</h3>
+<pre><code class="language-java">// Runnable — no return, no checked exception
+Runnable task = () -> System.out.println("Task: " + Thread.currentThread().getName());
+Thread t = new Thread(task);
+t.start();
+
+// Callable — returns result, can throw checked exception
+Callable&lt;Integer&gt; computation = () -> {
+    Thread.sleep(100);
+    return 42;
+};</code></pre>
+
+<h3>ExecutorService</h3>
+<pre><code class="language-java">// Fixed thread pool
+ExecutorService executor = Executors.newFixedThreadPool(4);
+
+// Cached thread pool — grows as needed, reuses idle threads
+ExecutorService cached = Executors.newCachedThreadPool();
+
+// Single thread executor — sequential execution
+ExecutorService single = Executors.newSingleThreadExecutor();
+
+// Scheduled executor
+ScheduledExecutorService scheduled = Executors.newScheduledThreadPool(2);
+scheduled.scheduleAtFixedRate(task, 0, 1, TimeUnit.SECONDS);
+
+// Submit tasks
+Future&lt;Integer&gt; future = executor.submit(computation);
+Integer result = future.get(); // blocks until done
+future.get(5, TimeUnit.SECONDS); // with timeout
+
+// Proper shutdown
+executor.shutdown(); // graceful, waits for tasks
+executor.shutdownNow(); // interrupts running tasks
+executor.awaitTermination(60, TimeUnit.SECONDS);</code></pre>
+
+<h3>CompletableFuture</h3>
+<pre><code class="language-java">// Basic async
+CompletableFuture&lt;String&gt; cf = CompletableFuture.supplyAsync(() -> {
+    // runs on ForkJoinPool.commonPool()
+    return "Hello";
+});
+
+// Chaining — thenApply (sync transform), thenApplyAsync (async transform)
+CompletableFuture&lt;Integer&gt; length = cf.thenApply(String::length);
+
+// thenCompose — flatMap, chain dependent futures
+CompletableFuture&lt;String&gt; result = cf.thenCompose(s ->
+    CompletableFuture.supplyAsync(() -> s + " World"));
+
+// thenCombine — combine two independent futures
+CompletableFuture&lt;String&gt; first = CompletableFuture.supplyAsync(() -> "Hello");
+CompletableFuture&lt;String&gt; second = CompletableFuture.supplyAsync(() -> " World");
+CompletableFuture&lt;String&gt; combined = first.thenCombine(second, (a, b) -> a + b);
+
+// allOf — wait for all
+CompletableFuture&lt;Void&gt; all = CompletableFuture.allOf(first, second);
+all.join(); // wait
+
+// anyOf — first to complete
+CompletableFuture&lt;Object&gt; any = CompletableFuture.anyOf(first, second);
+
+// Error handling
+CompletableFuture&lt;String&gt; safe = cf
+    .exceptionally(ex -> "default on error")
+    .handle((value, ex) -> ex != null ? "error" : value); // handle both
+
+// thenAccept (consume result), thenRun (run after, no result)
+cf.thenAccept(System.out::println);
+cf.thenRun(() -> System.out.println("Done"));
+
+// Timeout (Java 9+)
+cf.orTimeout(5, TimeUnit.SECONDS);
+cf.completeOnTimeout("default", 5, TimeUnit.SECONDS);</code></pre>
+
+<h3>Virtual Threads (Java 21)</h3>
+<pre><code class="language-java">// Virtual thread — lightweight, JVM-managed, not OS thread
+Thread vt = Thread.ofVirtual().start(() -> System.out.println("Virtual!"));
+
+// Named virtual thread
+Thread namedVt = Thread.ofVirtual().name("my-vthread").start(task);
+
+// Virtual thread executor — ideal for high-concurrency I/O
+try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
+    for (int i = 0; i &lt; 100_000; i++) {
+        executor.submit(() -> {
+            // I/O-bound work — virtual threads excel here
+            Thread.sleep(Duration.ofMillis(10));
+            return "done";
+        });
+    }
+} // auto-close shuts down executor
+
+// Thread.ofPlatform() — traditional OS thread
+Thread pt = Thread.ofPlatform().name("platform").start(task);</code></pre>
+
+<!-- ==================== SYNCHRONIZATION ==================== -->
+<h2 id="synchronization">Synchronization</h2>
+
+<h3>synchronized, volatile, Atomic</h3>
+<pre><code class="language-java">// synchronized method
+public synchronized void increment() { count++; }
+
+// synchronized block (finer granularity)
+public void add(int value) {
+    synchronized(this) { total += value; }
+}
+
+// Class-level lock
+public static synchronized void staticMethod() { ... }
+
+// volatile — visibility guarantee, no atomicity
+private volatile boolean flag = false;
+
+// Atomic classes — lock-free thread safety
+AtomicInteger ai = new AtomicInteger(0);
+ai.incrementAndGet();
+ai.compareAndSet(expected, update);
+ai.getAndAdd(5);
+
+AtomicReference&lt;String&gt; ar = new AtomicReference&lt;&gt;("initial");
+ar.compareAndSet("initial", "updated");
+
+// LongAdder — high-throughput counter
+LongAdder adder = new LongAdder();
+adder.increment();
+adder.sum();</code></pre>
+
+<h3>java.util.concurrent.locks</h3>
+<pre><code class="language-java">// ReentrantLock — explicit lock with tryLock, fairness
+ReentrantLock lock = new ReentrantLock(true); // fair lock
+lock.lock();
+try {
+    // critical section
+} finally {
+    lock.unlock(); // always unlock in finally
+}
+
+// tryLock — non-blocking attempt
+if (lock.tryLock(100, TimeUnit.MILLISECONDS)) {
+    try { /* ... */ } finally { lock.unlock(); }
+}
+
+// ReadWriteLock — multiple readers OR one writer
+ReadWriteLock rwLock = new ReentrantReadWriteLock();
+rwLock.readLock().lock();
+try { /* read */ } finally { rwLock.readLock().unlock(); }
+rwLock.writeLock().lock();
+try { /* write */ } finally { rwLock.writeLock().unlock(); }
+
+// StampedLock — optimistic reads (Java 8+)
+StampedLock sl = new StampedLock();
+long stamp = sl.tryOptimisticRead();
+// read data...
+if (!sl.validate(stamp)) {
+    stamp = sl.readLock();
+    try { /* re-read */ } finally { sl.unlockRead(stamp); }
+}</code></pre>
+
+<h3>Coordination Primitives</h3>
+<pre><code class="language-java">// CountDownLatch — wait for N events
+CountDownLatch latch = new CountDownLatch(3);
+// worker threads call: latch.countDown()
+latch.await(); // main thread waits until count = 0
+
+// CyclicBarrier — all threads meet at a barrier (reusable)
+CyclicBarrier barrier = new CyclicBarrier(3, () -> System.out.println("All arrived!"));
+barrier.await(); // each thread calls this; releases when all arrive
+
+// Semaphore — control concurrent access
+Semaphore sem = new Semaphore(5); // allow 5 concurrent
+sem.acquire();
+try { /* access resource */ } finally { sem.release(); }
+
+// Phaser — flexible multi-phase synchronization (Java 7+)
+Phaser phaser = new Phaser(3); // 3 parties
+phaser.arriveAndAwaitAdvance(); // sync at phase boundary
+phaser.arriveAndDeregister();   // done participating</code></pre>
+
+<!-- ==================== JMM ==================== -->
+<h2 id="jmm">Java Memory Model</h2>
+
+<h3>Memory Areas</h3>
+<table>
+<tr><th>Area</th><th>Scope</th><th>Contains</th><th>GC'd?</th></tr>
+<tr><td>Heap</td><td>All threads</td><td>Objects, arrays, instance fields</td><td>Yes</td></tr>
+<tr><td>Stack</td><td>Per thread</td><td>Local variables, method call frames, references</td><td>No (auto LIFO)</td></tr>
+<tr><td>Metaspace</td><td>All threads</td><td>Class metadata, method bytecode, static fields (Java 8+)</td><td>Yes (class unloading)</td></tr>
+<tr><td>Code Cache</td><td>All threads</td><td>JIT-compiled native code</td><td>Partially</td></tr>
+<tr><td>PC Register</td><td>Per thread</td><td>Address of current JVM instruction</td><td>No</td></tr>
+</table>
+
+<h3>GC Roots</h3>
+<ul>
+<li>Local variables in active stack frames</li>
+<li>Static fields of loaded classes</li>
+<li>Active threads themselves</li>
+<li>JNI references</li>
+</ul>
+
+<!-- ==================== GC ==================== -->
+<h2 id="gc">Garbage Collection</h2>
+
+<h3>Heap Generations</h3>
+<div class="mermaid">
+flowchart LR
+    A[New Objects] --> B[Eden Space]
+    B -->|Minor GC| C[Survivor S0]
+    C -->|Minor GC| D[Survivor S1]
+    D -->|Age threshold| E[Old Gen / Tenured]
+    E -->|Major/Full GC| F[GC Freed]
+    subgraph Young Generation
+        B
+        C
+        D
+    end
+</div>
+
+<h3>Garbage Collectors Compared</h3>
+<table>
+<tr><th>GC</th><th>Java</th><th>STW Pauses</th><th>Best For</th><th>Key Flag</th></tr>
+<tr><td>G1GC</td><td>9+ default</td><td>Short, predictable</td><td>General purpose, large heaps</td><td><code>-XX:+UseG1GC</code></td></tr>
+<tr><td>ZGC</td><td>15+ production</td><td>&lt;1ms (sub-millisecond)</td><td>Very large heaps, low latency</td><td><code>-XX:+UseZGC</code></td></tr>
+<tr><td>Shenandoah</td><td>12+ (Red Hat)</td><td>&lt;10ms concurrent</td><td>Low pause, any heap size</td><td><code>-XX:+UseShenandoahGC</code></td></tr>
+<tr><td>SerialGC</td><td>All</td><td>Full STW</td><td>Single-CPU, small apps</td><td><code>-XX:+UseSerialGC</code></td></tr>
+<tr><td>ParallelGC</td><td>All</td><td>Full STW parallel</td><td>Throughput-first, batch</td><td><code>-XX:+UseParallelGC</code></td></tr>
+</table>
+
+<h3>G1GC — How It Works</h3>
+<p>Divides heap into equal-sized <strong>regions</strong> (~1-32MB each). Regions can be Eden, Survivor, Old, Humongous. G1 tracks liveness per region and collects highest-garbage regions first (hence "Garbage First"). Uses concurrent marking to identify live objects while app runs. Young GC evacuates Eden/Survivor regions (STW). Mixed GC also collects some Old regions.</p>
+
+<h3>ZGC — How It Works</h3>
+<p>Fully concurrent GC. Uses <strong>colored pointers</strong> (load barriers) to track object state. Almost all work happens concurrently with application threads. Only a few short STW pauses for root scanning. Supports heap sizes from 8MB to 16TB.</p>
+
+<h3>Common GC Tuning Flags</h3>
+<pre><code class="language-bash">-Xms512m -Xmx4g               # initial and max heap
+-XX:NewRatio=2                  # Old:Young ratio
+-XX:SurvivorRatio=8             # Eden:Survivor ratio
+-XX:MaxGCPauseMillis=200        # G1 pause target
+-XX:G1HeapRegionSize=16m        # G1 region size
+-XX:+PrintGCDetails             # verbose GC logging
+-Xlog:gc*:file=gc.log           # modern GC logging (Java 9+)
+-XX:+HeapDumpOnOutOfMemoryError # heap dump on OOM</code></pre>
+
+<!-- ==================== JVM INTERNALS ==================== -->
+<h2 id="jvm">JVM Internals</h2>
+
+<h3>Class Loading</h3>
+<p>Class loading is hierarchical using the <strong>parent delegation model</strong>:</p>
+<ol>
+<li><strong>Bootstrap ClassLoader</strong> — loads <code>java.lang.*</code>, core JDK classes from <code>rt.jar</code> / modules</li>
+<li><strong>Extension/Platform ClassLoader</strong> — loads <code>java.ext.dirs</code></li>
+<li><strong>Application ClassLoader</strong> — loads classpath classes</li>
+</ol>
+<p>Each loader asks its parent first. Custom loaders (e.g., OSGi, Spring DevTools) can override this for hot-reloading or isolation.</p>
+
+<h3>JIT Compilation</h3>
+<p>HotSpot uses a tiered compilation model:</p>
+<ul>
+<li><strong>Tier 0</strong> — Interpreter</li>
+<li><strong>Tier 1</strong> — C1 (client compiler) — simple profiling</li>
+<li><strong>Tier 2</strong> — C1 with method invocation & backedge counters</li>
+<li><strong>Tier 3</strong> — C1 with full profiling</li>
+<li><strong>Tier 4</strong> — C2 (server compiler) — aggressive optimizations</li>
+</ul>
+<p>C2 performs: inlining, escape analysis, loop unrolling, dead code elimination, lock elision.</p>
+
+<!-- ==================== EXCEPTIONS ==================== -->
+<h2 id="exceptions">Exception Handling</h2>
+
+<h3>Exception Hierarchy</h3>
+<div class="mermaid">
+classDiagram
+    Throwable <|-- Error
+    Throwable <|-- Exception
+    Exception <|-- RuntimeException
+    Exception <|-- IOException
+    Exception <|-- SQLException
+    RuntimeException <|-- NullPointerException
+    RuntimeException <|-- IllegalArgumentException
+    RuntimeException <|-- IndexOutOfBoundsException
+    RuntimeException <|-- ClassCastException
+    Error <|-- OutOfMemoryError
+    Error <|-- StackOverflowError
+</div>
+
+<pre><code class="language-java">// Checked vs Unchecked
+// Checked: compiler enforces handle-or-declare (IOException, SQLException)
+// Unchecked: RuntimeException subclasses — programming errors
+
+// Custom exception
+public class BusinessException extends RuntimeException {
+    private final String errorCode;
+
+    public BusinessException(String message, String errorCode) {
+        super(message);
+        this.errorCode = errorCode;
+    }
+
+    public BusinessException(String message, String errorCode, Throwable cause) {
+        super(message, cause);
+        this.errorCode = errorCode;
+    }
+
+    public String getErrorCode() { return errorCode; }
+}
+
+// try-with-resources (AutoCloseable)
+try (BufferedReader br = new BufferedReader(new FileReader("file.txt"));
+     Connection conn = dataSource.getConnection()) {
+    // resources auto-closed in reverse order even if exception
+    String line = br.readLine();
+} catch (IOException e) {
+    logger.error("IO error", e);
+} finally {
+    // always runs
+}
+
+// Multi-catch
+try {
+    riskyOperation();
+} catch (IOException | SQLException e) {
+    // e is effectively final
+    handleError(e);
+}
+
+// Exception chaining — preserve original cause
+try {
+    doSomething();
+} catch (SQLException e) {
+    throw new BusinessException("DB error", "DB_001", e); // wrap
+}</code></pre>
+
+<!-- ==================== REFLECTION & ANNOTATIONS ==================== -->
+<h2 id="reflection">Reflection &amp; Annotations</h2>
+
+<h3>Reflection</h3>
+<pre><code class="language-java">// Get Class object
+Class&lt;?&gt; clazz = String.class;
+Class&lt;?&gt; clazz2 = obj.getClass();
+Class&lt;?&gt; clazz3 = Class.forName("java.lang.String");
+
+// Inspect
+Method[] methods = clazz.getDeclaredMethods();
+Field[] fields = clazz.getDeclaredFields();
+Constructor&lt;?&gt;[] ctors = clazz.getDeclaredConstructors();
+
+// Invoke
+Method m = clazz.getDeclaredMethod("substring", int.class, int.class);
+m.setAccessible(true); // bypass access control
+Object result = m.invoke("Hello World", 6, 11); // "World"
+
+// Create instance
+Constructor&lt;StringBuilder&gt; ctor = StringBuilder.class.getConstructor(String.class);
+StringBuilder sb = ctor.newInstance("hello");</code></pre>
+
+<h3>Annotations</h3>
+<pre><code class="language-java">// Custom annotation
+@Retention(RetentionPolicy.RUNTIME) // available at runtime
+@Target(ElementType.METHOD)         // on methods only
+public @interface Timed {
+    String value() default "";
+    TimeUnit unit() default TimeUnit.MILLISECONDS;
+}
+
+// Repeatable annotation (Java 8+)
+@Repeatable(Roles.class)
+@interface Role { String value(); }
+@interface Roles { Role[] value(); }
+
+// Usage
+@Timed("processOrder")
+@Role("admin") @Role("user") // repeatable
+public void processOrder() { ... }
+
+// Reading at runtime
+Method m = MyClass.class.getDeclaredMethod("processOrder");
+Timed timed = m.getAnnotation(Timed.class);
+System.out.println(timed.value()); // "processOrder"</code></pre>
+
+<!-- ==================== RECORDS ==================== -->
+<h2 id="records">Records (Java 16+)</h2>
+<pre><code class="language-java">// Concise immutable data carriers
+public record Point(int x, int y) {
+    // Compact canonical constructor (validation)
+    public Point {
+        if (x &lt; 0 || y &lt; 0) throw new IllegalArgumentException("Negative coordinates");
+    }
+
+    // Custom methods
+    public double distanceTo(Point other) {
+        int dx = this.x - other.x;
+        int dy = this.y - other.y;
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    // Static factory
+    public static Point origin() { return new Point(0, 0); }
+}
+
+// Records auto-generate: constructor, accessors (x(), y()), equals, hashCode, toString
+Point p = new Point(3, 4);
+p.x();        // 3
+p.y();        // 4
+p.toString(); // "Point[x=3, y=4]"
+
+// Generic records
+public record Pair&lt;A, B&gt;(A first, B second) {}
+
+// Records can implement interfaces
+public record Range(int start, int end) implements Comparable&lt;Range&gt; {
+    @Override public int compareTo(Range other) {
+        return Integer.compare(this.start, other.start);
+    }
+}</code></pre>
+
+<!-- ==================== SEALED CLASSES ==================== -->
+<h2 id="sealed">Sealed Classes (Java 17+)</h2>
+<pre><code class="language-java">// Sealed class — restricts which classes can extend it
+public sealed class Shape permits Circle, Rectangle, Triangle {}
+
+public final class Circle extends Shape {
+    private final double radius;
+    public Circle(double radius) { this.radius = radius; }
+    public double radius() { return radius; }
+}
+
+public final class Rectangle extends Shape {
+    private final double width, height;
+    public Rectangle(double w, double h) { width = w; height = h; }
+}
+
+// non-sealed allows open extension again
+public non-sealed class Triangle extends Shape {}
+
+// Sealed interface
+public sealed interface Expr permits Num, Add, Mul {}
+public record Num(int value) implements Expr {}
+public record Add(Expr left, Expr right) implements Expr {}
+public record Mul(Expr left, Expr right) implements Expr {}</code></pre>
+
+<!-- ==================== PATTERN MATCHING ==================== -->
+<h2 id="patternmatching">Pattern Matching</h2>
+
+<h3>instanceof Pattern Matching (Java 16)</h3>
+<pre><code class="language-java">// Old way
+if (obj instanceof String) {
+    String s = (String) obj;
+    System.out.println(s.length());
+}
+
+// Pattern matching (Java 16+)
+if (obj instanceof String s) {
+    System.out.println(s.length()); // s already typed
+}
+
+// With condition (guard)
+if (obj instanceof String s && s.length() &gt; 5) {
+    System.out.println("Long string: " + s);
+}</code></pre>
+
+<h3>Switch Pattern Matching (Java 21)</h3>
+<pre><code class="language-java">// Pattern matching in switch
+double area = switch (shape) {
+    case Circle c    -> Math.PI * c.radius() * c.radius();
+    case Rectangle r -> r.width() * r.height();
+    case Triangle t  -> computeTriangleArea(t);
+};
+
+// Guarded patterns (when clause)
+String result = switch (obj) {
+    case Integer i when i &lt; 0  -> "negative int";
+    case Integer i when i == 0 -> "zero";
+    case Integer i             -> "positive int: " + i;
+    case String s when s.isEmpty() -> "empty string";
+    case String s              -> "string: " + s;
+    case null                  -> "null";
+    default                    -> "other: " + obj;
+};
+
+// Deconstruction patterns with records
+static double eval(Expr expr) {
+    return switch (expr) {
+        case Num(int v)         -> v;
+        case Add(Expr l, Expr r) -> eval(l) + eval(r);
+        case Mul(Expr l, Expr r) -> eval(l) * eval(r);
+    };
+}</code></pre>
+
+<!-- ==================== TEXT BLOCKS ==================== -->
+<h2 id="textblocks">Text Blocks (Java 15+)</h2>
+<pre><code class="language-java">// Text block — multi-line string literal
+String json = """
+        {
+            "name": "Alice",
+            "age": 30,
+            "active": true
+        }
+        """; // closing """ determines indentation stripping
+
+// HTML
+String html = """
+        &lt;html&gt;
+            &lt;body&gt;
+                &lt;p&gt;Hello, World!&lt;/p&gt;
+            &lt;/body&gt;
+        &lt;/html&gt;
+        """;
+
+// SQL
+String sql = """
+        SELECT u.id, u.name, o.total
+        FROM users u
+        JOIN orders o ON u.id = o.user_id
+        WHERE u.active = true
+        ORDER BY o.total DESC
+        """;
+
+// Text block methods
+String aligned = """
+        line 1  \
+        line 2
+        """; // trailing \ prevents newline
+String stripped = text.stripIndent(); // remove common leading whitespace
+String interpreted = text.translateEscapes(); // process \t, \n, etc.</code></pre>
+
+<!-- ==================== SPRING BOOT ==================== -->
+<h2 id="springboot">Spring Boot Overview</h2>
+
+<h3>Core Concepts</h3>
+<pre><code class="language-java">// Entry point
+@SpringBootApplication // = @Configuration + @EnableAutoConfiguration + @ComponentScan
+public class Application {
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+}
+
+// REST Controller
+@RestController
+@RequestMapping("/api/users")
+public class UserController {
+    private final UserService userService;
+
+    // Constructor injection (preferred)
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @GetMapping
+    public List&lt;UserDto&gt; getAllUsers() {
+        return userService.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity&lt;UserDto&gt; getUser(@PathVariable Long id) {
+        return userService.findById(id)
+            .map(ResponseEntity::ok)
+            .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserDto createUser(@RequestBody @Valid CreateUserRequest request) {
+        return userService.create(request);
+    }
+
+    @PutMapping("/{id}")
+    public UserDto updateUser(@PathVariable Long id,
+                              @RequestBody @Valid UpdateUserRequest request) {
+        return userService.update(id, request);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteUser(@PathVariable Long id) {
+        userService.delete(id);
+    }
+}
+
+// Service layer
+@Service
+@Transactional
+public class UserService {
+    private final UserRepository userRepository;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public List&lt;UserDto&gt; findAll() {
+        return userRepository.findAll().stream()
+            .map(this::toDto).toList();
+    }
+}
+
+// Repository layer (Spring Data JPA)
+@Repository
+public interface UserRepository extends JpaRepository&lt;User, Long&gt; {
+    Optional&lt;User&gt; findByEmail(String email);
+    List&lt;User&gt; findByActiveTrue();
+
+    @Query("SELECT u FROM User u WHERE u.name LIKE :name%")
+    List&lt;User&gt; findByNameStartingWith(@Param("name") String name);
+}
+
+// Component
+@Component
+public class EmailService { ... }
+
+// Configuration
+@Configuration
+public class AppConfig {
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+}
+
+// Properties
+// application.properties
+// spring.datasource.url=jdbc:postgresql://localhost/mydb
+// spring.jpa.hibernate.ddl-auto=validate
+// server.port=8080
+
+// application.yml
+// spring:
+//   datasource:
+//     url: jdbc:postgresql://localhost/mydb
+//   jpa:
+//     hibernate:
+//       ddl-auto: validate
+
+// Profiles
+@Profile("dev")
+@Component
+public class DevEmailService implements EmailService { ... }
+
+// Actuator — /actuator/health, /actuator/metrics, /actuator/info
+// management.endpoints.web.exposure.include=health,info,metrics</code></pre>
+
+<!-- ==================== INTERVIEW ==================== -->
+<h2 id="interview">Interview Q&amp;A</h2>
+
+<details>
+<summary>What is the difference between JVM, JRE, and JDK? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p><strong>JVM</strong> (Java Virtual Machine) is the runtime engine that executes Java bytecode. It is platform-specific but provides platform independence for Java programs through an abstraction layer.</p>
+<p><strong>JRE</strong> (Java Runtime Environment) = JVM + standard libraries. Everything needed to run a Java application.</p>
+<p><strong>JDK</strong> (Java Development Kit) = JRE + development tools (javac compiler, javadoc, jdb debugger, jar, etc.). Everything needed to develop Java applications.</p>
+<p>Since Java 11, JDK and JRE are unified — there is no separate JRE download. You use the JDK to run applications too.</p>
+</div>
+</details>
+
+<details>
+<summary>Explain the difference between == and equals() in Java. <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p><code>==</code> compares <strong>references</strong> for objects (checks if both variables point to the same object in memory). For primitives, it compares values.</p>
+<p><code>equals()</code> compares <strong>content/value</strong>. The default Object.equals() uses ==, but classes like String, Integer, List override it for logical equality.</p>
+<pre><code class="language-java">String a = new String("hello");
+String b = new String("hello");
+a == b;       // false — different objects
+a.equals(b);  // true — same content
+
+Integer x = 127;
+Integer y = 127;
+x == y;       // true — Integer cache [-128, 127]
+
+Integer p = 128;
+Integer q = 128;
+p == q;       // false — outside cache
+p.equals(q);  // true</code></pre>
+<p>Always override <code>hashCode()</code> when you override <code>equals()</code> — the contract: equal objects must have equal hash codes.</p>
+</div>
+</details>
+
+<details>
+<summary>What is the difference between HashMap and ConcurrentHashMap? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p><strong>HashMap</strong>: Not thread-safe. Allows one null key and multiple null values. Better single-threaded performance.</p>
+<p><strong>ConcurrentHashMap</strong>: Thread-safe. No null keys or values. In Java 8+, uses CAS + synchronized on individual bins (not the whole map), allowing concurrent reads and partial-lock writes. Much better than Hashtable (which locks the whole map).</p>
+<p>Use ConcurrentHashMap when multiple threads read/write; otherwise HashMap in single-threaded code.</p>
+</div>
+</details>
+
+<details>
+<summary>How does HashMap work internally? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>HashMap uses an array of <strong>buckets</strong> (array of Node). On put(key, value):</p>
+<ol>
+<li>Compute <code>hashCode()</code> of key, then spread it with a secondary hash</li>
+<li>Compute bucket index: <code>(n-1) & hash</code></li>
+<li>If bucket empty: insert new Node</li>
+<li>If collision: traverse linked list in bucket, compare via <code>equals()</code>
+  <ul><li>Key found: update value</li><li>Key not found: append to list</li></ul></li>
+<li>If linked list length ≥ 8 and table size ≥ 64: convert to <strong>TreeMap</strong> (red-black tree) — O(log n) lookup</li>
+</ol>
+<p>Default initial capacity: 16, load factor: 0.75. When size > capacity * loadFactor, rehash doubles the array.</p>
+<p>Java 8 improvement: tree bins reduce worst-case from O(n) to O(log n) for bad hash functions.</p>
+</div>
+</details>
+
+<details>
+<summary>Explain volatile vs synchronized in Java. <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>volatile</strong>: guarantees <em>visibility</em> — changes to a volatile variable are immediately visible to all threads (no CPU cache). Does NOT guarantee atomicity (volatile++ is still read-modify-write).</p>
+<p><strong>synchronized</strong>: guarantees both <em>visibility</em> and <em>atomicity</em>. Only one thread can execute the synchronized block at a time. Higher overhead than volatile.</p>
+<pre><code class="language-java">// volatile — fine for a simple flag read by one thread, written by another
+private volatile boolean running = true;
+
+// synchronized — needed for compound operations
+private int count = 0;
+public synchronized void increment() { count++; } // safe</code></pre>
+<p>Use volatile for simple state flags. Use synchronized (or AtomicXxx) for compound actions like increment.</p>
+</div>
+</details>
+
+<details>
+<summary>What is the difference between Comparable and Comparator? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>Comparable</strong> (<code>java.lang</code>): natural ordering. The class itself implements <code>compareTo(T other)</code>. Modifies the class. Used by <code>Collections.sort()</code> and sorted data structures by default.</p>
+<p><strong>Comparator</strong> (<code>java.util</code>): external/custom ordering. A separate object. Does not modify the original class. Can have multiple Comparators for different sort orders.</p>
+<pre><code class="language-java">// Comparable — class defines its natural order
+class Student implements Comparable&lt;Student&gt; {
+    int gpa;
+    @Override public int compareTo(Student other) {
+        return Double.compare(this.gpa, other.gpa);
+    }
+}
+
+// Comparator — external, multiple orderings possible
+Comparator&lt;Student&gt; byName = Comparator.comparing(s -> s.name);
+Comparator&lt;Student&gt; byGpaThenName = Comparator.comparingDouble((Student s) -> s.gpa)
+    .thenComparing(s -> s.name);</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Explain Java's Stream API and when to use parallel streams. <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>Streams provide a functional, declarative way to process collections. Pipeline: source → intermediate ops (lazy, stateless/stateful) → terminal op (triggers evaluation).</p>
+<p><strong>parallel()</strong> splits the stream across ForkJoinPool.commonPool() threads using the Spliterator interface. Beneficial when:</p>
+<ul>
+<li>Large data (thousands+ elements)</li>
+<li>Operations are CPU-bound and independent (no shared mutable state)</li>
+<li>No ordering requirements (or acceptable to ignore)</li>
+</ul>
+<p>Avoid parallel streams when: data source is small, operations are I/O-bound (use virtual threads instead), operations are stateful/order-dependent, there is shared mutable state (race conditions).</p>
+<pre><code class="language-java">long sum = LongStream.rangeClosed(1, 1_000_000)
+    .parallel()
+    .sum(); // good candidate — independent, CPU, large</code></pre>
+</div>
+</details>
+
+<details>
+<summary>What is the difference between checked and unchecked exceptions? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>Checked exceptions</strong>: subclasses of Exception (excluding RuntimeException). Must be either caught or declared with <code>throws</code>. Represent recoverable conditions (e.g., IOException, SQLException). The compiler enforces handling.</p>
+<p><strong>Unchecked exceptions</strong>: subclasses of RuntimeException (or Error). Do not need to be declared or caught (but can be). Represent programming errors (NullPointerException, IllegalArgumentException) or unrecoverable JVM errors (OutOfMemoryError).</p>
+<p>Modern practice (especially in frameworks like Spring) favors unchecked exceptions to avoid cluttering APIs with checked exception declarations. Wrap checked exceptions in unchecked when they cannot be meaningfully handled at the call site.</p>
+</div>
+</details>
+
+<details>
+<summary>Explain how the Java Memory Model relates to happens-before. <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>The Java Memory Model (JMM) defines how threads interact through memory. The <strong>happens-before</strong> relationship guarantees that if action A happens-before action B, then all memory writes by A are visible to B.</p>
+<p>Key happens-before rules:</p>
+<ul>
+<li>Program order: each action in a thread happens-before subsequent actions in the same thread</li>
+<li>Monitor lock: unlock happens-before subsequent lock of the same monitor</li>
+<li>volatile write: a write to a volatile field happens-before subsequent reads of that field</li>
+<li>Thread start: <code>Thread.start()</code> happens-before any action in the started thread</li>
+<li>Thread join: all actions in a thread happen-before <code>Thread.join()</code> returns</li>
+</ul>
+<p>Without happens-before, the JIT/CPU can reorder instructions, leading to visibility issues. volatile and synchronized establish these relationships.</p>
+</div>
+</details>
+
+<details>
+<summary>Explain G1GC internals and when to tune it. <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>G1 divides the heap into equal-sized regions (1-32MB). Regions are dynamically assigned to Eden, Survivor, Old, or Humongous (objects &gt; half region size).</p>
+<p><strong>Cycle</strong>: Young-only phase (minor GC on Eden/Survivor) → Concurrent marking (SATB — snapshot-at-the-beginning) → Space reclaimation (mixed GC — collects young + most-garbage old regions).</p>
+<p><strong>Key tuning</strong>:</p>
+<ul>
+<li><code>-XX:MaxGCPauseMillis=200</code> — soft pause target. G1 adjusts young gen size to meet it</li>
+<li><code>-XX:G1HeapRegionSize</code> — usually let JVM auto-tune; override for very large objects</li>
+<li><code>-XX:G1ReservePercent</code> — headroom for evacuation failures</li>
+<li><code>-XX:ConcGCThreads</code> — threads for concurrent marking</li>
+<li>If too many Full GCs: increase heap, tune InitiatingHeapOccupancyPercent</li>
+</ul>
+</div>
+</details>
+
+<details>
+<summary>How do Virtual Threads differ from platform threads, and what are their limitations? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>Platform threads map 1:1 to OS threads. Creating thousands is expensive (1MB stack each, OS scheduling overhead).</p>
+<p>Virtual threads are <em>lightweight</em> JVM-managed threads. Many virtual threads are multiplexed onto a small pool of carrier (OS) threads. When a virtual thread blocks on I/O, it <em>unmounts</em> from its carrier thread (carrier thread is freed to run other virtual threads). When unblocked, it <em>mounts</em> again on any available carrier thread.</p>
+<p><strong>Limitations</strong>:</p>
+<ul>
+<li><strong>Pinning</strong>: virtual thread cannot unmount when inside a <code>synchronized</code> block or native method — the carrier thread is pinned. Use ReentrantLock instead of synchronized in virtual-thread-heavy code</li>
+<li><strong>CPU-bound work</strong>: virtual threads don't help — they still need a carrier. Use parallel streams or ForkJoinPool for CPU parallelism</li>
+<li><strong>ThreadLocal</strong>: not an issue for correctness but consider Scoped Values (JEP 446) for cleaner alternatives</li>
+</ul>
+<p>Best use: high-concurrency, I/O-bound applications (web servers, database-driven services). Replaces reactive programming boilerplate in many cases.</p>
+</div>
+</details>
+
+<details>
+<summary>Explain the SOLID principles with Java examples. <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p><strong>S — Single Responsibility</strong>: A class should have one reason to change. Separate UserRepository (persistence) from UserService (business logic) from UserController (HTTP).</p>
+<p><strong>O — Open/Closed</strong>: Open for extension, closed for modification. Add new payment methods by implementing PaymentProcessor interface, not modifying existing code.</p>
+<p><strong>L — Liskov Substitution</strong>: Subtypes must be substitutable for their base types. If a method accepts Shape, passing a Circle or Rectangle must work correctly.</p>
+<p><strong>I — Interface Segregation</strong>: Clients shouldn't depend on interfaces they don't use. Split a fat interface into ReadableRepository and WritableRepository.</p>
+<p><strong>D — Dependency Inversion</strong>: Depend on abstractions, not concretions. UserService should depend on UserRepository interface, not JpaUserRepository directly. Enables testing with mocks.</p>
+</div>
+</details>
+
+<details>
+<summary>What is type erasure and what are its practical implications? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>Type erasure means generic type parameters are erased at compile time. <code>List&lt;String&gt;</code> becomes <code>List</code> in bytecode. This preserves backward compatibility with pre-Java-5 code.</p>
+<p><strong>Implications</strong>:</p>
+<ul>
+<li>Cannot instantiate generic type: <code>new T()</code> illegal — use factory/Supplier&lt;T&gt; instead</li>
+<li>Cannot use instanceof: <code>obj instanceof List&lt;String&gt;</code> illegal</li>
+<li>Cannot create generic arrays: <code>new T[10]</code> illegal</li>
+<li>Cannot catch generic exception types</li>
+<li>At runtime, all generic types are raw types — heap pollution possible with unchecked casts</li>
+</ul>
+<p>Workaround: pass <code>Class&lt;T&gt; type</code> as a token, use TypeToken/ParameterizedType for reflection, use <code>@SuppressWarnings("unchecked")</code> carefully.</p>
+</div>
+</details>
+
+<details>
+<summary>Explain StampedLock and its advantages over ReadWriteLock. <span class="badge very-advanced">Very Advanced</span></summary>
+<div class="answer">
+<p>StampedLock (Java 8) provides three locking modes:</p>
+<ol>
+<li><strong>Writing</strong>: exclusive, returns stamp</li>
+<li><strong>Reading</strong>: non-exclusive shared, returns stamp</li>
+<li><strong>Optimistic Reading</strong>: does NOT acquire a lock — just checks if a write has occurred since</li>
+</ol>
+<p>Optimistic read is the key advantage: if no write happened, no lock overhead at all. Pattern:</p>
+<pre><code class="language-java">StampedLock lock = new StampedLock();
+double x, y; // shared state
+
+double distanceFromOrigin() {
+    long stamp = lock.tryOptimisticRead();
+    double curX = x, curY = y;            // read without lock
+    if (!lock.validate(stamp)) {          // check for concurrent write
+        stamp = lock.readLock();          // fall back to real read lock
+        try { curX = x; curY = y; }
+        finally { lock.unlockRead(stamp); }
+    }
+    return Math.sqrt(curX * curX + curY * curY);
+}</code></pre>
+<p>Advantages over ReadWriteLock: avoids lock overhead in the common case (no writes). Disadvantage: not reentrant (unlike ReentrantReadWriteLock), more complex API, can cause liveness issues if misused.</p>
+</div>
+</details>
+
+<details>
+<summary>How does JIT compilation work with tiered compilation? <span class="badge very-advanced">Very Advanced</span></summary>
+<div class="answer">
+<p>HotSpot uses tiered compilation (Java 7+, default in Java 8+):</p>
+<ul>
+<li><strong>Tier 0 — Interpreter</strong>: initial execution, collects method invocation counts and backedge counts (loops)</li>
+<li><strong>Tier 1 — C1 simple</strong>: fast compilation, no profiling code; used for rarely-called code</li>
+<li><strong>Tier 2 — C1 limited</strong>: with invocation and backedge counters</li>
+<li><strong>Tier 3 — C1 full</strong>: full profiling (type profiles, branch profiles)</li>
+<li><strong>Tier 4 — C2</strong>: profile-guided, aggressive optimizations — inlining, escape analysis (stack allocation), loop unrolling, dead code elimination, lock elision, devirtualization</li>
+</ul>
+<p>A method starts at Tier 0. Heavily used methods ("hot") get promoted to C1 quickly for fast compilation, then to C2 for maximum optimization. C2 uses profiling data to make speculative optimizations (with deoptimization traps if assumptions are violated — e.g., if a virtual call site becomes polymorphic).</p>
+<p>AOT (GraalVM Native Image) compiles ahead-of-time, eliminating JIT warmup at the cost of peak throughput and dynamic features.</p>
+</div>
+</details>
+
+<details>
+<summary>Explain Spring Boot auto-configuration mechanism in detail. <span class="badge very-advanced">Very Advanced</span></summary>
+<div class="answer">
+<p>Auto-configuration is driven by <code>@EnableAutoConfiguration</code> (included in <code>@SpringBootApplication</code>).</p>
+<p><strong>Mechanism</strong>:</p>
+<ol>
+<li>At startup, Spring Boot reads <code>META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports</code> (Spring Boot 2.7+) or <code>spring.factories</code></li>
+<li>These files list hundreds of <code>@AutoConfiguration</code> classes (e.g., <code>DataSourceAutoConfiguration</code>)</li>
+<li>Each auto-configuration class uses <code>@Conditional</code> annotations to decide whether to apply:
+  <ul>
+    <li><code>@ConditionalOnClass</code>: only if a class is on the classpath</li>
+    <li><code>@ConditionalOnMissingBean</code>: only if no bean of that type already defined</li>
+    <li><code>@ConditionalOnProperty</code>: only if a property has a specific value</li>
+    <li><code>@ConditionalOnWebApplication</code>: only in web context</li>
+  </ul>
+</li>
+<li>If conditions pass, beans are registered</li>
+</ol>
+<p>Example: if <code>spring-boot-starter-data-jpa</code> is on classpath, <code>HibernateJpaAutoConfiguration</code> fires, sees DataSource bean, creates EntityManagerFactory, TransactionManager, etc. — but only if you haven't defined your own.</p>
+<p>Debug with: <code>--debug</code> flag or <code>logging.level.org.springframework.boot.autoconfigure=DEBUG</code> to see the conditions report.</p>
+</div>
+</details>
+
+<footer>Java Comprehensive Reference — covers Java 17-21 LTS features and core platform concepts.</footer>
+</main>
+</div>
+<script>hljs.highlightAll();mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

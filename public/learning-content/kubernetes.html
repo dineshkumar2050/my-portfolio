@@ -1,0 +1,1583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kubernetes — Comprehensive Learning Reference</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6;display:flex;flex-direction:column}.topnav{background:#161b22;padding:10px 24px;border-bottom:1px solid #30363d;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100}.topnav a{color:#58a6ff;text-decoration:none;font-size:13px}.topnav h1{font-size:16px;color:#e6edf3;margin:0}.layout{display:flex;flex:1}.sidebar{width:260px;background:#161b22;border-right:1px solid #30363d;padding:16px;position:sticky;top:41px;height:calc(100vh - 41px);overflow-y:auto;flex-shrink:0}.sidebar a{display:block;padding:4px 8px;color:#8b949e;text-decoration:none;font-size:13px;border-radius:4px;margin-bottom:2px}.sidebar a:hover{background:#21262d;color:#c9d1d9}.sidebar .section-title{color:#58a6ff;font-size:11px;text-transform:uppercase;letter-spacing:.5px;margin:16px 0 6px;padding:0 8px;font-weight:600}main{flex:1;padding:32px 48px;max-width:960px}h1{font-size:2rem;color:#e6edf3;border-bottom:1px solid #30363d;padding-bottom:16px;margin-bottom:24px}h2{font-size:1.5rem;color:#e6edf3;margin:48px 0 16px;border-bottom:1px solid #21262d;padding-bottom:8px}h3{font-size:1.15rem;color:#79c0ff;margin:24px 0 10px}h4{font-size:1rem;color:#d2a8ff;margin:16px 0 8px}p{margin-bottom:12px}ul,ol{margin:0 0 16px 24px}li{margin-bottom:4px}pre{margin:16px 0;border-radius:6px;overflow-x:auto;font-size:13px}code:not(pre code){background:#161b22;padding:2px 6px;border-radius:4px;font-size:13px;color:#f0883e;border:1px solid #30363d}table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}th{background:#161b22;color:#58a6ff;padding:10px 14px;text-align:left;border:1px solid #30363d}td{padding:10px 14px;border:1px solid #30363d;vertical-align:top}tr:nth-child(even) td{background:#0a0d12}.mermaid{background:#161b22;padding:20px;border-radius:6px;margin:16px 0;text-align:center}details{border:1px solid #30363d;border-radius:6px;margin:10px 0;overflow:hidden}summary{padding:12px 16px;cursor:pointer;background:#161b22;color:#79c0ff;font-weight:600;list-style:none}details[open] summary{border-bottom:1px solid #30363d}.answer{padding:16px 20px;background:#0d1117}.badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:700;margin-left:8px}.easy{background:#1a4731;color:#3fb950}.intermediate{background:#2d2b00;color:#e3b341}.advanced{background:#3d1f00;color:#f0883e}.very-advanced{background:#3d0000;color:#ff7b72}.callout{background:#161b22;border-left:4px solid #58a6ff;padding:12px 16px;border-radius:0 6px 6px 0;margin:16px 0}footer{text-align:center;padding:24px;color:#8b949e;font-size:12px;border-top:1px solid #30363d;margin-top:40px}
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <h1>☸ Kubernetes — Comprehensive Learning Reference</h1>
+  <a href="docker.html">Docker</a>
+  <a href="cicd-jenkins.html">CI/CD & Jenkins</a>
+  <a href="aws.html">AWS</a>
+</nav>
+<div class="layout">
+<aside class="sidebar">
+  <div class="section-title">Architecture</div>
+  <a href="#architecture">Cluster Architecture</a>
+  <div class="section-title">Workloads</div>
+  <a href="#pods">Pods</a>
+  <a href="#replicasets">ReplicaSets</a>
+  <a href="#deployments">Deployments</a>
+  <a href="#statefulsets">StatefulSets</a>
+  <a href="#daemonsets">DaemonSets</a>
+  <a href="#jobs">Jobs & CronJobs</a>
+  <div class="section-title">Networking</div>
+  <a href="#services">Services</a>
+  <a href="#ingress">Ingress</a>
+  <a href="#network-policy">NetworkPolicies</a>
+  <a href="#networking-deep">Networking Deep Dive</a>
+  <div class="section-title">Config & Storage</div>
+  <a href="#configmaps">ConfigMaps & Secrets</a>
+  <a href="#storage">PV & PVC</a>
+  <div class="section-title">Security</div>
+  <a href="#rbac">RBAC</a>
+  <a href="#namespaces">Namespaces</a>
+  <div class="section-title">Scaling</div>
+  <a href="#hpa">HPA & VPA</a>
+  <a href="#scheduling">Scheduling</a>
+  <div class="section-title">Observability</div>
+  <a href="#probes">Probes</a>
+  <div class="section-title">Tools</div>
+  <a href="#helm">Helm</a>
+  <a href="#operators">Operators</a>
+  <a href="#service-mesh">Service Mesh (Istio)</a>
+  <a href="#versions">Version History</a>
+  <div class="section-title">Interview</div>
+  <a href="#interview">Q&amp;A</a>
+</aside>
+<main>
+<h1>Kubernetes — Comprehensive Learning Reference</h1>
+
+<!-- ============================================================ -->
+<h2 id="architecture">Cluster Architecture</h2>
+
+<div class="mermaid">
+graph TB
+  subgraph CP["Control Plane"]
+    API[kube-apiserver<br/>REST + Watch API]
+    ETCD[etcd<br/>Distributed Key-Value Store]
+    SCHED[kube-scheduler<br/>Pod Placement]
+    CM[kube-controller-manager<br/>Node/Replication/Endpoint controllers]
+    CCM[cloud-controller-manager<br/>LB / Storage / Routes]
+    API <--> ETCD
+    API --> SCHED
+    API --> CM
+    API --> CCM
+  end
+  subgraph W1["Worker Node 1"]
+    KL1[kubelet]
+    KP1[kube-proxy]
+    CRI1[Container Runtime<br/>containerd / CRI-O]
+    P1[Pod A]
+    P2[Pod B]
+    KL1 --> CRI1 --> P1 & P2
+    KP1 --> P1 & P2
+  end
+  subgraph W2["Worker Node 2"]
+    KL2[kubelet]
+    KP2[kube-proxy]
+    CRI2[Container Runtime]
+    P3[Pod C]
+    KL2 --> CRI2 --> P3
+  end
+  API <-->|node registration / pod spec| KL1 & KL2
+  API <-->|service rules| KP1 & KP2
+</div>
+
+<h3>Control Plane Components</h3>
+<table>
+  <tr><th>Component</th><th>Role</th><th>Notes</th></tr>
+  <tr><td><strong>kube-apiserver</strong></td><td>Central REST API hub — all requests go through here</td><td>Horizontally scalable; validates and persists to etcd</td></tr>
+  <tr><td><strong>etcd</strong></td><td>Distributed consistent key-value store for cluster state</td><td>Raft consensus; backup critical; leader election</td></tr>
+  <tr><td><strong>kube-scheduler</strong></td><td>Assigns pods to nodes based on constraints and resources</td><td>Filtering (taints, affinity, resources) then Scoring</td></tr>
+  <tr><td><strong>kube-controller-manager</strong></td><td>Runs control loops: Node, ReplicaSet, Deployment, Endpoint, Job, CronJob controllers</td><td>Watch-reconcile loop pattern</td></tr>
+  <tr><td><strong>cloud-controller-manager</strong></td><td>Cloud-provider-specific control: LBs, routes, node lifecycle</td><td>Separate from kube-controller-manager</td></tr>
+</table>
+
+<h3>Worker Node Components</h3>
+<table>
+  <tr><th>Component</th><th>Role</th></tr>
+  <tr><td><strong>kubelet</strong></td><td>Node agent; receives PodSpec from API server; manages container lifecycle via CRI</td></tr>
+  <tr><td><strong>kube-proxy</strong></td><td>Maintains network rules (iptables/ipvs) for Service IP routing on each node</td></tr>
+  <tr><td><strong>Container Runtime</strong></td><td>containerd (default), CRI-O — implements CRI interface</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<h2 id="pods">Pods</h2>
+<p>A Pod is the smallest deployable unit in Kubernetes — one or more containers sharing the same network namespace and storage.</p>
+
+<pre><code class="language-yaml">apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp
+  namespace: default
+  labels:
+    app: myapp
+    version: v1
+  annotations:
+    prometheus.io/scrape: "true"
+spec:
+  restartPolicy: Always  # Always | OnFailure | Never
+  serviceAccountName: myapp-sa
+  securityContext:          # Pod-level security
+    runAsNonRoot: true
+    runAsUser: 1000
+    fsGroup: 2000
+    seccompProfile:
+      type: RuntimeDefault
+
+  initContainers:           # Run to completion before main containers
+    - name: db-migrator
+      image: myapp:migrate
+      command: ["python", "manage.py", "migrate"]
+      env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets
+              key: url
+
+  containers:
+    - name: app
+      image: myapp:v1.2
+      ports:
+        - containerPort: 8080
+      resources:
+        requests:           # Scheduler uses this for placement
+          cpu: "100m"       # 100 millicores = 0.1 CPU
+          memory: "128Mi"
+        limits:             # Container is OOM-killed if exceeded
+          cpu: "500m"
+          memory: "512Mi"
+      env:
+        - name: NODE_ENV
+          value: production
+        - name: SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: app-secret
+              key: secret-key
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name  # Downward API
+      volumeMounts:
+        - name: config
+          mountPath: /etc/config
+          readOnly: true
+        - name: data
+          mountPath: /var/data
+      securityContext:      # Container-level security
+        allowPrivilegeEscalation: false
+        readOnlyRootFilesystem: true
+        capabilities:
+          drop: ["ALL"]
+      livenessProbe:
+        httpGet:
+          path: /healthz
+          port: 8080
+        initialDelaySeconds: 30
+        periodSeconds: 10
+        failureThreshold: 3
+      readinessProbe:
+        httpGet:
+          path: /ready
+          port: 8080
+        initialDelaySeconds: 5
+        periodSeconds: 5
+
+    # Sidecar container (K8s 1.28: native sidecar containers)
+    - name: log-shipper
+      image: fluent/fluent-bit
+      volumeMounts:
+        - name: logs
+          mountPath: /var/log/app
+
+  # Ephemeral containers (debugging - kubectl debug)
+  # Added via kubectl debug -it pod/myapp --image=busybox
+
+  volumes:
+    - name: config
+      configMap:
+        name: app-config
+    - name: data
+      persistentVolumeClaim:
+        claimName: app-pvc
+    - name: logs
+      emptyDir: {}          # Shared between containers in same pod</code></pre>
+
+<h3>Multi-Container Pod Patterns</h3>
+<table>
+  <tr><th>Pattern</th><th>Description</th><th>Example</th></tr>
+  <tr><td><strong>Sidecar</strong></td><td>Extends/enhances main container</td><td>Log shipper, proxy, secret refresher</td></tr>
+  <tr><td><strong>Ambassador</strong></td><td>Proxy to external service</td><td>twemproxy for Redis sharding</td></tr>
+  <tr><td><strong>Adapter</strong></td><td>Transforms output format</td><td>Prometheus exporter for legacy app</td></tr>
+  <tr><td><strong>Init Container</strong></td><td>Setup tasks before main app</td><td>DB migration, wait-for-service, config generation</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<h2 id="replicasets">ReplicaSets</h2>
+<p>Ensures a specified number of Pod replicas are running at any time. Usually managed by a Deployment, not directly.</p>
+<pre><code class="language-yaml">apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: myapp-rs
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: myapp       # Must match pod template labels
+  template:            # Pod template
+    metadata:
+      labels:
+        app: myapp
+    spec:
+      containers:
+        - name: app
+          image: myapp:v1</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="deployments">Deployments</h2>
+<p>Deployments manage ReplicaSets and provide declarative updates with rollout strategies.</p>
+
+<pre><code class="language-yaml">apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: myapp
+  strategy:
+    type: RollingUpdate    # or Recreate
+    rollingUpdate:
+      maxSurge: 2          # Extra pods during rollout (absolute or %)
+      maxUnavailable: 1    # Pods that can be unavailable (absolute or %)
+  revisionHistoryLimit: 10  # Number of old ReplicaSets to keep
+  minReadySeconds: 10       # Wait before considering pod available
+  template:
+    metadata:
+      labels:
+        app: myapp
+    spec:
+      containers:
+        - name: app
+          image: myapp:v2</code></pre>
+
+<h3>Deployment Commands</h3>
+<pre><code class="language-bash">kubectl rollout status deployment/myapp
+kubectl rollout history deployment/myapp
+kubectl rollout history deployment/myapp --revision=3
+kubectl rollout undo deployment/myapp              # Rollback to previous
+kubectl rollout undo deployment/myapp --to-revision=2
+kubectl rollout pause deployment/myapp             # Pause rollout (canary)
+kubectl rollout resume deployment/myapp            # Resume paused rollout
+kubectl set image deployment/myapp app=myapp:v3   # Trigger rollout
+kubectl scale deployment myapp --replicas=10</code></pre>
+
+<h3>Rolling Update vs Recreate</h3>
+<table>
+  <tr><th>Strategy</th><th>Behavior</th><th>Downtime</th><th>Use Case</th></tr>
+  <tr><td><strong>RollingUpdate</strong></td><td>Incrementally replaces pods</td><td>None</td><td>Default; most production cases</td></tr>
+  <tr><td><strong>Recreate</strong></td><td>Kills all old pods, then creates new</td><td>Yes</td><td>DB schema changes that are incompatible</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<h2 id="statefulsets">StatefulSets</h2>
+<p>For stateful applications requiring stable network IDs, ordered deployment/scaling, and persistent storage.</p>
+
+<pre><code class="language-yaml">apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres
+spec:
+  serviceName: postgres-headless   # Headless service for DNS
+  replicas: 3
+  selector:
+    matchLabels:
+      app: postgres
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      partition: 0               # Only update pods >= partition index
+  podManagementPolicy: OrderedReady  # or Parallel
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:15
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql/data
+  volumeClaimTemplates:          # Each pod gets its own PVC
+    - metadata:
+        name: data
+      spec:
+        accessModes: [ReadWriteOnce]
+        storageClassName: fast
+        resources:
+          requests:
+            storage: 10Gi</code></pre>
+
+<div class="callout">
+  <strong>StatefulSet guarantees:</strong>
+  <ul>
+    <li>Stable pod names: <code>postgres-0</code>, <code>postgres-1</code>, <code>postgres-2</code></li>
+    <li>Stable DNS: <code>postgres-0.postgres-headless.default.svc.cluster.local</code></li>
+    <li>Ordered scaling: pods are created/deleted in order (0,1,2... forward; 2,1,0 reverse)</li>
+    <li>Persistent storage per pod (PVC not deleted on pod deletion)</li>
+  </ul>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="daemonsets">DaemonSets</h2>
+<p>Ensures one Pod runs on every (or selected) nodes. Used for cluster-wide services.</p>
+<pre><code class="language-yaml">apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: node-exporter
+spec:
+  selector:
+    matchLabels:
+      app: node-exporter
+  template:
+    metadata:
+      labels:
+        app: node-exporter
+    spec:
+      tolerations:              # Run on control-plane nodes too
+        - key: node-role.kubernetes.io/control-plane
+          effect: NoSchedule
+      hostNetwork: true         # Use host network
+      hostPID: true
+      containers:
+        - name: node-exporter
+          image: prom/node-exporter
+          ports:
+            - containerPort: 9100
+              hostPort: 9100</code></pre>
+
+<p>Use cases: Log collectors (Fluentd/Filebeat), monitoring agents (Prometheus node exporter), CNI plugins, storage drivers, network overlays.</p>
+
+<!-- ============================================================ -->
+<h2 id="jobs">Jobs & CronJobs</h2>
+
+<pre><code class="language-yaml">apiVersion: batch/v1
+kind: Job
+metadata:
+  name: db-backup
+spec:
+  completions: 5          # Total successful completions needed
+  parallelism: 2          # Max pods running simultaneously
+  backoffLimit: 4         # Max retries before marking failed
+  activeDeadlineSeconds: 600  # Job timeout
+  ttlSecondsAfterFinished: 100  # Auto-cleanup after finish
+  template:
+    spec:
+      restartPolicy: OnFailure   # Never | OnFailure (not Always!)
+      containers:
+        - name: backup
+          image: backup-tool
+          command: ["backup.sh"]
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: daily-backup
+spec:
+  schedule: "0 2 * * *"         # Cron: 2am daily
+  concurrencyPolicy: Forbid     # Allow | Forbid | Replace
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+  startingDeadlineSeconds: 200  # Deadline to start missed job
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: backup
+              image: backup-tool</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="services">Services</h2>
+
+<table>
+  <tr><th>Type</th><th>Access</th><th>Use Case</th></tr>
+  <tr><td><strong>ClusterIP</strong> (default)</td><td>Internal cluster only via virtual IP</td><td>Internal microservice communication</td></tr>
+  <tr><td><strong>NodePort</strong></td><td>External via NodeIP:NodePort (30000-32767)</td><td>Dev/test, direct node access</td></tr>
+  <tr><td><strong>LoadBalancer</strong></td><td>External via cloud LB with public IP</td><td>Production external services</td></tr>
+  <tr><td><strong>ExternalName</strong></td><td>Maps to external DNS name via CNAME</td><td>External database, SaaS services</td></tr>
+</table>
+
+<pre><code class="language-yaml">apiVersion: v1
+kind: Service
+metadata:
+  name: myapp-svc
+spec:
+  type: ClusterIP              # ClusterIP | NodePort | LoadBalancer | ExternalName
+  selector:
+    app: myapp                 # Routes to pods with this label
+  ports:
+    - name: http
+      port: 80                 # Service port
+      targetPort: 8080         # Pod port
+      protocol: TCP
+  sessionAffinity: ClientIP   # None | ClientIP (sticky sessions)
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 10800
+---
+# Headless service (no ClusterIP) — direct pod DNS
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-headless
+spec:
+  clusterIP: None             # Headless!
+  selector:
+    app: postgres
+  ports:
+    - port: 5432
+---
+# NodePort
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+      targetPort: 8080
+      nodePort: 30080         # Optional; auto-assigned if omitted
+---
+# LoadBalancer with AWS NLB annotation
+metadata:
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+spec:
+  type: LoadBalancer
+  externalTrafficPolicy: Local  # Preserve client IP; Local | Cluster</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="ingress">Ingress</h2>
+<p>Manages external HTTP/HTTPS access to services with path-based and host-based routing, TLS termination, and more.</p>
+
+<pre><code class="language-yaml">apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: myapp-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/rate-limit: "100"
+    nginx.ingress.kubernetes.io/proxy-body-size: "100m"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - api.example.com
+        - www.example.com
+      secretName: example-tls-secret     # TLS cert stored as Secret
+  rules:
+    - host: api.example.com
+      http:
+        paths:
+          - path: /v1/users
+            pathType: Prefix             # Prefix | Exact | ImplementationSpecific
+            backend:
+              service:
+                name: user-service
+                port:
+                  number: 80
+          - path: /v1/orders
+            pathType: Prefix
+            backend:
+              service:
+                name: order-service
+                port:
+                  number: 80
+    - host: www.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend
+                port:
+                  number: 80</code></pre>
+
+<h3>Popular Ingress Controllers</h3>
+<table>
+  <tr><th>Controller</th><th>Notes</th></tr>
+  <tr><td><strong>NGINX Ingress</strong></td><td>Most widely used; rich annotations; good performance</td></tr>
+  <tr><td><strong>Traefik</strong></td><td>Auto-discovery via K8s CRDs; built-in Let's Encrypt; middleware support</td></tr>
+  <tr><td><strong>AWS ALB Ingress (Load Balancer Controller)</strong></td><td>Provisions ALB; native AWS WAF integration</td></tr>
+  <tr><td><strong>HAProxy</strong></td><td>High performance; ACL-based routing</td></tr>
+  <tr><td><strong>Kong</strong></td><td>API gateway features; plugins</td></tr>
+  <tr><td><strong>Istio Gateway</strong></td><td>Service mesh integrated; advanced traffic management</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<h2 id="configmaps">ConfigMaps & Secrets</h2>
+
+<pre><code class="language-yaml">apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  APP_ENV: production
+  LOG_LEVEL: info
+  config.yaml: |
+    server:
+      port: 8080
+      timeout: 30s
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: app-secret
+type: Opaque                      # Opaque | kubernetes.io/tls | kubernetes.io/dockerconfigjson
+data:
+  db-password: cGFzc3dvcmQ=      # base64 encoded
+  api-key: c2VjcmV0a2V5          # echo -n "secretkey" | base64
+stringData:                       # Auto-encoded (takes plain text)
+  new-secret: "plaintext-value"</code></pre>
+
+<pre><code class="language-yaml"># Using ConfigMap and Secret in a Pod
+spec:
+  containers:
+    - name: app
+      # Method 1: As environment variables (individual keys)
+      env:
+        - name: APP_ENV
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: APP_ENV
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: app-secret
+              key: db-password
+      # Method 2: All keys as env vars
+      envFrom:
+        - configMapRef:
+            name: app-config
+        - secretRef:
+            name: app-secret
+      volumeMounts:
+        - name: config-vol
+          mountPath: /etc/config
+          readOnly: true
+  volumes:
+    # Method 3: Volume mount (updates when ConfigMap changes)
+    - name: config-vol
+      configMap:
+        name: app-config
+        items:
+          - key: config.yaml
+            path: config.yaml</code></pre>
+
+<div class="callout">
+  <strong>Secrets are NOT encrypted by default!</strong> They are only base64-encoded. For real security:
+  <ul>
+    <li>Enable <strong>Encryption at Rest</strong> for etcd (EncryptionConfiguration)</li>
+    <li>Use <strong>Sealed Secrets</strong> (Bitnami) — encrypt with cluster public key</li>
+    <li>Use <strong>External Secrets Operator</strong> — sync from AWS Secrets Manager / HashiCorp Vault</li>
+    <li>Use <strong>CSI Secret Store Driver</strong> — mount secrets from external store</li>
+  </ul>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="storage">PersistentVolumes & PVCs</h2>
+
+<pre><code class="language-yaml">apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: my-pv
+spec:
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteOnce        # RWO: single node RW
+    # - ReadOnlyMany       # ROX: multiple nodes RO
+    # - ReadWriteMany      # RWX: multiple nodes RW (NFS, EFS)
+    # - ReadWriteOncePod   # K8s 1.22: single pod RW (strict)
+  persistentVolumeReclaimPolicy: Retain   # Retain | Recycle (deprecated) | Delete
+  storageClassName: fast
+  volumeMode: Filesystem   # Filesystem | Block
+  csi:
+    driver: ebs.csi.aws.com
+    volumeHandle: vol-0abcd1234efgh5678
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: my-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: fast   # Must match PV or StorageClass
+  resources:
+    requests:
+      storage: 50Gi
+---
+# StorageClass for dynamic provisioning
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: fast
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "true"
+provisioner: ebs.csi.aws.com
+parameters:
+  type: gp3
+  iopsPerGB: "10"
+  fsType: ext4
+reclaimPolicy: Delete
+allowVolumeExpansion: true
+volumeBindingMode: WaitForFirstConsumer   # Topology-aware provisioning</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="namespaces">Namespaces</h2>
+<pre><code class="language-bash">kubectl create namespace dev
+kubectl get namespaces
+kubectl config set-context --current --namespace=dev   # Set default ns
+kubectl get pods -n kube-system                         # Specify namespace
+kubectl get pods --all-namespaces                       # All namespaces
+kubectl apply -f manifest.yaml -n dev</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="rbac">RBAC</h2>
+
+<pre><code class="language-yaml"># Role — namespace-scoped
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: pod-reader
+  namespace: default
+rules:
+  - apiGroups: [""]                # "" = core API group
+    resources: ["pods", "pods/log"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["apps"]
+    resources: ["deployments"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+---
+# ClusterRole — cluster-scoped (or referenced from any namespace)
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: secret-reader
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["get", "list"]
+---
+# RoleBinding — bind Role/ClusterRole to subjects in a namespace
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: read-pods
+  namespace: default
+subjects:
+  - kind: User
+    name: jane
+    apiGroup: rbac.authorization.k8s.io
+  - kind: Group
+    name: dev-team
+    apiGroup: rbac.authorization.k8s.io
+  - kind: ServiceAccount
+    name: myapp-sa
+    namespace: default
+roleRef:
+  kind: Role           # Role | ClusterRole
+  name: pod-reader
+  apiGroup: rbac.authorization.k8s.io
+---
+# ServiceAccount
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: myapp-sa
+  namespace: default
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::123456789:role/MyRole  # IRSA</code></pre>
+
+<pre><code class="language-bash">kubectl auth can-i create pods --as=jane
+kubectl auth can-i create pods --as=jane --namespace=prod
+kubectl auth can-i --list --as=jane</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="hpa">HPA, VPA & PodDisruptionBudget</h2>
+
+<pre><code class="language-yaml">apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: myapp-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: myapp
+  minReplicas: 2
+  maxReplicas: 20
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: AverageValue
+          averageValue: 512Mi
+    # Custom metric (requires custom metrics API / KEDA)
+    - type: Pods
+      pods:
+        metric:
+          name: http_requests_per_second
+        target:
+          type: AverageValue
+          averageValue: 1000
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 300   # Wait 5min before scale-down
+      policies:
+        - type: Percent
+          value: 10
+          periodSeconds: 60
+    scaleUp:
+      stabilizationWindowSeconds: 0
+      policies:
+        - type: Pods
+          value: 4
+          periodSeconds: 15
+---
+# PodDisruptionBudget — limits voluntary disruptions
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: myapp-pdb
+spec:
+  minAvailable: 2        # or maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: myapp</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="scheduling">Taints, Tolerations, Affinity & Priority</h2>
+
+<pre><code class="language-yaml"># Taints — added to nodes (repel pods)
+# kubectl taint nodes node1 key=value:NoSchedule
+# kubectl taint nodes node1 key=value:NoExecute
+# kubectl taint nodes node1 key=value:PreferNoSchedule
+
+spec:
+  # Tolerations — allow pod to be scheduled on tainted nodes
+  tolerations:
+    - key: "dedicated"
+      operator: "Equal"     # Equal | Exists
+      value: "gpu"
+      effect: "NoSchedule"  # NoSchedule | NoExecute | PreferNoSchedule
+
+  # Node Affinity — schedule pods on specific nodes
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:  # Hard
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: node.kubernetes.io/instance-type
+                operator: In
+                values: ["m5.xlarge", "m5.2xlarge"]
+      preferredDuringSchedulingIgnoredDuringExecution: # Soft
+        - weight: 1
+          preference:
+            matchExpressions:
+              - key: zone
+                operator: In
+                values: ["us-east-1a"]
+
+    # Pod Affinity — co-locate pods
+    podAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchLabels:
+              app: cache
+          topologyKey: kubernetes.io/hostname  # Same node
+
+    # Pod Anti-Affinity — spread pods across nodes
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchLabels:
+                app: myapp
+            topologyKey: kubernetes.io/hostname  # Different nodes
+---
+# Priority Class
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: high-priority
+value: 1000000
+globalDefault: false
+description: "High priority workloads"
+preemptionPolicy: PreemptLowerPriority</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="probes">Liveness, Readiness & Startup Probes</h2>
+
+<table>
+  <tr><th>Probe</th><th>Purpose</th><th>Action on Failure</th></tr>
+  <tr><td><strong>Liveness</strong></td><td>Is the container running? Detect deadlocks</td><td>Restart container</td></tr>
+  <tr><td><strong>Readiness</strong></td><td>Is the container ready to serve traffic?</td><td>Remove from Service endpoints (no restart)</td></tr>
+  <tr><td><strong>Startup</strong></td><td>Has the application started? (slow starters)</td><td>Restart container; disables liveness during startup</td></tr>
+</table>
+
+<pre><code class="language-yaml">livenessProbe:
+  httpGet:              # HTTP GET — 2xx/3xx = success
+    path: /healthz
+    port: 8080
+    httpHeaders:
+      - name: X-Health-Check
+        value: "true"
+  initialDelaySeconds: 30   # Wait before first probe
+  periodSeconds: 10          # How often to probe
+  timeoutSeconds: 5          # Probe timeout
+  successThreshold: 1        # Consecutive successes to mark healthy
+  failureThreshold: 3        # Consecutive failures to take action
+
+readinessProbe:
+  tcpSocket:            # TCP check — connection established = success
+    port: 5432
+  periodSeconds: 10
+  failureThreshold: 3
+
+startupProbe:
+  exec:                 # Execute command — exit 0 = success
+    command:
+      - /bin/sh
+      - -c
+      - "cat /tmp/ready"
+  failureThreshold: 30  # 30 * 10s = 300s for slow starts
+  periodSeconds: 10
+
+# gRPC probe (K8s 1.24+)
+livenessProbe:
+  grpc:
+    port: 50051
+    service: "grpc.health.v1.Health"</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="network-policy">NetworkPolicies</h2>
+
+<pre><code class="language-yaml">apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: app-network-policy
+  namespace: production
+spec:
+  podSelector:              # Apply to pods with this label
+    matchLabels:
+      app: myapp
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - namespaceSelector:   # Allow from specific namespace
+            matchLabels:
+              name: frontend
+        - podSelector:          # OR from specific pods
+            matchLabels:
+              role: api-gateway
+      ports:
+        - protocol: TCP
+          port: 8080
+  egress:
+    - to:
+        - podSelector:
+            matchLabels:
+              app: postgres
+      ports:
+        - protocol: TCP
+          port: 5432
+    - to:                      # Allow DNS
+        - namespaceSelector: {}
+      ports:
+        - protocol: UDP
+          port: 53</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="networking-deep">Networking Deep Dive</h2>
+
+<h3>CNI (Container Network Interface)</h3>
+<table>
+  <tr><th>Plugin</th><th>Features</th><th>Networking Mode</th></tr>
+  <tr><td><strong>Calico</strong></td><td>NetworkPolicy support, BGP routing, eBPF dataplane</td><td>Layer 3 (BGP) or overlay</td></tr>
+  <tr><td><strong>Flannel</strong></td><td>Simple, widely used; limited NetworkPolicy</td><td>VXLAN overlay</td></tr>
+  <tr><td><strong>Cilium</strong></td><td>eBPF-based, L7 policy, Hubble observability, service mesh</td><td>eBPF (no iptables)</td></tr>
+  <tr><td><strong>WeaveNet</strong></td><td>Simple setup, encryption</td><td>Overlay (VXLAN/UDP)</td></tr>
+  <tr><td><strong>AWS VPC CNI</strong></td><td>Native VPC IPs for pods (no overlay)</td><td>L3 routing via ENI</td></tr>
+</table>
+
+<h3>Pod-to-Pod Communication</h3>
+<ul>
+  <li>Each Pod gets a unique cluster-wide IP (from Pod CIDR)</li>
+  <li>Pods on the same node communicate via a virtual ethernet pair (veth)</li>
+  <li>Pods on different nodes communicate via CNI plugin (overlay or BGP routing)</li>
+</ul>
+
+<h3>kube-proxy Modes</h3>
+<table>
+  <tr><th>Mode</th><th>Mechanism</th><th>Performance</th></tr>
+  <tr><td><strong>iptables</strong> (default)</td><td>Chains of iptables rules for Service IPs</td><td>O(n) rule matching; degrades at scale</td></tr>
+  <tr><td><strong>ipvs</strong></td><td>Linux Virtual Server (kernel hash tables)</td><td>O(1); better at scale; multiple LB algorithms</td></tr>
+  <tr><td><strong>nftables</strong> (K8s 1.29)</td><td>Modern netfilter framework</td><td>Better performance than iptables</td></tr>
+</table>
+
+<h3>CoreDNS</h3>
+<p>Cluster DNS server. Service DNS format: <code>&lt;service&gt;.&lt;namespace&gt;.svc.cluster.local</code></p>
+<p>Pod DNS: <code>10-244-1-5.default.pod.cluster.local</code></p>
+
+<!-- ============================================================ -->
+<h2 id="helm">Helm</h2>
+
+<pre><code class="language-bash"># Helm v3 commands
+helm repo add stable https://charts.helm.sh/stable
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo update
+
+helm search repo nginx
+helm search hub wordpress              # Search Artifact Hub
+
+helm install my-nginx nginx/nginx-ingress \
+  --namespace ingress \
+  --create-namespace \
+  --values custom-values.yaml \
+  --set controller.replicaCount=2
+
+helm upgrade my-nginx nginx/nginx-ingress \
+  --values custom-values.yaml \
+  --atomic \                    # Rollback on failure
+  --cleanup-on-fail \
+  --timeout 5m
+
+helm rollback my-nginx 1        # Roll back to revision 1
+helm uninstall my-nginx -n ingress
+helm list --all-namespaces
+helm status my-nginx
+helm get values my-nginx        # Show deployed values
+helm get manifest my-nginx      # Show rendered manifests
+helm template . --values values.yaml  # Render locally (dry-run)</code></pre>
+
+<h3>Chart Structure</h3>
+<pre><code class="language-text">mychart/
+  Chart.yaml          # Chart metadata (name, version, description)
+  values.yaml         # Default values
+  values.prod.yaml    # Environment overrides
+  charts/             # Dependency charts (subcharts)
+  templates/
+    deployment.yaml
+    service.yaml
+    ingress.yaml
+    _helpers.tpl      # Template helpers/partials
+    NOTES.txt         # Post-install notes
+  .helmignore</code></pre>
+
+<pre><code class="language-yaml"># templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mychart.fullname" . }}
+  labels:
+    {{- include "mychart.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  {{- if .Values.autoscaling.enabled }}
+  # Don't set replicas when HPA is enabled
+  {{- end }}
+  template:
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="operators">Operators</h2>
+<p>An Operator extends Kubernetes with domain-specific knowledge using Custom Resource Definitions (CRDs) + custom controllers.</p>
+
+<pre><code class="language-yaml"># Custom Resource Definition
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: postgresclusters.database.example.com
+spec:
+  group: database.example.com
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                replicas:
+                  type: integer
+                version:
+                  type: string
+  scope: Namespaced
+  names:
+    plural: postgresclusters
+    singular: postgrescluster
+    kind: PostgresCluster
+---
+# Custom Resource instance
+apiVersion: database.example.com/v1
+kind: PostgresCluster
+metadata:
+  name: my-postgres
+spec:
+  replicas: 3
+  version: "15"</code></pre>
+
+<p>Popular Operators: Prometheus Operator, Cert-Manager, Strimzi (Kafka), CloudNative PG, Argo CD, Jaeger Operator.</p>
+
+<!-- ============================================================ -->
+<h2 id="service-mesh">Service Mesh (Istio)</h2>
+
+<div class="mermaid">
+graph LR
+  subgraph Pod1["Pod: Service A"]
+    A[App A]
+    PA[Envoy Proxy]
+  end
+  subgraph Pod2["Pod: Service B"]
+    B[App B]
+    PB[Envoy Proxy]
+  end
+  subgraph CP["Istio Control Plane"]
+    IS[istiod<br/>Pilot + Citadel + Galley]
+  end
+  PA <-->|mTLS| PB
+  IS -->|xDS config| PA & PB
+</div>
+
+<pre><code class="language-yaml"># VirtualService — traffic routing
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: myapp
+spec:
+  hosts:
+    - myapp
+  http:
+    - match:
+        - headers:
+            x-canary:
+              exact: "true"
+      route:
+        - destination:
+            host: myapp
+            subset: v2
+    - route:                    # Default: traffic split
+        - destination:
+            host: myapp
+            subset: v1
+          weight: 90
+        - destination:
+            host: myapp
+            subset: v2
+          weight: 10
+      retries:
+        attempts: 3
+        perTryTimeout: 2s
+      timeout: 10s
+---
+# DestinationRule — load balancing + circuit breaking
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: myapp
+spec:
+  host: myapp
+  trafficPolicy:
+    connectionPool:
+      tcp:
+        maxConnections: 100
+      http:
+        h2UpgradePolicy: UPGRADE
+        http1MaxPendingRequests: 100
+    outlierDetection:           # Circuit breaker
+      consecutiveGatewayErrors: 5
+      interval: 30s
+      baseEjectionTime: 30s
+      maxEjectionPercent: 50
+  subsets:
+    - name: v1
+      labels:
+        version: v1
+    - name: v2
+      labels:
+        version: v2</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="versions">K8s Version History (1.24-1.29)</h2>
+<table>
+  <tr><th>Version</th><th>Key Changes</th></tr>
+  <tr><td><strong>1.24</strong></td><td>Dockershim removed (use containerd/CRI-O); Service account token secrets not auto-created</td></tr>
+  <tr><td><strong>1.25</strong></td><td>PodSecurityPolicy removed → Pod Security Admission; cgroups v2 GA</td></tr>
+  <tr><td><strong>1.26</strong></td><td>CPUManager policy options GA; Stable APIs for autoscaling/v2; Dynamic Resource Allocation alpha</td></tr>
+  <tr><td><strong>1.27</strong></td><td>SeccompDefault GA; In-place pod resource resize alpha; HPA configurable scale-down behavior GA</td></tr>
+  <tr><td><strong>1.28</strong></td><td>Sidecar containers native support alpha; PodHealthyPolicy for Job; Improved retroactive scheduling</td></tr>
+  <tr><td><strong>1.29</strong></td><td>ReadWriteOncePod GA; nftables kube-proxy mode; Load balancer IP mode for Services; KMS v2 encryption GA</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<h2 id="interview">Interview Q&amp;A</h2>
+
+<details>
+  <summary>Q1: What is Kubernetes and why is it needed? <span class="badge easy">Easy</span></summary>
+  <div class="answer">
+    <p>Kubernetes is an open-source container orchestration platform that automates deployment, scaling, and management of containerized applications. Originally from Google (Borg/Omega internally), donated to CNCF.</p>
+    <p><strong>Why needed:</strong> Containers alone don't provide HA, auto-scaling, self-healing, service discovery, rolling updates, or secret management. Kubernetes provides all of these.</p>
+    <p><strong>Key capabilities:</strong> Auto-scaling (HPA/VPA), self-healing (restarts failed containers), service discovery (DNS), rolling updates with zero downtime, bin packing (efficient resource use), declarative config (desired state).</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q2: What is the difference between a Pod, Deployment, and StatefulSet? <span class="badge easy">Easy</span></summary>
+  <div class="answer">
+    <p><strong>Pod:</strong> Smallest deployable unit. One or more containers sharing network/storage. Ephemeral — if a pod dies, it's gone.</p>
+    <p><strong>Deployment:</strong> Manages ReplicaSets to maintain desired number of Pod replicas. Supports rolling updates and rollbacks. Use for stateless apps.</p>
+    <p><strong>StatefulSet:</strong> Like Deployment but for stateful apps. Provides stable network identifiers (pod-0, pod-1), stable persistent storage per pod, ordered deployment/scaling. Use for databases, Kafka, ZooKeeper.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q3: What is the difference between liveness and readiness probes? <span class="badge easy">Easy</span></summary>
+  <div class="answer">
+    <p><strong>Liveness:</strong> Checks if the container is alive (no deadlock/crash). Failure → container is restarted. Use for detecting hangs.</p>
+    <p><strong>Readiness:</strong> Checks if the container is ready to serve traffic. Failure → pod is removed from Service endpoints (NOT restarted). Use for startup delays, temporary unavailability.</p>
+    <p><strong>Startup:</strong> Checks if app has started (for slow starters). Disables liveness/readiness during startup period. Failure → container restarted.</p>
+    <p><strong>Critical difference:</strong> Failing liveness restarts the container. Failing readiness only removes it from load balancing.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q4: How does Service discovery work in Kubernetes? <span class="badge easy">Easy</span></summary>
+  <div class="answer">
+    <p>Kubernetes uses <strong>CoreDNS</strong> for service discovery.</p>
+    <p>When a Service is created, CoreDNS creates a DNS record: <code>&lt;service-name&gt;.&lt;namespace&gt;.svc.cluster.local</code></p>
+    <p>Services also get a <strong>ClusterIP</strong> (virtual IP). kube-proxy maintains iptables/ipvs rules to route traffic to actual pod IPs.</p>
+    <p>Pods can reach services by short name (within same namespace) or FQDN.</p>
+    <p><strong>Headless services</strong> (clusterIP: None) return pod IPs directly instead of a virtual IP, useful for StatefulSets.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q5: What is a Namespace and what are its use cases? <span class="badge easy">Easy</span></summary>
+  <div class="answer">
+    <p>Namespaces provide virtual cluster isolation within a physical cluster. Resources in different namespaces are isolated but can communicate if allowed.</p>
+    <p><strong>Use cases:</strong></p>
+    <ul>
+      <li>Environment separation (dev/staging/prod in same cluster)</li>
+      <li>Team isolation (team-a/team-b)</li>
+      <li>Resource quotas per team/environment</li>
+      <li>RBAC scoping</li>
+    </ul>
+    <p><strong>Not isolated:</strong> Nodes, PersistentVolumes, StorageClasses, ClusterRoles are cluster-scoped.</p>
+    <p><strong>Default namespaces:</strong> default, kube-system, kube-public, kube-node-lease</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q6: Explain the difference between ClusterIP, NodePort, and LoadBalancer services <span class="badge intermediate">Intermediate</span></summary>
+  <div class="answer">
+    <p><strong>ClusterIP:</strong> Reachable only inside cluster via virtual IP. Default type. Used for inter-service communication.</p>
+    <p><strong>NodePort:</strong> Exposes service on a static port (30000-32767) on every node's IP. Any NodeIP:NodePort reaches the service. Not suitable for production external access.</p>
+    <p><strong>LoadBalancer:</strong> Provisions a cloud load balancer (AWS ELB, GCP LB). Gets an external IP. Built on top of NodePort + ClusterIP. Most production external traffic.</p>
+    <p><strong>ExternalName:</strong> CNAME alias to external service. No proxying.</p>
+    <p><strong>Ingress:</strong> Not a service type but routes HTTP/HTTPS traffic to multiple services via single LB. Much more cost-effective than one LB per service.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q7: What is RBAC and how does it work in Kubernetes? <span class="badge intermediate">Intermediate</span></summary>
+  <div class="answer">
+    <p>Role-Based Access Control controls who can do what to which resources.</p>
+    <p><strong>Components:</strong></p>
+    <ul>
+      <li><strong>Role</strong> — Namespace-scoped permissions (verbs on resources)</li>
+      <li><strong>ClusterRole</strong> — Cluster-scoped permissions (also used across namespaces)</li>
+      <li><strong>RoleBinding</strong> — Assigns Role/ClusterRole to subjects in a namespace</li>
+      <li><strong>ClusterRoleBinding</strong> — Assigns ClusterRole cluster-wide</li>
+      <li><strong>Subjects:</strong> Users, Groups, ServiceAccounts</li>
+    </ul>
+    <p><strong>Principle of least privilege:</strong> Always grant minimum permissions needed. Use ServiceAccounts per workload, not shared accounts.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q8: How does Kubernetes handle rolling updates and how would you rollback? <span class="badge intermediate">Intermediate</span></summary>
+  <div class="answer">
+    <p>Rolling updates replace pods incrementally based on <code>maxSurge</code> and <code>maxUnavailable</code>:</p>
+    <ol>
+      <li>Kubernetes creates new ReplicaSet with new image</li>
+      <li>Scales up new RS by maxSurge pods</li>
+      <li>Waits for new pods to be ready (readiness probe)</li>
+      <li>Scales down old RS by maxUnavailable pods</li>
+      <li>Repeats until all pods are new</li>
+    </ol>
+    <p><strong>Rollback:</strong></p>
+    <pre><code class="language-bash">kubectl rollout undo deployment/myapp
+kubectl rollout undo deployment/myapp --to-revision=3
+kubectl rollout history deployment/myapp</code></pre>
+    <p>Old ReplicaSets are retained (controlled by revisionHistoryLimit) to enable rollback.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q9: What is a ConfigMap vs Secret and what are the security concerns? <span class="badge intermediate">Intermediate</span></summary>
+  <div class="answer">
+    <p><strong>ConfigMap:</strong> Non-sensitive configuration data. Stored in plain text in etcd.</p>
+    <p><strong>Secret:</strong> Sensitive data. Stored as base64-encoded in etcd (NOT encrypted by default!).</p>
+    <p><strong>Security concerns with Secrets:</strong></p>
+    <ul>
+      <li>base64 is NOT encryption — anyone with etcd access can read secrets</li>
+      <li>Secrets are visible in pod specs and environment variables</li>
+    </ul>
+    <p><strong>Best practices:</strong></p>
+    <ul>
+      <li>Enable etcd encryption at rest (EncryptionConfiguration)</li>
+      <li>Use Sealed Secrets or External Secrets Operator</li>
+      <li>Mount as volumes (not env vars) — less risk of accidental logging</li>
+      <li>Use RBAC to restrict Secret access</li>
+      <li>Rotate secrets regularly</li>
+    </ul>
+  </div>
+</details>
+
+<details>
+  <summary>Q10: What is the difference between DaemonSet and Deployment? <span class="badge intermediate">Intermediate</span></summary>
+  <div class="answer">
+    <p><strong>Deployment:</strong> Runs a specified number of pod replicas distributed across nodes. Pods can be on any node. Scale by changing replica count. For application workloads.</p>
+    <p><strong>DaemonSet:</strong> Ensures exactly one pod runs on every (or filtered) node. When nodes are added, pods are automatically added. Used for cluster-wide infrastructure: log collectors, monitoring agents, network plugins, storage drivers.</p>
+    <p>DaemonSet pods bypass the normal scheduler for node assignment.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q11: How does HPA work? What metrics does it use? <span class="badge intermediate">Intermediate</span></summary>
+  <div class="answer">
+    <p>HPA (Horizontal Pod Autoscaler) automatically scales pod replicas based on observed metrics.</p>
+    <p><strong>Control loop (every 15s by default):</strong></p>
+    <ol>
+      <li>HPA controller queries metrics server (or custom metrics API)</li>
+      <li>Calculates desired replicas: <code>ceil(current * current_metric / desired_metric)</code></li>
+      <li>Updates Deployment/ReplicaSet replica count</li>
+    </ol>
+    <p><strong>Metric types:</strong></p>
+    <ul>
+      <li>Resource: CPU/memory utilization (from metrics-server)</li>
+      <li>Pods: custom per-pod metrics (Prometheus Adapter)</li>
+      <li>Object: metrics from specific K8s objects</li>
+      <li>External: metrics from outside K8s (SQS queue depth via KEDA)</li>
+    </ul>
+    <p><strong>Gotcha:</strong> HPA requires metrics-server installed. Won't work without it.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q12: What is etcd and why is it critical to Kubernetes? <span class="badge advanced">Advanced</span></summary>
+  <div class="answer">
+    <p>etcd is a distributed, consistent key-value store using the Raft consensus algorithm. It stores ALL cluster state: pod specs, deployments, secrets, configmaps, service endpoints, RBAC rules.</p>
+    <p><strong>Critical because:</strong> All kube-apiserver state is stored here. If etcd is corrupted, the cluster is broken. etcd is the single source of truth.</p>
+    <p><strong>Best practices:</strong></p>
+    <ul>
+      <li>Run etcd on dedicated nodes (separate from control plane)</li>
+      <li>Use 3 or 5 members (always odd for quorum)</li>
+      <li>Regular backups: <code>etcdctl snapshot save</code></li>
+      <li>Enable TLS encryption</li>
+      <li>SSD storage (latency-sensitive)</li>
+    </ul>
+  </div>
+</details>
+
+<details>
+  <summary>Q13: Explain Kubernetes networking — how do pods on different nodes communicate? <span class="badge advanced">Advanced</span></summary>
+  <div class="answer">
+    <p>Kubernetes requires every pod to have a routable IP in the cluster network. Pods on different nodes communicate without NAT.</p>
+    <p><strong>Implementation (depends on CNI):</strong></p>
+    <p><strong>Overlay (Flannel VXLAN):</strong></p>
+    <ol>
+      <li>Pod A (node1, 10.244.1.5) sends packet to Pod B (node2, 10.244.2.8)</li>
+      <li>Flannel encapsulates packet in VXLAN (UDP port 8472)</li>
+      <li>Outer packet: node1 IP → node2 IP</li>
+      <li>node2 decapsulates and delivers to Pod B</li>
+    </ol>
+    <p><strong>No-overlay (Calico BGP):</strong></p>
+    <ol>
+      <li>Each node advertises its pod CIDR via BGP</li>
+      <li>Packets routed directly at L3 — no encapsulation overhead</li>
+    </ol>
+    <p><strong>AWS VPC CNI:</strong> Each pod gets a real VPC IP (from ENI secondary IPs). No overlay needed — native VPC routing.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q14: What is Helm and what problem does it solve? <span class="badge intermediate">Intermediate</span></summary>
+  <div class="answer">
+    <p>Helm is the package manager for Kubernetes. It solves the problem of managing complex K8s applications that span many YAML files.</p>
+    <p><strong>Problems solved:</strong></p>
+    <ul>
+      <li>Templating — parameterize manifests for different environments</li>
+      <li>Versioning — chart versions track application packaging changes</li>
+      <li>Dependency management — include dependencies (subcharts)</li>
+      <li>Release management — upgrade/rollback with history tracking</li>
+      <li>Packaging — distribute applications as charts</li>
+    </ul>
+    <p><strong>Helm v3 vs v2:</strong> v3 removed Tiller (server-side component). Security and simplification improvement.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q15: What are Init Containers and when would you use them? <span class="badge intermediate">Intermediate</span></summary>
+  <div class="answer">
+    <p>Init containers run to completion before any app containers start. Multiple init containers run sequentially.</p>
+    <p><strong>Use cases:</strong></p>
+    <ul>
+      <li>Wait for dependencies: <code>wait-for-database</code>, <code>wait-for-kafka</code></li>
+      <li>DB migrations before app starts</li>
+      <li>Clone git repo, fetch configuration</li>
+      <li>Register with service mesh, generate TLS certs</li>
+      <li>Permissions setup: <code>chmod</code>, <code>chown</code></li>
+    </ul>
+    <p><strong>Key properties:</strong> Must complete successfully for app container to start. If init container fails, pod restarts (per restartPolicy). They have different resource limits from app containers.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q16: What is a NetworkPolicy and how does it differ from a firewall? <span class="badge advanced">Advanced</span></summary>
+  <div class="answer">
+    <p>NetworkPolicy is a Kubernetes resource that controls ingress/egress traffic between pods using label selectors. Implemented by the CNI plugin.</p>
+    <p><strong>Key differences from traditional firewall:</strong></p>
+    <ul>
+      <li>Identity-based (pod labels, namespace labels) not just IP-based</li>
+      <li>Dynamic — automatically updates as pods scale</li>
+      <li>Declarative K8s resource, version-controlled</li>
+      <li>Applied by CNI plugin (Calico, Cilium, Weave)</li>
+    </ul>
+    <p><strong>Important:</strong> NetworkPolicies are additive. If no NetworkPolicy selects a pod, all traffic is allowed. Once any NetworkPolicy selects a pod, traffic not explicitly allowed is denied.</p>
+    <p><strong>Default deny all:</strong></p>
+    <pre><code class="language-yaml">spec:
+  podSelector: {}        # All pods
+  policyTypes: [Ingress, Egress]  # No rules = deny all</code></pre>
+  </div>
+</details>
+
+<details>
+  <summary>Q17: What is the Operator pattern? <span class="badge advanced">Advanced</span></summary>
+  <div class="answer">
+    <p>The Operator pattern extends Kubernetes to manage stateful/complex applications using custom controllers. It encodes operational knowledge (how to deploy, scale, backup, upgrade a complex system) in code.</p>
+    <p><strong>Components:</strong></p>
+    <ul>
+      <li><strong>CRD</strong> — Defines the custom resource schema (e.g., PostgresCluster)</li>
+      <li><strong>Custom Controller</strong> — Watches CRD instances, reconciles desired vs actual state</li>
+    </ul>
+    <p><strong>Examples:</strong> Prometheus Operator (manages Prometheus + Alertmanager), Strimzi (Kafka), CloudNativePG (PostgreSQL), Argo CD.</p>
+    <p><strong>Operator maturity model:</strong> Basic install → Seamless upgrades → Full lifecycle → Deep insights → Auto-pilot</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q18: What is Pod Disruption Budget (PDB)? <span class="badge advanced">Advanced</span></summary>
+  <div class="answer">
+    <p>PDB limits the number of pods of a replicated application that can be down simultaneously due to <em>voluntary disruptions</em> (node drain, rolling updates, cluster upgrades).</p>
+    <p><strong>Not applies to:</strong> Involuntary disruptions (node failure, OOM kill, hardware failure).</p>
+    <p><code>minAvailable: 2</code> — at least 2 pods must be available<br>
+    <code>maxUnavailable: 1</code> — at most 1 pod can be unavailable</p>
+    <p>Critical for maintaining availability during cluster maintenance. kubectl drain will respect PDBs.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q19: How does Kubernetes scheduler work? <span class="badge advanced">Advanced</span></summary>
+  <div class="answer">
+    <p>The scheduler assigns pods to nodes in two phases:</p>
+    <p><strong>Filtering:</strong> Eliminates nodes that don't satisfy requirements:</p>
+    <ul>
+      <li>Resource availability (CPU/memory requests)</li>
+      <li>Node selectors and affinity</li>
+      <li>Taints and tolerations</li>
+      <li>Volume topology constraints</li>
+      <li>Pod affinity/anti-affinity</li>
+    </ul>
+    <p><strong>Scoring:</strong> Ranks remaining nodes (0-100):</p>
+    <ul>
+      <li>LeastRequestedPriority — prefer least loaded node</li>
+      <li>BalancedResourceAllocation — balance CPU/memory</li>
+      <li>NodeAffinityPriority — preferred affinity</li>
+    </ul>
+    <p>Pod is assigned to highest-scoring node. Multiple schedulers can co-exist; custom schedulers possible.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q20: What is a Service Mesh and when should you use one? <span class="badge very-advanced">Very Advanced</span></summary>
+  <div class="answer">
+    <p>A service mesh adds a dedicated infrastructure layer for service-to-service communication, typically via sidecar proxies (Envoy in Istio/Linkerd).</p>
+    <p><strong>Capabilities:</strong></p>
+    <ul>
+      <li>mTLS — automatic mutual TLS between all services</li>
+      <li>Traffic management — canary releases, circuit breaking, retries</li>
+      <li>Observability — distributed tracing, metrics, access logs without code changes</li>
+      <li>Policy enforcement — rate limiting, authorization policies</li>
+    </ul>
+    <p><strong>When to use:</strong></p>
+    <ul>
+      <li>Security: Zero-trust networking, encrypt all traffic</li>
+      <li>Advanced traffic management (A/B, canary)</li>
+      <li>Observability needed across many services</li>
+    </ul>
+    <p><strong>When NOT to use:</strong> Small deployments (operational complexity), when performance overhead is unacceptable, when a simpler solution suffices.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q21: What happens when you run kubectl apply? <span class="badge advanced">Advanced</span></summary>
+  <div class="answer">
+    <ol>
+      <li>kubectl reads the YAML and sends HTTP PATCH/POST to kube-apiserver</li>
+      <li>apiserver authenticates (client cert, bearer token, OIDC)</li>
+      <li>apiserver authorizes (RBAC)</li>
+      <li>Admission controllers run (mutating first, then validating — e.g., add labels, security policies)</li>
+      <li>apiserver persists to etcd</li>
+      <li>Relevant controllers detect the change via watch</li>
+      <li>e.g., Deployment controller creates/updates ReplicaSet</li>
+      <li>ReplicaSet controller creates Pods (adds to pending queue)</li>
+      <li>Scheduler assigns pods to nodes (adds nodeName to pod spec)</li>
+      <li>kubelet on target node detects new pod assignment</li>
+      <li>kubelet calls containerd (CRI) to pull image and start container</li>
+      <li>kube-proxy updates iptables rules if services changed</li>
+    </ol>
+  </div>
+</details>
+
+<details>
+  <summary>Q22: What is Resource Quota and LimitRange? <span class="badge intermediate">Intermediate</span></summary>
+  <div class="answer">
+    <p><strong>ResourceQuota:</strong> Namespace-level limit on total resource consumption. Constrains total CPU, memory, pod count, service count, PVC count in a namespace.</p>
+    <pre><code class="language-yaml">apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: dev-quota
+  namespace: dev
+spec:
+  hard:
+    requests.cpu: "4"
+    requests.memory: 4Gi
+    limits.cpu: "8"
+    limits.memory: 8Gi
+    count/pods: "20"</code></pre>
+    <p><strong>LimitRange:</strong> Sets default/min/max resource limits for pods/containers in a namespace. Ensures every container has limits.</p>
+    <pre><code class="language-yaml">spec:
+  limits:
+    - type: Container
+      default:
+        cpu: 200m
+        memory: 256Mi
+      defaultRequest:
+        cpu: 100m
+        memory: 128Mi
+      max:
+        cpu: "2"
+        memory: 2Gi</code></pre>
+  </div>
+</details>
+
+<details>
+  <summary>Q23: Explain Istio's traffic management capabilities <span class="badge very-advanced">Very Advanced</span></summary>
+  <div class="answer">
+    <p><strong>VirtualService:</strong> Routes traffic based on headers, weight, source. Defines retry, timeout, fault injection.</p>
+    <p><strong>DestinationRule:</strong> Defines load balancing policy, circuit breaking, connection pool settings, and subsets (versions).</p>
+    <p><strong>Gateway:</strong> Manages ingress/egress for the mesh (separate from K8s Ingress).</p>
+    <p><strong>Traffic splitting (canary):</strong> Route 10% to v2, 90% to v1 by weight in VirtualService.</p>
+    <p><strong>Circuit breaking (outlierDetection in DestinationRule):</strong> Eject unhealthy endpoints after consecutive errors.</p>
+    <p><strong>Fault injection (for chaos testing):</strong> Inject HTTP delays or errors in VirtualService.</p>
+    <p><strong>mTLS:</strong> PeerAuthentication resource enables STRICT or PERMISSIVE mTLS mode.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q24: What is the difference between VPA and HPA? <span class="badge advanced">Advanced</span></summary>
+  <div class="answer">
+    <p><strong>HPA (Horizontal Pod Autoscaler):</strong> Adds/removes pod replicas based on metrics. Scale out/in. Works well for stateless applications. Does NOT change resource requests/limits.</p>
+    <p><strong>VPA (Vertical Pod Autoscaler):</strong> Adjusts CPU/memory requests and limits for existing pods. Scale up/down. Must restart pods to apply (in-place resize alpha in K8s 1.27). Better for stateful apps or apps that don't scale horizontally.</p>
+    <p><strong>Can you use both?</strong> Not recommended to use both on CPU/memory simultaneously — they conflict. You can use VPA for memory and HPA for CPU (advanced config), or use KEDA for custom metrics with HPA.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q25: How do you secure a Kubernetes cluster? <span class="badge very-advanced">Very Advanced</span></summary>
+  <div class="answer">
+    <p><strong>4 C's of Cloud Native Security: Cloud, Cluster, Container, Code</strong></p>
+    <p><strong>Cluster level:</strong></p>
+    <ul>
+      <li>Enable RBAC (always on in modern K8s)</li>
+      <li>Enable etcd encryption at rest</li>
+      <li>Use Pod Security Admission (enforce restricted profile)</li>
+      <li>Network policies — default deny, whitelist needed traffic</li>
+      <li>Keep K8s updated (patch CVEs)</li>
+      <li>Audit logging enabled</li>
+    </ul>
+    <p><strong>Workload level:</strong></p>
+    <ul>
+      <li>Non-root containers, read-only filesystem</li>
+      <li>Drop all capabilities</li>
+      <li>No privileged containers</li>
+      <li>Use ServiceAccounts with minimal permissions</li>
+      <li>Secrets encrypted / External Secrets</li>
+      <li>Image scanning in CI/CD (Trivy, Grype)</li>
+    </ul>
+    <p><strong>Supply chain:</strong></p>
+    <ul>
+      <li>Admission controllers: OPA Gatekeeper, Kyverno</li>
+      <li>Image signing: Cosign + policy enforcement</li>
+      <li>SBOM generation</li>
+    </ul>
+  </div>
+</details>
+
+<footer>Kubernetes Comprehensive Reference — Generated 2024 | All rights reserved</footer>
+</main>
+</div>
+<script>hljs.highlightAll();mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

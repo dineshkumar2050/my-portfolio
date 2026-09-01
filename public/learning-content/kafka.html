@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apache Kafka — Architecture, Producers, Consumers, Streams, Connect</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6;display:flex;flex-direction:column}.topnav{background:#161b22;padding:10px 24px;border-bottom:1px solid #30363d;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100}.topnav a{color:#58a6ff;text-decoration:none;font-size:13px}.topnav h1{font-size:16px;color:#e6edf3;margin:0}.layout{display:flex;flex:1}.sidebar{width:260px;background:#161b22;border-right:1px solid #30363d;padding:16px;position:sticky;top:41px;height:calc(100vh - 41px);overflow-y:auto;flex-shrink:0}.sidebar a{display:block;padding:4px 8px;color:#8b949e;text-decoration:none;font-size:13px;border-radius:4px;margin-bottom:2px}.sidebar a:hover{background:#21262d;color:#c9d1d9}.sidebar .section-title{color:#58a6ff;font-size:11px;text-transform:uppercase;letter-spacing:.5px;margin:16px 0 6px;padding:0 8px;font-weight:600}main{flex:1;padding:32px 48px;max-width:960px}h1{font-size:2rem;color:#e6edf3;border-bottom:1px solid #30363d;padding-bottom:16px;margin-bottom:24px}h2{font-size:1.5rem;color:#e6edf3;margin:48px 0 16px;border-bottom:1px solid #21262d;padding-bottom:8px}h3{font-size:1.15rem;color:#79c0ff;margin:24px 0 10px}h4{font-size:1rem;color:#d2a8ff;margin:16px 0 8px}p{margin-bottom:12px}ul,ol{margin:0 0 16px 24px}li{margin-bottom:4px}pre{margin:16px 0;border-radius:6px;overflow-x:auto;font-size:13px}code:not(pre code){background:#161b22;padding:2px 6px;border-radius:4px;font-size:13px;color:#f0883e;border:1px solid #30363d}table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}th{background:#161b22;color:#58a6ff;padding:10px 14px;text-align:left;border:1px solid #30363d}td{padding:10px 14px;border:1px solid #30363d;vertical-align:top}tr:nth-child(even) td{background:#0a0d12}.mermaid{background:#161b22;padding:20px;border-radius:6px;margin:16px 0;text-align:center}details{border:1px solid #30363d;border-radius:6px;margin:10px 0;overflow:hidden}summary{padding:12px 16px;cursor:pointer;background:#161b22;color:#79c0ff;font-weight:600;list-style:none}details[open] summary{border-bottom:1px solid #30363d}.answer{padding:16px 20px;background:#0d1117}.badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:700;margin-left:8px}.easy{background:#1a4731;color:#3fb950}.intermediate{background:#2d2b00;color:#e3b341}.advanced{background:#3d1f00;color:#f0883e}.very-advanced{background:#3d0000;color:#ff7b72}.callout{background:#161b22;border-left:4px solid #58a6ff;padding:12px 16px;border-radius:0 6px 6px 0;margin:16px 0}footer{text-align:center;padding:24px;color:#8b949e;font-size:12px;border-top:1px solid #30363d;margin-top:40px}
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <h1>Apache Kafka — Architecture, Producers, Consumers, Streams &amp; Connect</h1>
+  <a href="databases.html">Databases</a>
+  <a href="caching.html">Caching</a>
+  <a href="elasticsearch.html">Elasticsearch</a>
+</nav>
+<div class="layout">
+<aside class="sidebar">
+  <div class="section-title">Core Concepts</div>
+  <a href="#why-kafka">Why Kafka</a>
+  <a href="#architecture">Architecture</a>
+  <a href="#kraft">Zookeeper vs KRaft</a>
+  <a href="#partitioning">Topic Partitioning</a>
+  <a href="#replication">Replication &amp; ISR</a>
+  <div class="section-title">Producer</div>
+  <a href="#producer-acks">Producer Acks &amp; Idempotence</a>
+  <a href="#producer-batching">Batching &amp; Compression</a>
+  <a href="#producer-partitioner">Partitioner</a>
+  <div class="section-title">Consumer</div>
+  <a href="#consumer-groups">Consumer Groups</a>
+  <a href="#offset-mgmt">Offset Management</a>
+  <a href="#delivery-semantics">Delivery Semantics</a>
+  <a href="#rebalance">Consumer Rebalance</a>
+  <a href="#consumer-tuning">Consumer Tuning</a>
+  <div class="section-title">Kafka Streams</div>
+  <a href="#streams-api">Streams API</a>
+  <a href="#streams-stateful">Stateful Operations</a>
+  <a href="#streams-joins">Joins &amp; Windowing</a>
+  <a href="#streams-stores">State Stores</a>
+  <div class="section-title">Ecosystem</div>
+  <a href="#kafka-connect">Kafka Connect</a>
+  <a href="#schema-registry">Schema Registry</a>
+  <a href="#eos">Exactly-Once Semantics</a>
+  <a href="#mirrormaker">MirrorMaker 2</a>
+  <a href="#security">Security</a>
+  <a href="#monitoring">Monitoring</a>
+  <a href="#performance">Performance Tuning</a>
+  <a href="#versions">Version History</a>
+  <div class="section-title">Interview Q&amp;As</div>
+  <a href="#interview">20+ Questions</a>
+</aside>
+<main>
+<h1>Apache Kafka: Architecture, Producers, Consumers, Streams &amp; Connect</h1>
+
+<!-- ============================================================ -->
+<h2 id="why-kafka">Why Kafka?</h2>
+
+<table>
+<tr><th>System</th><th>Description</th><th>Limitations</th></tr>
+<tr><td>Traditional Queue (RabbitMQ, SQS)</td><td>Once consumed, message is deleted. Push model. No replay.</td><td>Cannot replay events; single consumer per message; no long-term retention</td></tr>
+<tr><td>Pub/Sub (Redis Pub/Sub, SNS)</td><td>Fan-out to all subscribers. Fire and forget.</td><td>No persistence; messages lost if consumer offline; no consumer groups</td></tr>
+<tr><td>Kafka</td><td>Distributed commit log. Messages retained for configurable period. Multiple independent consumer groups each at their own offset.</td><td>Higher operational complexity; not ideal for tiny messages &lt;1ms latency needs</td></tr>
+</table>
+
+<h4>Kafka Key Advantages</h4>
+<ul>
+  <li><strong>Durability + Replay:</strong> Messages written to disk and replicated. Re-read from any past offset.</li>
+  <li><strong>High Throughput:</strong> Sequential disk I/O + zero-copy (sendfile syscall) + batching = millions of msgs/sec.</li>
+  <li><strong>Decoupling:</strong> Producers and consumers are independent. Multiple consumer groups read independently.</li>
+  <li><strong>Ordering:</strong> Guaranteed ordering within a partition.</li>
+  <li><strong>Scalability:</strong> Horizontal scaling via partitions.</li>
+  <li><strong>Stream Processing:</strong> Kafka Streams for stateful real-time processing without separate infrastructure.</li>
+</ul>
+
+<!-- ============================================================ -->
+<h2 id="architecture">Architecture</h2>
+
+<div class="mermaid">
+graph TD
+  P1["Producer App 1"]
+  P2["Producer App 2"]
+  B1["Broker 1<br/>(Leader: P0, P2)"]
+  B2["Broker 2<br/>(Leader: P1, Follower: P0)"]
+  B3["Broker 3<br/>(Follower: P1, P2)"]
+  CG1["Consumer Group A<br/>Consumer 1 → P0<br/>Consumer 2 → P1, P2"]
+  CG2["Consumer Group B<br/>Consumer 1 → P0, P1, P2"]
+  ZK["ZooKeeper / KRaft<br/>(cluster metadata)"]
+  P1 -->|produce| B1
+  P2 -->|produce| B2
+  B1 <-->|replicate| B2
+  B2 <-->|replicate| B3
+  B1 --> CG1
+  B2 --> CG1
+  B3 --> CG1
+  B1 --> CG2
+  B2 --> CG2
+  B3 --> CG2
+  ZK <-->|metadata| B1
+  ZK <-->|metadata| B2
+  ZK <-->|metadata| B3
+</div>
+
+<h4>Core Concepts</h4>
+<table>
+<tr><th>Concept</th><th>Description</th></tr>
+<tr><td>Broker</td><td>Kafka server process. Manages topic partitions assigned to it. Handles producer/consumer connections.</td></tr>
+<tr><td>Topic</td><td>Logical channel/category for messages. Split into N partitions.</td></tr>
+<tr><td>Partition</td><td>Ordered, immutable sequence of records. Basic unit of parallelism and replication. Stored as segment log files on disk.</td></tr>
+<tr><td>Offset</td><td>Monotonically increasing integer identifying a record's position within a partition. Consumers track their offset.</td></tr>
+<tr><td>Consumer Group</td><td>Set of consumers cooperating to consume a topic. Each partition assigned to exactly one consumer in the group. Multiple groups consume independently.</td></tr>
+<tr><td>Record</td><td>Key + Value (bytes) + Timestamp + Headers. Key used for partitioner (null → round-robin/sticky).</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<h2 id="kraft">ZooKeeper Role vs KRaft Mode</h2>
+
+<h4>ZooKeeper (Legacy — Pre-Kafka 3.0)</h4>
+<p>ZooKeeper stored cluster metadata: broker list, topic configurations, partition assignments, controller election, consumer group offsets (moved to Kafka itself in 0.9). Limitations: separate system to operate, ZooKeeper bottleneck for large clusters (thousands of partitions), controller failover time &gt;30s, separate security model.</p>
+
+<h4>KRaft Mode (Kafka Raft — Kafka 2.8+)</h4>
+<p>Replaces ZooKeeper with a built-in Raft-based consensus mechanism. A subset of brokers act as "controllers" (quorum of 3 or 5). Metadata stored in a dedicated internal Kafka topic (<code>@metadata</code>). Controller leader manages all metadata changes; other controllers follow via Raft log replication.</p>
+
+<table>
+<tr><th>Aspect</th><th>ZooKeeper Mode</th><th>KRaft Mode</th></tr>
+<tr><td>External dependency</td><td>ZooKeeper cluster required</td><td>No external dependency</td></tr>
+<tr><td>Controller failover</td><td>30-60 seconds</td><td>&lt;1 second (Raft)</td></tr>
+<tr><td>Max partitions</td><td>~200K practical limit</td><td>Millions of partitions</td></tr>
+<tr><td>GA Status</td><td>Deprecated from Kafka 3.5</td><td>GA in Kafka 3.3; mandatory in Kafka 4.0</td></tr>
+<tr><td>Migration</td><td>—</td><td>Online migration tool (kafka-storage.sh)</td></tr>
+</table>
+
+<pre><code class="language-bash"># KRaft: format storage and start
+kafka-storage.sh format -t $(kafka-storage.sh random-uuid) -c server.properties
+kafka-server-start.sh server.properties
+
+# server.properties for KRaft
+process.roles=broker,controller
+node.id=1
+controller.quorum.voters=1@localhost:9093,2@localhost:9094,3@localhost:9095
+listeners=PLAINTEXT://localhost:9092,CONTROLLER://localhost:9093</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="partitioning">Topic Partitioning</h2>
+
+<p>Partitions are the mechanism for both <strong>parallelism</strong> and <strong>ordering</strong>. More partitions = more parallelism for consumers, but also more overhead (file handles, replication traffic, leader election work).</p>
+
+<div class="callout">
+  <strong>Ordering Guarantee:</strong> Kafka guarantees ordering ONLY within a partition. If you need messages for customer-42 to be processed in order, use customer_id as the record key — the default partitioner hashes the key to always route to the same partition.
+</div>
+
+<pre><code class="language-bash"># Create topic with 6 partitions, replication factor 3
+kafka-topics.sh --bootstrap-server localhost:9092 \
+  --create --topic orders --partitions 6 --replication-factor 3
+
+# Describe topic (see partition → leader → ISR mapping)
+kafka-topics.sh --bootstrap-server localhost:9092 --describe --topic orders
+
+# Increase partitions (cannot decrease)
+kafka-topics.sh --bootstrap-server localhost:9092 \
+  --alter --topic orders --partitions 12</code></pre>
+
+<h4>Partition Count Guidelines</h4>
+<ul>
+  <li>More partitions = higher parallelism but: more open file handles on brokers, longer leader election time, higher replication overhead.</li>
+  <li>Start with: max(target throughput / producer throughput per partition, target throughput / consumer throughput per partition).</li>
+  <li>Practical starting point: 3 × number of brokers. Increase if throughput demands it.</li>
+  <li>Each consumer in a group handles at most 1 partition; consumer count &gt; partition count = idle consumers.</li>
+</ul>
+
+<!-- ============================================================ -->
+<h2 id="replication">Replication &amp; ISR</h2>
+
+<p>Each partition has one <strong>leader</strong> and N-1 <strong>followers</strong>. The leader handles all reads and writes. Followers pull (not push) records from the leader.</p>
+
+<h4>ISR (In-Sync Replicas)</h4>
+<p>ISR = set of replicas that are caught up with the leader (within <code>replica.lag.time.max.ms</code>, default 30s). If a follower falls too far behind, it's removed from ISR. A message is committed (visible to consumers) when written to all ISR replicas (with <code>acks=all</code>).</p>
+
+<pre><code class="language-bash"># Check ISR status
+kafka-topics.sh --bootstrap-server localhost:9092 --describe --topic orders
+# Output example:
+# Topic: orders  Partition: 0  Leader: 1  Replicas: 1,2,3  Isr: 1,2,3
+# If ISR shrinks: Isr: 1,3  → broker 2 fell behind
+</code></pre>
+
+<h4>Unclean Leader Election</h4>
+<p>If all ISR replicas are down, Kafka can elect an out-of-sync replica as new leader (<code>unclean.leader.election.enable=true</code> — default false). Risk: data loss (uncommitted messages on failed leader are lost). Set to false for durability; accept potential unavailability.</p>
+
+<h4>min.insync.replicas</h4>
+<pre><code class="language-properties"># Require at least 2 in-sync replicas to acknowledge writes
+min.insync.replicas=2
+# Combined with acks=all: producer gets error if ISR < 2
+# Typical production: replication.factor=3, min.insync.replicas=2, acks=all</code></pre>
+
+<!-- ============================================================ PRODUCER ======= -->
+<h2 id="producer-acks">Producer Deep Dive — Acks &amp; Idempotence</h2>
+
+<h4>Producer Acknowledgment Modes</h4>
+<table>
+<tr><th>acks value</th><th>Behavior</th><th>Durability</th><th>Throughput</th></tr>
+<tr><td>0</td><td>Fire and forget — no ACK waited</td><td>None — broker crash = data loss</td><td>Highest</td></tr>
+<tr><td>1</td><td>Wait for leader ACK only</td><td>Partial — leader crash before replication = loss</td><td>High</td></tr>
+<tr><td>all (-1)</td><td>Wait for all ISR replicas to ACK</td><td>Strongest — survives leader crash</td><td>Lowest (but still fast)</td></tr>
+</table>
+
+<h4>Idempotent Producer</h4>
+<pre><code class="language-java">// Idempotent producer: exactly-once within a single producer session
+Properties props = new Properties();
+props.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, true);  // sets acks=all, retries=MAX_INT, max.in.flight=5
+props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "broker1:9092,broker2:9092");
+props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+
+KafkaProducer&lt;String, String&gt; producer = new KafkaProducer&lt;&gt;(props);
+
+// Transactional producer (exactly-once across topics/partitions)
+props.put(ProducerConfig.TRANSACTIONAL_ID_CONFIG, "order-service-txn-1");
+producer.initTransactions();
+try {
+  producer.beginTransaction();
+  producer.send(new ProducerRecord&lt;&gt;("orders", orderId, orderJson));
+  producer.send(new ProducerRecord&lt;&gt;("inventory", productId, reservationJson));
+  producer.commitTransaction();
+} catch (Exception e) {
+  producer.abortTransaction();
+}</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="producer-batching">Producer Batching &amp; Compression</h2>
+
+<pre><code class="language-java">// Batching configuration
+props.put(ProducerConfig.BATCH_SIZE_CONFIG, 32768);       // 32KB batch size (default 16KB)
+props.put(ProducerConfig.LINGER_MS_CONFIG, 5);             // wait up to 5ms to fill batch
+props.put(ProducerConfig.BUFFER_MEMORY_CONFIG, 33554432);  // 32MB send buffer
+
+// Compression (per-batch)
+props.put(ProducerConfig.COMPRESSION_TYPE_CONFIG, "lz4"); // options: gzip, snappy, lz4, zstd
+// lz4: best balance of speed + ratio; recommended for most workloads
+// zstd: best compression ratio; more CPU; good for bandwidth-constrained links
+// gzip: highest ratio, highest CPU; good for archival
+// snappy: fast decompression; less CPU than gzip</code></pre>
+
+<h4>Batching Mechanics</h4>
+<p>Kafka producer groups records for the same partition into a batch. <code>batch.size</code> controls the maximum batch size in bytes. <code>linger.ms</code> adds a deliberate delay to allow the batch to fill up — higher linger = more records per batch = better compression + throughput, but more latency. For high-throughput use cases: increase both to 64KB + 20ms. For low-latency: set linger.ms=0.</p>
+
+<!-- ============================================================ -->
+<h2 id="producer-partitioner">Producer Partitioner</h2>
+
+<table>
+<tr><th>Partitioner</th><th>Behavior</th><th>Use Case</th></tr>
+<tr><td>Default (Kafka 3.3+)</td><td>Sticky partitioner per batch — fills one partition until batch full or linger expires, then switches. No key = sticky round-robin.</td><td>High throughput with null keys</td></tr>
+<tr><td>Round-Robin (pre-3.x)</td><td>Rotates through partitions on each record. Less batching efficiency.</td><td>Legacy; not recommended</td></tr>
+<tr><td>Key Hash</td><td>murmur2(key) % numPartitions. Same key always to same partition.</td><td>Ordering per key (order ID, user ID)</td></tr>
+<tr><td>Custom</td><td>Implement Partitioner interface. Can route based on key content, headers, or VIP customers to specific partitions.</td><td>Priority lanes, geographic routing</td></tr>
+</table>
+
+<pre><code class="language-java">// Custom partitioner
+public class PriorityPartitioner implements Partitioner {
+  @Override
+  public int partition(String topic, Object key, byte[] keyBytes,
+                       Object value, byte[] valueBytes, Cluster cluster) {
+    int numPartitions = cluster.partitionCountForTopic(topic);
+    // Route VIP orders to partition 0; others distributed
+    if (key != null && key.toString().startsWith("VIP")) {
+      return 0;
+    }
+    return Utils.toPositive(Utils.murmur2(keyBytes)) % (numPartitions - 1) + 1;
+  }
+}</code></pre>
+
+<!-- ============================================================ CONSUMER ======= -->
+<h2 id="consumer-groups">Consumer Groups &amp; Partition Assignment</h2>
+
+<div class="mermaid">
+graph LR
+  T["Topic: orders<br/>(6 partitions: P0-P5)"]
+  G1C1["Consumer 1<br/>Group A"]
+  G1C2["Consumer 2<br/>Group A"]
+  G1C3["Consumer 3<br/>Group A"]
+  G2C1["Consumer 1<br/>Group B"]
+  T -->|P0, P1| G1C1
+  T -->|P2, P3| G1C2
+  T -->|P4, P5| G1C3
+  T -->|P0-P5 all| G2C1
+</div>
+
+<h4>Partition Assignment Strategies</h4>
+<table>
+<tr><th>Strategy</th><th>How It Works</th><th>Rebalance Behavior</th></tr>
+<tr><td>Range (default)</td><td>Sorts partitions + consumers numerically; divides contiguously. Consumer 0 gets partitions 0-1, consumer 1 gets 2-3, etc.</td><td>Can cause uneven distribution across topics; eager rebalance</td></tr>
+<tr><td>Round-Robin</td><td>Assigns partitions cyclically across consumers</td><td>More even distribution; eager rebalance (all partitions revoked)</td></tr>
+<tr><td>Sticky</td><td>Like round-robin but preserves previous assignments during rebalance — minimizes partition movement</td><td>Eager rebalance but minimizes reassignment count</td></tr>
+<tr><td>Cooperative-Sticky</td><td>Incremental rebalance — only revokes partitions that need to move; others continue processing during rebalance</td><td>No stop-the-world rebalance; recommended for production (Kafka 2.4+)</td></tr>
+</table>
+
+<pre><code class="language-java">props.put(ConsumerConfig.PARTITION_ASSIGNMENT_STRATEGY_CONFIG,
+    CooperativeStickyAssignor.class.getName()); // recommended</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="offset-mgmt">Offset Management</h2>
+
+<pre><code class="language-java">// Auto-commit (at-least-once by default, but can lose messages)
+props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, true);
+props.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, 5000); // every 5s
+
+// Manual commit — synchronous (blocks until broker ACKs commit)
+props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
+
+while (true) {
+  ConsumerRecords&lt;String, String&gt; records = consumer.poll(Duration.ofMillis(100));
+  for (ConsumerRecord&lt;String, String&gt; record : records) {
+    processRecord(record); // if this throws, offset not committed
+  }
+  consumer.commitSync(); // commit after all records processed
+}
+
+// Manual async commit (non-blocking, fire-and-forget per batch)
+consumer.commitAsync((offsets, exception) -> {
+  if (exception != null) log.error("Commit failed", exception);
+});
+
+// Commit specific offsets (partition-level control)
+Map&lt;TopicPartition, OffsetAndMetadata&gt; offsets = new HashMap&lt;&gt;();
+offsets.put(new TopicPartition("orders", 0), new OffsetAndMetadata(offset + 1));
+consumer.commitSync(offsets);</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="delivery-semantics">Delivery Semantics</h2>
+
+<table>
+<tr><th>Semantic</th><th>How Achieved</th><th>Risk</th></tr>
+<tr><td>At-Most-Once</td><td>Commit offsets BEFORE processing. If crash during processing, messages are skipped.</td><td>Message loss; acceptable for metrics, logs</td></tr>
+<tr><td>At-Least-Once</td><td>Commit offsets AFTER processing. If crash after processing but before commit, messages replayed.</td><td>Duplicate processing; use idempotent consumers</td></tr>
+<tr><td>Exactly-Once</td><td>Transactional producer (idempotence + transactions) + Kafka Streams EOS OR consumer reads in transaction with DB write in same atomic unit</td><td>Complex, ~30% throughput overhead; for financial, inventory</td></tr>
+</table>
+
+<pre><code class="language-java">// Exactly-once with Kafka Streams (enable.auto.commit handled by Streams)
+props.put(StreamsConfig.PROCESSING_GUARANTEE_CONFIG, StreamsConfig.EXACTLY_ONCE_V2);
+// EXACTLY_ONCE_V2 (Kafka 2.5+): epoch-based fencing, more efficient than EXACTLY_ONCE
+
+// Manual EOS: read-process-write atomic unit
+consumer.poll(...)
+// Process record and produce result
+producer.beginTransaction();
+producer.send(resultRecord);
+// Include consumer offset in transaction so they commit atomically
+producer.sendOffsetsToTransaction(
+    Collections.singletonMap(partition, new OffsetAndMetadata(offset + 1)),
+    new ConsumerGroupMetadata(groupId)
+);
+producer.commitTransaction();</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="rebalance">Consumer Rebalance</h2>
+
+<h4>Eager Rebalance (Old Protocol)</h4>
+<p>All consumers revoke ALL their partitions simultaneously → all consumers pause processing → Group Coordinator reassigns → consumers resume. Creates a "stop the world" gap. Bad for high-throughput or stateful consumers.</p>
+
+<h4>Cooperative Incremental Rebalance (Kafka 2.4+)</h4>
+<p>Only partitions that actually need to move are revoked. Other partitions continue processing without interruption. Multiple rounds of rebalance may occur, but each is incremental. No stop-the-world gap. Enabled via <code>CooperativeStickyAssignor</code>.</p>
+
+<pre><code class="language-properties"># Rebalance timing config
+session.timeout.ms=45000         # Consumer considered dead after 45s of no heartbeat
+heartbeat.interval.ms=3000       # Send heartbeat every 3s (must be < session.timeout.ms / 3)
+max.poll.interval.ms=300000      # Max time between polls before consumer considered dead
+# If processing takes > max.poll.interval.ms → consumer ejected from group → rebalance</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="consumer-tuning">Consumer Performance Tuning</h2>
+
+<pre><code class="language-properties">max.poll.records=500                # Records fetched per poll() call
+fetch.min.bytes=1048576             # Wait for 1MB of data before returning (reduces CPU, increases latency)
+fetch.max.wait.ms=500               # Max time to wait for fetch.min.bytes
+fetch.max.bytes=52428800            # Max data per fetch request (50MB)
+max.partition.fetch.bytes=1048576   # Max data per partition per fetch (1MB)</code></pre>
+
+<!-- ============================================================ STREAMS ========= -->
+<h2 id="streams-api">Kafka Streams</h2>
+
+<p>Kafka Streams is a Java library for building stateful stream processing applications. It reads from Kafka topics, processes records, and writes results back to Kafka. No separate cluster needed — runs within your application process.</p>
+
+<h4>KStream vs KTable vs GlobalKTable</h4>
+<table>
+<tr><th>Abstraction</th><th>Represents</th><th>Analogy</th></tr>
+<tr><td>KStream</td><td>Unbounded sequence of events — each record is a new event</td><td>Append-only log / event log</td></tr>
+<tr><td>KTable</td><td>Changelog stream — each record represents the latest state for a key (upsert semantics)</td><td>Database table (partitioned, one partition per shard)</td></tr>
+<tr><td>GlobalKTable</td><td>Like KTable but fully replicated to every instance. All partitions available on every node.</td><td>Reference table / lookup table</td></tr>
+</table>
+
+<h4>Stateless Operations</h4>
+<pre><code class="language-java">StreamsBuilder builder = new StreamsBuilder();
+
+KStream&lt;String, Order&gt; orders = builder.stream("orders",
+    Consumed.with(Serdes.String(), orderSerde));
+
+// filter — keep only completed orders
+KStream&lt;String, Order&gt; completed = orders
+    .filter((key, value) -> value.getStatus().equals("COMPLETED"));
+
+// map — transform key or value
+KStream&lt;String, Double&gt; amounts = orders
+    .mapValues(order -> order.getTotal());
+
+// flatMap — one record → multiple records
+KStream&lt;String, OrderItem&gt; lineItems = orders
+    .flatMapValues(order -> order.getItems());
+
+// selectKey — change the key (causes re-partitioning if chained with stateful ops)
+KStream&lt;String, Order&gt; byCustomer = orders
+    .selectKey((orderId, order) -> order.getCustomerId());
+
+// branch — split stream into multiple streams
+Map&lt;String, KStream&lt;String, Order&gt;&gt; branches = orders
+    .split(Named.as("by-status-"))
+    .branch((k, v) -> "VIP".equals(v.getTier()), Branched.as("vip"))
+    .branch((k, v) -> true,                       Branched.as("regular"))
+    .noDefaultBranch();</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="streams-stateful">Stateful Operations</h2>
+
+<pre><code class="language-java">// groupBy + count
+orders.groupByKey()
+    .count(Materialized.as("order-count-store"))
+    .toStream()
+    .to("order-counts");
+
+// aggregate — running total per customer
+orders.groupBy((key, value) -> value.getCustomerId(),
+               Grouped.with(Serdes.String(), orderSerde))
+    .aggregate(
+        () -> 0.0,  // initializer
+        (customerId, order, total) -> total + order.getTotal(),  // aggregator
+        Materialized.&lt;String, Double, KeyValueStore&lt;Bytes, byte[]&gt;&gt;as("customer-totals")
+            .withKeySerde(Serdes.String())
+            .withValueSerde(Serdes.Double())
+    );
+
+// reduce
+orders.groupByKey()
+    .reduce((v1, v2) -> v2.getTimestamp() &gt; v1.getTimestamp() ? v2 : v1,
+            Materialized.as("latest-order-store"));</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="streams-joins">Joins &amp; Windowing</h2>
+
+<pre><code class="language-java">// Stream-Table Join (enrich stream with reference data)
+KStream&lt;String, Order&gt; orders = ...;
+KTable&lt;String, Customer&gt; customers = builder.table("customers");
+
+KStream&lt;String, EnrichedOrder&gt; enriched = orders.join(
+    customers,
+    (order, customer) -> new EnrichedOrder(order, customer.getName())
+);
+
+// Stream-Stream Join (correlate events within a time window)
+KStream&lt;String, Click&gt; clicks = builder.stream("clicks");
+KStream&lt;String, Purchase&gt; purchases = builder.stream("purchases");
+
+KStream&lt;String, ClickPurchase&gt; attributed = clicks.join(
+    purchases,
+    (click, purchase) -> new ClickPurchase(click, purchase),
+    JoinWindows.ofTimeDifferenceWithNoGrace(Duration.ofMinutes(10))
+);
+
+// Table-Table Join (full join of two changelog streams)
+KTable&lt;String, OrderDetail&gt; orderDetails = ...;
+KTable&lt;String, ShipInfo&gt; shipments = ...;
+KTable&lt;String, FullOrder&gt; fullOrders = orderDetails.join(shipments,
+    (detail, ship) -> new FullOrder(detail, ship));</code></pre>
+
+<h4>Windowing Types</h4>
+<table>
+<tr><th>Window Type</th><th>Description</th><th>Example</th></tr>
+<tr><td>Tumbling</td><td>Fixed-size, non-overlapping windows. Each record belongs to exactly one window.</td><td>Count orders per 1-minute bucket: [0:00-0:59], [1:00-1:59]...</td></tr>
+<tr><td>Hopping</td><td>Fixed-size, overlapping windows (advance &lt; size). Records can belong to multiple windows.</td><td>5-min window, 1-min hop: sliding 5-min average, updated every minute</td></tr>
+<tr><td>Sliding</td><td>Window defined by maximum time difference between records in the window. Event-driven boundaries.</td><td>All orders within 10 minutes of each other</td></tr>
+<tr><td>Session</td><td>Activity-based windows with a gap of inactivity. Window extends when new record arrives within the gap.</td><td>User session: new session after 30 min of no events</td></tr>
+</table>
+
+<pre><code class="language-java">// Tumbling window: count per 1-minute window
+orders.groupByKey()
+    .windowedBy(TimeWindows.ofSizeWithNoGrace(Duration.ofMinutes(1)))
+    .count()
+    .toStream()
+    .map((windowedKey, count) -> KeyValue.pair(windowedKey.key(), count))
+    .to("order-count-per-minute");
+
+// Session window
+clicks.groupByKey()
+    .windowedBy(SessionWindows.ofInactivityGapWithNoGrace(Duration.ofMinutes(30)))
+    .count()
+    .toStream()
+    .to("user-sessions");</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="streams-stores">State Stores &amp; Interactive Queries</h2>
+
+<pre><code class="language-java">// RocksDB state store (default — persistent, survives restart)
+Materialized.&lt;String, Long, KeyValueStore&lt;Bytes, byte[]&gt;&gt;as("my-store")
+    .withLoggingEnabled(Map.of("cleanup.policy", "compact"));
+
+// In-memory store (faster, but data lost on restart; repopulated from changelog topic)
+Materialized.&lt;String, Long, KeyValueStore&lt;Bytes, byte[]&gt;&gt;as("my-store")
+    .withLoggingEnabled(Collections.emptyMap())
+    .withStoreType(BuiltInDslStoreSuppliers.InMemoryDslStoreSuppliers.class);
+
+// Interactive queries — query state store directly (REST endpoint)
+KafkaStreams streams = new KafkaStreams(builder.build(), props);
+streams.start();
+
+ReadOnlyKeyValueStore&lt;String, Long&gt; store = streams.store(
+    StoreQueryParameters.fromNameAndType("my-store", QueryableStoreTypes.keyValueStore()));
+
+Long value = store.get("user:42");
+
+// For multi-instance setup: use RPC to route query to correct instance
+StreamsMetadata metadata = streams.queryMetadataForKey("my-store", "user:42", Serdes.String().serializer());
+// metadata.hostInfo().host() tells you which instance holds that key's partition</code></pre>
+
+<!-- ============================================================ CONNECT ======== -->
+<h2 id="kafka-connect">Kafka Connect</h2>
+
+<p>Kafka Connect is a scalable, fault-tolerant framework for streaming data between Kafka and other systems without writing custom code.</p>
+
+<div class="mermaid">
+graph LR
+  MySQL["MySQL<br/>(source)"]
+  HDFS["HDFS/S3<br/>(sink)"]
+  PG["PostgreSQL<br/>(sink + source)"]
+  KConnect["Kafka Connect<br/>(workers)"]
+  Kafka["Kafka"]
+  MySQL -->|Source Connector<br/>Debezium| KConnect
+  KConnect -->|writes| Kafka
+  Kafka -->|reads| KConnect
+  KConnect -->|Sink Connector| HDFS
+  KConnect -->|Sink Connector| PG
+</div>
+
+<pre><code class="language-json">// JDBC Source Connector config (POST to /connectors API)
+{
+  "name": "mysql-orders-source",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
+    "connection.url": "jdbc:mysql://localhost:3306/shop",
+    "connection.user": "kafka",
+    "connection.password": "secret",
+    "table.whitelist": "orders",
+    "mode": "timestamp+incrementing",
+    "timestamp.column.name": "updated_at",
+    "incrementing.column.name": "id",
+    "topic.prefix": "mysql.",
+    "poll.interval.ms": "5000",
+    "transforms": "AddTimestamp",
+    "transforms.AddTimestamp.type": "org.apache.kafka.connect.transforms.InsertField$Value",
+    "transforms.AddTimestamp.timestamp.field": "kafka_ingested_at"
+  }
+}</code></pre>
+
+<h4>Debezium CDC (Change Data Capture)</h4>
+<p>Debezium reads the database's transaction log (MySQL binlog, PostgreSQL WAL, MongoDB oplog) to capture every INSERT/UPDATE/DELETE as a Kafka event. Unlike polling-based connectors, it captures every change including intermediate states.</p>
+
+<pre><code class="language-json">{
+  "name": "debezium-mysql-cdc",
+  "config": {
+    "connector.class": "io.debezium.connector.mysql.MySqlConnector",
+    "database.hostname": "mysql",
+    "database.port": "3306",
+    "database.user": "debezium",
+    "database.password": "secret",
+    "database.server.id": "184054",
+    "database.server.name": "shop",
+    "database.include.list": "shop",
+    "table.include.list": "shop.orders",
+    "database.history.kafka.bootstrap.servers": "kafka:9092",
+    "database.history.kafka.topic": "schema-changes.shop"
+  }
+}</code></pre>
+
+<h4>Single Message Transforms (SMTs)</h4>
+<pre><code class="language-json">// Common SMT examples
+"transforms": "Unwrap,InsertKey,FilterNull",
+"transforms.Unwrap.type": "io.debezium.transforms.ExtractNewRecordState",  // flatten Debezium envelope
+"transforms.InsertKey.type": "org.apache.kafka.connect.transforms.ValueToKey",
+"transforms.InsertKey.fields": "id",
+"transforms.FilterNull.type": "org.apache.kafka.connect.transforms.Filter",
+"transforms.FilterNull.condition": "NOT __value == null"</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="schema-registry">Schema Registry</h2>
+
+<p>Confluent Schema Registry stores versioned Avro/Protobuf/JSON Schema definitions. Producers serialize with schema; consumers deserialize using schema ID embedded in message. Prevents deserialization failures when schema evolves.</p>
+
+<pre><code class="language-java">// Avro schema for Order
+{
+  "type": "record",
+  "name": "Order",
+  "namespace": "com.example",
+  "fields": [
+    {"name": "id",     "type": "string"},
+    {"name": "total",  "type": "double"},
+    {"name": "status", "type": "string"},
+    {"name": "source", "type": ["null", "string"], "default": null} // BACKWARD compatible addition
+  ]
+}
+
+// Producer config
+props.put("schema.registry.url", "http://schema-registry:8081");
+props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class);
+
+// Consumer config
+props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, KafkaAvroDeserializer.class);
+props.put("specific.avro.reader", true);</code></pre>
+
+<h4>Schema Compatibility Levels</h4>
+<table>
+<tr><th>Level</th><th>Rule</th><th>Use Case</th></tr>
+<tr><td>BACKWARD</td><td>New schema can read old data. Add fields with defaults; remove fields.</td><td>Consumers updated before producers (default)</td></tr>
+<tr><td>FORWARD</td><td>Old schema can read new data. Consumers can skip unknown fields.</td><td>Producers updated before consumers</td></tr>
+<tr><td>FULL</td><td>Both BACKWARD and FORWARD. Most restrictive.</td><td>Maximum safety; both sides updated independently</td></tr>
+<tr><td>NONE</td><td>No compatibility check.</td><td>Development only</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<h2 id="eos">Exactly-Once Semantics (EOS)</h2>
+
+<p>EOS ensures each message is processed exactly once end-to-end — no duplicates, no loss — using a combination of idempotent producers, transactions, and consumer offset commits inside the transaction.</p>
+
+<pre><code class="language-java">// Full EOS read-process-write loop
+Properties consumerProps = new Properties();
+consumerProps.put(ConsumerConfig.ISOLATION_LEVEL_CONFIG, "read_committed"); // only read committed messages
+
+Properties producerProps = new Properties();
+producerProps.put(ProducerConfig.TRANSACTIONAL_ID_CONFIG, "txn-producer-1");
+producerProps.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, true);
+
+KafkaProducer&lt;String, String&gt; producer = new KafkaProducer&lt;&gt;(producerProps);
+producer.initTransactions();
+
+while (true) {
+  ConsumerRecords&lt;String, String&gt; records = consumer.poll(Duration.ofMillis(100));
+  producer.beginTransaction();
+  try {
+    for (ConsumerRecord&lt;String, String&gt; record : records) {
+      String result = processRecord(record.value());
+      producer.send(new ProducerRecord&lt;&gt;("output-topic", record.key(), result));
+    }
+    // Commit consumer offsets AS PART OF the transaction
+    Map&lt;TopicPartition, OffsetAndMetadata&gt; offsets = currentOffsets(records);
+    producer.sendOffsetsToTransaction(offsets, new ConsumerGroupMetadata(GROUP_ID));
+    producer.commitTransaction(); // consumer offset + output records commit atomically
+  } catch (Exception e) {
+    producer.abortTransaction(); // roll back both output records AND offset commit
+  }
+}</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="mirrormaker">Kafka MirrorMaker 2</h2>
+
+<p>MirrorMaker 2 (MM2) uses Kafka Connect framework to replicate topics across Kafka clusters.</p>
+
+<table>
+<tr><th>Mode</th><th>Description</th><th>Use Case</th></tr>
+<tr><td>Active-Passive</td><td>Primary cluster handles all traffic; secondary is a warm standby. One-directional replication. Failover = promote secondary.</td><td>DR (Disaster Recovery), geo-backup</td></tr>
+<tr><td>Active-Active</td><td>Both clusters receive traffic; bi-directional replication. Requires topic renaming (source prefix) to prevent infinite loops.</td><td>Multi-region active serving, zero-downtime failover</td></tr>
+</table>
+
+<pre><code class="language-properties"># mm2.properties
+clusters = source, target
+source.bootstrap.servers = source-broker:9092
+target.bootstrap.servers = target-broker:9092
+source->target.enabled = true
+source->target.topics = .*            # mirror all topics
+source->target.replication.factor = 3
+replication.policy.class = org.apache.kafka.connect.mirror.IdentityReplicationPolicy  # no prefix
+# Default: DefaultReplicationPolicy adds "source." prefix (e.g., "source.orders")</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="security">Kafka Security</h2>
+
+<pre><code class="language-properties"># TLS Encryption (broker)
+listeners=SSL://0.0.0.0:9093
+ssl.keystore.location=/etc/kafka/ssl/kafka.keystore.jks
+ssl.keystore.password=secret
+ssl.truststore.location=/etc/kafka/ssl/kafka.truststore.jks
+ssl.truststore.password=secret
+ssl.client.auth=required  # mTLS: clients must present certificate
+
+# SASL Authentication
+sasl.enabled.mechanisms=SCRAM-SHA-512
+sasl.mechanism.inter.broker.protocol=SCRAM-SHA-512
+
+# ACLs
+kafka-acls.sh --bootstrap-server localhost:9092 \
+  --add --allow-principal User:order-service \
+  --operation Read --operation Describe \
+  --topic orders --group order-processor-group</code></pre>
+
+<h4>SASL Mechanisms</h4>
+<table>
+<tr><th>Mechanism</th><th>Description</th><th>Use Case</th></tr>
+<tr><td>PLAIN</td><td>Username/password; must use TLS to secure</td><td>Simple internal deployments</td></tr>
+<tr><td>SCRAM-SHA-256/512</td><td>Salted challenge-response; safer than PLAIN</td><td>Production without Kerberos</td></tr>
+<tr><td>GSSAPI (Kerberos)</td><td>Enterprise SSO; Kerberos KDC required</td><td>Enterprise environments</td></tr>
+<tr><td>OAUTHBEARER</td><td>OAuth 2.0 JWT tokens</td><td>Cloud-native, service meshes</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<h2 id="monitoring">Monitoring</h2>
+
+<h4>Consumer Lag — Most Critical Metric</h4>
+<pre><code class="language-bash"># Check consumer lag
+kafka-consumer-groups.sh --bootstrap-server localhost:9092 \
+  --describe --group order-processor-group
+
+# Output:
+# TOPIC   PARTITION  CURRENT-OFFSET  LOG-END-OFFSET  LAG
+# orders  0          1000            1050            50    ← 50 messages behind
+# orders  1          2000            2000            0     ← up to date
+
+# Prometheus with kafka_exporter
+# Key metrics:
+# kafka_consumergroup_lag{topic, partition, consumergroup}
+# kafka_topic_partition_current_offset
+# kafka_topic_partition_oldest_offset</code></pre>
+
+<h4>Key JMX Metrics</h4>
+<table>
+<tr><th>Metric</th><th>Bean/Path</th><th>Alert On</th></tr>
+<tr><td>UnderReplicatedPartitions</td><td>kafka.server:type=ReplicaManager,name=UnderReplicatedPartitions</td><td>&gt; 0 for &gt;1 min</td></tr>
+<tr><td>ActiveControllerCount</td><td>kafka.controller:type=KafkaController,name=ActiveControllerCount</td><td>!= 1</td></tr>
+<tr><td>OfflinePartitionsCount</td><td>kafka.controller:type=KafkaController</td><td>&gt; 0</td></tr>
+<tr><td>Consumer Lag</td><td>kafka.consumer:type=consumer-fetch-manager-metrics</td><td>Continuously growing</td></tr>
+<tr><td>Request Handler Pool Idle</td><td>kafka.server:type=KafkaRequestHandlerPool,name=RequestHandlerAvgIdlePercent</td><td>&lt; 30%</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<h2 id="performance">Performance Tuning</h2>
+
+<h4>Producer Tuning</h4>
+<pre><code class="language-properties">batch.size=65536                  # 64KB — larger batches for high throughput
+linger.ms=20                      # allow 20ms to fill batch
+compression.type=lz4              # best throughput/CPU balance
+buffer.memory=67108864            # 64MB send buffer
+max.in.flight.requests.per.connection=5  # with idempotence: max 5</code></pre>
+
+<h4>Consumer Tuning</h4>
+<pre><code class="language-properties">max.poll.records=1000             # fetch more records per poll
+fetch.min.bytes=1048576           # wait for 1MB
+fetch.max.wait.ms=500             # max 500ms wait
+num.consumer.threads=4            # if using thread-per-partition model</code></pre>
+
+<h4>Broker Tuning</h4>
+<pre><code class="language-properties">num.network.threads=8             # I/O threads for network requests
+num.io.threads=16                 # I/O threads for disk operations
+socket.send.buffer.bytes=1048576  # 1MB socket buffer
+socket.receive.buffer.bytes=1048576
+socket.request.max.bytes=104857600  # 100MB max request
+log.retention.hours=168           # 7 days retention
+log.segment.bytes=1073741824      # 1GB segment file size
+log.retention.bytes=107374182400  # 100GB per partition (limit disk usage)</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="versions">Kafka Version History</h2>
+
+<table>
+<tr><th>Version</th><th>Key Feature</th></tr>
+<tr><td>0.9 (2015)</td><td>New Consumer API, consumer groups in Kafka (__consumer_offsets topic), security framework</td></tr>
+<tr><td>0.10 (2016)</td><td>Kafka Streams introduced, record timestamps</td></tr>
+<tr><td>0.11 (2017)</td><td>Exactly-once semantics, idempotent producer, transactions, header support</td></tr>
+<tr><td>1.0 (2017)</td><td>Kafka Streams 1.0 GA, improvements to Streams API</td></tr>
+<tr><td>2.0 (2018)</td><td>Dropped support for Java 7, Security improvements, Kafka Streams interactive queries enhancements</td></tr>
+<tr><td>2.4 (2019)</td><td>Incremental cooperative rebalancing (cooperative-sticky), start.offset auto reset per assignment</td></tr>
+<tr><td>2.8 (2021)</td><td>KRaft mode preview (early access)</td></tr>
+<tr><td>3.0 (2021)</td><td>KRaft beta, deprecated old APIs, Java 8 minimum</td></tr>
+<tr><td>3.3 (2022)</td><td>KRaft mode GA — production ready; cooperative-sticky default for Kafka Streams</td></tr>
+<tr><td>3.4 (2023)</td><td>Cooperative rebalance improvements, tiered storage early access</td></tr>
+<tr><td>3.6 (2023)</td><td>Tiered storage GA (offload old segments to S3/GCS/Azure), KRaft online migration from ZooKeeper</td></tr>
+<tr><td>3.7 (2024)</td><td>Dynamic voter membership in KRaft quorum, JBOD in KRaft</td></tr>
+<tr><td>4.0 (2024)</td><td>ZooKeeper removed, KRaft only, Java 11 minimum</td></tr>
+</table>
+
+<!-- ============================================================ INTERVIEW Q&As == -->
+<h2 id="interview">Interview Q&amp;As — 20+ Questions</h2>
+
+<details>
+<summary>Q1. Why is ordering guaranteed only within a partition and not across partitions? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p>Kafka partitions are independent, ordered logs. Within a partition, records have monotonically increasing offsets and consumers read them sequentially in order. Across partitions, there is no coordination of offsets — different partitions may be on different brokers, consumed at different rates by different consumers in a group. Therefore, if message A goes to partition 0 and message B goes to partition 1, there is no guarantee A is consumed before B. To guarantee ordering for a logical entity (e.g., all events for user-42), always use a consistent key (e.g., the user ID) — the partitioner hashes the key to always route to the same partition, ensuring ordered delivery for that key.</p>
+</div>
+</details>
+
+<details>
+<summary>Q2. What is an ISR and why does it matter for producer acks=all? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>ISR (In-Sync Replicas) is the set of partition replicas that are fully caught up with the leader. A follower is "in sync" if it hasn't fallen more than <code>replica.lag.time.max.ms</code> (default 30s) behind the leader. With <code>acks=all</code>, the producer waits for acknowledgment from ALL ISR members — not necessarily all replicas, just those in the ISR. Combined with <code>min.insync.replicas=2</code>, Kafka requires at least 2 ISR replicas to accept a write. If ISR shrinks to 1 (e.g., one replica is down), the write is rejected, protecting durability. This is the recommended production configuration: <code>RF=3, min.insync.replicas=2, acks=all</code>.</p>
+</div>
+</details>
+
+<details>
+<summary>Q3. Explain the difference between at-least-once and exactly-once semantics. <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>At-least-once:</strong> Commit consumer offsets only AFTER processing. If the consumer crashes between processing and committing, it restarts from the previous offset and reprocesses — causing duplicates. The processing is idempotent at the application level (e.g., upsert by primary key). <strong>Exactly-once:</strong> Uses Kafka transactions to atomically write output records AND commit input offsets in a single transaction. If the transaction commits, both succeed; if it aborts, both are rolled back. Kafka Streams achieves this with <code>processing.guarantee=EXACTLY_ONCE_V2</code>. For manual EOS: use <code>producer.sendOffsetsToTransaction()</code> to include consumer offsets in the producer transaction. Cost: ~30% throughput reduction due to transaction protocol overhead.</p>
+</div>
+</details>
+
+<details>
+<summary>Q4. What happens during a consumer rebalance? What is cooperative rebalancing? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>A rebalance is triggered when consumers join/leave a group or new partitions are added to a topic. <strong>Eager rebalance (old):</strong> All consumers revoke all partitions; stop processing; group coordinator reassigns partitions; consumers resume. Stop-the-world gap, especially harmful for stateful apps. <strong>Cooperative incremental rebalance (Kafka 2.4+, <code>CooperativeStickyAssignor</code>):</strong> Only partitions that need to move are revoked in each round. Other partitions continue processing. Multiple small rounds converge to the final assignment. No pause for consumers that keep their partitions. This dramatically reduces rebalance disruption and is strongly recommended for production Kafka Streams and consumer applications.</p>
+</div>
+</details>
+
+<details>
+<summary>Q5. What is KRaft mode and why was ZooKeeper removed? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>KRaft (Kafka Raft) is Kafka's built-in consensus mechanism replacing ZooKeeper for metadata management. Problems with ZooKeeper: (1) Separate system to install, operate, secure, and monitor; (2) ZooKeeper becomes a bottleneck for clusters with 200K+ partitions; (3) Controller failover takes 30-60 seconds (ZooKeeper session expiry); (4) Metadata is split between ZooKeeper and Kafka, complicating consistency. KRaft benefits: (1) No external dependency; (2) &lt;1 second controller failover; (3) Supports millions of partitions; (4) Single metadata store; (5) Faster startup. KRaft became GA in Kafka 3.3, ZooKeeper was fully removed in Kafka 4.0.</p>
+</div>
+</details>
+
+<details>
+<summary>Q6. How does Kafka achieve high throughput via sequential I/O and zero-copy? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p><strong>Sequential I/O:</strong> Kafka writes messages to append-only log segments on disk. Sequential disk writes are 10-100x faster than random I/O (even on SSDs). The OS page cache aggressively prefetches sequential reads. Kafka exploits this — consumers reading near the head of the log often serve from page cache, not disk. <strong>Zero-copy (sendfile):</strong> When a consumer fetches data, the OS copies data from disk to page cache, then from page cache to the network socket using the <code>sendfile</code> syscall — without copying to user-space memory. This eliminates 2 of the 4 data copies in a traditional read-then-send, reducing CPU cycles and memory bandwidth. Combined with batching and compression, Kafka achieves 100MB/s+ per broker.</p>
+</div>
+</details>
+
+<details>
+<summary>Q7. When would you use Kafka Streams vs an external stream processor like Flink? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p><strong>Kafka Streams:</strong> No separate cluster; runs as a library inside your app; auto-scales with Kubernetes/deployments; integrates tightly with Kafka; excellent for simple-to-moderate stateful processing (aggregations, joins, enrichments); RocksDB for local state. Limited by Java-only API, partition count determines parallelism ceiling, stateful operations per topic partition.</p>
+<p><strong>Apache Flink:</strong> Separate cluster; richer processing model (event time with watermarks, complex windowing, CEP patterns); exactly-once checkpointing with incremental state snapshots; language support (Java, Scala, Python SQL); handles larger state (remote state backends); better for complex pipelines requiring flexible graph topology, massive parallelism independent of Kafka partitions, or non-Kafka sources. Choose Kafka Streams for microservices-embedded, Kafka-only pipelines. Choose Flink for complex analytics, multiple source systems, or independent scaling of compute.</p>
+</div>
+</details>
+
+<details>
+<summary>Q8. Explain how consumer group offset management works. What happens on restart? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>Consumer groups commit offsets to the <code>__consumer_offsets</code> internal Kafka topic (key: groupId+topic+partition, value: offset). On restart: (1) consumer sends JoinGroup request; (2) group coordinator assigns partitions; (3) consumer fetches the committed offset for its assigned partitions; (4) consumer starts reading from that offset. Configuration <code>auto.offset.reset</code> controls behavior when no committed offset exists: <code>latest</code> = start from new messages only; <code>earliest</code> = read all historical messages from offset 0. With <code>enable.auto.commit=true</code>, offsets are committed periodically (every 5s by default) — risk of duplicates (if crash between auto-commit points) or loss (if consumer crashes before first auto-commit). Manual commit + idempotent processing is the standard production pattern.</p>
+</div>
+</details>
+
+<details>
+<summary>Q9. What is a KTable and how is it different from a KStream? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>A <strong>KStream</strong> treats every record as an independent event appended to the stream. Two records with the same key are two separate events. A <strong>KTable</strong> treats each record as an upsert — a new record with key K overwrites the previous value for K. It represents the current state (like a database table). Internally, KTable maintains a changelog stream and a materialized state store (RocksDB by default). Operations: if you do KTable.filter(), it emits an update for every key change. KTable.join(KTable) is a materialized join. When to use: KStream for event logs (clicks, orders placed, payments); KTable for current state (account balances, user profiles, inventory levels). A KTable can be created from a topic or derived from a KStream via <code>groupByKey().aggregate()</code>.</p>
+</div>
+</details>
+
+<details>
+<summary>Q10. What is Debezium CDC and how is it different from a JDBC poll connector? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>A JDBC poll connector periodically runs queries (<code>SELECT ... WHERE updated_at &gt; last_poll</code>). Limitations: (1) misses hard deletes (no tombstone event); (2) requires an <code>updated_at</code> column; (3) polling interval = minimum latency; (4) increases DB load with frequent queries. <strong>Debezium CDC</strong> reads the database's binary change log (MySQL binlog, PostgreSQL WAL, MongoDB oplog) at the replication protocol level. It captures every change including deletes, with sub-second latency, and does not increase query load. Debezium events contain the full before/after state of a row. Ideal for replicating tables to Kafka for: event sourcing, search index updates, cache invalidation, cross-service sync, and audit logging.</p>
+</div>
+</details>
+
+<details>
+<summary>Q11. How does Kafka Schema Registry prevent deserialization failures? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>The Schema Registry stores versioned schemas (Avro/Protobuf/JSON Schema). When a producer serializes a message, the serializer: (1) registers the schema (or checks if it exists) with the registry; (2) receives a schema ID; (3) prefixes the serialized message with a 5-byte header: magic byte (0x00) + 4-byte schema ID. When a consumer deserializes: (1) reads the 5-byte header; (2) fetches the writer schema by ID from the registry (cached); (3) deserializes using the writer schema; (4) optionally projects to a reader schema. Compatibility levels (BACKWARD/FORWARD/FULL) prevent breaking schema changes from being registered. This decouples schema evolution from deployment coordination — producers and consumers can be updated independently as long as compatibility rules are respected.</p>
+</div>
+</details>
+
+<details>
+<summary>Q12. Explain the idempotent producer. How does it prevent duplicate messages? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>Without idempotence: if the broker receives a message, writes it, but the ACK is lost in the network, the producer retries → duplicate. The idempotent producer assigns each producer a unique <strong>Producer ID (PID)</strong> and each message a monotonically increasing <strong>sequence number</strong> per (PID, partition). The broker deduplicates: if it receives a message with a sequence number it has already seen, it discards it and returns a duplicate ACK. This guarantees exactly-once delivery at the producer level within a session (new PID assigned on restart). Enable with <code>enable.idempotence=true</code> — automatically sets <code>acks=all</code>, <code>retries=MAX_INT</code>, and <code>max.in.flight.requests.per.connection=5</code>.</p>
+</div>
+</details>
+
+<details>
+<summary>Q13. What is consumer lag and how do you handle consistently growing lag? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>Consumer lag = LOG_END_OFFSET - CONSUMER_CURRENT_OFFSET per partition. It represents how far behind a consumer group is from the latest messages. Consistently growing lag means consumption rate &lt; production rate — the consumer cannot keep up. Remedies: (1) <strong>Add more partitions</strong> to the topic and scale up consumer instances (up to partition count). (2) <strong>Optimize processing:</strong> reduce per-record processing time (async I/O, batching, parallel processing within consumer). (3) <strong>Increase max.poll.records</strong> and process in batch. (4) <strong>Scale consumer group horizontally</strong> — one consumer per partition max. (5) <strong>Separate slow consumers</strong> into dedicated consumer groups with dedicated topics (via separate processing pipelines). Monitor lag with Prometheus + Grafana (kafka_consumergroup_lag metric).</p>
+</div>
+</details>
+
+<details>
+<summary>Q14. What is tiered storage in Kafka and when would you use it? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>Tiered storage (GA in Kafka 3.6) offloads older log segments from broker-local disk to cheap object storage (S3, GCS, Azure Blob) while keeping recent segments on broker disk. Benefits: (1) Brokers no longer need large disks for long retention — significant cost reduction; (2) Broker disk only needs to hold the "active" segment plus recent data (hours/days); (3) Historical data can be retained for months/years in S3 at minimal cost; (4) Consumer can still read old segments transparently — Kafka fetches from object storage on demand; (5) Broker recovery is faster (no need to replicate old segments). Use cases: compliance/audit logs with years of retention; replayable event streams; long-term analytics backfill. Trade-off: read latency for old data increases (S3 latency vs NVMe), but for recent data it's unchanged.</p>
+</div>
+</details>
+
+<details>
+<summary>Q15. How does Kafka MirrorMaker 2 handle active-active replication without infinite loops? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>MM2's <code>DefaultReplicationPolicy</code> adds a source cluster prefix to replicated topic names: topic <code>orders</code> on cluster A becomes <code>A.orders</code> on cluster B. When B's MM2 replicates back, it would create <code>B.A.orders</code> on A (not <code>orders</code>) — breaking the loop. Additionally, MM2 tracks which records have already been replicated via a provenance header and does not re-replicate them. Consumers in each DC read from their local (non-prefixed) topic; cross-DC writes go to the prefixed topic. MM2 also synchronizes consumer group offsets, allowing consumers to resume from the correct position in the replica cluster during failover. The offset sync mechanism translates local offsets to remote offsets accounting for possible gaps in replication.</p>
+</div>
+</details>
+
+<details>
+<summary>Q16. Explain the role of linger.ms and batch.size in producer performance. <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><code>batch.size</code> (default 16KB) is the maximum number of bytes in a batch for a single partition. The batch is sent when either: it reaches <code>batch.size</code> OR <code>linger.ms</code> elapses. <code>linger.ms</code> (default 0) is an artificial delay added to accumulate more records. At linger.ms=0, the producer sends immediately when a record arrives (minimal latency but small batches). At linger.ms=5, the producer waits up to 5ms, allowing more records to accumulate → larger batches → better compression ratio → less network overhead → higher throughput. For high-throughput pipelines: <code>batch.size=65536</code> + <code>linger.ms=20</code> + <code>compression.type=lz4</code>. For low-latency: keep defaults or linger.ms=0.</p>
+</div>
+</details>
+
+<details>
+<summary>Q17. What is the difference between KStream.join and KStream.leftJoin with a KTable? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><code>KStream.join(KTable)</code>: Only produces an output record if the KTable has a non-null value for the stream record's key. If no KTable entry exists → the stream record is dropped. <code>KStream.leftJoin(KTable)</code>: Always produces an output record. If no KTable entry exists → the joiner function is called with a null KTable value (you handle the null case). Use join when you only care about stream events that have a matching reference record (e.g., enrich order with customer — skip orders with unknown customers). Use leftJoin when you always want to pass through the stream event even if no enrichment is available (e.g., process the order regardless, just add customer info if available).</p>
+</div>
+</details>
+
+<details>
+<summary>Q18. What is Kafka's log compaction and when should you use it? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>Log compaction is an alternative to time/size-based log retention. Instead of deleting old segments, the compactor periodically merges log segments keeping only the <strong>latest value for each key</strong>. Deleted records are replaced with a <strong>tombstone</strong> (record with null value) which is itself eventually removed. Result: the topic always retains the current "truth" for each key — even after very long retention. Use cases: (1) Kafka as a system of record (KTable changelog topics use compaction internally); (2) Database cache invalidation topics (keep latest state per entity); (3) Event sourcing where you need the current state of each aggregate, not full history. Compacted topics can be read from the beginning (offset 0) to reconstruct full current state — used by Kafka Streams state store changelog topics for recovery.</p>
+</div>
+</details>
+
+<details>
+<summary>Q19. How would you design a Kafka-based order processing system with exactly-once guarantees? <span class="badge very-advanced">Very Advanced</span></summary>
+<div class="answer">
+<p>Architecture: Order Service (producer) → <code>orders</code> topic → Order Processor (Kafka Streams) → <code>order-results</code> topic + DB write.</p>
+<p>Producer: <code>enable.idempotence=true</code>, <code>transactional.id=order-service-{instanceId}</code>. Each order submitted in a transaction. Order Processor (Kafka Streams): <code>processing.guarantee=EXACTLY_ONCE_V2</code>. Streams handles: read from <code>orders</code>, enrich with inventory KTable, write result to <code>order-results</code>, commit offset — all in one transaction. For DB writes (non-Kafka sink): use the "transactional outbox" pattern — write DB record + Kafka message in the same DB transaction. Debezium reads the outbox table and publishes to Kafka — no two-phase commit needed. Consumers of <code>order-results</code>: use idempotent DB upsert (INSERT ... ON DUPLICATE KEY UPDATE) as the final defense against any duplicates. Isolation level: <code>read_committed</code> on all consumers to avoid reading uncommitted messages from aborted transactions.</p>
+</div>
+</details>
+
+<details>
+<summary>Q20. What are the trade-offs between more partitions and fewer partitions? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>More partitions:</strong> Higher parallelism for producers and consumers; more consumers in a group can be active; higher throughput ceiling. Downsides: more open file handles on broker (each partition = files); controller must track more partition states; leader election work during broker failure scales with partition count; end-to-end latency increases slightly (more bookkeeping); Kafka Connect and Streams tasks multiply. <strong>Fewer partitions:</strong> Less overhead; faster leader election; simpler operations. Downside: throughput ceiling lower; maximum consumer parallelism limited. Rule of thumb: start with a manageable number (3-12), increase when throughput data demands it. You can increase partitions but not decrease — and increasing changes key-to-partition mapping, potentially breaking ordering for existing keys during the transition window.</p>
+</div>
+</details>
+
+<details>
+<summary>Q21. What is the Transactional Outbox Pattern and why is it used with Kafka? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>The dual-write problem: writing to a DB and publishing to Kafka in the same "transaction" is impossible without distributed transactions (2PC). If you write DB first and Kafka publish fails, DB has data but event is lost. If Kafka first and DB fails, event published but no DB record.</p>
+<p>Transactional Outbox: write DB record + outbox table entry in a single DB transaction. A separate relay process (or Debezium) reads the outbox table via CDC and publishes to Kafka. The DB transaction guarantees atomicity of the business record + outbox entry. The relay delivers the event exactly-once using idempotent producer + deduplication (include a unique event ID in the message; consumers deduplicate). Benefits: no 2PC; DB is the source of truth; events are never lost. Drawback: slight latency (Debezium poll interval); additional outbox table to manage.</p>
+</div>
+</details>
+
+<details>
+<summary>Q22. Explain session windows in Kafka Streams with a real-world example. <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>Session windows group events with a maximum inactivity gap between them. A session extends as long as events keep arriving within the gap. A new session starts after the gap expires. Example: user session analytics — <code>SessionWindows.ofInactivityGapWithNoGrace(Duration.ofMinutes(30))</code>. If a user clicks at 10:00, 10:05, 10:20, 10:25, then is idle until 11:00 (35 min gap), and clicks again at 11:00 and 11:10 — result: two sessions: Session 1 [10:00-10:25] with 4 events; Session 2 [11:00-11:10] with 2 events. In Kafka Streams, sessions can merge: if a new event arrives within the gap of an existing session, the session extends and previously computed session windows are merged. This requires the state store to hold session boundaries. Challenge: out-of-order events can cause session merges after initial emission — use grace periods carefully.</p>
+</div>
+</details>
+
+<footer>Apache Kafka Reference Guide — Architecture, Producers, Consumers, Streams, Connect &amp; Security</footer>
+</main>
+</div>
+<script>hljs.highlightAll();mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

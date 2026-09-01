@@ -1,0 +1,2177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Angular Learning Reference</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6;display:flex;flex-direction:column}.topnav{background:#161b22;padding:10px 24px;border-bottom:1px solid #30363d;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100}.topnav a{color:#58a6ff;text-decoration:none;font-size:13px}.topnav h1{font-size:16px;color:#e6edf3;margin:0}.layout{display:flex;flex:1}.sidebar{width:260px;background:#161b22;border-right:1px solid #30363d;padding:16px;position:sticky;top:41px;height:calc(100vh - 41px);overflow-y:auto;flex-shrink:0}.sidebar a{display:block;padding:4px 8px;color:#8b949e;text-decoration:none;font-size:13px;border-radius:4px;margin-bottom:2px}.sidebar a:hover{background:#21262d;color:#c9d1d9}.sidebar .section-title{color:#58a6ff;font-size:11px;text-transform:uppercase;letter-spacing:.5px;margin:16px 0 6px;padding:0 8px;font-weight:600}main{flex:1;padding:32px 48px;max-width:960px}h1{font-size:2rem;color:#e6edf3;border-bottom:1px solid #30363d;padding-bottom:16px;margin-bottom:24px}h2{font-size:1.5rem;color:#e6edf3;margin:48px 0 16px;border-bottom:1px solid #21262d;padding-bottom:8px}h3{font-size:1.15rem;color:#79c0ff;margin:24px 0 10px}h4{font-size:1rem;color:#d2a8ff;margin:16px 0 8px}p{margin-bottom:12px}ul,ol{margin:0 0 16px 24px}li{margin-bottom:4px}pre{margin:16px 0;border-radius:6px;overflow-x:auto;font-size:13px}code:not(pre code){background:#161b22;padding:2px 6px;border-radius:4px;font-size:13px;color:#f0883e;border:1px solid #30363d}table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}th{background:#161b22;color:#58a6ff;padding:10px 14px;text-align:left;border:1px solid #30363d}td{padding:10px 14px;border:1px solid #30363d;vertical-align:top}tr:nth-child(even) td{background:#0a0d12}.mermaid{background:#161b22;padding:20px;border-radius:6px;margin:16px 0;text-align:center}details{border:1px solid #30363d;border-radius:6px;margin:10px 0;overflow:hidden}summary{padding:12px 16px;cursor:pointer;background:#161b22;color:#79c0ff;font-weight:600;list-style:none}details[open] summary{border-bottom:1px solid #30363d}.answer{padding:16px 20px;background:#0d1117}.badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:700;margin-left:8px}.easy{background:#1a4731;color:#3fb950}.intermediate{background:#2d2b00;color:#e3b341}.advanced{background:#3d1f00;color:#f0883e}.very-advanced{background:#3d0000;color:#ff7b72}.callout{background:#161b22;border-left:4px solid #58a6ff;padding:12px 16px;border-radius:0 6px 6px 0;margin:16px 0}footer{text-align:center;padding:24px;color:#8b949e;font-size:12px;border-top:1px solid #30363d;margin-top:40px}
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <h1>Angular Learning Reference</h1>
+  <a href="#overview">Overview</a>
+  <a href="#versions">Versions</a>
+  <a href="#architecture">Architecture</a>
+  <a href="#components">Components</a>
+  <a href="#templates">Templates</a>
+  <a href="#directives">Directives</a>
+  <a href="#pipes">Pipes</a>
+  <a href="#di">DI</a>
+  <a href="#routing">Routing</a>
+  <a href="#forms">Forms</a>
+  <a href="#http">HTTP</a>
+  <a href="#rxjs">RxJS</a>
+  <a href="#signals">Signals</a>
+  <a href="#cd">Change Detection</a>
+  <a href="#defer">Defer</a>
+  <a href="#testing">Testing</a>
+  <a href="#qa">Q&amp;A</a>
+</nav>
+<div class="layout">
+<aside class="sidebar">
+  <div class="section-title">Fundamentals</div>
+  <a href="#overview">Overview &amp; Comparison</a>
+  <a href="#versions">Version History</a>
+  <a href="#architecture">Core Architecture</a>
+  <div class="section-title">Building Blocks</div>
+  <a href="#components">Components</a>
+  <a href="#templates">Templates</a>
+  <a href="#directives">Directives</a>
+  <a href="#pipes">Pipes</a>
+  <div class="section-title">Core Systems</div>
+  <a href="#di">Services &amp; DI</a>
+  <a href="#routing">Routing</a>
+  <a href="#forms">Forms</a>
+  <a href="#http">HTTP Client</a>
+  <div class="section-title">Reactive Programming</div>
+  <a href="#rxjs">RxJS with Angular</a>
+  <a href="#signals">Signals (v16+)</a>
+  <a href="#cd">Change Detection</a>
+  <a href="#defer">Deferrable Views</a>
+  <div class="section-title">Quality</div>
+  <a href="#testing">Testing</a>
+  <div class="section-title">Interview Q&amp;A</div>
+  <a href="#qa-easy">Easy</a>
+  <a href="#qa-intermediate">Intermediate</a>
+  <a href="#qa-advanced">Advanced</a>
+  <a href="#qa-very-advanced">Very Advanced</a>
+</aside>
+<main>
+
+<!-- ============================================================ OVERVIEW -->
+<h1 id="overview">Angular Learning Reference</h1>
+
+<h2>1. Overview</h2>
+<p><strong>Angular</strong> is a platform and framework for building single-page client applications using HTML and TypeScript. Developed and maintained by Google, it provides a complete opinionated solution including a powerful CLI, component-based architecture, dependency injection, routing, forms, HTTP client, and testing utilities — all out of the box.</p>
+
+<h3>Angular vs React vs Vue</h3>
+<table>
+  <tr><th>Feature</th><th>Angular</th><th>React</th><th>Vue</th></tr>
+  <tr><td>Type</td><td>Full framework</td><td>UI library</td><td>Progressive framework</td></tr>
+  <tr><td>Language</td><td>TypeScript (required)</td><td>JS / TS</td><td>JS / TS</td></tr>
+  <tr><td>Data binding</td><td>Two-way (NgModel) + one-way</td><td>One-way</td><td>Two-way (v-model)</td></tr>
+  <tr><td>State mgmt</td><td>Services + Signals + NgRx</td><td>Redux / Zustand / Context</td><td>Pinia / Vuex</td></tr>
+  <tr><td>CLI</td><td>Angular CLI (official)</td><td>CRA / Vite / Next</td><td>Vue CLI / Vite</td></tr>
+  <tr><td>Change detection</td><td>Zone.js / Signals</td><td>Virtual DOM diffing</td><td>Reactive proxy</td></tr>
+  <tr><td>Learning curve</td><td>Steep</td><td>Moderate</td><td>Gentle</td></tr>
+  <tr><td>Bundle size</td><td>Larger (esbuild in v17+)</td><td>Smaller</td><td>Smallest</td></tr>
+  <tr><td>SSR</td><td>Angular Universal / v17 SSR</td><td>Next.js</td><td>Nuxt.js</td></tr>
+</table>
+
+<h3>Angular CLI</h3>
+<pre><code class="language-bash"># Install CLI globally
+npm install -g @angular/cli
+
+# Create new workspace
+ng new my-app --standalone --routing --style=scss
+
+# Generate artifacts
+ng generate component features/user-list
+ng generate service core/user
+ng generate directive shared/highlight
+ng generate pipe shared/truncate
+ng generate guard auth/auth
+ng generate module features/admin --routing
+
+# Build
+ng build                    # development
+ng build --configuration production
+
+# Serve
+ng serve --open             # localhost:4200
+
+# Test
+ng test                     # unit tests (Karma/Jest)
+ng e2e                      # end-to-end tests</code></pre>
+
+<h3>Workspace Structure</h3>
+<pre><code class="language-text">my-app/
+├── src/
+│   ├── app/
+│   │   ├── core/           # singleton services, guards, interceptors
+│   │   ├── features/       # feature modules/components
+│   │   ├── shared/         # reusable components, pipes, directives
+│   │   ├── app.component.ts
+│   │   ├── app.config.ts   # standalone bootstrapApplication config
+│   │   └── app.routes.ts
+│   ├── assets/
+│   ├── environments/
+│   ├── index.html
+│   └── main.ts
+├── angular.json            # workspace configuration
+├── tsconfig.json
+└── package.json</code></pre>
+
+<h3>Bootstrapping (Standalone — Angular 17+)</h3>
+<pre><code class="language-typescript">// main.ts
+import { bootstrapApplication } from '@angular/platform-browser';
+import { appConfig } from './app/app.config';
+import { AppComponent } from './app/app.component';
+
+bootstrapApplication(AppComponent, appConfig).catch(console.error);
+
+// app.config.ts
+import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { provideRouter } from '@angular/router';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { routes } from './app.routes';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideRouter(routes),
+    provideHttpClient(withInterceptors([authInterceptor]))
+  ]
+};</code></pre>
+
+<!-- ============================================================ VERSIONS -->
+<h2 id="versions">2. Version History</h2>
+<table>
+  <tr><th>Version</th><th>Release</th><th>Key Features</th></tr>
+  <tr>
+    <td><strong>Angular 15</strong></td><td>Nov 2022</td>
+    <td>Standalone components <strong>stable</strong>, Directive Composition API, functional guards &amp; resolvers, NgOptimizedImage, stack trace improvements</td>
+  </tr>
+  <tr>
+    <td><strong>Angular 16</strong></td><td>May 2023</td>
+    <td>Signals (developer preview), required inputs (<code>input.required()</code>), <code>inject()</code> function, <code>takeUntilDestroyed</code>, Jest support, esbuild builder preview, server-side rendering improvements</td>
+  </tr>
+  <tr>
+    <td><strong>Angular 17</strong></td><td>Nov 2023</td>
+    <td>New control flow syntax (<code>@if @else @for @empty @switch</code>), deferrable views (<code>@defer</code>), Signals <strong>stable</strong>, new application builder (esbuild + Vite), SSR improvements, new angular.dev docs, standalone APIs default</td>
+  </tr>
+  <tr>
+    <td><strong>Angular 18</strong></td><td>May 2024</td>
+    <td>Zoneless change detection (experimental), Material 3 <strong>stable</strong>, route redirects as functions, Karma deprecated, stable <code>@let</code> template variables</td>
+  </tr>
+  <tr>
+    <td><strong>Angular 19</strong></td><td>Nov 2024</td>
+    <td>Incremental hydration, linked signals (<code>linkedSignal()</code>), effect cleanup functions, HMR by default, signal-based inputs <strong>stable</strong>, signal queries <strong>stable</strong>, signal-based forms (experimental)</td>
+  </tr>
+</table>
+
+<!-- ============================================================ ARCHITECTURE -->
+<h2 id="architecture">3. Core Architecture</h2>
+<div class="mermaid">
+graph TD
+  A[AppModule / bootstrapApplication] --> B[Component Tree]
+  B --> C[AppComponent]
+  C --> D[FeatureComponent]
+  C --> E[SharedComponent]
+  D --> F[Template / View]
+  F --> G[Data Binding]
+  F --> H[Directives]
+  F --> I[Pipes]
+  A --> J[Router]
+  J --> K[RouterOutlet]
+  K --> D
+  A --> L[Dependency Injection]
+  L --> M[Services]
+  L --> N[HTTP Client]
+  L --> O[Guards / Interceptors]
+  M --> P[State / Business Logic]
+  style A fill:#1f6feb,stroke:#388bfd
+  style L fill:#388bfd,stroke:#58a6ff
+  style J fill:#2ea043,stroke:#3fb950
+</div>
+
+<h3>NgModule vs Standalone</h3>
+<table>
+  <tr><th>Aspect</th><th>NgModule</th><th>Standalone (v15+)</th></tr>
+  <tr><td>Declaration</td><td><code>@NgModule({ declarations: [...] })</code></td><td><code>@Component({ standalone: true, imports: [...] })</code></td></tr>
+  <tr><td>Bootstrap</td><td><code>platformBrowserDynamic().bootstrapModule(AppModule)</code></td><td><code>bootstrapApplication(AppComponent, appConfig)</code></td></tr>
+  <tr><td>Lazy loading</td><td><code>loadChildren: () => import(...).then(m => m.Module)</code></td><td><code>loadComponent: () => import(...)</code></td></tr>
+  <tr><td>Providers</td><td>Module providers array</td><td><code>appConfig.providers</code> or component-level</td></tr>
+</table>
+
+<!-- ============================================================ COMPONENTS -->
+<h2 id="components">4. Components</h2>
+
+<h3>@Component Decorator</h3>
+<pre><code class="language-typescript">import {
+  Component, OnInit, OnDestroy, Input, Output, EventEmitter,
+  ChangeDetectionStrategy, ViewEncapsulation
+} from '@angular/core';
+
+@Component({
+  selector: 'app-user-card',
+  standalone: true,
+  imports: [CommonModule, RouterLink],
+  templateUrl: './user-card.component.html',
+  styleUrl: './user-card.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.Emulated,  // default
+  host: {
+    'class': 'user-card-host',
+    '[attr.data-id]': 'userId'
+  }
+})
+export class UserCardComponent implements OnInit, OnDestroy {
+  @Input({ required: true }) userId!: string;
+  @Input() role: string = 'viewer';
+  @Output() selected = new EventEmitter&lt;string&gt;();
+
+  ngOnInit(): void { /* component ready, inputs set */ }
+  ngOnDestroy(): void { /* cleanup subscriptions */ }
+
+  select(): void {
+    this.selected.emit(this.userId);
+  }
+}</code></pre>
+
+<h3>Lifecycle Hooks</h3>
+<table>
+  <tr><th>Hook</th><th>When Called</th><th>Common Use</th></tr>
+  <tr><td><code>ngOnChanges</code></td><td>Before ngOnInit &amp; whenever @Input changes</td><td>React to input property changes</td></tr>
+  <tr><td><code>ngOnInit</code></td><td>Once, after first ngOnChanges</td><td>Fetch initial data, setup subscriptions</td></tr>
+  <tr><td><code>ngDoCheck</code></td><td>Every change detection run</td><td>Custom change detection (use sparingly)</td></tr>
+  <tr><td><code>ngAfterContentInit</code></td><td>Once, after content projection</td><td>Access projected content via @ContentChild</td></tr>
+  <tr><td><code>ngAfterContentChecked</code></td><td>After every content check</td><td>Respond to projected content changes</td></tr>
+  <tr><td><code>ngAfterViewInit</code></td><td>Once, after view &amp; child views init</td><td>Access DOM via @ViewChild, init 3rd party libs</td></tr>
+  <tr><td><code>ngAfterViewChecked</code></td><td>After every view check</td><td>Respond to view changes (avoid expensive ops)</td></tr>
+  <tr><td><code>ngOnDestroy</code></td><td>Just before component is destroyed</td><td>Unsubscribe, clear timers, detach event listeners</td></tr>
+</table>
+
+<h3>ViewEncapsulation</h3>
+<pre><code class="language-typescript">// Emulated (default) - Angular emulates shadow DOM with attribute selectors
+encapsulation: ViewEncapsulation.Emulated
+
+// None - styles are global, no encapsulation
+encapsulation: ViewEncapsulation.None
+
+// ShadowDom - uses native browser Shadow DOM
+encapsulation: ViewEncapsulation.ShadowDom</code></pre>
+
+<h3>Host Element Binding</h3>
+<pre><code class="language-typescript">@Component({
+  selector: 'app-button',
+  host: {
+    '[class.active]': 'isActive',
+    '[attr.aria-disabled]': 'disabled',
+    '(click)': 'onClick($event)',
+    'role': 'button'
+  },
+  template: '&lt;ng-content&gt;&lt;/ng-content&gt;'
+})
+export class ButtonComponent {
+  @Input() isActive = false;
+  @Input() disabled = false;
+  onClick(e: Event) { /* handle */ }
+}
+
+// Or with @HostBinding / @HostListener decorators:
+@HostBinding('class.active') get activeClass() { return this.isActive; }
+@HostListener('click', ['$event']) handleClick(e: Event) { /* handle */ }</code></pre>
+
+<!-- ============================================================ TEMPLATES -->
+<h2 id="templates">5. Templates</h2>
+
+<h3>Binding Syntax</h3>
+<pre><code class="language-html">&lt;!-- Interpolation --&gt;
+&lt;p&gt;{{ user.name }}&lt;/p&gt;
+&lt;p&gt;{{ 2 + 2 }}&lt;/p&gt;
+&lt;p&gt;{{ user.name | uppercase }}&lt;/p&gt;
+
+&lt;!-- Property binding --&gt;
+&lt;img [src]="user.avatar" [alt]="user.name"&gt;
+&lt;button [disabled]="isLoading"&gt;Submit&lt;/button&gt;
+&lt;app-card [data]="cardData"&gt;&lt;/app-card&gt;
+
+&lt;!-- Event binding --&gt;
+&lt;button (click)="save()"&gt;Save&lt;/button&gt;
+&lt;input (input)="onInput($event)"&gt;
+&lt;form (ngSubmit)="onSubmit()"&gt;
+
+&lt;!-- Two-way binding --&gt;
+&lt;input [(ngModel)]="username"&gt;
+
+&lt;!-- Attribute binding (when no property equivalent) --&gt;
+&lt;td [attr.colspan]="colSpan"&gt;&lt;/td&gt;
+&lt;button [attr.aria-label]="label"&gt;&lt;/button&gt;
+
+&lt;!-- Class &amp; Style binding --&gt;
+&lt;div [class.active]="isActive"&gt;&lt;/div&gt;
+&lt;div [class]="{ active: isActive, error: hasError }"&gt;&lt;/div&gt;
+&lt;div [style.color]="textColor"&gt;&lt;/div&gt;
+&lt;div [style]="{ color: textColor, fontSize: '14px' }"&gt;&lt;/div&gt;</code></pre>
+
+<h3>Template Reference Variables</h3>
+<pre><code class="language-html">&lt;!-- Reference to DOM element --&gt;
+&lt;input #emailInput type="email"&gt;
+&lt;button (click)="focus(emailInput)"&gt;Focus&lt;/button&gt;
+
+&lt;!-- Reference to component instance --&gt;
+&lt;app-form #myForm&gt;&lt;/app-form&gt;
+&lt;button (click)="myForm.submit()"&gt;Submit&lt;/button&gt;
+
+&lt;!-- Reference to ngForm directive --&gt;
+&lt;form #f="ngForm" (ngSubmit)="onSubmit(f)"&gt;&lt;/form&gt;</code></pre>
+
+<h3>ng-template, ng-container, ng-content</h3>
+<pre><code class="language-html">&lt;!-- ng-template: defines reusable template fragment, not rendered directly --&gt;
+&lt;ng-template #loadingTpl&gt;
+  &lt;div class="spinner"&gt;Loading...&lt;/div&gt;
+&lt;/ng-template&gt;
+
+&lt;div *ngIf="data; else loadingTpl"&gt;{{ data }}&lt;/div&gt;
+
+&lt;!-- ng-container: grouping without adding DOM elements --&gt;
+&lt;ng-container *ngIf="isAdmin"&gt;
+  &lt;button&gt;Edit&lt;/button&gt;
+  &lt;button&gt;Delete&lt;/button&gt;
+&lt;/ng-container&gt;
+
+&lt;!-- ng-content: content projection (default slot) --&gt;
+&lt;!-- In child component: --&gt;
+&lt;div class="card"&gt;
+  &lt;ng-content&gt;&lt;/ng-content&gt;
+&lt;/div&gt;
+
+&lt;!-- Multi-slot content projection with select --&gt;
+&lt;!-- In card component: --&gt;
+&lt;div class="card"&gt;
+  &lt;div class="card-header"&gt;&lt;ng-content select="[slot=header]"&gt;&lt;/ng-content&gt;&lt;/div&gt;
+  &lt;div class="card-body"&gt;&lt;ng-content select="[slot=body]"&gt;&lt;/ng-content&gt;&lt;/div&gt;
+  &lt;div class="card-footer"&gt;&lt;ng-content select="[slot=footer]"&gt;&lt;/ng-content&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Usage: --&gt;
+&lt;app-card&gt;
+  &lt;h2 slot="header"&gt;Title&lt;/h2&gt;
+  &lt;p slot="body"&gt;Content&lt;/p&gt;
+  &lt;button slot="footer"&gt;Action&lt;/button&gt;
+&lt;/app-card&gt;</code></pre>
+
+<!-- ============================================================ DIRECTIVES -->
+<h2 id="directives">6. Directives</h2>
+
+<h3>Structural Directives — Legacy Syntax</h3>
+<pre><code class="language-html">&lt;!-- *ngIf with else --&gt;
+&lt;div *ngIf="user; else guestTpl"&gt;Welcome, {{ user.name }}&lt;/div&gt;
+&lt;ng-template #guestTpl&gt;&lt;div&gt;Please log in&lt;/div&gt;&lt;/ng-template&gt;
+
+&lt;!-- *ngIf with then/else --&gt;
+&lt;ng-container *ngIf="loading; then loadingTpl; else contentTpl"&gt;&lt;/ng-container&gt;
+
+&lt;!-- *ngFor with all options --&gt;
+&lt;ul&gt;
+  &lt;li *ngFor="let item of items;
+              trackBy: trackById;
+              let i = index;
+              let first = first;
+              let last = last;
+              let even = even;
+              let odd = odd"
+      [class.first]="first"
+      [class.last]="last"&gt;
+    {{ i + 1 }}. {{ item.name }}
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!-- *ngSwitch --&gt;
+&lt;div [ngSwitch]="status"&gt;
+  &lt;p *ngSwitchCase="'active'"&gt;Active&lt;/p&gt;
+  &lt;p *ngSwitchCase="'inactive'"&gt;Inactive&lt;/p&gt;
+  &lt;p *ngSwitchDefault&gt;Unknown&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+
+<h3>New Control Flow — Angular 17+</h3>
+<pre><code class="language-html">&lt;!-- @if / @else if / @else --&gt;
+@if (user) {
+  &lt;p&gt;Welcome, {{ user.name }}&lt;/p&gt;
+} @else if (loading) {
+  &lt;app-spinner /&gt;
+} @else {
+  &lt;p&gt;Please log in&lt;/p&gt;
+}
+
+&lt;!-- @for with @empty --&gt;
+@for (item of items; track item.id) {
+  &lt;li [class.even]="$even"&gt;{{ $index + 1 }}. {{ item.name }}&lt;/li&gt;
+} @empty {
+  &lt;li&gt;No items found&lt;/li&gt;
+}
+
+&lt;!-- @switch --&gt;
+@switch (status) {
+  @case ('active') { &lt;span class="green"&gt;Active&lt;/span&gt; }
+  @case ('inactive') { &lt;span class="red"&gt;Inactive&lt;/span&gt; }
+  @default { &lt;span&gt;Unknown&lt;/span&gt; }
+}</code></pre>
+
+<h3>Attribute Directives</h3>
+<pre><code class="language-html">&lt;!-- NgClass --&gt;
+&lt;div [ngClass]="'active'"&gt;&lt;/div&gt;
+&lt;div [ngClass]="['active', 'highlighted']"&gt;&lt;/div&gt;
+&lt;div [ngClass]="{ active: isActive, error: hasError }"&gt;&lt;/div&gt;
+
+&lt;!-- NgStyle --&gt;
+&lt;div [ngStyle]="{ color: textColor, 'font-size': fontSize + 'px' }"&gt;&lt;/div&gt;</code></pre>
+
+<pre><code class="language-typescript">// Custom attribute directive
+import { Directive, ElementRef, HostListener, Input, inject } from '@angular/core';
+
+@Directive({
+  selector: '[appHighlight]',
+  standalone: true
+})
+export class HighlightDirective {
+  @Input('appHighlight') highlightColor = 'yellow';
+
+  private el = inject(ElementRef);
+
+  @HostListener('mouseenter') onEnter() {
+    this.el.nativeElement.style.backgroundColor = this.highlightColor;
+  }
+
+  @HostListener('mouseleave') onLeave() {
+    this.el.nativeElement.style.backgroundColor = '';
+  }
+}
+
+// Usage: &lt;p [appHighlight]="'lightblue'"&gt;Hover me&lt;/p&gt;</code></pre>
+
+<h3>Directive Composition API (Angular 15+)</h3>
+<pre><code class="language-typescript">// Compose directives onto a component without inheritance
+@Component({
+  selector: 'app-fancy-button',
+  standalone: true,
+  hostDirectives: [
+    { directive: CdkButton },
+    {
+      directive: HighlightDirective,
+      inputs: ['appHighlight: highlightColor'],
+    }
+  ],
+  template: '&lt;ng-content&gt;&lt;/ng-content&gt;'
+})
+export class FancyButtonComponent {}</code></pre>
+
+<!-- ============================================================ PIPES -->
+<h2 id="pipes">7. Pipes</h2>
+
+<h3>Built-in Pipes</h3>
+<pre><code class="language-html">&lt;!-- String transforms --&gt;
+{{ 'hello world' | uppercase }}          &lt;!-- HELLO WORLD --&gt;
+{{ 'HELLO WORLD' | lowercase }}          &lt;!-- hello world --&gt;
+{{ 'hello world' | titlecase }}          &lt;!-- Hello World --&gt;
+
+&lt;!-- Number / currency --&gt;
+{{ 1234.56 | number:'1.2-2' }}           &lt;!-- 1,234.56 --&gt;
+{{ 1234.56 | currency:'USD':'symbol' }}  &lt;!-- $1,234.56 --&gt;
+{{ 0.75 | percent:'1.0-2' }}             &lt;!-- 75% --&gt;
+
+&lt;!-- Date --&gt;
+{{ today | date:'MMM d, y' }}            &lt;!-- Aug 30, 2026 --&gt;
+{{ today | date:'shortTime' }}           &lt;!-- 3:45 PM --&gt;
+{{ today | date:'yyyy-MM-dd HH:mm' }}
+
+&lt;!-- Array / Object --&gt;
+{{ items | slice:0:5 }}                  &lt;!-- first 5 items --&gt;
+{{ obj | json }}                         &lt;!-- JSON.stringify --&gt;
+{{ obj | keyvalue }}                     &lt;!-- [{key, value}] array --&gt;
+
+&lt;!-- Async pipe (auto-subscribes and unsubscribes) --&gt;
+{{ user$ | async | json }}
+&lt;div *ngIf="user$ | async as user"&gt;{{ user.name }}&lt;/div&gt;
+
+@if (user$ | async; as user) {
+  &lt;div&gt;{{ user.name }}&lt;/div&gt;
+}</code></pre>
+
+<h3>Custom Pipe</h3>
+<pre><code class="language-typescript">import { Pipe, PipeTransform } from '@angular/core';
+
+@Pipe({
+  name: 'truncate',
+  standalone: true,
+  pure: true  // default - only runs when input reference changes
+})
+export class TruncatePipe implements PipeTransform {
+  transform(value: string, limit = 50, ellipsis = '...'): string {
+    if (!value || value.length &lt;= limit) return value;
+    return value.substring(0, limit) + ellipsis;
+  }
+}
+
+// Usage: {{ longText | truncate:100:'…' }}</code></pre>
+
+<h3>Pure vs Impure Pipes</h3>
+<div class="callout">
+  <strong>Pure pipe</strong> (default): only re-evaluated when the input value reference changes. Very performant. Use for most transformations.<br><br>
+  <strong>Impure pipe</strong> (<code>pure: false</code>): re-evaluated on every change detection cycle. Use when the pipe depends on mutable internal state (e.g., a pipe that filters a mutable array). Can hurt performance — prefer immutable data patterns instead.
+</div>
+
+<!-- ============================================================ DI -->
+<h2 id="di">8. Services &amp; Dependency Injection</h2>
+
+<h3>Creating a Service</h3>
+<pre><code class="language-typescript">import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+// providedIn: 'root' — singleton for entire application (tree-shakable)
+@Injectable({ providedIn: 'root' })
+export class UserService {
+  private http = inject(HttpClient);
+  private apiUrl = '/api/users';
+
+  getUsers(): Observable&lt;User[]&gt; {
+    return this.http.get&lt;User[]&gt;(this.apiUrl);
+  }
+
+  getUserById(id: string): Observable&lt;User&gt; {
+    return this.http.get&lt;User&gt;(`${this.apiUrl}/${id}`);
+  }
+}
+
+// providedIn options:
+// 'root'     — app-wide singleton (most common)
+// 'platform' — shared between multiple Angular apps on the same page
+// 'any'      — separate instance per lazy-loaded module
+// SomeModule — scoped to that module</code></pre>
+
+<h3>Injection Tokens</h3>
+<pre><code class="language-typescript">import { InjectionToken, inject } from '@angular/core';
+
+// Define typed injection token
+export const API_URL = new InjectionToken&lt;string&gt;('ApiUrl');
+export const APP_CONFIG = new InjectionToken&lt;AppConfig&gt;('AppConfig', {
+  factory: () => ({ theme: 'dark', lang: 'en' })  // optional default
+});
+
+// Provide in app.config.ts
+providers: [
+  { provide: API_URL, useValue: 'https://api.example.com' },
+  { provide: APP_CONFIG, useValue: { theme: 'light', lang: 'en' } }
+]
+
+// Consume with inject()
+@Injectable({ providedIn: 'root' })
+export class DataService {
+  private apiUrl = inject(API_URL);
+}</code></pre>
+
+<h3>Provider Types</h3>
+<pre><code class="language-typescript">providers: [
+  // useClass - provide a different implementation
+  { provide: LoggerService, useClass: ConsoleLoggerService },
+
+  // useValue - provide a static value
+  { provide: API_URL, useValue: environment.apiUrl },
+
+  // useFactory - dynamic creation with dependencies
+  {
+    provide: LoggerService,
+    useFactory: (config: AppConfig) =>
+      config.production ? new ProdLogger() : new DevLogger(),
+    deps: [APP_CONFIG]
+  },
+
+  // useExisting - alias one token to another
+  { provide: AbstractLogger, useExisting: ConcreteLoggerService }
+]</code></pre>
+
+<h3>Hierarchical DI &amp; inject()</h3>
+<pre><code class="language-typescript">// inject() function — use in constructor context or field initializers
+@Component({ selector: 'app-root', template: '' })
+export class AppComponent {
+  // Preferred modern approach
+  private userService = inject(UserService);
+  private router = inject(Router);
+  private destroyRef = inject(DestroyRef);
+
+  constructor() {
+    // inject() also works here but not in ngOnInit
+  }
+}
+
+// Hierarchical providers: component-level creates new instance
+@Component({
+  selector: 'app-feature',
+  providers: [FeatureSpecificService],  // new instance for this subtree
+  template: '...'
+})
+export class FeatureComponent {
+  private svc = inject(FeatureSpecificService); // gets the local instance
+}</code></pre>
+
+<!-- ============================================================ ROUTING -->
+<h2 id="routing">9. Routing</h2>
+
+<h3>Route Configuration</h3>
+<pre><code class="language-typescript">// app.routes.ts
+import { Routes } from '@angular/router';
+
+export const routes: Routes = [
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: 'home', component: HomeComponent },
+
+  // Route with parameters
+  { path: 'users/:id', component: UserDetailComponent },
+
+  // Lazy loading a standalone component
+  {
+    path: 'admin',
+    loadComponent: () => import('./admin/admin.component')
+      .then(m => m.AdminComponent),
+    canActivate: [authGuard],
+    data: { role: 'admin' }
+  },
+
+  // Lazy loading a route group
+  {
+    path: 'products',
+    loadChildren: () => import('./products/products.routes')
+      .then(m => m.PRODUCT_ROUTES)
+  },
+
+  // Child routes
+  {
+    path: 'settings',
+    component: SettingsComponent,
+    children: [
+      { path: 'profile', component: ProfileComponent },
+      { path: 'security', component: SecurityComponent },
+      { path: '', redirectTo: 'profile', pathMatch: 'full' }
+    ]
+  },
+
+  // Named outlet
+  { path: 'sidebar', component: SidebarComponent, outlet: 'sidebar' },
+
+  // Wildcard
+  { path: '**', component: NotFoundComponent }
+];</code></pre>
+
+<h3>Router in Templates &amp; Components</h3>
+<pre><code class="language-html">&lt;!-- RouterLink --&gt;
+&lt;a routerLink="/home" routerLinkActive="active"&gt;Home&lt;/a&gt;
+&lt;a [routerLink]="['/users', user.id]"&gt;Profile&lt;/a&gt;
+&lt;a [routerLink]="['/users']" [queryParams]="{ page: 2 }"&gt;Page 2&lt;/a&gt;
+
+&lt;!-- Router outlet --&gt;
+&lt;router-outlet&gt;&lt;/router-outlet&gt;
+
+&lt;!-- Named outlet --&gt;
+&lt;router-outlet name="sidebar"&gt;&lt;/router-outlet&gt;</code></pre>
+
+<pre><code class="language-typescript">// Programmatic navigation
+@Component({ /* ... */ })
+export class NavComponent {
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+
+  navigateToUser(id: string) {
+    this.router.navigate(['/users', id]);
+    // with query params
+    this.router.navigate(['/users'], { queryParams: { role: 'admin' } });
+    // relative navigation
+    this.router.navigate(['../sibling'], { relativeTo: this.route });
+  }
+
+  // Reading route data
+  ngOnInit() {
+    // Observable (updates on navigation)
+    this.route.params.subscribe(params => {
+      const id = params['id'];
+    });
+
+    this.route.queryParams.subscribe(qp => {
+      const page = qp['page'];
+    });
+
+    // Snapshot (one-time, doesn't update)
+    const id = this.route.snapshot.paramMap.get('id');
+    const data = this.route.snapshot.data['role'];
+  }
+}</code></pre>
+
+<h3>Route Guards — Functional (Angular 15+)</h3>
+<pre><code class="language-typescript">import { inject } from '@angular/core';
+import { Router, CanActivateFn, CanMatchFn } from '@angular/router';
+import { AuthService } from './auth.service';
+
+// Functional guard (preferred in Angular 15+)
+export const authGuard: CanActivateFn = (route, state) => {
+  const auth = inject(AuthService);
+  const router = inject(Router);
+
+  if (auth.isLoggedIn()) return true;
+  return router.parseUrl('/login?returnUrl=' + state.url);
+};
+
+export const roleGuard: CanMatchFn = (route) => {
+  const auth = inject(AuthService);
+  const requiredRole = route.data?.['role'];
+  return auth.hasRole(requiredRole);
+};
+
+// CanDeactivate guard
+export const unsavedChangesGuard: CanDeactivateFn&lt;FormComponent&gt; =
+  (component) => {
+    if (component.hasUnsavedChanges()) {
+      return confirm('Discard unsaved changes?');
+    }
+    return true;
+  };
+
+// Route with multiple guards
+{ path: 'admin', component: AdminComponent,
+  canActivate: [authGuard],
+  canMatch: [roleGuard],
+  canDeactivate: [unsavedChangesGuard] }</code></pre>
+
+<h3>Resolvers</h3>
+<pre><code class="language-typescript">// Functional resolver (Angular 15+)
+export const userResolver: ResolveFn&lt;User&gt; = (route) => {
+  const userService = inject(UserService);
+  return userService.getUserById(route.paramMap.get('id')!);
+};
+
+// In route config
+{ path: 'users/:id', component: UserDetailComponent,
+  resolve: { user: userResolver } }
+
+// Consume in component
+this.route.data.subscribe(data => {
+  this.user = data['user'];
+});</code></pre>
+
+<!-- ============================================================ FORMS -->
+<h2 id="forms">10. Forms</h2>
+
+<h3>Template-Driven Forms</h3>
+<pre><code class="language-html">&lt;form #userForm="ngForm" (ngSubmit)="onSubmit(userForm)"&gt;
+  &lt;div ngModelGroup="address"&gt;
+    &lt;input name="street" ngModel required #street="ngModel"&gt;
+    &lt;div *ngIf="street.invalid &amp;&amp; street.touched"&gt;Street is required&lt;/div&gt;
+
+    &lt;input name="city" ngModel required minlength="2"&gt;
+  &lt;/div&gt;
+
+  &lt;input name="email" [(ngModel)]="email" required email #emailCtrl="ngModel"&gt;
+  &lt;div *ngIf="emailCtrl.errors?.['email']"&gt;Invalid email&lt;/div&gt;
+
+  &lt;button type="submit" [disabled]="userForm.invalid"&gt;Submit&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+
+<pre><code class="language-typescript">onSubmit(form: NgForm) {
+  if (form.valid) {
+    console.log(form.value); // { address: { street, city }, email }
+    form.reset();
+  }
+}</code></pre>
+
+<h3>Reactive Forms</h3>
+<pre><code class="language-typescript">import { Component, inject } from '@angular/core';
+import {
+  FormBuilder, FormGroup, FormArray, Validators,
+  AbstractControl, ValidationErrors, ReactiveFormsModule
+} from '@angular/forms';
+
+@Component({
+  selector: 'app-register',
+  standalone: true,
+  imports: [ReactiveFormsModule],
+  templateUrl: './register.component.html'
+})
+export class RegisterComponent {
+  private fb = inject(FormBuilder);
+
+  form = this.fb.group({
+    name: ['', [Validators.required, Validators.minLength(2)]],
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(8)]],
+    confirmPassword: [''],
+    roles: this.fb.array(['viewer']),
+    address: this.fb.group({
+      street: ['', Validators.required],
+      city:   ['', Validators.required]
+    })
+  }, { validators: passwordMatchValidator });
+
+  // FormArray helpers
+  get roles() { return this.form.get('roles') as FormArray; }
+  addRole() { this.roles.push(this.fb.control('')) }
+  removeRole(i: number) { this.roles.removeAt(i); }
+
+  // Reactive form events
+  ngOnInit() {
+    this.form.get('email')?.valueChanges
+      .pipe(debounceTime(300), distinctUntilChanged())
+      .subscribe(val => this.checkEmail(val));
+
+    this.form.statusChanges.subscribe(status =>
+      console.log('Form status:', status));
+  }
+
+  onSubmit() {
+    if (this.form.valid) {
+      console.log(this.form.value);
+      // patchValue: update subset of fields
+      this.form.patchValue({ name: 'Updated' });
+      // setValue: must provide ALL fields
+      // this.form.setValue({ name: '...', email: '...' ... });
+    } else {
+      this.form.markAllAsTouched(); // show all errors
+    }
+  }
+}
+
+// Custom validator
+function passwordMatchValidator(g: AbstractControl): ValidationErrors | null {
+  const pw = g.get('password')?.value;
+  const cpw = g.get('confirmPassword')?.value;
+  return pw === cpw ? null : { passwordMismatch: true };
+}
+
+// Custom async validator
+function uniqueEmailValidator(userSvc: UserService): AsyncValidatorFn {
+  return (ctrl: AbstractControl) =>
+    userSvc.checkEmailExists(ctrl.value).pipe(
+      map(exists => exists ? { emailTaken: true } : null),
+      catchError(() => of(null))
+    );
+}</code></pre>
+
+<h3>Template for Reactive Form</h3>
+<pre><code class="language-html">&lt;form [formGroup]="form" (ngSubmit)="onSubmit()"&gt;
+  &lt;input formControlName="email"&gt;
+  &lt;div *ngIf="form.get('email')?.errors?.['required'] &amp;&amp; form.get('email')?.touched"&gt;
+    Email is required
+  &lt;/div&gt;
+
+  &lt;div formGroupName="address"&gt;
+    &lt;input formControlName="street"&gt;
+    &lt;input formControlName="city"&gt;
+  &lt;/div&gt;
+
+  &lt;div formArrayName="roles"&gt;
+    @for (role of roles.controls; track $index; let i = $index) {
+      &lt;input [formControlName]="i"&gt;
+      &lt;button (click)="removeRole(i)"&gt;Remove&lt;/button&gt;
+    }
+  &lt;/div&gt;
+
+  &lt;div *ngIf="form.errors?.['passwordMismatch']"&gt;Passwords do not match&lt;/div&gt;
+  &lt;button type="submit" [disabled]="form.invalid"&gt;Register&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+
+<!-- ============================================================ HTTP -->
+<h2 id="http">11. HTTP Client</h2>
+
+<h3>HttpClient Usage</h3>
+<pre><code class="language-typescript">import { Injectable, inject } from '@angular/core';
+import {
+  HttpClient, HttpHeaders, HttpParams, HttpErrorResponse
+} from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError, retry, map } from 'rxjs/operators';
+
+@Injectable({ providedIn: 'root' })
+export class ApiService {
+  private http = inject(HttpClient);
+  private base = 'https://api.example.com';
+
+  getUsers(page: number, role?: string): Observable&lt;User[]&gt; {
+    let params = new HttpParams().set('page', page);
+    if (role) params = params.set('role', role);
+
+    return this.http.get&lt;User[]&gt;(`${this.base}/users`, { params }).pipe(
+      retry(2),
+      catchError(this.handleError)
+    );
+  }
+
+  createUser(user: Partial&lt;User&gt;): Observable&lt;User&gt; {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post&lt;User&gt;(`${this.base}/users`, user, { headers });
+  }
+
+  updateUser(id: string, changes: Partial&lt;User&gt;): Observable&lt;User&gt; {
+    return this.http.patch&lt;User&gt;(`${this.base}/users/${id}`, changes);
+  }
+
+  deleteUser(id: string): Observable&lt;void&gt; {
+    return this.http.delete&lt;void&gt;(`${this.base}/users/${id}`);
+  }
+
+  private handleError(err: HttpErrorResponse): Observable&lt;never&gt; {
+    let msg = 'An error occurred';
+    if (err.error instanceof ErrorEvent) {
+      msg = err.error.message; // Client-side
+    } else {
+      msg = `Server error ${err.status}: ${err.message}`; // Server-side
+    }
+    console.error(msg);
+    return throwError(() => new Error(msg));
+  }
+}</code></pre>
+
+<h3>HTTP Interceptors</h3>
+<pre><code class="language-typescript">// Functional interceptor (Angular 15+, preferred)
+import { HttpInterceptorFn } from '@angular/common/http';
+import { inject } from '@angular/core';
+
+export const authInterceptor: HttpInterceptorFn = (req, next) => {
+  const authService = inject(AuthService);
+  const token = authService.getToken();
+
+  if (!token) return next(req);
+
+  const authReq = req.clone({
+    headers: req.headers.set('Authorization', `Bearer ${token}`)
+  });
+  return next(authReq);
+};
+
+// Loading interceptor
+export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
+  const loading = inject(LoadingService);
+  loading.show();
+  return next(req).pipe(
+    finalize(() => loading.hide())
+  );
+};
+
+// Register in app.config.ts
+provideHttpClient(
+  withInterceptors([authInterceptor, loadingInterceptor])
+)
+
+// Class-based interceptor (legacy)
+@Injectable()
+export class AuthInterceptor implements HttpInterceptor {
+  intercept(req: HttpRequest&lt;any&gt;, next: HttpHandler): Observable&lt;HttpEvent&lt;any&gt;&gt; {
+    const authReq = req.clone({
+      setHeaders: { Authorization: `Bearer ${this.getToken()}` }
+    });
+    return next.handle(authReq);
+  }
+}</code></pre>
+
+<!-- ============================================================ RXJS -->
+<h2 id="rxjs">12. RxJS with Angular</h2>
+
+<h3>Common Operators</h3>
+<pre><code class="language-typescript">import { Component, OnInit, inject } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import {
+  combineLatest, forkJoin, Subject, BehaviorSubject, ReplaySubject, EMPTY
+} from 'rxjs';
+import {
+  map, filter, switchMap, mergeMap, concatMap, exhaustMap,
+  catchError, retry, takeUntil, takeUntilDestroyed,
+  distinctUntilChanged, debounceTime, tap, finalize, share
+} from 'rxjs/operators';
+
+@Component({ /* ... */ })
+export class SearchComponent implements OnInit {
+  private destroyRef = inject(DestroyRef);  // Angular 16+
+  private userSvc = inject(UserService);
+  private destroy$ = new Subject&lt;void&gt;();
+
+  searchControl = new FormControl('');
+
+  // switchMap: cancels previous request when new one starts (ideal for search)
+  results$ = this.searchControl.valueChanges.pipe(
+    debounceTime(300),
+    distinctUntilChanged(),
+    filter(term => (term?.length ?? 0) &gt;= 2),
+    switchMap(term =>
+      this.userSvc.search(term).pipe(
+        catchError(() => EMPTY)  // don't let errors kill the stream
+      )
+    )
+  );
+
+  // mergeMap: all requests concurrent, no cancel
+  // concatMap: sequential, queued
+  // exhaustMap: ignores new requests while one is in flight (ideal for form submit)
+
+  submit$ = new Subject&lt;FormData&gt;();
+  submitResult$ = this.submit$.pipe(
+    exhaustMap(data => this.userSvc.save(data))
+  );
+
+  // combineLatest: emits when any source emits (all must emit at least once)
+  vm$ = combineLatest({
+    users: this.userSvc.getUsers(),
+    config: this.userSvc.getConfig(),
+    loading: this.userSvc.loading$
+  });
+
+  // forkJoin: completes when all observables complete (like Promise.all)
+  initData$ = forkJoin({
+    users: this.userSvc.getUsers(),
+    roles: this.userSvc.getRoles()
+  });
+
+  ngOnInit() {
+    // takeUntilDestroyed (Angular 16+) — auto-unsubscribes
+    this.userSvc.events$.pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(e => console.log(e));
+
+    // Traditional cleanup pattern
+    this.userSvc.events$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(e => console.log(e));
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+}
+
+// Subject types
+const subject = new Subject&lt;number&gt;();         // no initial value, hot
+const behavior = new BehaviorSubject&lt;number&gt;(0); // remembers latest value
+const replay = new ReplaySubject&lt;number&gt;(3);     // buffers last N values
+behavior.getValue(); // synchronously get current value</code></pre>
+
+<!-- ============================================================ SIGNALS -->
+<h2 id="signals">13. Signals (Angular 16+)</h2>
+
+<h3>Core Primitives</h3>
+<pre><code class="language-typescript">import {
+  signal, computed, effect, input, output, model,
+  viewChild, contentChild, linkedSignal
+} from '@angular/core';
+
+@Component({
+  selector: 'app-counter',
+  standalone: true,
+  template: `
+    &lt;p&gt;Count: {{ count() }}&lt;/p&gt;
+    &lt;p&gt;Double: {{ doubled() }}&lt;/p&gt;
+    &lt;button (click)="increment()"&gt;+&lt;/button&gt;
+    &lt;button (click)="reset()"&gt;Reset&lt;/button&gt;
+  `
+})
+export class CounterComponent {
+  // Writable signal
+  count = signal(0);
+
+  // Computed signal (derived, read-only, memoized)
+  doubled = computed(() => this.count() * 2);
+  isEven = computed(() => this.count() % 2 === 0);
+
+  // Effect: runs side effects when dependencies change
+  constructor() {
+    effect(() => {
+      console.log('Count changed to:', this.count());
+      // Effect cleanup (Angular 19+)
+      return () => console.log('Cleanup before next run or destroy');
+    });
+  }
+
+  increment() { this.count.update(c => c + 1); }
+  reset()     { this.count.set(0); }
+
+  // Mutate reference type in-place
+  items = signal&lt;string[]&gt;([]);
+  addItem(item: string) {
+    this.items.update(arr => [...arr, item]);
+    // OR: this.items.mutate(arr => arr.push(item)); // deprecated in v17
+  }
+}</code></pre>
+
+<h3>Signal-based Inputs / Outputs (Angular 17.1+ stable in v19)</h3>
+<pre><code class="language-typescript">import { Component, input, output, model } from '@angular/core';
+
+@Component({ selector: 'app-input-demo', template: '' })
+export class InputDemoComponent {
+  // Required signal input (replaces @Input({ required: true }))
+  userId = input.required&lt;string&gt;();
+
+  // Optional signal input with default
+  label = input('Default Label');
+
+  // Aliased input
+  data = input&lt;User[]&gt;([], { alias: 'userData' });
+
+  // Signal output (replaces @Output())
+  selected = output&lt;string&gt;();
+
+  // Two-way binding with model() signal (replaces [(ngModel)])
+  value = model('');  // parent can bind with [(value)]
+
+  // Computed from inputs
+  displayLabel = computed(() => `${this.userId()} — ${this.label()}`);
+
+  selectUser() {
+    this.selected.emit(this.userId());
+  }
+}
+
+// viewChild / contentChild as signals
+@Component({ /* ... */ })
+export class ParentComponent {
+  // Signal-based query (no decorator needed)
+  myInput = viewChild&lt;ElementRef&gt;('myInput');  // optional
+  myInput2 = viewChild.required&lt;ElementRef&gt;('myInput'); // required
+
+  ngAfterViewInit() {
+    console.log(this.myInput()?.nativeElement);
+  }
+}</code></pre>
+
+<h3>linkedSignal (Angular 19)</h3>
+<pre><code class="language-typescript">import { linkedSignal, input } from '@angular/core';
+
+@Component({ /* ... */ })
+export class SelectComponent {
+  options = input&lt;string[]&gt;([]);
+
+  // linkedSignal: writable signal that resets when source changes
+  selected = linkedSignal(() => this.options()[0]);
+  // User can still override, but it resets when options changes
+}</code></pre>
+
+<h3>Zoneless with Signals (Angular 18+)</h3>
+<pre><code class="language-typescript">// app.config.ts — opt into experimental zoneless
+import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideExperimentalZonelessChangeDetection(),
+    // remove provideZoneChangeDetection()
+    provideRouter(routes)
+  ]
+};
+
+// Remove zone.js from angular.json polyfills array too</code></pre>
+
+<!-- ============================================================ CD -->
+<h2 id="cd">14. Change Detection</h2>
+
+<h3>Default vs OnPush</h3>
+<pre><code class="language-typescript">// Default: checks entire component tree on every event/timer/http
+@Component({
+  changeDetection: ChangeDetectionStrategy.Default
+})
+
+// OnPush: only checks when:
+// 1. An @Input reference changes
+// 2. An event originates from this component or child
+// 3. async pipe emits
+// 4. Manually triggered (markForCheck/detectChanges)
+// 5. Signal read inside template changes
+@Component({
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class PureComponent {
+  private cdr = inject(ChangeDetectorRef);
+
+  // Force check this component and ancestors
+  refresh() { this.cdr.markForCheck(); }
+
+  // Check only this component (not ancestors)
+  localCheck() { this.cdr.detectChanges(); }
+
+  // Detach from CD tree entirely (advanced)
+  pauseCD() { this.cdr.detach(); }
+  resumeCD() { this.cdr.reattach(); }
+}</code></pre>
+
+<h3>Change Detection Cycle (Mermaid)</h3>
+<div class="mermaid">
+flowchart TD
+  A[Browser Event / Timer / HTTP] --> B{Zone.js Patched?}
+  B -->|Yes - Zone.js| C[NgZone.run triggers CD]
+  B -->|No - Zoneless| D[Signal mutation triggers CD]
+  C --> E[ApplicationRef.tick]
+  D --> E
+  E --> F[Root Component Check]
+  F --> G{ChangeDetectionStrategy?}
+  G -->|Default| H[Check component + all children]
+  G -->|OnPush| I{Input changed or event?}
+  I -->|No| J[Skip subtree]
+  I -->|Yes| H
+  H --> K[Update DOM bindings]
+  K --> L[Check child components recursively]
+  style A fill:#1f6feb,stroke:#388bfd
+  style J fill:#3d1f00,stroke:#f0883e
+  style K fill:#1a4731,stroke:#3fb950
+</div>
+
+<!-- ============================================================ DEFER -->
+<h2 id="defer">15. Deferrable Views</h2>
+
+<h3>@defer Syntax</h3>
+<pre><code class="language-html">&lt;!-- Basic defer with triggers --&gt;
+@defer (on idle) {
+  &lt;app-heavy-analytics /&gt;
+} @placeholder {
+  &lt;div class="placeholder"&gt;Analytics loading...&lt;/div&gt;
+} @loading (minimum 500ms; after 200ms) {
+  &lt;app-spinner /&gt;
+} @error {
+  &lt;p&gt;Failed to load analytics.&lt;/p&gt;
+}
+
+&lt;!-- on viewport: load when element enters viewport --&gt;
+@defer (on viewport) {
+  &lt;app-comments /&gt;
+}
+
+&lt;!-- on interaction: load when user clicks/taps --&gt;
+@defer (on interaction(triggerRef)) {
+  &lt;app-modal /&gt;
+}
+&lt;button #triggerRef&gt;Open Modal&lt;/button&gt;
+
+&lt;!-- on hover --&gt;
+@defer (on hover) {
+  &lt;app-tooltip /&gt;
+}
+
+&lt;!-- on immediate: start fetching right away but still deferred --&gt;
+@defer (on immediate) {
+  &lt;app-below-fold /&gt;
+}
+
+&lt;!-- on timer --&gt;
+@defer (on timer(3s)) {
+  &lt;app-notification /&gt;
+}
+
+&lt;!-- when: conditional expression --&gt;
+@defer (when userLoggedIn) {
+  &lt;app-dashboard /&gt;
+}
+
+&lt;!-- prefetch strategy: preload chunk but render later --&gt;
+@defer (on interaction; prefetch on idle) {
+  &lt;app-editor /&gt;
+}</code></pre>
+
+<div class="callout">
+  <strong>@defer triggers reference:</strong>
+  <ul style="margin-top:8px">
+    <li><code>on idle</code> — browser is idle (requestIdleCallback)</li>
+    <li><code>on viewport</code> — element enters viewport (IntersectionObserver)</li>
+    <li><code>on interaction</code> — user interacts (click, keydown)</li>
+    <li><code>on hover</code> — mouse hovers</li>
+    <li><code>on immediate</code> — as soon as possible after render</li>
+    <li><code>on timer(Xs)</code> — after X seconds</li>
+    <li><code>when expr</code> — when expression becomes truthy</li>
+  </ul>
+</div>
+
+<!-- ============================================================ TESTING -->
+<h2 id="testing">16. Testing</h2>
+
+<h3>Component Testing with TestBed</h3>
+<pre><code class="language-typescript">import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+
+describe('UserCardComponent', () => {
+  let component: UserCardComponent;
+  let fixture: ComponentFixture&lt;UserCardComponent&gt;;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [UserCardComponent],  // standalone
+      providers: [
+        { provide: UserService, useValue: mockUserService },
+        provideHttpClientTesting()
+      ]
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(UserCardComponent);
+    component = fixture.componentInstance;
+    component.userId = 'user-1';
+    fixture.detectChanges();  // trigger ngOnInit + first CD cycle
+  });
+
+  it('should display user name', () => {
+    const el = fixture.debugElement.query(By.css('.user-name'));
+    expect(el.nativeElement.textContent).toContain('John Doe');
+  });
+
+  it('should emit selected event on click', () => {
+    const spy = jest.spyOn(component.selected, 'emit');
+    const btn = fixture.debugElement.query(By.css('.select-btn'));
+    btn.triggerEventHandler('click', null);
+    expect(spy).toHaveBeenCalledWith('user-1');
+  });
+
+  it('should load data asynchronously', fakeAsync(() => {
+    component.loadUser('user-2');
+    tick(1000);  // advance fake time
+    fixture.detectChanges();
+    expect(component.user).toBeDefined();
+  }));
+});</code></pre>
+
+<h3>Service Testing</h3>
+<pre><code class="language-typescript">import { TestBed } from '@angular/core/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+
+describe('UserService', () => {
+  let service: UserService;
+  let httpMock: HttpTestingController;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [UserService, provideHttpClient(), provideHttpClientTesting()]
+    });
+    service = TestBed.inject(UserService);
+    httpMock = TestBed.inject(HttpTestingController);
+  });
+
+  afterEach(() => httpMock.verify()); // verify no pending requests
+
+  it('should fetch users', () => {
+    const mockUsers: User[] = [{ id: '1', name: 'Alice' }];
+
+    service.getUsers().subscribe(users => {
+      expect(users).toEqual(mockUsers);
+    });
+
+    const req = httpMock.expectOne('/api/users');
+    expect(req.request.method).toBe('GET');
+    req.flush(mockUsers);
+  });
+});</code></pre>
+
+<h3>Testing with Spectator (optional library)</h3>
+<pre><code class="language-typescript">import { createComponentFactory, Spectator } from '@ngneat/spectator';
+
+describe('ButtonComponent with Spectator', () => {
+  let spectator: Spectator&lt;ButtonComponent&gt;;
+  const createComponent = createComponentFactory({
+    component: ButtonComponent,
+    detectChanges: false
+  });
+
+  beforeEach(() => spectator = createComponent({ props: { label: 'Click me' } }));
+
+  it('should render label', () => {
+    spectator.detectChanges();
+    expect(spectator.query('button')).toHaveText('Click me');
+  });
+});</code></pre>
+
+<!-- ============================================================ Q&A EASY -->
+<h2 id="qa">17. Interview Q&amp;A</h2>
+<h2 id="qa-easy">Easy</h2>
+
+<details>
+<summary>Q1: What is the difference between a Component and a Directive in Angular? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p>A <strong>Component</strong> is a directive with a template — it has its own view. A <strong>Directive</strong> adds behavior to existing elements without its own view.</p>
+<ul>
+  <li><strong>Component</strong>: has <code>template</code>/<code>templateUrl</code>, creates a host DOM element, used as a custom HTML tag.</li>
+  <li><strong>Structural directive</strong>: manipulates the DOM structure (*ngIf, *ngFor). Uses the <code>*</code> microsyntax which desugars to <code>&lt;ng-template&gt;</code>.</li>
+  <li><strong>Attribute directive</strong>: changes appearance/behavior of existing elements (NgClass, NgStyle, custom).</li>
+</ul>
+<pre><code class="language-typescript">// Component — has its own template
+@Component({ selector: 'app-card', template: '&lt;div&gt;&lt;ng-content&gt;&lt;/ng-content&gt;&lt;/div&gt;' })
+export class CardComponent {}
+
+// Attribute directive — no template, modifies host element
+@Directive({ selector: '[appHighlight]', standalone: true })
+export class HighlightDirective {
+  @HostBinding('style.background') bg = 'yellow';
+}</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q2: What is the purpose of <code>trackBy</code> in *ngFor / @for? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p>Without <code>trackBy</code>, Angular re-renders ALL items when the array reference changes (e.g., after an API reload). <code>trackBy</code> gives Angular a unique identity for each item so only changed items are re-rendered.</p>
+<pre><code class="language-typescript">// In component
+trackById(index: number, item: User): string { return item.id; }</code></pre>
+<pre><code class="language-html">&lt;!-- Legacy syntax --&gt;
+&lt;li *ngFor="let user of users; trackBy: trackById"&gt;{{ user.name }}&lt;/li&gt;
+
+&lt;!-- New control flow (Angular 17+) — track is REQUIRED --&gt;
+@for (user of users; track user.id) {
+  &lt;li&gt;{{ user.name }}&lt;/li&gt;
+}</code></pre>
+<p>Performance impact: for a list of 1000 items where only 1 changes, <code>trackBy</code> avoids destroying and recreating 999 DOM nodes.</p>
+</div>
+</details>
+
+<details>
+<summary>Q3: What is the <code>async</code> pipe and why is it preferred over manual subscription? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p>The <code>async</code> pipe subscribes to an Observable or Promise and returns its latest value. It automatically <strong>unsubscribes</strong> when the component is destroyed, preventing memory leaks.</p>
+<pre><code class="language-typescript">// Without async pipe — must manually unsubscribe
+export class UsersComponent implements OnInit, OnDestroy {
+  users: User[] = [];
+  private sub!: Subscription;
+  ngOnInit() { this.sub = this.userSvc.getUsers().subscribe(u => this.users = u); }
+  ngOnDestroy() { this.sub.unsubscribe(); }
+}
+
+// With async pipe — automatic subscription + cleanup
+export class UsersComponent {
+  users$ = this.userSvc.getUsers(); // just expose the observable
+}</code></pre>
+<pre><code class="language-html">&lt;!-- Template handles everything --&gt;
+@if (users$ | async; as users) {
+  @for (user of users; track user.id) {
+    &lt;li&gt;{{ user.name }}&lt;/li&gt;
+  }
+}</code></pre>
+<p>Benefits: no manual subscription, no memory leaks, works with OnPush change detection (marks view dirty on emission).</p>
+</div>
+</details>
+
+<details>
+<summary>Q4: What is the difference between <code>providedIn: 'root'</code> and providing a service in a component's <code>providers</code> array? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p><code>providedIn: 'root'</code> registers the service in the application root injector — one singleton instance for the entire app. It is also <strong>tree-shakable</strong>: if nothing injects it, it is excluded from the bundle.</p>
+<p>Providing in a <strong>component's providers array</strong> creates a <strong>new instance</strong> scoped to that component and all its descendants. When the component is destroyed, the service instance is also destroyed.</p>
+<pre><code class="language-typescript">@Injectable({ providedIn: 'root' })
+export class GlobalAuthService {} // one singleton
+
+@Component({
+  selector: 'app-wizard',
+  providers: [WizardStateService]  // new instance per wizard component
+})
+export class WizardComponent {} // destroyed with component</code></pre>
+<p>Use component-level providers for state that should be isolated per instance (e.g., a wizard state service, a form-context service).</p>
+</div>
+</details>
+
+<details>
+<summary>Q5: What is <code>ngOnChanges</code> and when does it fire? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p><code>ngOnChanges</code> fires whenever a bound <code>@Input</code> property changes. It receives a <code>SimpleChanges</code> object with the previous and current values.</p>
+<pre><code class="language-typescript">export class UserCardComponent implements OnChanges {
+  @Input() userId!: string;
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['userId']) {
+      const { previousValue, currentValue, firstChange } = changes['userId'];
+      console.log(`userId changed from ${previousValue} to ${currentValue}`);
+      if (!firstChange) {
+        this.loadUser(currentValue); // reload when input changes
+      }
+    }
+  }
+}</code></pre>
+<p>Important: it fires <strong>before</strong> <code>ngOnInit</code> on the first cycle. It only fires for <code>@Input</code> properties — not for internal state changes. With <strong>OnPush</strong>, it fires on reference changes only (not deep mutations).</p>
+</div>
+</details>
+
+<!-- ============================================================ Q&A INTERMEDIATE -->
+<h2 id="qa-intermediate">18. Intermediate</h2>
+
+<details>
+<summary>Q1: Explain OnPush change detection and how to use it effectively. <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><code>ChangeDetectionStrategy.OnPush</code> tells Angular to skip change detection for a component unless one of these conditions is met:</p>
+<ol>
+  <li>An <code>@Input</code> reference changes (shallow comparison)</li>
+  <li>An event originates from the component or its children</li>
+  <li>The <code>async</code> pipe receives a new value</li>
+  <li><code>markForCheck()</code> or <code>detectChanges()</code> is called</li>
+  <li>A signal read in the template changes (Angular 17+)</li>
+</ol>
+<pre><code class="language-typescript">@Component({
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class UserListComponent {
+  @Input() users: User[] = [];  // must pass new array reference to trigger
+
+  private cdr = inject(ChangeDetectorRef);
+  users$ = this.userSvc.users$; // async pipe handles markForCheck
+
+  // If you need to update manually (e.g., from a callback):
+  onExternalUpdate() {
+    this.cdr.markForCheck(); // schedule check on next CD cycle
+  }
+}
+
+// Parent must pass immutable data for OnPush to work correctly
+// WRONG: this.users.push(newUser); — same reference, no CD
+// RIGHT: this.users = [...this.users, newUser]; — new reference</code></pre>
+<p>OnPush is a key performance optimization: it allows Angular to prune large subtrees of the component tree from the CD cycle.</p>
+</div>
+</details>
+
+<details>
+<summary>Q2: What are the differences between switchMap, mergeMap, concatMap, and exhaustMap? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>All four flatten a higher-order Observable (an Observable of Observables) but differ in how they handle concurrent inner observables:</p>
+<table>
+  <tr><th>Operator</th><th>Behavior</th><th>Best Use Case</th></tr>
+  <tr><td><code>switchMap</code></td><td>Cancels previous inner observable, subscribes to latest</td><td>Search autocomplete, live filter</td></tr>
+  <tr><td><code>mergeMap</code></td><td>All inner observables run concurrently</td><td>Parallel requests, fire-and-forget events</td></tr>
+  <tr><td><code>concatMap</code></td><td>Queues; waits for each inner to complete before next</td><td>Sequential uploads, ordered processing</td></tr>
+  <tr><td><code>exhaustMap</code></td><td>Ignores new source emissions while inner is active</td><td>Form submit button (prevent double-submit)</td></tr>
+</table>
+<pre><code class="language-typescript">// switchMap: typeahead search — cancel stale requests
+this.searchInput.valueChanges.pipe(
+  debounceTime(300),
+  switchMap(term => this.api.search(term))
+).subscribe(results => this.results = results);
+
+// exhaustMap: form submit — ignore clicks while submitting
+this.submitClicks$.pipe(
+  exhaustMap(data => this.api.save(data))
+).subscribe(result => this.handleResult(result));
+
+// concatMap: sequential file uploads
+from(files).pipe(
+  concatMap(file => this.api.upload(file))
+).subscribe(res => console.log('Uploaded:', res.name));</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q3: How does the Angular router handle lazy loading, and what are the bundle implications? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>Lazy loading defers loading a feature's JavaScript chunk until the user navigates to that route. This reduces the initial bundle size and improves startup performance.</p>
+<pre><code class="language-typescript">// routes.ts — standalone lazy loading (Angular 17+)
+export const routes: Routes = [
+  {
+    path: 'admin',
+    loadComponent: () => import('./admin/admin.component')
+      .then(m => m.AdminComponent)
+  },
+  {
+    path: 'products',
+    loadChildren: () => import('./products/products.routes')
+      .then(m => m.PRODUCT_ROUTES)
+  }
+];
+
+// products.routes.ts — child routes file
+export const PRODUCT_ROUTES: Routes = [
+  { path: '', component: ProductListComponent },
+  { path: ':id', component: ProductDetailComponent }
+];</code></pre>
+<p><strong>Bundle implications:</strong> Each lazy-loaded route creates a separate JS chunk. The router downloads the chunk on first navigation to that route. Subsequent visits use the cached chunk. Use <code>PreloadAllModules</code> or <code>QuicklinkStrategy</code> to preload chunks in the background after the initial load.</p>
+<pre><code class="language-typescript">provideRouter(routes, withPreloading(PreloadAllModules))</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q4: What is the difference between <code>BehaviorSubject</code>, <code>Subject</code>, and <code>ReplaySubject</code>? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<table>
+  <tr><th>Type</th><th>Initial Value</th><th>Late Subscriber Gets</th><th>Buffer</th></tr>
+  <tr><td><code>Subject</code></td><td>None</td><td>Nothing (misses past events)</td><td>0</td></tr>
+  <tr><td><code>BehaviorSubject&lt;T&gt;(init)</code></td><td>Required</td><td>Current/latest value immediately</td><td>1</td></tr>
+  <tr><td><code>ReplaySubject&lt;T&gt;(n)</code></td><td>None</td><td>Last N emitted values</td><td>N</td></tr>
+</table>
+<pre><code class="language-typescript">// BehaviorSubject — most common for state management
+private userState = new BehaviorSubject&lt;User | null&gt;(null);
+user$ = this.userState.asObservable(); // expose as read-only
+
+setUser(user: User) { this.userState.next(user); }
+getUser() { return this.userState.getValue(); } // sync access
+
+// ReplaySubject — for event streams where late subscribers need history
+private log = new ReplaySubject&lt;string&gt;(10); // last 10 events
+logEvent(msg: string) { this.log.next(msg); }
+events$ = this.log.asObservable();</code></pre>
+<p>In Angular services, use <code>BehaviorSubject</code> for state (requires initial value), <code>Subject</code> for event buses, and <code>ReplaySubject</code> when late subscribers need a history of values.</p>
+</div>
+</details>
+
+<details>
+<summary>Q5: How do Reactive Forms validators work, including custom and async validators? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<pre><code class="language-typescript">// Built-in validators
+const ctrl = new FormControl('', [
+  Validators.required,
+  Validators.email,
+  Validators.minLength(6),
+  Validators.maxLength(100),
+  Validators.pattern(/^[a-z]+$/)
+]);
+
+// Custom sync validator
+export function noSpacesValidator(ctrl: AbstractControl): ValidationErrors | null {
+  return ctrl.value?.includes(' ') ? { noSpaces: true } : null;
+}
+
+// Custom async validator (e.g., check server)
+export function uniqueUsernameValidator(userSvc: UserService): AsyncValidatorFn {
+  return (ctrl: AbstractControl): Observable&lt;ValidationErrors | null&gt; => {
+    return timer(400).pipe(  // debounce
+      switchMap(() => userSvc.checkUsername(ctrl.value)),
+      map(taken => taken ? { usernameTaken: true } : null),
+      catchError(() => of(null)) // server error = no validation error
+    );
+  };
+}
+
+// FormControl with async validator
+const usernameCtrl = new FormControl(
+  '',
+  [Validators.required],          // sync validators (2nd param)
+  [uniqueUsernameValidator(svc)]  // async validators (3rd param)
+);
+
+// Check status in template
+// usernameCtrl.status: 'VALID' | 'INVALID' | 'PENDING' | 'DISABLED'</code></pre>
+<pre><code class="language-html">&lt;input [formControl]="usernameCtrl"&gt;
+@if (usernameCtrl.pending) { &lt;span&gt;Checking...&lt;/span&gt; }
+@if (usernameCtrl.errors?.['usernameTaken']) { &lt;span&gt;Username taken&lt;/span&gt; }
+@if (usernameCtrl.errors?.['required'] &amp;&amp; usernameCtrl.touched) { &lt;span&gt;Required&lt;/span&gt; }</code></pre>
+</div>
+</details>
+
+<!-- ============================================================ Q&A ADVANCED -->
+<h2 id="qa-advanced">19. Advanced</h2>
+
+<details>
+<summary>Q1: Explain Angular's hierarchical dependency injection system and multi-providers. <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>Angular maintains a <strong>tree of injectors</strong> mirroring the component tree. When a token is requested, Angular walks up the injector tree until it finds a provider or throws. This enables scoped services.</p>
+<pre><code class="language-typescript">// Injector hierarchy (top to bottom):
+// Platform injector → Root injector → Module injector → Component injector
+
+// Component-scoped service (new instance per component subtree)
+@Component({
+  providers: [CartService] // scoped to this component and its children
+})
+export class CartComponent {
+  private cart = inject(CartService); // gets LOCAL instance
+}
+
+// Multi-providers: multiple values for one token (additive, not override)
+export const HTTP_INTERCEPTORS = new InjectionToken('HTTP_INTERCEPTORS');
+
+providers: [
+  { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  { provide: HTTP_INTERCEPTORS, useClass: LoggingInterceptor, multi: true }
+]
+// inject(HTTP_INTERCEPTORS) returns an array: [AuthInterceptor, LoggingInterceptor]
+
+// @SkipSelf, @Self, @Optional, @Host decorators
+@Component({ /* ... */ })
+export class ChildComponent {
+  // @Self: only look in THIS component's injector (don't go up)
+  private svc = inject(MyService, { self: true, optional: true });
+
+  // @SkipSelf: skip this component's injector, start from parent
+  private parentSvc = inject(ParentService, { skipSelf: true });
+
+  // @Host: stop looking at the host component (don't cross component boundary)
+  private hostSvc = inject(HostService, { host: true });
+}</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q2: How do Signals compare to RxJS Observables in Angular, and how do they interoperate? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>Signals and Observables solve different but overlapping problems:</p>
+<table>
+  <tr><th>Aspect</th><th>Signals</th><th>RxJS Observables</th></tr>
+  <tr><td>Nature</td><td>Synchronous, always has value</td><td>Asynchronous/synchronous, lazy</td></tr>
+  <tr><td>Subscription</td><td>Automatic (read = track dependency)</td><td>Manual (subscribe/unsubscribe)</td></tr>
+  <tr><td>Change detection</td><td>Fine-grained, direct</td><td>Via async pipe or markForCheck</td></tr>
+  <tr><td>Best for</td><td>UI state, derived values</td><td>Events, HTTP, time-based ops</td></tr>
+  <tr><td>Error handling</td><td>No built-in</td><td>catchError, retry</td></tr>
+  <tr><td>Operators</td><td>computed() only</td><td>Rich operator library</td></tr>
+</table>
+<pre><code class="language-typescript">import { toSignal, toObservable } from '@angular/core/rxjs-interop';
+
+@Component({ /* ... */ })
+export class UserComponent {
+  private userSvc = inject(UserService);
+
+  // Convert Observable → Signal (subscribes automatically, unsubscribes on destroy)
+  users = toSignal(this.userSvc.getUsers(), { initialValue: [] });
+
+  // With error/loading states
+  searchTerm = signal('');
+  results = toSignal(
+    toObservable(this.searchTerm).pipe(
+      debounceTime(300),
+      switchMap(term => this.userSvc.search(term))
+    ),
+    { initialValue: [] }
+  );
+
+  // Convert Signal → Observable
+  term$ = toObservable(this.searchTerm);
+  // term$ emits whenever searchTerm signal changes
+}</code></pre>
+<p>The <code>toSignal</code>/<code>toObservable</code> bridge from <code>@angular/core/rxjs-interop</code> enables gradual migration and lets you use both in the same component without conflicts.</p>
+</div>
+</details>
+
+<details>
+<summary>Q3: How does Angular SSR (Server-Side Rendering) work in Angular 17+, and what are hydration considerations? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>Angular SSR renders the app on the server (Node.js) and sends fully-formed HTML to the browser. The browser then "hydrates" the static HTML by attaching Angular's event listeners and state without re-rendering from scratch.</p>
+<pre><code class="language-typescript">// app.config.server.ts
+import { mergeApplicationConfig, ApplicationConfig } from '@angular/core';
+import { provideServerRendering } from '@angular/platform-server';
+import { appConfig } from './app.config';
+
+const serverConfig: ApplicationConfig = {
+  providers: [provideServerRendering()]
+};
+export const config = mergeApplicationConfig(appConfig, serverConfig);
+
+// Full hydration (Angular 17+) — enabled by default with SSR
+// app.config.ts
+import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideClientHydration(withEventReplay()), // capture events during hydration
+    provideRouter(routes)
+  ]
+};
+
+// Incremental hydration (Angular 19)
+import { withIncrementalHydration } from '@angular/platform-browser';
+
+provideClientHydration(withIncrementalHydration())
+// Then in templates:
+// @defer (hydrate on viewport) { &lt;app-comments /&gt; }</code></pre>
+<p><strong>Key considerations:</strong></p>
+<ul>
+  <li>Avoid browser-only APIs (<code>window</code>, <code>document</code>, <code>localStorage</code>) without <code>isPlatformBrowser()</code> guard</li>
+  <li>Use <code>TransferState</code> to avoid double-fetching HTTP data server+client</li>
+  <li><code>provideHttpClient(withFetch())</code> for server-compatible HTTP (uses native fetch)</li>
+  <li>Hydration mismatch errors occur when server HTML differs from client — ensure deterministic rendering</li>
+</ul>
+<pre><code class="language-typescript">// Guard browser-only code
+const platformId = inject(PLATFORM_ID);
+if (isPlatformBrowser(platformId)) {
+  // safe to use window/localStorage
+}</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q4: How would you implement a caching HTTP interceptor with request deduplication? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<pre><code class="language-typescript">import { HttpInterceptorFn, HttpResponse } from '@angular/common/http';
+import { inject } from '@angular/core';
+import { Observable, of, Subject } from 'rxjs';
+import { tap, share } from 'rxjs/operators';
+
+// Simple in-memory cache service
+@Injectable({ providedIn: 'root' })
+class HttpCacheService {
+  private cache = new Map&lt;string, HttpResponse&lt;unknown&gt;&gt;();
+  private inflightRequests = new Map&lt;string, Observable&lt;any&gt;&gt;();
+
+  get(key: string) { return this.cache.get(key); }
+  set(key: string, response: HttpResponse&lt;unknown&gt;) {
+    this.cache.set(key, response);
+    // TTL: auto-evict after 60s
+    setTimeout(() => this.cache.delete(key), 60_000);
+  }
+  getInflight(key: string) { return this.inflightRequests.get(key); }
+  setInflight(key: string, obs$: Observable&lt;any&gt;) {
+    this.inflightRequests.set(key, obs$);
+  }
+  deleteInflight(key: string) { this.inflightRequests.delete(key); }
+}
+
+export const cachingInterceptor: HttpInterceptorFn = (req, next) => {
+  const cache = inject(HttpCacheService);
+
+  // Only cache GET requests with cache-control header
+  if (req.method !== 'GET' || !req.headers.has('X-Cache')) {
+    return next(req);
+  }
+
+  const cacheKey = req.urlWithParams;
+
+  // Return cached response
+  const cached = cache.get(cacheKey);
+  if (cached) return of(cached.clone());
+
+  // Deduplicate: if same request is in-flight, share it
+  const inflight = cache.getInflight(cacheKey);
+  if (inflight) return inflight;
+
+  const request$ = next(req).pipe(
+    tap(event => {
+      if (event instanceof HttpResponse) {
+        cache.set(cacheKey, event.clone());
+        cache.deleteInflight(cacheKey);
+      }
+    }),
+    share()  // multicast: share one HTTP call to multiple subscribers
+  );
+
+  cache.setInflight(cacheKey, request$);
+  return request$;
+};</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q5: How do you implement a custom structural directive, and explain the desugared template syntax? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<pre><code class="language-typescript">import {
+  Directive, Input, TemplateRef, ViewContainerRef, inject
+} from '@angular/core';
+
+// Custom structural directive: *appRepeat="3"
+@Directive({ selector: '[appRepeat]', standalone: true })
+export class RepeatDirective {
+  private vcr = inject(ViewContainerRef);
+  private tpl = inject(TemplateRef);
+
+  @Input() set appRepeat(count: number) {
+    this.vcr.clear();
+    for (let i = 0; i &lt; count; i++) {
+      this.vcr.createEmbeddedView(this.tpl, { $implicit: i });
+    }
+  }
+}
+
+// Usage: &lt;li *appRepeat="5; let i"&gt;Item {{ i }}&lt;/li&gt;
+
+// Angular desugars *appRepeat="5; let i" into:
+// &lt;ng-template [appRepeat]="5" let-i&gt;
+//   &lt;li&gt;Item {{ i }}&lt;/li&gt;
+// &lt;/ng-template&gt;</code></pre>
+<p>The <code>*</code> prefix is syntactic sugar for <code>&lt;ng-template&gt;</code>. Angular:</p>
+<ol>
+  <li>Wraps the host element in <code>&lt;ng-template&gt;</code></li>
+  <li>Moves the <code>*directive="expr"</code> to <code>[directive]="expr"</code> on <code>&lt;ng-template&gt;</code></li>
+  <li>Passes <code>let-x</code> variables as template context via <code>$implicit</code></li>
+</ol>
+<p>The directive controls rendering via <code>ViewContainerRef.createEmbeddedView(templateRef, context)</code> and <code>clear()</code>.</p>
+</div>
+</details>
+
+<!-- ============================================================ Q&A VERY ADVANCED -->
+<h2 id="qa-very-advanced">20. Very Advanced</h2>
+
+<details>
+<summary>Q1: Explain the Angular Ivy compilation model — how does the Ivy compiler differ from View Engine? <span class="badge very-advanced">Very Advanced</span></summary>
+<div class="answer">
+<p>Ivy (default since Angular 9) replaced the View Engine compiler with a fundamentally different architecture:</p>
+<table>
+  <tr><th>Aspect</th><th>View Engine</th><th>Ivy</th></tr>
+  <tr><td>Compilation output</td><td>ngFactory files, centralized metadata</td><td>Instructions inlined into class definitions (ngtsc)</td></tr>
+  <tr><td>Tree shaking</td><td>Hard — NgModule forced all declared components into bundle</td><td>Easy — components/pipes/directives are tree-shakable</td></tr>
+  <tr><td>Compilation locality</td><td>Needed global knowledge of app</td><td>Each file compiled independently</td></tr>
+  <tr><td>Bundle size</td><td>Larger Angular runtime</td><td>Smaller — unused runtime features tree-shaken</td></tr>
+  <tr><td>Debugging</td><td>ng.probe (deprecated)</td><td>ng.getComponent(), ng.applyChanges()</td></tr>
+</table>
+<pre><code class="language-typescript">// Ivy compiles @Component into static ɵcmp and ɵfac fields:
+export class AppComponent {
+  // Generated by Ivy compiler:
+  static ɵcmp = defineComponent({
+    type: AppComponent,
+    selectors: [['app-root']],
+    decls: 1, vars: 1,
+    template: function AppComponent_Template(rf, ctx) {
+      if (rf &amp; 1) { text(0); }             // creation phase
+      if (rf &amp; 2) { textInterpolate(ctx.title); } // update phase
+    }
+  });
+  static ɵfac = () => new AppComponent();
+}
+
+// Ivy's template instructions (ɵɵelementStart, ɵɵtext, etc.) are
+// individually tree-shakable — if your app doesn't use NgFor,
+// the NgFor instructions don't ship.</code></pre>
+<p>The Angular Language Service and NgCC (ngcc — Angular Compatibility Compiler) also switched to leverage Ivy's compilation model, enabling faster IDE support and library compatibility.</p>
+</div>
+</details>
+
+<details>
+<summary>Q2: How does zoneless change detection work, and how do Signals make it possible? <span class="badge very-advanced">Very Advanced</span></summary>
+<div class="answer">
+<p>Traditional Angular relies on <strong>Zone.js</strong>, which monkey-patches async browser APIs (<code>setTimeout</code>, <code>Promise</code>, <code>addEventListener</code>) to notify Angular when async work completes. Angular then runs change detection for the entire app. This is "coarse-grained" — any event anywhere triggers a full tree check.</p>
+<p><strong>Signals</strong> enable fine-grained, reactive change detection: Angular knows exactly which templates depend on which signals. When a signal changes, only the views that read that signal need to be updated — no zone notification needed.</p>
+<pre><code class="language-typescript">// Zoneless app setup (Angular 18+, experimental)
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideExperimentalZonelessChangeDetection(),
+    provideRouter(routes)
+  ]
+};
+
+// Remove zone.js from angular.json polyfills:
+// "polyfills": ["zone.js"]  ← REMOVE or keep only for testing
+
+// Component MUST use signals or async pipe for CD to work in zoneless
+@Component({
+  changeDetection: ChangeDetectionStrategy.OnPush, // required for zoneless
+  template: `&lt;p&gt;{{ count() }}&lt;/p&gt;&lt;button (click)="inc()"&gt;+&lt;/button&gt;`
+})
+export class CounterComponent {
+  count = signal(0);
+  inc() { this.count.update(c => c + 1); }
+  // Angular knows count changed → only this template gets re-rendered
+}</code></pre>
+<p>Zoneless benefits: smaller bundle (no zone.js ~15KB), faster initial render, predictable CD timing, compatible with native async/await and non-Angular code. Libraries that trigger CD outside Angular (e.g., D3 callbacks) need to call <code>ChangeDetectorRef.markForCheck()</code> explicitly.</p>
+</div>
+</details>
+
+<details>
+<summary>Q3: Design a scalable state management architecture using Signals without NgRx. <span class="badge very-advanced">Very Advanced</span></summary>
+<div class="answer">
+<pre><code class="language-typescript">// Generic signal store factory (Angular 19+ pattern)
+import { signal, computed, effect, inject } from '@angular/core';
+
+interface StoreConfig&lt;State, Actions&gt; {
+  initialState: State;
+  actions: (get: () => State, set: (state: Partial&lt;State&gt;) => void) => Actions;
+}
+
+function createStore&lt;State extends object, Actions&gt;(
+  config: StoreConfig&lt;State, Actions&gt;
+) {
+  const state = signal&lt;State&gt;(config.initialState);
+  const get = () => state();
+  const set = (partial: Partial&lt;State&gt;) =>
+    state.update(s => ({ ...s, ...partial }));
+
+  return {
+    state: state.asReadonly(),
+    actions: config.actions(get, set)
+  };
+}
+
+// User store
+export const useUserStore = createStore({
+  initialState: {
+    users: [] as User[],
+    loading: false,
+    error: null as string | null,
+    selectedId: null as string | null
+  },
+  actions: (get, set) => ({
+    setUsers(users: User[]) { set({ users, loading: false }); },
+    setLoading(loading: boolean) { set({ loading }); },
+    setError(error: string) { set({ error, loading: false }); },
+    selectUser(id: string) { set({ selectedId: id }); },
+    updateUser(updated: User) {
+      const users = get().users.map(u => u.id === updated.id ? updated : u);
+      set({ users });
+    }
+  })
+});
+
+// Feature service using the store
+@Injectable({ providedIn: 'root' })
+export class UserFacade {
+  private store = useUserStore;
+  private http = inject(HttpClient);
+
+  // Expose read-only computed state
+  users = computed(() => this.store.state().users);
+  loading = computed(() => this.store.state().loading);
+  selectedUser = computed(() =>
+    this.store.state().users.find(u => u.id === this.store.state().selectedId)
+  );
+
+  loadUsers() {
+    this.store.actions.setLoading(true);
+    this.http.get&lt;User[]&gt;('/api/users').subscribe({
+      next: users => this.store.actions.setUsers(users),
+      error: err => this.store.actions.setError(err.message)
+    });
+  }
+}</code></pre>
+<p>This pattern avoids NgRx boilerplate while maintaining unidirectional data flow, type safety, and fine-grained reactivity. For complex async orchestration or devtools, consider <code>@ngrx/signals</code> SignalStore which formalizes this approach with reducers and effects.</p>
+</div>
+</details>
+
+<details>
+<summary>Q4: How do you build a highly reusable form control by implementing ControlValueAccessor? <span class="badge very-advanced">Very Advanced</span></summary>
+<div class="answer">
+<pre><code class="language-typescript">import {
+  Component, forwardRef, inject, ChangeDetectorRef
+} from '@angular/core';
+import {
+  ControlValueAccessor, NG_VALUE_ACCESSOR,
+  NG_VALIDATORS, AbstractControl, ValidationErrors, Validator
+} from '@angular/forms';
+
+// Custom form control: star-rating input
+@Component({
+  selector: 'app-star-rating',
+  standalone: true,
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => StarRatingComponent),
+      multi: true
+    },
+    {
+      provide: NG_VALIDATORS,
+      useExisting: forwardRef(() => StarRatingComponent),
+      multi: true
+    }
+  ],
+  template: `
+    @for (star of stars; track star) {
+      &lt;button type="button"
+        [class.filled]="star &lt;= value"
+        [disabled]="isDisabled"
+        (click)="setValue(star)"
+        (blur)="onTouched()"&gt;
+        ★
+      &lt;/button&gt;
+    }
+  `
+})
+export class StarRatingComponent implements ControlValueAccessor, Validator {
+  private cdr = inject(ChangeDetectorRef);
+  stars = [1, 2, 3, 4, 5];
+  value = 0;
+  isDisabled = false;
+
+  // CVA callbacks — set by Angular forms framework
+  onChange = (_: number) => {};
+  onTouched = () => {};
+
+  // writeValue: called when the form sets the value programmatically
+  writeValue(val: number): void {
+    this.value = val ?? 0;
+    this.cdr.markForCheck();
+  }
+
+  // registerOnChange: Angular calls this to give us the "emit upward" fn
+  registerOnChange(fn: (val: number) => void): void { this.onChange = fn; }
+
+  // registerOnTouched: Angular calls this to give us the "touched" fn
+  registerOnTouched(fn: () => void): void { this.onTouched = fn; }
+
+  // setDisabledState: called when form control disabled state changes
+  setDisabledState(disabled: boolean): void {
+    this.isDisabled = disabled;
+    this.cdr.markForCheck();
+  }
+
+  // NG_VALIDATORS
+  validate(ctrl: AbstractControl): ValidationErrors | null {
+    return this.value &gt; 0 ? null : { starRatingRequired: true };
+  }
+
+  setValue(star: number) {
+    if (this.isDisabled) return;
+    this.value = star;
+    this.onChange(star);     // notify form of change
+    this.onTouched();        // mark as touched
+  }
+}
+
+// Usage — works with both reactive and template-driven forms:
+// &lt;app-star-rating formControlName="rating"&gt;&lt;/app-star-rating&gt;
+// &lt;app-star-rating [(ngModel)]="productRating"&gt;&lt;/app-star-rating&gt;</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q5: Explain Angular's runtime compilation model for dynamic components and how to create components at runtime. <span class="badge very-advanced">Very Advanced</span></summary>
+<div class="answer">
+<pre><code class="language-typescript">import {
+  Component, ViewContainerRef, ComponentRef,
+  createComponent, EnvironmentInjector,
+  reflectComponentType, inject, Type
+} from '@angular/core';
+
+// Approach 1: ViewContainerRef.createComponent (most common)
+@Component({ selector: 'app-dynamic-host', template: '&lt;ng-container #container&gt;&lt;/ng-container&gt;' })
+export class DynamicHostComponent {
+  @ViewChild('container', { read: ViewContainerRef }) container!: ViewContainerRef;
+
+  loadComponent&lt;T&gt;(componentType: Type&lt;T&gt;, inputs: Record&lt;string, unknown&gt; = {}): ComponentRef&lt;T&gt; {
+    this.container.clear();
+    const ref = this.container.createComponent(componentType);
+
+    // Pass inputs to the dynamic component
+    Object.entries(inputs).forEach(([key, value]) => {
+      ref.setInput(key, value);
+    });
+    ref.changeDetectorRef.detectChanges();
+    return ref;
+  }
+
+  destroyComponent(ref: ComponentRef&lt;unknown&gt;) { ref.destroy(); }
+}
+
+// Approach 2: createComponent (standalone, without ViewContainerRef)
+@Injectable({ providedIn: 'root' })
+export class DynamicComponentService {
+  private injector = inject(EnvironmentInjector);
+
+  create&lt;T&gt;(componentType: Type&lt;T&gt;): ComponentRef&lt;T&gt; {
+    return createComponent(componentType, {
+      environmentInjector: this.injector
+    });
+  }
+}
+
+// Approach 3: Dynamic component type map (for data-driven UIs)
+const WIDGET_REGISTRY = new Map&lt;string, Type&lt;unknown&gt;&gt;([
+  ['chart', ChartComponent],
+  ['table', TableComponent],
+  ['kpi',   KpiComponent]
+]);
+
+// Usage in a dashboard builder:
+async loadWidget(type: string, container: ViewContainerRef) {
+  const component = WIDGET_REGISTRY.get(type);
+  if (!component) throw new Error(`Unknown widget: ${type}`);
+  container.clear();
+  const ref = container.createComponent(component);
+  return ref;
+}
+
+// Inspect component metadata at runtime
+const meta = reflectComponentType(ChartComponent);
+console.log(meta?.inputs);   // [{propName, templateName}]
+console.log(meta?.outputs);
+console.log(meta?.selector);</code></pre>
+<p>Dynamic components are the foundation of UI builders, dialog systems, toast notifications, and portal-based UIs. The key shift in Ivy is that components carry their own compilation metadata (<code>ɵcmp</code>), so they can be instantiated without a compile step at runtime.</p>
+</div>
+</details>
+
+<footer>
+  Angular Learning Reference &bull; Covers Angular 15–19 &bull; Last updated August 2026
+</footer>
+
+</main>
+</div>
+<script>hljs.highlightAll();mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

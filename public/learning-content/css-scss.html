@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSS & SCSS Complete Guide</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6;display:flex;flex-direction:column}
+.topnav{background:#161b22;padding:10px 24px;border-bottom:1px solid #30363d;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100}
+.topnav a{color:#58a6ff;text-decoration:none;font-size:13px}
+.topnav h1{font-size:16px;color:#e6edf3;margin:0}
+.layout{display:flex;flex:1}
+.sidebar{width:240px;background:#161b22;border-right:1px solid #30363d;padding:16px;position:sticky;top:41px;height:calc(100vh - 41px);overflow-y:auto;flex-shrink:0}
+.sidebar a{display:block;padding:4px 8px;color:#8b949e;text-decoration:none;font-size:13px;border-radius:4px;margin-bottom:2px}
+.sidebar a:hover{background:#21262d;color:#c9d1d9}
+.sidebar .stitle{color:#58a6ff;font-size:11px;text-transform:uppercase;letter-spacing:.5px;margin:16px 0 6px;padding:0 8px;font-weight:600}
+main{flex:1;padding:32px 48px;max-width:960px}
+h1{font-size:2rem;color:#e6edf3;border-bottom:1px solid #30363d;padding-bottom:16px;margin-bottom:24px}
+h2{font-size:1.5rem;color:#e6edf3;margin:48px 0 16px;border-bottom:1px solid #21262d;padding-bottom:8px}
+h3{font-size:1.15rem;color:#79c0ff;margin:24px 0 10px}
+h4{font-size:1rem;color:#d2a8ff;margin:16px 0 8px}
+p{margin-bottom:12px}
+ul,ol{margin:0 0 16px 24px}
+li{margin-bottom:4px}
+pre{margin:16px 0;border-radius:6px;overflow-x:auto;font-size:13px}
+code:not(pre code){background:#161b22;padding:2px 6px;border-radius:4px;font-size:13px;color:#f0883e;border:1px solid #30363d}
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+th{background:#161b22;color:#58a6ff;padding:10px 14px;text-align:left;border:1px solid #30363d}
+td{padding:10px 14px;border:1px solid #30363d;vertical-align:top}
+tr:nth-child(even) td{background:#0a0d12}
+.mermaid{background:#161b22;padding:20px;border-radius:6px;margin:16px 0;text-align:center}
+details{border:1px solid #30363d;border-radius:6px;margin:10px 0;overflow:hidden}
+summary{padding:12px 16px;cursor:pointer;background:#161b22;color:#79c0ff;font-weight:600;list-style:none}
+details[open] summary{border-bottom:1px solid #30363d}
+.answer{padding:16px 20px;background:#0d1117}
+.badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:700;margin-left:8px}
+.easy{background:#1a4731;color:#3fb950}
+.intermediate{background:#2d2b00;color:#e3b341}
+.advanced{background:#3d1f00;color:#f0883e}
+.very-advanced{background:#3d0000;color:#ff7b72}
+.callout{background:#161b22;border-left:4px solid #58a6ff;padding:12px 16px;border-radius:0 6px 6px 0;margin:16px 0}
+footer{text-align:center;padding:24px;color:#8b949e;font-size:12px;border-top:1px solid #30363d;margin-top:40px}
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <h1>CSS &amp; SCSS Complete Guide</h1>
+  <a href="index.html">← Back to Index</a>
+</nav>
+<div class="layout">
+<aside class="sidebar">
+  <div class="stitle">CSS</div>
+  <a href="#box-model">Box Model</a>
+  <a href="#selectors">Selectors</a>
+  <a href="#flexbox">Flexbox</a>
+  <a href="#grid">CSS Grid</a>
+  <a href="#positioning">Positioning</a>
+  <a href="#variables">CSS Variables</a>
+  <a href="#responsive">Responsive Design</a>
+  <a href="#animations">Animations</a>
+  <a href="#modern-css">Modern CSS</a>
+  <a href="#architecture">CSS Architecture</a>
+  <div class="stitle">SCSS</div>
+  <a href="#scss">SCSS / Sass</a>
+  <a href="#versions">Version History</a>
+  <a href="#qa">Interview Q&amp;A</a>
+</aside>
+<main>
+<h1>CSS &amp; SCSS Complete Guide</h1>
+
+<h2 id="box-model">1. CSS Box Model</h2>
+<p>Every element is a rectangular box. The box model layers (from inside out): <strong>content → padding → border → margin</strong>.</p>
+<pre><code class="language-css">/* content-box (default): width applies to content only */
+.default { box-sizing: content-box; width: 200px; padding: 20px; } /* total width: 240px */
+
+/* border-box: width includes padding and border */
+.modern { box-sizing: border-box; width: 200px; padding: 20px; } /* total width: 200px */
+
+/* Apply border-box globally — best practice */
+*, *::before, *::after { box-sizing: border-box; }
+</code></pre>
+<table>
+<tr><th>Property</th><th>Description</th><th>Example</th></tr>
+<tr><td>margin</td><td>Space outside border (can be negative)</td><td>margin: 10px 20px</td></tr>
+<tr><td>padding</td><td>Space between content and border</td><td>padding: 8px 16px</td></tr>
+<tr><td>border</td><td>Visible line around element</td><td>border: 1px solid #ccc</td></tr>
+<tr><td>outline</td><td>Like border but doesn't affect layout</td><td>outline: 2px solid blue</td></tr>
+</table>
+
+<h2 id="selectors">2. Selectors &amp; Specificity</h2>
+<pre><code class="language-css">/* Type, Class, ID */
+p { color: black; }          /* specificity: 0,0,1 */
+.highlight { color: yellow; } /* specificity: 0,1,0 */
+#header { color: red; }       /* specificity: 1,0,0 */
+
+/* Attribute selectors */
+input[type="email"] { border: 1px solid blue; }
+a[href^="https"] { color: green; } /* starts with */
+a[href$=".pdf"]  { color: red; }   /* ends with */
+
+/* Pseudo-classes */
+a:hover, a:focus { text-decoration: underline; }
+li:nth-child(2n) { background: #f0f0f0; }  /* even rows */
+p:first-of-type  { font-weight: bold; }
+
+/* Pseudo-elements */
+p::before { content: "→ "; }
+p::after  { content: " ←"; }
+::selection { background: #58a6ff; color: white; }
+
+/* Combinators */
+/* div p   — descendant: all p inside div */
+/* div > p — child: direct p children of div */
+/* h2 + p  — adjacent sibling: p immediately after h2 */
+/* h2 ~ p  — general sibling: all p after h2 */
+</code></pre>
+<p><strong>Specificity calculation:</strong> inline style = 1000, ID = 100, class/pseudo-class/attribute = 10, element/pseudo-element = 1. Higher wins; equal specificity → last rule wins. <code>!important</code> overrides all (use sparingly).</p>
+
+<h2 id="flexbox">3. Flexbox</h2>
+<pre><code class="language-css">.container {
+  display: flex;
+  flex-direction: row;          /* row | column | row-reverse | column-reverse */
+  flex-wrap: wrap;              /* nowrap | wrap | wrap-reverse */
+  justify-content: space-between; /* main axis: flex-start|center|flex-end|space-between|space-around|space-evenly */
+  align-items: center;          /* cross axis: stretch|flex-start|flex-end|center|baseline */
+  align-content: flex-start;    /* multi-line cross axis */
+  gap: 16px;                    /* shorthand for row-gap + column-gap */
+}
+
+.item {
+  flex-grow: 1;    /* how much extra space to take (0 = none) */
+  flex-shrink: 1;  /* how much to shrink if needed (0 = no shrink) */
+  flex-basis: 200px; /* initial size before grow/shrink */
+  flex: 1 1 200px;   /* shorthand */
+  align-self: flex-end; /* override align-items for this item */
+  order: 2;          /* visual ordering (default 0) */
+}
+
+/* Common patterns */
+.center { display:flex; justify-content:center; align-items:center; }
+.sidebar-layout { display:flex; gap:20px; }
+.sidebar-layout aside { flex: 0 0 260px; }
+.sidebar-layout main  { flex: 1; }
+</code></pre>
+
+<h2 id="grid">4. CSS Grid</h2>
+<pre><code class="language-css">.grid {
+  display: grid;
+  grid-template-columns: 260px 1fr 1fr;          /* explicit columns */
+  grid-template-columns: repeat(3, 1fr);          /* 3 equal columns */
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* responsive */
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "header header header"
+    "sidebar main   main"
+    "footer footer footer";
+  gap: 16px;
+}
+
+.header  { grid-area: header; }
+.sidebar { grid-area: sidebar; }
+.main    { grid-area: main; }
+
+/* Placement */
+.item {
+  grid-column: 1 / 3;   /* span columns 1 to 3 */
+  grid-column: span 2;  /* span 2 columns */
+  grid-row: 2 / 4;
+}
+</code></pre>
+<table>
+<tr><th>Feature</th><th>Flexbox</th><th>CSS Grid</th></tr>
+<tr><td>Dimension</td><td>1D (row OR column)</td><td>2D (rows AND columns)</td></tr>
+<tr><td>Best for</td><td>Component alignment, nav bars</td><td>Page layout, complex positioning</td></tr>
+<tr><td>Item sizing</td><td>Content-driven</td><td>Track-driven</td></tr>
+<tr><td>Overlap</td><td>Not natively</td><td>Yes (z-index)</td></tr>
+</table>
+
+<h2 id="positioning">5. Positioning</h2>
+<pre><code class="language-css">/* static — default, no top/left/right/bottom effect */
+/* relative — offset from its normal position, still in flow */
+.relative { position: relative; top: 10px; left: 20px; }
+
+/* absolute — removed from flow, positioned relative to nearest non-static ancestor */
+.parent   { position: relative; }
+.absolute { position: absolute; top: 0; right: 0; }
+
+/* fixed — relative to viewport, stays while scrolling */
+.navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 100; }
+
+/* sticky — relative until scroll threshold, then fixed */
+.sticky-header { position: sticky; top: 0; z-index: 10; }
+</code></pre>
+
+<h2 id="variables">6. CSS Custom Properties (Variables)</h2>
+<pre><code class="language-css">:root {
+  --color-bg: #0d1117;
+  --color-text: #c9d1d9;
+  --color-primary: #58a6ff;
+  --spacing-md: 16px;
+  --radius: 6px;
+}
+
+.button {
+  background: var(--color-primary);
+  padding: var(--spacing-md);
+  border-radius: var(--radius);
+  color: var(--color-bg, white); /* fallback value */
+}
+
+/* Dynamic theming with class toggle */
+[data-theme="dark"]  { --color-bg: #0d1117; --color-text: #c9d1d9; }
+[data-theme="light"] { --color-bg: #ffffff; --color-text: #1a1a2e; }
+
+/* Variables can be updated with JavaScript */
+/* document.documentElement.style.setProperty('--color-primary', '#ff0000') */
+</code></pre>
+
+<h2 id="responsive">7. Responsive Design</h2>
+<pre><code class="language-css">/* Mobile-first approach — start with small, add complexity */
+.container { padding: 16px; }
+
+@media (min-width: 768px) {
+  .container { padding: 24px; max-width: 960px; margin: 0 auto; }
+}
+@media (min-width: 1200px) {
+  .container { max-width: 1280px; }
+}
+
+/* Fluid typography with clamp(min, preferred, max) */
+h1 { font-size: clamp(1.5rem, 4vw, 3rem); }
+.gap { gap: clamp(8px, 2vw, 24px); }
+
+/* Container queries (modern — target element size, not viewport) */
+@container sidebar (min-width: 400px) {
+  .card { display: flex; }
+}
+.sidebar { container-type: inline-size; container-name: sidebar; }
+
+/* Breakpoints reference */
+/* 320px — small phones, 480px — phones, 768px — tablets, 1024px — laptops, 1280px — desktops */
+</code></pre>
+
+<h2 id="animations">8. Transitions &amp; Animations</h2>
+<pre><code class="language-css">/* Transition — smooth state changes */
+.button {
+  background: #58a6ff;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+.button:hover { background: #79c0ff; transform: translateY(-2px); }
+
+/* Keyframe animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.modal {
+  animation: fadeIn 0.3s ease forwards;
+  /* animation: name duration timing-function delay iteration-count direction fill-mode */
+}
+
+/* Performance: prefer transform and opacity (compositor layer) */
+/* Avoid: animating width, height, top, left (triggers layout) */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; }
+}
+</code></pre>
+
+<h2 id="modern-css">9. Modern CSS Features</h2>
+<pre><code class="language-css">/* aspect-ratio */
+.video-embed { width: 100%; aspect-ratio: 16 / 9; }
+
+/* Logical properties (writing-mode aware) */
+.box { margin-inline: auto; padding-block: 16px; }
+/* instead of: margin-left: auto; margin-right: auto; padding-top: 16px; */
+
+/* :is() — reduce repetition */
+:is(h1, h2, h3) { line-height: 1.3; }
+:is(article, section) :is(h2, h3) { color: #79c0ff; }
+
+/* :where() — same as :is() but zero specificity */
+:where(.card, .panel) { border-radius: 6px; }
+
+/* :has() — parent selector! */
+.form-group:has(input:invalid) { border-color: red; }
+nav:has(.active) { background: #161b22; }
+
+/* @layer — explicit cascade layers */
+@layer base, components, utilities;
+@layer base { p { margin-bottom: 1em; } }
+@layer utilities { .mt-4 { margin-top: 1rem; } }
+
+/* color-mix() */
+.button { background: color-mix(in srgb, #58a6ff 80%, white); }
+
+/* CSS nesting (native, no preprocessor needed) */
+.card {
+  padding: 16px;
+  &:hover { box-shadow: 0 4px 12px rgba(0,0,0,.3); }
+  & .title { font-size: 1.2rem; }
+}
+</code></pre>
+
+<h2 id="architecture">10. CSS Architecture</h2>
+<h3>BEM (Block__Element--Modifier)</h3>
+<pre><code class="language-css">/* Block */         .card { ... }
+/* Element */       .card__title { ... }  .card__body { ... }
+/* Modifier */      .card--featured { ... }  .card__title--large { ... }
+</code></pre>
+<h3>Utility-First (Tailwind style)</h3>
+<pre><code class="language-html">&lt;div class="flex gap-4 p-6 rounded-lg bg-gray-900"&gt;
+  &lt;h2 class="text-xl font-bold text-white"&gt;Title&lt;/h2&gt;
+&lt;/div&gt;</code></pre>
+<p><strong>CSS Modules</strong> — scopes class names to the component automatically. <code>.card</code> becomes <code>.card_a1b2c3</code> in the output, preventing collisions.</p>
+
+<h2 id="scss">11. SCSS / Sass</h2>
+<pre><code class="language-scss">// Variables
+$color-primary: #58a6ff;
+$spacing-md: 16px;
+
+// Nesting and & parent selector
+.nav {
+  display: flex;
+  gap: $spacing-md;
+
+  &__item { color: #c9d1d9; }       // .nav__item
+  &__item:hover { color: $color-primary; }
+  &--dark { background: #0d1117; }  // .nav--dark
+}
+
+// Mixin with arguments
+@mixin flex-center($direction: row) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: center;
+  align-items: center;
+}
+.hero { @include flex-center(column); }
+
+// Function
+@function rem($px) {
+  @return #{$px / 16}rem;
+}
+h1 { font-size: rem(32); } // 2rem
+
+// @extend
+%button-base {
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.btn-primary { @extend %button-base; background: $color-primary; }
+.btn-danger   { @extend %button-base; background: #ff7b72; }
+
+// Control flow
+@each $color in primary, danger, success {
+  .btn-#{$color} { color: var(--color-#{$color}); }
+}
+
+@for $i from 1 through 5 {
+  .mt-#{$i} { margin-top: #{$i * 4}px; }
+}
+
+// Partials and @use (@use replaces old @import)
+// _variables.scss, _mixins.scss, _components.scss
+@use 'variables' as v;
+@use 'mixins';
+.box { color: v.$color-primary; }
+
+// Maps
+$breakpoints: (sm: 576px, md: 768px, lg: 1024px, xl: 1280px);
+@each $key, $val in $breakpoints {
+  .container-#{$key} { max-width: $val; }
+}
+</code></pre>
+
+<h2 id="versions">12. CSS Version History</h2>
+<table>
+<tr><th>Era</th><th>Key Features</th></tr>
+<tr><td>CSS1 (1996)</td><td>Fonts, colors, basic box model, text properties</td></tr>
+<tr><td>CSS2 (1998)</td><td>Positioning, z-index, media types, @media print</td></tr>
+<tr><td>CSS3 (2011+)</td><td>Modules approach, border-radius, shadows, gradients, transforms, transitions, animations, flexbox, media queries</td></tr>
+<tr><td>2019-2021</td><td>CSS Grid, custom properties, aspect-ratio, gap (in flex), logical properties, :is()/:where()</td></tr>
+<tr><td>2022</td><td>Container queries, @layer cascade layers, :has(), color-mix(), color-contrast()</td></tr>
+<tr><td>2023-2024</td><td>Native CSS nesting (no preprocessor needed), @scope, CSS anchor positioning, @starting-style, transition-behavior, light-dark()</td></tr>
+</table>
+
+<h2 id="qa">13. Interview Q&amp;A</h2>
+
+<details>
+<summary>What is the CSS box model? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p>Every element is a rectangular box with four layers: <strong>content</strong> (text/images), <strong>padding</strong> (space between content and border), <strong>border</strong> (visible line), and <strong>margin</strong> (space outside border, transparent). The key property is <code>box-sizing</code>: default <code>content-box</code> adds padding/border on top of the declared width, while <code>border-box</code> includes them in the width — making layout math much easier. Best practice is <code>*, *::before, *::after { box-sizing: border-box; }</code> globally.</p>
+</div>
+</details>
+
+<details>
+<summary>Explain CSS specificity. <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p>Specificity determines which rule wins when multiple rules target the same element. Points: inline style = 1000, ID = 100, class/pseudo-class/attribute = 10, element/pseudo-element = 1. Example: <code>#nav .link:hover</code> = 100+10+10 = 120. Equal specificity → last rule in source wins. <code>!important</code> overrides all (avoid unless necessary). The universal selector <code>*</code> and combinators (>, +, ~) have zero specificity. <code>:where()</code> is like <code>:is()</code> but adds 0 specificity.</p>
+</div>
+</details>
+
+<details>
+<summary>Flexbox vs CSS Grid — when to use each? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p><strong>Flexbox</strong> is 1D: align items along one axis (row or column). Use it for navigation bars, button groups, centering a single item, or any component where items flow in a line. <strong>CSS Grid</strong> is 2D: place items in rows and columns simultaneously. Use it for page layouts, card grids, or any component needing precise placement in both dimensions. They compose well: use Grid for the page skeleton, Flexbox within each grid cell.</p>
+</div>
+</details>
+
+<details>
+<summary>What is the difference between <code>visibility: hidden</code> and <code>display: none</code>? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p><code>display: none</code> removes the element from the layout entirely — it takes up no space and is not accessible to screen readers. <code>visibility: hidden</code> hides the element visually but it still occupies its space in the layout. <code>opacity: 0</code> also hides visually while taking space, but still receives pointer events (unlike visibility:hidden). For accessibility-friendly hiding, <code>clip-path: inset(50%)</code> or the visually-hidden pattern (position:absolute; clip) hides visually but remains accessible to screen readers.</p>
+</div>
+</details>
+
+<details>
+<summary>How does the CSS cascade work? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>The cascade resolves conflicts using this priority order (highest first): 1) <code>!important</code> user agent styles, 2) <code>!important</code> author styles, 3) <code>!important</code> user styles, 4) author styles (normal), 5) user styles, 6) user-agent defaults. Within author styles: <code>@layer</code> order (later layers win), then specificity, then source order. CSS <code>@layer</code> lets you explicitly control cascade order regardless of specificity, which is powerful for third-party CSS overrides.</p>
+</div>
+</details>
+
+<details>
+<summary>Explain CSS stacking context and z-index. <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>A stacking context is a 3D layer in which elements are painted in z-order. Elements with higher z-index appear in front, but only within the same stacking context. A new context is created by: position+z-index not auto, opacity &lt; 1, transform/filter/will-change, isolation: isolate, and more. Common bug: z-index:9999 on a child does nothing if a parent has z-index:1 in a separate stacking context — the parent's context is compared, not the child's. Use <code>isolation: isolate</code> to create a context without affecting layout.</p>
+</div>
+</details>
+
+<details>
+<summary>What are CSS custom properties and how do they differ from SCSS variables? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>CSS custom properties (declared as <code>--name: value</code>) are native browser features that exist at runtime and can be changed with JavaScript or inherit through the DOM. They can be updated per-component or per-theme dynamically. SCSS variables (<code>$name: value</code>) are compile-time — they are resolved at build time and compiled away; the final CSS has no variable references. CSS custom properties also participate in the cascade and inheritance, while SCSS variables are static. For theming and dynamic values: CSS custom properties. For SCSS-only computed values and loops: SCSS variables.</p>
+</div>
+</details>
+
+<details>
+<summary>What is BEM and why use it? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>BEM (Block__Element--Modifier) is a CSS naming convention to avoid style conflicts in large codebases. Block = standalone component (<code>.card</code>), Element = part of a block (<code>.card__title</code>, <code>.card__body</code>), Modifier = variation (<code>.card--featured</code>, <code>.card__title--large</code>). Benefits: class names are self-documenting, specificity stays at 0,1,0 (one class), no nesting needed to avoid conflicts. Downsides: verbose class names. Alternatives include CSS Modules (automated scoping), utility-first (Tailwind), or CSS-in-JS.</p>
+</div>
+</details>
+
+<details>
+<summary>How do CSS container queries differ from media queries? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>Media queries respond to the <em>viewport</em> size; container queries respond to the size of a <em>parent element</em>. This enables truly reusable components that adapt to their context regardless of where they're placed. You mark a parent as a container (<code>container-type: inline-size</code>) and then write <code>@container (min-width: 400px) { ... }</code>. This solves the classic problem of a card component that needs to be wide in a full-width layout but compact in a sidebar — without CSS knowing the viewport, only knowing its container's size. Browser support is now excellent (Chrome 105+, Safari 16+, Firefox 110+).</p>
+</div>
+</details>
+
+<details>
+<summary>Explain the <code>:has()</code> selector and its use cases. <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p><code>:has()</code> is a relational pseudo-class that selects an element if it <em>contains</em> a matching descendant — effectively a "parent selector" long missing from CSS. Examples: <code>.form-group:has(input:invalid)</code> (style form group red when input is invalid), <code>article:has(img)</code> (different layout for articles with images), <code>li:has(+ li)</code> (all li except the last), <code>header:has(nav)</code> (header that contains nav). It has the specificity of its argument. Combined with <code>:not(:has(...))</code> enables powerful conditional styling without JavaScript class manipulation.</p>
+</div>
+</details>
+
+<details>
+<summary>What is CSS <code>@layer</code> and when would you use it? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>CSS <code>@layer</code> lets you explicitly define the order of the cascade, independent of specificity. You declare layer order: <code>@layer base, components, utilities;</code> — later layers win, so utilities override components override base. This solves the specificity wars in large codebases: a utility class with specificity 0,1,0 beats a component class with 0,1,0 if it's in a higher layer, without needing <code>!important</code>. Primary use case: when importing third-party CSS (Bootstrap, Normalize) you can wrap it in a lower layer: <code>@layer vendor { @import "bootstrap.css"; }</code> so your styles always win regardless of specificity.</p>
+</div>
+</details>
+
+<details>
+<summary>Explain SCSS <code>@use</code> vs <code>@import</code> and the module system. <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p><code>@import</code> (deprecated) makes everything global and executes the file every time — causing duplicate CSS in output and namespace collisions. <code>@use</code> loads a file once (deduped), creates a namespace (<code>@use 'variables' as v;</code> → <code>v.$color-primary</code>), and keeps private members (prefixed with <code>_</code> or <code>-</code>) private. <code>@forward</code> re-exports a module's public API for consumers. The module system enables better encapsulation, avoids global leakage, and the compiler can tree-shake unused mixins/functions. Migrate: replace all <code>@import</code> with <code>@use</code>/<code>@forward</code>, and update variable references to use namespaces.</p>
+</div>
+</details>
+
+<details>
+<summary>How do you implement a performant CSS animation? What should you avoid? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>For performant animations, only animate properties that the compositor can handle without involving the main thread: <code>transform</code> (translate, scale, rotate) and <code>opacity</code>. These avoid layout (reflow) and paint, running entirely on the GPU. Add <code>will-change: transform</code> to hint the browser to promote the element to its own compositor layer (use sparingly — it consumes GPU memory). Avoid animating <code>width</code>, <code>height</code>, <code>top</code>, <code>left</code>, <code>padding</code>, <code>margin</code> — these trigger layout, which is expensive. Use <code>@keyframes</code> + CSS animations over JS <code>setInterval</code>; use <code>requestAnimationFrame</code> if JS is needed. Always add <code>@media (prefers-reduced-motion: reduce)</code> to disable animations for users who prefer less motion.</p>
+</div>
+</details>
+
+<details>
+<summary>Explain the critical rendering path and how CSS affects it. <span class="badge very-advanced">Very Advanced</span></summary>
+<div class="answer">
+<p>The critical rendering path: 1) Parse HTML → DOM tree, 2) Parse CSS → CSSOM tree, 3) Combine DOM+CSSOM → Render Tree (only visible elements), 4) Layout (calculate positions/sizes), 5) Paint (fill pixels), 6) Composite (combine layers). CSS blocks rendering: the browser won't render until all CSS is parsed (CSS is render-blocking). Optimization strategies: inline critical CSS (above-the-fold styles) in <code>&lt;style&gt;</code>, load non-critical CSS asynchronously (<code>&lt;link rel="preload" as="style" onload="this.rel='stylesheet'"&gt;</code>), minimize selector complexity (right-to-left matching), avoid <code>@import</code> in CSS (creates serial waterfalls). Forced reflows happen when JS reads layout properties (offsetWidth, getBoundingClientRect) after DOM mutations — batch reads/writes or use <code>requestAnimationFrame</code>.</p>
+</div>
+</details>
+
+<details>
+<summary>Implement a CSS-only responsive masonry layout and explain its limitations. <span class="badge very-advanced">Very Advanced</span></summary>
+<div class="answer">
+<p>CSS-only masonry: using <code>column-count</code> (multi-column layout) achieves a masonry-like effect: <code>.masonry { column-count: 3; column-gap: 16px; } .masonry-item { break-inside: avoid; }</code>. Items fill columns top-to-bottom, left-to-right. Limitation: DOM order follows columns (1→4→7, 2→5→8), which breaks visual reading order and accessibility. The CSS Grid masonry spec (<code>grid-template-rows: masonry</code>) solves this — items follow row order (1→2→3) but fill the shortest column — but it's still experimental (2024). A JS solution (Masonry.js, CSS Grid with JS height measurement) maintains DOM order while achieving masonry visually. Container queries make the column-count responsive without JS.</p>
+</div>
+</details>
+
+</main>
+</div>
+<footer>Dinesh Kumar's Learning Hub | CSS &amp; SCSS Complete Guide | 2024-2025</footer>
+<script>hljs.highlightAll();mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

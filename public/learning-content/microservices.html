@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Microservices — Comprehensive Reference</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6;display:flex;flex-direction:column}.topnav{background:#161b22;padding:10px 24px;border-bottom:1px solid #30363d;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100}.topnav a{color:#58a6ff;text-decoration:none;font-size:13px}.topnav h1{font-size:16px;color:#e6edf3;margin:0}.layout{display:flex;flex:1}.sidebar{width:260px;background:#161b22;border-right:1px solid #30363d;padding:16px;position:sticky;top:41px;height:calc(100vh - 41px);overflow-y:auto;flex-shrink:0}.sidebar a{display:block;padding:4px 8px;color:#8b949e;text-decoration:none;font-size:13px;border-radius:4px;margin-bottom:2px}.sidebar a:hover{background:#21262d;color:#c9d1d9}.sidebar .section-title{color:#58a6ff;font-size:11px;text-transform:uppercase;letter-spacing:.5px;margin:16px 0 6px;padding:0 8px;font-weight:600}main{flex:1;padding:32px 48px;max-width:960px}h1{font-size:2rem;color:#e6edf3;border-bottom:1px solid #30363d;padding-bottom:16px;margin-bottom:24px}h2{font-size:1.5rem;color:#e6edf3;margin:48px 0 16px;border-bottom:1px solid #21262d;padding-bottom:8px}h3{font-size:1.15rem;color:#79c0ff;margin:24px 0 10px}h4{font-size:1rem;color:#d2a8ff;margin:16px 0 8px}p{margin-bottom:12px}ul,ol{margin:0 0 16px 24px}li{margin-bottom:4px}pre{margin:16px 0;border-radius:6px;overflow-x:auto;font-size:13px}code:not(pre code){background:#161b22;padding:2px 6px;border-radius:4px;font-size:13px;color:#f0883e;border:1px solid #30363d}table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}th{background:#161b22;color:#58a6ff;padding:10px 14px;text-align:left;border:1px solid #30363d}td{padding:10px 14px;border:1px solid #30363d;vertical-align:top}tr:nth-child(even) td{background:#0a0d12}.mermaid{background:#161b22;padding:20px;border-radius:6px;margin:16px 0;text-align:center}details{border:1px solid #30363d;border-radius:6px;margin:10px 0;overflow:hidden}summary{padding:12px 16px;cursor:pointer;background:#161b22;color:#79c0ff;font-weight:600;list-style:none}details[open] summary{border-bottom:1px solid #30363d}.answer{padding:16px 20px;background:#0d1117}.badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:700;margin-left:8px}.easy{background:#1a4731;color:#3fb950}.intermediate{background:#2d2b00;color:#e3b341}.advanced{background:#3d1f00;color:#f0883e}.very-advanced{background:#3d0000;color:#ff7b72}.callout{background:#161b22;border-left:4px solid #58a6ff;padding:12px 16px;border-radius:0 6px 6px 0;margin:16px 0}footer{text-align:center;padding:24px;color:#8b949e;font-size:12px;border-top:1px solid #30363d;margin-top:40px}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <h1>Microservices — Comprehensive Reference</h1>
+  <a href="solid-principles.html">SOLID</a>
+  <a href="api-gateway.html">API Gateway</a>
+</nav>
+
+<div class="layout">
+<aside class="sidebar">
+  <div class="section-title">Architecture Styles</div>
+  <a href="#monolith-vs">Monolith vs SOA vs Microservices</a>
+  <a href="#decomposition">Decomposition Strategies</a>
+  <div class="section-title">Communication</div>
+  <a href="#sync-comm">Sync: REST &amp; gRPC</a>
+  <a href="#async-comm">Async: Events &amp; Messages</a>
+  <div class="section-title">Infrastructure Patterns</div>
+  <a href="#discovery">Service Discovery</a>
+  <a href="#gateway">API Gateway &amp; BFF</a>
+  <a href="#auth">Inter-Service Auth</a>
+  <div class="section-title">Resilience</div>
+  <a href="#circuit-breaker">Circuit Breaker</a>
+  <a href="#bulkhead">Bulkhead &amp; Retry</a>
+  <a href="#timeout">Timeout &amp; Sidecar</a>
+  <a href="#service-mesh">Service Mesh (Istio)</a>
+  <div class="section-title">Data Patterns</div>
+  <a href="#distributed-tx">Distributed Transactions</a>
+  <a href="#saga">SAGA Pattern</a>
+  <a href="#outbox">Outbox &amp; Idempotency</a>
+  <a href="#cqrs">Event Sourcing &amp; CQRS</a>
+  <a href="#db-per-service">Database per Service</a>
+  <div class="section-title">Migration &amp; Testing</div>
+  <a href="#strangler">Strangler Fig</a>
+  <a href="#testing">Testing Microservices</a>
+  <a href="#deployment">Deployment Patterns</a>
+  <div class="section-title">Interview Q&amp;A</div>
+  <a href="#qa">20+ Interview Questions</a>
+</aside>
+
+<main>
+<h1>Microservices — Comprehensive Reference</h1>
+
+<!-- ===== MONOLITH vs SOA vs Microservices ===== -->
+<h2 id="monolith-vs">Monolith vs SOA vs Microservices</h2>
+
+<table>
+  <thead>
+    <tr><th>Aspect</th><th>Monolith</th><th>SOA</th><th>Microservices</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Granularity</td><td>Single deployable unit</td><td>Coarse-grained services (ESB)</td><td>Fine-grained, independently deployable</td></tr>
+    <tr><td>Communication</td><td>In-process method calls</td><td>SOAP/WS-* over ESB</td><td>REST, gRPC, async events</td></tr>
+    <tr><td>Data</td><td>Shared DB</td><td>Often shared DB or per-service</td><td>Database per service (strict)</td></tr>
+    <tr><td>Deployment</td><td>All-or-nothing</td><td>Service-level, but ESB is bottleneck</td><td>Independent per service</td></tr>
+    <tr><td>Scalability</td><td>Scale whole app</td><td>Scale services, limited by ESB</td><td>Scale individual services</td></tr>
+    <tr><td>Team model</td><td>Shared codebase, merge conflicts</td><td>Team per service area</td><td>2-pizza team per service (Conway's Law)</td></tr>
+    <tr><td>Complexity</td><td>Low initially, high over time</td><td>Medium (ESB is complex)</td><td>High distributed systems complexity</td></tr>
+    <tr><td>Fault isolation</td><td>One crash = full outage</td><td>Partial isolation</td><td>Strong isolation (failures contained)</td></tr>
+    <tr><td>Technology stack</td><td>Single language/framework</td><td>Mostly standardized</td><td>Polyglot (each service picks best tool)</td></tr>
+    <tr><td>Latency</td><td>Lowest (in-process)</td><td>Network + ESB overhead</td><td>Network calls between services</td></tr>
+    <tr><td>Testing</td><td>Easier (single process)</td><td>Integration tests are complex</td><td>Contract tests, component tests needed</td></tr>
+    <tr><td>When to use</td><td>Small teams, new product, simple domain</td><td>Large enterprise, legacy systems</td><td>Large scale, high availability, many teams</td></tr>
+  </tbody>
+</table>
+
+<h3>Monolith Pros &amp; Cons</h3>
+<table>
+  <tr><th>Pros</th><th>Cons</th></tr>
+  <tr><td>Simple to develop, test, deploy</td><td>Scales as a unit — can't scale hot paths only</td></tr>
+  <tr><td>No network latency between components</td><td>Long build/test cycles as codebase grows</td></tr>
+  <tr><td>Easy debugging (single process)</td><td>Technology lock-in</td></tr>
+  <tr><td>No distributed transactions needed</td><td>Single point of failure</td></tr>
+  <tr><td>Low operational complexity</td><td>Deployment coupling — one change deploys everything</td></tr>
+</table>
+
+<h3>Microservices Pros &amp; Cons</h3>
+<table>
+  <tr><th>Pros</th><th>Cons</th></tr>
+  <tr><td>Independent deployability</td><td>Distributed systems complexity</td></tr>
+  <tr><td>Technology flexibility per service</td><td>Network calls replace in-process calls (latency)</td></tr>
+  <tr><td>Fault isolation</td><td>Data consistency challenges (no ACID across services)</td></tr>
+  <tr><td>Scalability granularity</td><td>Operational overhead (K8s, service mesh, observability)</td></tr>
+  <tr><td>Team autonomy (Conway's Law advantage)</td><td>Testing complexity (contract tests, integration tests)</td></tr>
+  <tr><td>Easier to understand small codebase</td><td>Debugging distributed traces is hard</td></tr>
+</table>
+
+<!-- ===== DECOMPOSITION ===== -->
+<h2 id="decomposition">Decomposition Strategies</h2>
+
+<h3>1. Decompose by Business Capability</h3>
+<p>Identify what the business <em>does</em>, not how the software is built. Each service owns a business capability end-to-end.</p>
+<div class="mermaid">
+graph LR
+  subgraph "E-Commerce Business Capabilities"
+    UC[User Management]
+    CAT[Catalog Management]
+    ORD[Order Management]
+    PAY[Payment Processing]
+    INV[Inventory Management]
+    SHIP[Shipping &amp; Fulfillment]
+    NOTIF[Notifications]
+  end
+</div>
+
+<h3>2. Decompose by Subdomain (DDD Bounded Contexts)</h3>
+<p>Domain-Driven Design identifies bounded contexts — each context has its own ubiquitous language and owns its domain model.</p>
+<div class="mermaid">
+graph TD
+  subgraph "Bounded Context: Orders"
+    O_Order[Order]
+    O_LineItem[LineItem]
+    O_Customer[Customer - just an ID]
+  end
+  subgraph "Bounded Context: Customers"
+    C_Customer[Customer - full profile]
+    C_Address[Address]
+    C_Preferences[Preferences]
+  end
+  subgraph "Bounded Context: Payments"
+    P_Payment[Payment]
+    P_Invoice[Invoice]
+    P_Charge[Charge]
+  end
+  O_Order -->|OrderPlaced event| P_Payment
+  O_Order -->|CustomerID reference| C_Customer
+</div>
+
+<div class="callout">
+  <strong>Key DDD Insight:</strong> The same concept (e.g., "Customer") means different things in different bounded contexts. In Orders, Customer is just an ID. In CRM, Customer has a rich profile. Don't share the model — share only IDs and events.
+</div>
+
+<!-- ===== COMMUNICATION ===== -->
+<h2 id="sync-comm">Synchronous Communication: REST vs gRPC</h2>
+
+<table>
+  <thead>
+    <tr><th>Aspect</th><th>REST (HTTP/1.1 + JSON)</th><th>gRPC (HTTP/2 + Protobuf)</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Protocol</td><td>HTTP/1.1 or HTTP/2</td><td>HTTP/2 (mandatory)</td></tr>
+    <tr><td>Serialization</td><td>JSON (human-readable)</td><td>Protocol Buffers (binary)</td></tr>
+    <tr><td>Performance</td><td>Moderate (text parsing overhead)</td><td>High (binary, ~7x smaller, ~10x faster)</td></tr>
+    <tr><td>Streaming</td><td>SSE, WebSocket (add-ons)</td><td>Built-in: unary, server, client, bidirectional</td></tr>
+    <tr><td>Contract</td><td>OpenAPI (optional)</td><td>Protobuf schema (mandatory, enforced)</td></tr>
+    <tr><td>Browser support</td><td>Native</td><td>grpc-web (proxy needed)</td></tr>
+    <tr><td>Code generation</td><td>OpenAPI generators</td><td>Auto-generated stubs in 11+ languages</td></tr>
+    <tr><td>Error handling</td><td>HTTP status codes</td><td>gRPC status codes (richer)</td></tr>
+    <tr><td>Use case</td><td>Public APIs, browser clients</td><td>Internal service-to-service, high-perf</td></tr>
+    <tr><td>Learning curve</td><td>Low</td><td>Medium (Protobuf, stubs)</td></tr>
+  </tbody>
+</table>
+
+<h3>gRPC Streaming Types</h3>
+<pre><code class="language-protobuf">syntax = "proto3";
+
+service ChatService {
+  // Unary: one request, one response
+  rpc GetMessage(GetMessageRequest) returns (Message);
+
+  // Server streaming: one request, many responses
+  rpc ListMessages(ListRequest) returns (stream Message);
+
+  // Client streaming: many requests, one response
+  rpc UploadMessages(stream Message) returns (UploadResponse);
+
+  // Bidirectional streaming: many requests, many responses
+  rpc Chat(stream Message) returns (stream Message);
+}
+
+message Message {
+  string id = 1;
+  string content = 2;
+  int64 timestamp = 3;
+  string sender_id = 4;
+}</code></pre>
+
+<h2 id="async-comm">Asynchronous Communication</h2>
+<p>Services communicate by publishing/consuming events/messages. Producers don't know about consumers — loose coupling.</p>
+
+<h3>Kafka vs RabbitMQ vs NATS</h3>
+<table>
+  <thead>
+    <tr><th>Feature</th><th>Apache Kafka</th><th>RabbitMQ</th><th>NATS</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Model</td><td>Log-based pub/sub (partitioned, ordered)</td><td>Message broker (queue + exchange)</td><td>Pub/sub, request/reply, queue groups</td></tr>
+    <tr><td>Persistence</td><td>Disk-based, configurable retention</td><td>Memory/disk, messages deleted after ACK</td><td>JetStream (optional), default in-memory</td></tr>
+    <tr><td>Throughput</td><td>Millions/sec (excellent)</td><td>Hundreds of thousands/sec</td><td>Millions/sec (lightweight)</td></tr>
+    <tr><td>Ordering</td><td>Ordered per partition</td><td>Per-queue ordering</td><td>Per-subject ordering (JetStream)</td></tr>
+    <tr><td>Consumer groups</td><td>Consumer groups (offset management)</td><td>Competing consumers on queues</td><td>Queue subscribers</td></tr>
+    <tr><td>Replay</td><td>Yes (seek to offset)</td><td>No (messages consumed = gone)</td><td>JetStream: yes</td></tr>
+    <tr><td>Protocol</td><td>Custom binary</td><td>AMQP 0-9-1</td><td>Simple text/binary</td></tr>
+    <tr><td>Best for</td><td>Event streaming, audit log, high volume</td><td>Task queues, RPC patterns</td><td>Cloud-native, low-latency microservices</td></tr>
+    <tr><td>Complexity</td><td>High (ZooKeeper/KRaft, partition tuning)</td><td>Medium</td><td>Low (single binary)</td></tr>
+  </tbody>
+</table>
+
+<h3>Kafka: Event Publishing Example (Java/Spring)</h3>
+<pre><code class="language-java">// Producer
+@Service
+public class OrderEventPublisher {
+    private final KafkaTemplate&lt;String, OrderEvent&gt; kafkaTemplate;
+
+    public void publishOrderPlaced(Order order) {
+        OrderPlacedEvent event = new OrderPlacedEvent(
+            order.getId(), order.getCustomerId(),
+            order.getTotal(), Instant.now()
+        );
+        kafkaTemplate.send("order.placed", order.getId(), event)
+            .addCallback(
+                result -> log.info("Published: {}", event),
+                ex -> log.error("Failed to publish", ex)
+            );
+    }
+}
+
+// Consumer
+@Component
+public class InventoryEventConsumer {
+
+    @KafkaListener(topics = "order.placed", groupId = "inventory-service")
+    public void handleOrderPlaced(OrderPlacedEvent event,
+                                  @Header(KafkaHeaders.RECEIVED_PARTITION) int partition,
+                                  @Header(KafkaHeaders.OFFSET) long offset) {
+        log.info("Received order {} from partition {} offset {}", event.getOrderId(), partition, offset);
+        inventoryService.reserveItems(event.getOrderId(), event.getItems());
+    }
+}</code></pre>
+
+<!-- ===== SERVICE DISCOVERY ===== -->
+<h2 id="discovery">Service Discovery</h2>
+
+<h3>Client-Side Discovery (Eureka + Ribbon)</h3>
+<div class="mermaid">
+sequenceDiagram
+  participant Client as Order Service
+  participant Registry as Eureka Registry
+  participant Instance1 as Payment-Service-1
+  participant Instance2 as Payment-Service-2
+
+  Client->>Registry: register self on startup
+  Note over Registry: Registry has list of all instances
+  Client->>Registry: GET /instances/payment-service
+  Registry-->>Client: [192.168.1.10:8080, 192.168.1.11:8080]
+  Client->>Client: Ribbon load-balances (round-robin)
+  Client->>Instance1: POST /payments (direct call)
+  Instance1-->>Client: 200 OK
+</div>
+
+<h3>Server-Side Discovery (AWS ALB)</h3>
+<div class="mermaid">
+sequenceDiagram
+  participant Client as Order Service
+  participant ALB as AWS ALB
+  participant TG as Target Group
+  participant I1 as Payment-1
+  participant I2 as Payment-2
+
+  Note over TG: ALB tracks healthy targets via health checks
+  Client->>ALB: POST /payments (single endpoint)
+  ALB->>TG: pick healthy instance
+  TG->>I1: forward request
+  I1-->>ALB: 200 OK
+  ALB-->>Client: 200 OK
+  Note over Client: Client doesn't know about instances
+</div>
+
+<table>
+  <tr><th>Pattern</th><th>Pros</th><th>Cons</th></tr>
+  <tr><td>Client-side (Eureka/Ribbon)</td><td>Client controls LB algorithm; no extra hop</td><td>Client must implement discovery logic; language coupling</td></tr>
+  <tr><td>Server-side (ALB, Nginx)</td><td>Client is simple; language-agnostic</td><td>Extra hop; LB is infrastructure component to manage</td></tr>
+  <tr><td>DNS-based (Kubernetes Service)</td><td>Native K8s; works with any language</td><td>DNS TTL caching issues; less granular LB</td></tr>
+</table>
+
+<!-- ===== API GATEWAY & BFF ===== -->
+<h2 id="gateway">API Gateway &amp; BFF Pattern</h2>
+
+<h3>API Gateway — Cross-Cutting Concerns</h3>
+<div class="mermaid">
+graph LR
+  subgraph Clients
+    M[Mobile App]
+    W[Web App]
+    T[Third Party]
+  end
+  subgraph API Gateway
+    AUTH[Auth/JWT]
+    RL[Rate Limit]
+    LOG[Logging/Tracing]
+    TR[Transformation]
+    ROUTE[Routing]
+  end
+  subgraph Services
+    US[User Service]
+    OS[Order Service]
+    PS[Product Service]
+  end
+  M --> API Gateway
+  W --> API Gateway
+  T --> API Gateway
+  ROUTE --> US
+  ROUTE --> OS
+  ROUTE --> PS
+</div>
+
+<h3>Backend for Frontend (BFF) Pattern</h3>
+<p>Instead of one generic API gateway, create a dedicated backend per client type. Each BFF optimizes for its client's specific needs.</p>
+<div class="mermaid">
+graph LR
+  MOB[Mobile App] --> MOBILE_BFF[Mobile BFF]
+  WEB[Web App] --> WEB_BFF[Web BFF]
+  THIRD[3rd Party] --> PUBLIC_BFF[Public API Gateway]
+  MOBILE_BFF --> US[User Service]
+  MOBILE_BFF --> OS[Order Service]
+  WEB_BFF --> US
+  WEB_BFF --> OS
+  WEB_BFF --> PS[Product Service]
+  PUBLIC_BFF --> OS
+</div>
+
+<div class="callout">
+  <strong>BFF Benefits:</strong> Mobile BFF can aggregate 5 service calls into 1 (reduce chattiness), compress responses, omit heavy fields. Web BFF can return richer data. Public BFF can throttle heavily. Each BFF evolves independently.
+</div>
+
+<!-- ===== INTER-SERVICE AUTH ===== -->
+<h2 id="auth">Inter-Service Authentication</h2>
+
+<h3>JWT Propagation</h3>
+<pre><code class="language-java">// API Gateway validates the JWT from external client and propagates it downstream
+// Downstream services verify the JWT themselves (no central validation bottleneck)
+
+@Component
+public class JwtPropagationFilter implements WebFilter {
+    @Override
+    public Mono&lt;Void&gt; filter(ServerWebExchange exchange, WebFilterChain chain) {
+        String authHeader = exchange.getRequest().getHeaders().getFirst("Authorization");
+        if (authHeader != null) {
+            // Forward the original JWT to downstream services
+            return chain.filter(exchange.mutate()
+                .request(r -> r.header("Authorization", authHeader))
+                .build());
+        }
+        return chain.filter(exchange);
+    }
+}
+
+// Each downstream service validates
+@Component
+public class JwtAuthFilter extends OncePerRequestFilter {
+    @Override
+    protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
+            throws ServletException, IOException {
+        String token = req.getHeader("Authorization");
+        if (token != null && jwtService.isValid(token)) {
+            Authentication auth = jwtService.getAuthentication(token);
+            SecurityContextHolder.getContext().setAuthentication(auth);
+        }
+        chain.doFilter(req, res);
+    }
+}</code></pre>
+
+<h3>mTLS (Mutual TLS)</h3>
+<p>Both client and server present certificates. Used in service mesh (Istio) — each service has a certificate, and only services with valid certs can communicate. mTLS provides encryption + mutual authentication without token overhead.</p>
+
+<h3>Service Mesh Security</h3>
+<p>Istio automatically issues SPIFFE/SPIRE identities to each pod. mTLS is enforced transparently without application code changes. <code>PeerAuthentication</code> and <code>AuthorizationPolicy</code> define which services can talk to which.</p>
+
+<!-- ===== CIRCUIT BREAKER ===== -->
+<h2 id="circuit-breaker">Circuit Breaker Pattern</h2>
+<p>Prevents cascading failures by stopping calls to a failing service and providing fast-fail behavior.</p>
+
+<div class="mermaid">
+stateDiagram-v2
+  [*] --> Closed
+  Closed --> Open : failure threshold exceeded\n(e.g., 50% errors in 10s)
+  Open --> HalfOpen : timeout elapsed\n(e.g., wait 30s)
+  HalfOpen --> Closed : probe request succeeds
+  HalfOpen --> Open : probe request fails
+  Closed --> Closed : requests succeed normally
+  Open --> Open : all requests fail-fast\n(no call to service)
+</div>
+
+<h3>Resilience4j Circuit Breaker (Java)</h3>
+<pre><code class="language-java">@Configuration
+public class Resilience4jConfig {
+
+    @Bean
+    public CircuitBreakerConfig circuitBreakerConfig() {
+        return CircuitBreakerConfig.custom()
+            .failureRateThreshold(50)              // Open when 50% of calls fail
+            .waitDurationInOpenState(Duration.ofSeconds(30)) // Wait 30s before half-open
+            .slidingWindowSize(10)                 // Track last 10 calls
+            .permittedNumberOfCallsInHalfOpenState(3) // 3 probes in half-open
+            .slowCallRateThreshold(70)             // Also open if 70% of calls are slow
+            .slowCallDurationThreshold(Duration.ofSeconds(2)) // "slow" = &gt;2s
+            .build();
+    }
+}
+
+@Service
+public class OrderService {
+    private final CircuitBreaker circuitBreaker;
+    private final PaymentServiceClient paymentClient;
+
+    public PaymentResult processPayment(Order order) {
+        return circuitBreaker.executeSupplier(() ->
+            paymentClient.charge(order.getTotal(), order.getCustomerId())
+        );
+    }
+
+    // Fallback when circuit is OPEN
+    @CircuitBreaker(name = "paymentService", fallbackMethod = "paymentFallback")
+    public PaymentResult chargeWithFallback(Order order) {
+        return paymentClient.charge(order.getTotal(), order.getCustomerId());
+    }
+
+    private PaymentResult paymentFallback(Order order, Exception ex) {
+        log.warn("Payment service unavailable, queuing for retry: {}", ex.getMessage());
+        retryQueue.enqueue(order);
+        return PaymentResult.queued(order.getId());
+    }
+}</code></pre>
+
+<!-- ===== BULKHEAD & RETRY ===== -->
+<h2 id="bulkhead">Bulkhead Pattern &amp; Retry with Exponential Backoff</h2>
+
+<h3>Bulkhead Pattern</h3>
+<p>Isolate thread pools/connections per downstream service. Failures in one service don't exhaust resources for others.</p>
+<pre><code class="language-java">// Resilience4j Bulkhead — limits concurrent calls to a service
+BulkheadConfig bulkheadConfig = BulkheadConfig.custom()
+    .maxConcurrentCalls(20)        // Max 20 concurrent calls to payment-service
+    .maxWaitDuration(Duration.ofMillis(100)) // Wait max 100ms for a permit
+    .build();
+
+// Thread pool isolation (separate executor per service)
+ThreadPoolBulkheadConfig tpConfig = ThreadPoolBulkheadConfig.custom()
+    .maxThreadPoolSize(10)
+    .coreThreadPoolSize(5)
+    .queueCapacity(50)
+    .build();</code></pre>
+
+<h3>Retry with Exponential Backoff + Jitter</h3>
+<pre><code class="language-java">RetryConfig retryConfig = RetryConfig.custom()
+    .maxAttempts(3)
+    .waitDuration(Duration.ofMillis(500))
+    .intervalFunction(IntervalFunction.ofExponentialRandomBackoff(500, 2.0, 0.3, 10_000))
+    // Base 500ms, multiplier 2x, jitter 30%, max 10s
+    // Attempts: ~500ms, ~1000ms±jitter, ~2000ms±jitter
+    .retryExceptions(IOException.class, TimeoutException.class)
+    .ignoreExceptions(BusinessValidationException.class)
+    .build();</code></pre>
+
+<div class="callout">
+  <strong>Why Jitter?</strong> Without jitter, all retrying clients retry simultaneously ("thundering herd"), overwhelming the recovering service. Jitter spreads retries over time.
+</div>
+
+<!-- ===== TIMEOUT & SIDECAR ===== -->
+<h2 id="timeout">Timeout &amp; Sidecar / Ambassador Pattern</h2>
+
+<h3>Timeout</h3>
+<p>Every inter-service call must have a timeout. Without timeouts, slow dependencies cause thread pool exhaustion.</p>
+<pre><code class="language-java">// Resilience4j TimeLimiter
+TimeLimiterConfig config = TimeLimiterConfig.custom()
+    .timeoutDuration(Duration.ofSeconds(2)) // Fail after 2 seconds
+    .cancelRunningFuture(true)
+    .build();
+
+// WebClient (reactive) timeout
+WebClient.builder()
+    .baseUrl("http://payment-service")
+    .build()
+    .post()
+    .uri("/charge")
+    .bodyValue(request)
+    .retrieve()
+    .bodyToMono(PaymentResponse.class)
+    .timeout(Duration.ofSeconds(2))  // Overall timeout
+    .onErrorReturn(TimeoutException.class, PaymentResponse.timeout())
+    .block();</code></pre>
+
+<h3>Sidecar Pattern</h3>
+<p>A helper container runs alongside the main service container in the same pod. Handles cross-cutting concerns (logging, metrics, mTLS) without the service code knowing.</p>
+<pre><code class="language-yaml"># Kubernetes Pod with sidecar
+apiVersion: v1
+kind: Pod
+spec:
+  containers:
+  - name: payment-service          # Main app container
+    image: payment-service:v1.2
+    ports:
+    - containerPort: 8080
+
+  - name: envoy-proxy              # Sidecar (service mesh proxy)
+    image: envoyproxy/envoy:v1.28
+    ports:
+    - containerPort: 15001
+    # Handles: mTLS, circuit breaking, load balancing,
+    # distributed tracing, metrics — transparent to payment-service
+</code></pre>
+
+<h3>Ambassador Pattern</h3>
+<p>A specialized sidecar that acts as a proxy for outbound communication — connection pooling, retry, logging for calls made BY the service.</p>
+
+<!-- ===== SERVICE MESH ===== -->
+<h2 id="service-mesh">Service Mesh — Istio</h2>
+<p>A service mesh manages all service-to-service communication via a proxy layer, without changing application code.</p>
+
+<div class="mermaid">
+graph TB
+  subgraph "Pod: Order Service"
+    OS[order-service app]
+    OSP[Envoy proxy sidecar]
+    OS --- OSP
+  end
+  subgraph "Pod: Payment Service"
+    PS[payment-service app]
+    PSP[Envoy proxy sidecar]
+    PS --- PSP
+  end
+  subgraph "Istio Control Plane"
+    PILOT[istiod: config distribution]
+    CA[Citadel: cert management]
+  end
+  OSP -->|mTLS| PSP
+  PILOT -->|xDS config| OSP
+  PILOT -->|xDS config| PSP
+  CA -->|certs| OSP
+  CA -->|certs| PSP
+</div>
+
+<h4>Istio Key Features</h4>
+<ul>
+  <li><strong>Traffic Management:</strong> VirtualService (routing rules), DestinationRule (LB policy, CB), Gateway (ingress/egress)</li>
+  <li><strong>mTLS:</strong> All pod-to-pod traffic encrypted and mutually authenticated (SPIFFE identities)</li>
+  <li><strong>Observability:</strong> Automatic metrics (Prometheus), distributed tracing (Jaeger/Zipkin), access logs — zero app code changes</li>
+  <li><strong>Traffic shifting:</strong> Canary deployments via weight-based routing (10% to v2, 90% to v1)</li>
+</ul>
+<pre><code class="language-yaml"># Istio VirtualService: canary traffic splitting
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: payment-vs
+spec:
+  hosts:
+  - payment-service
+  http:
+  - route:
+    - destination:
+        host: payment-service
+        subset: v1
+      weight: 90
+    - destination:
+        host: payment-service
+        subset: v2
+      weight: 10   # 10% canary traffic to v2</code></pre>
+
+<!-- ===== DISTRIBUTED TRANSACTIONS ===== -->
+<h2 id="distributed-tx">Distributed Transactions</h2>
+
+<h3>Why 2PC (Two-Phase Commit) Fails in Microservices</h3>
+<table>
+  <tr><th>Problem</th><th>Details</th></tr>
+  <tr><td>Blocking protocol</td><td>Resources locked during coordinator decision phase; other transactions can't proceed</td></tr>
+  <tr><td>Coordinator SPOF</td><td>If coordinator crashes after PREPARE, participants are stuck waiting forever</td></tr>
+  <tr><td>Doesn't work across HTTP services</td><td>Designed for DB connections, not REST services</td></tr>
+  <tr><td>Performance</td><td>Multiple network round trips; terrible latency at scale</td></tr>
+  <tr><td>Availability vs Consistency</td><td>Prioritizes consistency, sacrifices availability (CAP theorem)</td></tr>
+</table>
+
+<!-- ===== SAGA ===== -->
+<h2 id="saga">SAGA Pattern</h2>
+<p>A SAGA is a sequence of local transactions where each transaction publishes events/messages that trigger the next transaction. If one fails, compensating transactions undo previous steps.</p>
+
+<h3>Orchestration SAGA</h3>
+<div class="mermaid">
+sequenceDiagram
+  participant Orch as Order Saga Orchestrator
+  participant OS as Order Service
+  participant PS as Payment Service
+  participant IS as Inventory Service
+  participant SS as Shipping Service
+
+  OS->>Orch: Order placed, start saga
+  Orch->>PS: ProcessPayment command
+  PS-->>Orch: PaymentProcessed event
+  Orch->>IS: ReserveInventory command
+  IS-->>Orch: InventoryReserved event
+  Orch->>SS: CreateShipment command
+  SS-->>Orch: ShipmentCreated event
+  Orch->>OS: Mark order CONFIRMED
+
+  Note over Orch,SS: Failure scenario
+  Orch->>SS: CreateShipment command
+  SS-->>Orch: ShipmentFailed event
+  Orch->>IS: ReleaseInventory (compensating)
+  Orch->>PS: RefundPayment (compensating)
+  Orch->>OS: Mark order FAILED
+</div>
+
+<h3>Choreography SAGA</h3>
+<div class="mermaid">
+sequenceDiagram
+  participant OS as Order Service
+  participant KB as Kafka Bus
+  participant PS as Payment Service
+  participant IS as Inventory Service
+  participant SS as Shipping Service
+
+  OS->>KB: OrderPlaced event
+  KB->>PS: OrderPlaced (Payment subscribes)
+  PS->>PS: Process payment
+  PS->>KB: PaymentProcessed event
+  KB->>IS: PaymentProcessed (Inventory subscribes)
+  IS->>IS: Reserve inventory
+  IS->>KB: InventoryReserved event
+  KB->>SS: InventoryReserved (Shipping subscribes)
+  SS->>SS: Create shipment
+  SS->>KB: ShipmentCreated event
+  KB->>OS: ShipmentCreated (Order subscribes)
+  OS->>OS: Mark order CONFIRMED
+
+  Note over PS,IS: On failure: Publish compensating event
+  IS->>KB: InventoryReservationFailed
+  KB->>PS: Subscribes, issues refund
+  PS->>KB: PaymentRefunded
+  KB->>OS: Subscribes, marks order FAILED
+</div>
+
+<h3>Orchestration vs Choreography</h3>
+<table>
+  <tr><th>Aspect</th><th>Orchestration</th><th>Choreography</th></tr>
+  <tr><td>Central coordinator</td><td>Yes (Saga orchestrator)</td><td>No (event-driven)</td></tr>
+  <tr><td>Coupling</td><td>Services coupled to orchestrator</td><td>Loosely coupled via events</td></tr>
+  <tr><td>Visibility</td><td>Easy — one place to see full flow</td><td>Harder — flow spread across services</td></tr>
+  <tr><td>Complexity</td><td>Orchestrator becomes complex with many flows</td><td>Distributed complexity, harder to debug</td></tr>
+  <tr><td>Testing</td><td>Test orchestrator logic directly</td><td>Integration tests needed to see full flow</td></tr>
+  <tr><td>Best for</td><td>Complex flows, many compensations, business process workflows</td><td>Simple flows, high autonomy, event-driven architectures</td></tr>
+</table>
+
+<!-- ===== OUTBOX & IDEMPOTENCY ===== -->
+<h2 id="outbox">Outbox Pattern &amp; Idempotency</h2>
+
+<h3>Outbox Pattern</h3>
+<p>Atomically write to the DB AND publish an event — without distributed transactions — by writing the event to an "outbox" table in the same local transaction, then having a separate process publish it.</p>
+
+<pre><code class="language-java">@Transactional
+public Order placeOrder(PlaceOrderCommand cmd) {
+    // 1. Save order to orders table
+    Order order = orderRepository.save(new Order(cmd));
+
+    // 2. Save event to outbox table — SAME local transaction!
+    // No risk of "order saved but event not published"
+    OutboxEvent event = new OutboxEvent(
+        UUID.randomUUID(),
+        "ORDER_PLACED",
+        objectMapper.writeValueAsString(new OrderPlacedEvent(order)),
+        Instant.now(),
+        false // not yet published
+    );
+    outboxRepository.save(event);
+
+    return order;
+    // Both saved atomically — or both rolled back
+}
+
+// Separate "outbox relay" process polls and publishes
+@Scheduled(fixedDelay = 1000) // every 1 second
+@Transactional
+public void publishPendingEvents() {
+    List&lt;OutboxEvent&gt; pending = outboxRepository.findByPublishedFalse();
+    for (OutboxEvent event : pending) {
+        kafkaTemplate.send(event.getTopic(), event.getPayload());
+        event.setPublished(true);
+        outboxRepository.save(event);
+    }
+    // Debezium CDC is a better alternative — reads DB transaction log
+}</code></pre>
+
+<h3>Idempotency</h3>
+<p>An operation is idempotent if calling it multiple times produces the same result as calling it once. Critical for retry-safe APIs.</p>
+
+<pre><code class="language-java">// Idempotency Key pattern — client sends unique key per logical operation
+@PostMapping("/payments")
+public ResponseEntity&lt;PaymentResponse&gt; processPayment(
+        @RequestBody PaymentRequest request,
+        @RequestHeader("Idempotency-Key") String idempotencyKey) {
+
+    // Check if we've already processed this exact operation
+    Optional&lt;PaymentResponse&gt; cached = idempotencyStore.get(idempotencyKey);
+    if (cached.isPresent()) {
+        log.info("Returning cached response for idempotency key: {}", idempotencyKey);
+        return ResponseEntity.ok(cached.get()); // Same response, no side effects
+    }
+
+    // Lock to prevent concurrent duplicate processing
+    try (IdempotencyLock lock = idempotencyStore.lock(idempotencyKey)) {
+        // Double-check after lock
+        cached = idempotencyStore.get(idempotencyKey);
+        if (cached.isPresent()) return ResponseEntity.ok(cached.get());
+
+        PaymentResponse response = paymentService.processPayment(request);
+        idempotencyStore.store(idempotencyKey, response, Duration.ofHours(24));
+        return ResponseEntity.ok(response);
+    }
+}</code></pre>
+
+<!-- ===== CQRS & EVENT SOURCING ===== -->
+<h2 id="cqrs">Event Sourcing &amp; CQRS in Microservices</h2>
+
+<h3>Event Sourcing</h3>
+<p>Instead of storing current state, store a sequence of events. Current state is derived by replaying events. The event log is the source of truth.</p>
+
+<h3>CQRS (Command Query Responsibility Segregation)</h3>
+<p>Separate the read model (queries, optimized for reads) from the write model (commands, optimized for consistency).</p>
+<div class="mermaid">
+graph LR
+  CLIENT[Client] --> CMD[Command Handler]
+  CLIENT --> QUERY[Query Handler]
+  CMD --> ES[Event Store\nAppend-only]
+  ES --> PROJ[Event Projector]
+  PROJ --> READ_DB[Read Model DB\nDenormalized views]
+  QUERY --> READ_DB
+  ES --> KAFKA[Kafka: publish events\nto other services]
+</div>
+
+<pre><code class="language-java">// Event Sourcing with Axon Framework
+@Aggregate
+public class BankAccount {
+    @AggregateIdentifier
+    private String accountId;
+    private BigDecimal balance;
+
+    // Command handler — validates, then applies event
+    @CommandHandler
+    public void handle(WithdrawMoneyCommand cmd) {
+        if (balance.compareTo(cmd.getAmount()) &lt; 0) {
+            throw new InsufficientFundsException();
+        }
+        apply(new MoneyWithdrawnEvent(accountId, cmd.getAmount()));
+    }
+
+    // Event handler — only mutates state, no side effects
+    @EventSourcingHandler
+    public void on(MoneyWithdrawnEvent event) {
+        this.balance = balance.subtract(event.getAmount());
+    }
+    // State is rebuilt by replaying all events from the event store
+}
+
+// Read model projection
+@Component
+public class AccountProjection {
+    @EventHandler
+    public void on(MoneyWithdrawnEvent event) {
+        AccountView view = repo.findById(event.getAccountId());
+        view.setBalance(view.getBalance().subtract(event.getAmount()));
+        repo.save(view); // denormalized read model updated
+    }
+}</code></pre>
+
+<!-- ===== API COMPOSITION ===== -->
+<h2 id="db-per-service">Database per Service &amp; API Composition</h2>
+
+<h3>Database per Service</h3>
+<p>Each service owns its data exclusively. Other services access it only via the service's API, never directly connecting to the DB.</p>
+<ul>
+  <li><strong>Why:</strong> Independent schema evolution, technology choice, deployment, failure isolation</li>
+  <li><strong>Cross-service queries:</strong> Handled via API composition, CQRS read models (materialized views), or event-driven data replication</li>
+  <li><strong>Shared Database anti-pattern:</strong> Services sharing DB leads to tight coupling, schema changes breaking multiple services, deployment coupling</li>
+</ul>
+
+<h3>API Composition Pattern</h3>
+<pre><code class="language-java">// Aggregate data from multiple services in a composite/BFF service
+@Service
+public class OrderDetailsComposer {
+
+    public OrderDetailsDTO getOrderDetails(String orderId) {
+        // Execute calls in parallel for performance
+        CompletableFuture&lt;Order&gt; orderFuture = CompletableFuture
+            .supplyAsync(() -> orderService.getOrder(orderId));
+
+        CompletableFuture&lt;Customer&gt; customerFuture = orderFuture
+            .thenCompose(order -> CompletableFuture
+                .supplyAsync(() -> customerService.getCustomer(order.getCustomerId())));
+
+        CompletableFuture&lt;List&lt;Product&gt;&gt; productsFuture = orderFuture
+            .thenCompose(order -> CompletableFuture
+                .supplyAsync(() -> productService.getProducts(order.getProductIds())));
+
+        CompletableFuture.allOf(orderFuture, customerFuture, productsFuture).join();
+
+        return OrderDetailsDTO.from(
+            orderFuture.join(),
+            customerFuture.join(),
+            productsFuture.join()
+        );
+    }
+}</code></pre>
+
+<!-- ===== STRANGLER FIG ===== -->
+<h2 id="strangler">Strangler Fig Pattern — Monolith Migration</h2>
+<p>Gradually migrate a monolith to microservices by extracting capabilities piece by piece, using a proxy to route traffic.</p>
+<div class="mermaid">
+graph LR
+  CLIENT[Client] --> PROXY[Reverse Proxy\nNginx/API Gateway]
+  PROXY -->|/users| US[NEW: User Microservice]
+  PROXY -->|/orders| OS[NEW: Order Microservice]
+  PROXY -->|/legacy/*| MONO[Remaining Monolith\nShrinking over time]
+  style US fill:#1a4731
+  style OS fill:#1a4731
+  style MONO fill:#3d1f00
+</div>
+
+<ol>
+  <li>Add a proxy/facade in front of the monolith</li>
+  <li>Extract one service (e.g., User Service) with its own DB</li>
+  <li>Route <code>/users/*</code> traffic to the new service; rest goes to monolith</li>
+  <li>Delete the user code from the monolith</li>
+  <li>Repeat for next capability until monolith is gone</li>
+</ol>
+
+<!-- ===== TESTING ===== -->
+<h2 id="testing">Testing Microservices</h2>
+
+<h3>Contract Testing with Pact</h3>
+<p>Consumer-driven contract testing: the consumer defines what it expects from the provider API. The provider verifies it can satisfy all consumer contracts.</p>
+<pre><code class="language-java">// Consumer side: defines the contract
+@ExtendWith(PactConsumerTestExt.class)
+@PactTestFor(providerName = "UserService")
+class OrderServiceConsumerTest {
+
+    @Pact(consumer = "OrderService")
+    public RequestResponsePact getUserPact(PactDslWithProvider builder) {
+        return builder
+            .given("user with id 123 exists")
+            .uponReceiving("GET user by id")
+            .path("/users/123")
+            .method("GET")
+            .willRespondWith()
+            .status(200)
+            .body(new PactDslJsonBody()
+                .stringValue("id", "123")
+                .stringValue("name", "Alice")
+                .stringValue("email", "alice@example.com"))
+            .toPact();
+    }
+
+    @Test
+    @PactTestFor(pactMethod = "getUserPact")
+    void testGetUser(MockServer mockServer) {
+        UserClient client = new UserClient(mockServer.getUrl());
+        User user = client.getUser("123");
+        assertEquals("Alice", user.getName());
+    }
+}
+
+// Provider side: verifies the contract is satisfied
+@Provider("UserService")
+@PactBroker(host = "pact-broker.example.com")
+class UserServiceProviderTest {
+    @TestTarget
+    public final Target target = new HttpTarget(8080);
+
+    @State("user with id 123 exists")
+    public void userExists() {
+        // seed test data
+        userRepository.save(new User("123", "Alice", "alice@example.com"));
+    }
+}</code></pre>
+
+<h3>Test Pyramid for Microservices</h3>
+<table>
+  <tr><th>Level</th><th>Type</th><th>Scope</th><th>Speed</th></tr>
+  <tr><td>1 (many)</td><td>Unit tests</td><td>Single class, logic</td><td>Milliseconds</td></tr>
+  <tr><td>2</td><td>Component tests</td><td>Single service, mocked dependencies</td><td>Seconds</td></tr>
+  <tr><td>3</td><td>Contract tests (Pact)</td><td>API contract between services</td><td>Seconds</td></tr>
+  <tr><td>4</td><td>Integration tests</td><td>Service + real DB/cache</td><td>Seconds-minutes</td></tr>
+  <tr><td>5 (few)</td><td>E2E tests</td><td>Full system flow</td><td>Minutes</td></tr>
+</table>
+
+<!-- ===== DEPLOYMENT ===== -->
+<h2 id="deployment">Deployment Patterns</h2>
+
+<h3>Blue/Green Deployment</h3>
+<div class="mermaid">
+graph LR
+  LB[Load Balancer\nRoutes 100% traffic]
+  subgraph Blue [Blue Environment - Current v1]
+    B1[Service v1 Pod]
+    B2[Service v1 Pod]
+  end
+  subgraph Green [Green Environment - New v2]
+    G1[Service v2 Pod]
+    G2[Service v2 Pod]
+  end
+  LB -->|Current| Blue
+  LB -.->|Switch| Green
+  style Blue fill:#0d2137
+  style Green fill:#1a3d1a
+</div>
+
+<h3>Canary Deployment</h3>
+<div class="mermaid">
+graph LR
+  LB[Load Balancer]
+  LB -->|90%| V1[v1 pods stable]
+  LB -->|10%| V2[v2 pods canary]
+  V2 -->|Monitor metrics| ALERT[Alert if error rate increases]
+  ALERT -->|Rollback| LB
+</div>
+
+<h3>Rolling Update (Kubernetes default)</h3>
+<p>Pods are replaced one at a time. Configurable with <code>maxUnavailable</code> and <code>maxSurge</code>. Zero downtime if configured correctly.</p>
+
+<table>
+  <tr><th>Pattern</th><th>Pros</th><th>Cons</th></tr>
+  <tr><td>Blue/Green</td><td>Instant rollback; no version mixing</td><td>Double infrastructure cost</td></tr>
+  <tr><td>Canary</td><td>Real traffic testing; gradual rollout; risk limited</td><td>Complex routing; may need feature flags</td></tr>
+  <tr><td>Rolling</td><td>Resource-efficient; built into K8s</td><td>Two versions live simultaneously; slower rollback</td></tr>
+</table>
+
+<!-- ===== Q&A ===== -->
+<h2 id="qa">Interview Questions &amp; Answers</h2>
+
+<details>
+<summary>Q1. What is the main difference between a monolith and microservices? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p>A <strong>monolith</strong> is a single deployable unit where all components share the same process, memory, and database. All features are deployed together.</p>
+<p><strong>Microservices</strong> decompose the application into small, independently deployable services, each responsible for a business capability, with its own data store, running in its own process.</p>
+<p><strong>Key differences:</strong></p>
+<ul>
+  <li>Deployment: All-or-nothing vs independent per service</li>
+  <li>Scaling: Scale the whole app vs scale individual hot services</li>
+  <li>Technology: Single stack vs polyglot</li>
+  <li>Failures: Whole app down vs isolated failures</li>
+  <li>Complexity: Simple initially vs distributed systems complexity always</li>
+</ul>
+<p><strong>Don't always choose microservices:</strong> For a small team or new product, start with a modular monolith and migrate when scale or team size requires it.</p>
+</div>
+</details>
+
+<details>
+<summary>Q2. How do you handle data consistency across microservices? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>You accept <strong>eventual consistency</strong> in most cases. True ACID across services requires distributed transactions (2PC) which are impractical at scale.</p>
+<p><strong>Patterns:</strong></p>
+<ul>
+  <li><strong>SAGA Pattern:</strong> Chain of local transactions with compensating transactions on failure</li>
+  <li><strong>Outbox Pattern:</strong> Atomically write state + event in same DB transaction; relay publishes event</li>
+  <li><strong>Event Sourcing:</strong> Append-only event log is the truth; read models are derived (eventually consistent)</li>
+  <li><strong>CQRS:</strong> Separate write model (consistent) from read model (may be slightly stale)</li>
+</ul>
+<p><strong>Embrace eventual consistency:</strong> Define acceptable consistency windows (e.g., "inventory shown to user can be up to 1 minute stale"). Use optimistic locking to handle conflicts.</p>
+</div>
+</details>
+
+<details>
+<summary>Q3. Explain the SAGA pattern and when to use orchestration vs choreography. <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>A SAGA is a distributed transaction implemented as a sequence of local transactions, each publishing an event or message to trigger the next step. Failed steps trigger compensating transactions.</p>
+<p><strong>Use Orchestration when:</strong></p>
+<ul>
+  <li>Business flows are complex with many steps</li>
+  <li>You need clear visibility of saga progress</li>
+  <li>Many error scenarios and compensations</li>
+  <li>Compliance/audit requirements (all decisions in one place)</li>
+</ul>
+<p><strong>Use Choreography when:</strong></p>
+<ul>
+  <li>Simple flows with few steps</li>
+  <li>Services should be highly autonomous</li>
+  <li>You want to avoid a central coordinator SPOF</li>
+  <li>Event-driven architecture is already in place</li>
+</ul>
+<p><strong>Real example:</strong> e-commerce order flow (charge payment → reserve inventory → create shipment) maps well to SAGA with compensations (refund payment, release inventory).</p>
+</div>
+</details>
+
+<details>
+<summary>Q4. What is the Outbox Pattern and why is it needed? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>The core problem: saving to a DB AND publishing an event are two separate operations. Either can fail independently:</p>
+<ul>
+  <li>DB saved but Kafka publish failed → lost event</li>
+  <li>Kafka published but DB transaction rolled back → phantom event</li>
+</ul>
+<p><strong>Outbox solution:</strong> Write both the state change and the event to the SAME local DB transaction. A separate "relay" process (polling or CDC via Debezium) reads unpublished events and publishes them to Kafka.</p>
+<p><strong>Debezium (preferred):</strong> Reads the DB transaction log (CDC — Change Data Capture). No polling overhead. Guarantees at-least-once delivery. Used in production at scale.</p>
+<p><strong>Guarantee:</strong> "At-least-once" delivery (event may be published multiple times if relay crashes after publish but before marking as sent). Consumers must be idempotent.</p>
+</div>
+</details>
+
+<details>
+<summary>Q5. How does a circuit breaker work? What happens in each state? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>Circuit breaker prevents cascading failures by monitoring call success rates:</p>
+<ul>
+  <li><strong>CLOSED:</strong> Normal operation. All calls pass through. Failure rate tracked via sliding window. If rate exceeds threshold (e.g., 50%), transition to OPEN.</li>
+  <li><strong>OPEN:</strong> All calls fail immediately without touching the downstream service (fast-fail). After a configured wait period (e.g., 30s), transitions to HALF-OPEN.</li>
+  <li><strong>HALF-OPEN:</strong> A limited number of probe requests are let through. If they succeed, transition to CLOSED. If they fail, go back to OPEN.</li>
+</ul>
+<p><strong>Why fast-fail matters:</strong> If Order Service calls Payment Service and Payment is slow, threads pile up waiting. Circuit breaker in OPEN state returns immediately, freeing threads for other work.</p>
+<p><strong>Fallback strategies:</strong> Return cached data, return default value, queue for later processing, return user-friendly error.</p>
+</div>
+</details>
+
+<details>
+<summary>Q6. What is service discovery and when would you use client-side vs server-side? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>Service discovery solves the problem of finding service instances in a dynamic environment where IPs change (containers scale up/down).</p>
+<p><strong>Client-side (Eureka/Ribbon):</strong> Client queries the registry and load-balances itself. Pros: no extra hop, client controls LB algorithm. Cons: language-specific library needed (Ribbon is JVM-only).</p>
+<p><strong>Server-side (AWS ALB, K8s Service):</strong> Client sends to a single endpoint; infrastructure handles discovery and LB. Pros: language-agnostic, simple client. Cons: extra infrastructure hop.</p>
+<p><strong>Kubernetes default:</strong> DNS-based service discovery. <code>http://payment-service</code> resolves to the ClusterIP, which routes to healthy pods. Kube-proxy handles the LB. This is the most common pattern in modern deployments.</p>
+</div>
+</details>
+
+<details>
+<summary>Q7. Explain the Strangler Fig pattern for migrating a monolith. <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>Named after the strangler fig tree that wraps around a host tree and eventually replaces it.</p>
+<p><strong>Steps:</strong></p>
+<ol>
+  <li>Put a reverse proxy/API gateway in front of the monolith</li>
+  <li>Identify the best first service to extract (high value, clear boundaries, low coupling)</li>
+  <li>Build the new service with its own DB, deploy it</li>
+  <li>Route the relevant traffic to the new service via the proxy</li>
+  <li>Migrate data if needed (dual-write phase + data migration)</li>
+  <li>Remove the functionality from the monolith</li>
+  <li>Repeat until monolith is gone</li>
+</ol>
+<p><strong>Key success factors:</strong> Never cut over all-at-once. Start with a low-risk service (e.g., notification service). The monolith and new service may need to share data temporarily — use the Anti-Corruption Layer pattern to translate between the two models.</p>
+</div>
+</details>
+
+<details>
+<summary>Q8. What is contract testing and how does Pact work? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>Contract testing verifies that a consumer's expectations of a provider's API are met, without requiring both services to be running simultaneously.</p>
+<p><strong>Pact workflow:</strong></p>
+<ol>
+  <li>Consumer writes tests defining what it expects from the provider (interactions)</li>
+  <li>Pact generates a "pact file" (JSON contract) from these tests</li>
+  <li>Consumer publishes the pact to Pact Broker</li>
+  <li>Provider runs verification: starts its service, replays each interaction from the pact, verifies responses match expectations</li>
+  <li>Both teams can release independently — as long as provider tests pass</li>
+</ol>
+<p><strong>vs Integration tests:</strong> Integration tests require both services running simultaneously (slow, flaky, environment-dependent). Pact tests run per-service and can be part of CI.</p>
+<p><strong>Can I deploy?</strong> Pact Broker provides a <code>can-i-deploy</code> CLI command that checks if a service version can safely deploy given all its consumers' pacts.</p>
+</div>
+</details>
+
+<details>
+<summary>Q9. How does the Bulkhead pattern prevent cascading failures? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>Named after ship bulkheads that prevent flooding from spreading. The pattern isolates resources (thread pools, connections) per downstream service.</p>
+<p><strong>Without Bulkhead:</strong> Order Service has 100 threads. Payment Service becomes slow. All 100 threads wait for Payment. Now Inventory calls (using the same pool) also hang. Order Service is dead even though Inventory is fine.</p>
+<p><strong>With Bulkhead:</strong> Payment Service pool: 20 threads. Inventory Service pool: 20 threads. Others: 60 threads. Payment slowness exhausts only its 20 threads — Inventory calls continue normally.</p>
+<p><strong>Implementation:</strong> Resilience4j <code>Bulkhead</code> (semaphore-based, limits concurrency) or <code>ThreadPoolBulkhead</code> (dedicated thread pool). Also applies to connection pool sizes per downstream DB/service.</p>
+</div>
+</details>
+
+<details>
+<summary>Q10. What is the Database per Service pattern? What are the challenges? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>Each microservice has exclusive ownership of its data — other services cannot directly query or modify it. Access is only through the service's API.</p>
+<p><strong>Benefits:</strong> Independent schema evolution, technology choice (SQL vs NoSQL per need), independent scaling, failure isolation.</p>
+<p><strong>Challenges:</strong></p>
+<ul>
+  <li><strong>Cross-service queries:</strong> Can't JOIN across service DBs. Use API Composition (orchestrate multiple API calls) or CQRS (maintain a read-only materialized view)</li>
+  <li><strong>Distributed transactions:</strong> Use SAGA pattern</li>
+  <li><strong>Data duplication:</strong> Some data replicated across services for local querying (eventual consistency)</li>
+  <li><strong>Reporting:</strong> Dedicated reporting service aggregates data from all services (event-driven, separate DB)</li>
+</ul>
+</div>
+</details>
+
+<details>
+<summary>Q11. How does Event Sourcing differ from a traditional DB? What are the trade-offs? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p><strong>Traditional DB:</strong> Stores current state. UPDATE overwrites previous values. No history.</p>
+<p><strong>Event Sourcing:</strong> Stores all events (immutable, append-only). Current state is derived by replaying events. Full audit trail built-in.</p>
+<p><strong>Pros:</strong></p>
+<ul>
+  <li>Complete audit log — "what happened and when" — regulatory compliance</li>
+  <li>Time travel — replay events to see state at any point in time</li>
+  <li>Event-driven integration — other services consume events directly</li>
+  <li>Debugging — replay production events in staging</li>
+</ul>
+<p><strong>Cons:</strong></p>
+<ul>
+  <li>Complexity — replaying events to reconstruct state can be slow for large histories (use snapshots)</li>
+  <li>Eventual consistency — read models built by projections may lag</li>
+  <li>Schema evolution — changing event schemas is hard (versioned events needed)</li>
+  <li>Learning curve — different mental model from CRUD</li>
+</ul>
+</div>
+</details>
+
+<details>
+<summary>Q12. What is CQRS and when should you use it? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>CQRS separates write operations (Commands — change state) from read operations (Queries — return data). Separate models, potentially separate data stores.</p>
+<p><strong>When to use CQRS:</strong></p>
+<ul>
+  <li>Read and write patterns have very different performance requirements (scale reads independently)</li>
+  <li>Complex domain logic on writes vs simple, denormalized reads</li>
+  <li>Event Sourcing (they complement each other naturally)</li>
+  <li>Multiple read models needed (mobile API, web API, reporting)</li>
+</ul>
+<p><strong>When NOT to use CQRS:</strong></p>
+<ul>
+  <li>Simple CRUD apps — massive over-engineering</li>
+  <li>Small teams without expertise in eventually consistent systems</li>
+  <li>When read-after-write consistency is strictly required everywhere</li>
+</ul>
+<p><strong>Trade-off:</strong> Eventual consistency between write model and read models. A write may not be immediately visible in the read model (usually milliseconds, but noticeable if showing data immediately after an action).</p>
+</div>
+</details>
+
+<details>
+<summary>Q13. How do you handle inter-service authentication securely? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>Multiple approaches, often combined:</p>
+<ul>
+  <li><strong>JWT propagation:</strong> API Gateway validates external JWT; passes it to downstream services. Services re-validate the JWT locally. Pros: no central session store. Cons: JWTs can't be revoked (short expiry needed).</li>
+  <li><strong>Service-to-service JWTs:</strong> Each service has its own JWT (issued by auth service) for internal calls. Separate from user JWTs.</li>
+  <li><strong>mTLS (Mutual TLS):</strong> Both services present certificates. In service mesh (Istio/Linkerd), this is automatic. Pros: strong authentication, encrypted traffic. No token overhead.</li>
+  <li><strong>API Keys:</strong> Simple but hard to rotate; not suitable for dynamic microservices</li>
+  <li><strong>SPIFFE/SPIRE:</strong> Identity framework for services. Issues short-lived SVIDs (SPIFFE Verifiable Identity Documents) as X.509 certs. Foundation for Istio mTLS.</li>
+</ul>
+<p><strong>Best practice:</strong> Use Istio mTLS for service-to-service authentication + authorization. For calls that need user context, propagate the user's JWT via a header.</p>
+</div>
+</details>
+
+<details>
+<summary>Q14. What is the difference between an API Gateway and a Service Mesh? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>They solve different problems at different layers:</p>
+<table>
+  <tr><th>Aspect</th><th>API Gateway</th><th>Service Mesh</th></tr>
+  <tr><td>Layer</td><td>North-south traffic (external → internal)</td><td>East-west traffic (service ↔ service)</td></tr>
+  <tr><td>Concern</td><td>API management, client-facing</td><td>Service-to-service reliability, security</td></tr>
+  <tr><td>Features</td><td>Auth, rate limiting, routing, transformation</td><td>mTLS, circuit breaking, observability, retries</td></tr>
+  <tr><td>Examples</td><td>Kong, AWS API GW, NGINX</td><td>Istio, Linkerd, Consul Connect</td></tr>
+  <tr><td>Deployment</td><td>Centralized gateway</td><td>Sidecar proxies per pod</td></tr>
+</table>
+<p>They are <strong>complementary</strong>. Use both: API Gateway handles external traffic management; service mesh handles internal reliability and security.</p>
+</div>
+</details>
+
+<details>
+<summary>Q15. How do you trace a request across multiple microservices? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p><strong>Distributed tracing</strong> tracks a request as it propagates through multiple services. Each service adds span information to a shared trace context.</p>
+<p><strong>Key concepts:</strong></p>
+<ul>
+  <li><strong>Trace ID:</strong> Unique ID for the entire request journey</li>
+  <li><strong>Span:</strong> A single unit of work (e.g., one service processing), has parent span ID</li>
+  <li><strong>Context propagation:</strong> Trace ID passed via HTTP headers (<code>X-B3-TraceId</code>, <code>traceparent</code> in W3C standard)</li>
+</ul>
+<p><strong>Tools:</strong> Jaeger, Zipkin, AWS X-Ray, Datadog APM. Spring Sleuth/Micrometer auto-instruments Spring services. Istio auto-instruments all pod-to-pod calls.</p>
+<pre><code class="language-java">// Spring Boot with Micrometer Tracing (auto-configured)
+@Service
+public class OrderService {
+    private final Tracer tracer;
+
+    public Order createOrder(OrderRequest req) {
+        Span span = tracer.nextSpan().name("createOrder").start();
+        try (Tracer.SpanInScope ws = tracer.withSpan(span)) {
+            // trace ID automatically propagated to downstream HTTP calls
+            return processOrder(req);
+        } finally {
+            span.end();
+        }
+    }
+}</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q16. What are the challenges with blue/green vs canary deployments? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>Blue/Green challenges:</strong></p>
+<ul>
+  <li>Double the infrastructure cost during switchover</li>
+  <li>DB schema changes are tricky — new schema must be compatible with both versions simultaneously during cutover</li>
+  <li>All-or-nothing traffic switch — if v2 has issues, ALL users are affected before rollback</li>
+</ul>
+<p><strong>Canary challenges:</strong></p>
+<ul>
+  <li>Two versions live simultaneously — must be backward-compatible (API, DB schema, events)</li>
+  <li>Requires metrics to determine if canary is healthy (error rate, latency, business metrics)</li>
+  <li>Sticky sessions — if a user hits v1 then v2, their session must be compatible</li>
+  <li>Data migrations — canary pods may write data in a new format that v1 pods can't read</li>
+</ul>
+<p><strong>DB migration strategy for canary:</strong> Expand/contract pattern — first migration adds new columns (backward compatible), canary uses new schema, rollout completes, second migration removes old columns.</p>
+</div>
+</details>
+
+<details>
+<summary>Q17. How would you design a notification service in a microservices architecture? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p><strong>Design principles:</strong></p>
+<ul>
+  <li>Notification Service consumes events (async) — doesn't get called synchronously</li>
+  <li>Other services don't know about the Notification Service — they just publish domain events</li>
+  <li>Notification Service subscribes to relevant events (OrderPlaced → send order confirmation)</li>
+</ul>
+<p><strong>Architecture:</strong></p>
+<ol>
+  <li>Services publish domain events to Kafka topics (order.placed, payment.failed, etc.)</li>
+  <li>Notification Service has a consumer group subscribed to all relevant topics</li>
+  <li>Maps events to notification templates</li>
+  <li>Dispatches via Email (SendGrid), SMS (Twilio), Push (FCM), or in-app</li>
+  <li>Own DB for notification history, preferences, delivery status</li>
+</ol>
+<p><strong>Idempotency:</strong> Must be idempotent — use event ID as idempotency key to avoid duplicate notifications on re-delivery.</p>
+<p><strong>User preferences:</strong> Respect do-not-disturb times, channel preferences (email vs SMS), frequency limits.</p>
+</div>
+</details>
+
+<details>
+<summary>Q18. What is the difference between REST and event-driven communication? When to use each? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<table>
+  <tr><th>Aspect</th><th>REST (Sync)</th><th>Events (Async)</th></tr>
+  <tr><td>Coupling</td><td>Caller must know provider</td><td>Producer doesn't know consumers</td></tr>
+  <tr><td>Availability</td><td>Both services must be up</td><td>Decoupled availability</td></tr>
+  <tr><td>Latency</td><td>Immediate response</td><td>Eventual processing</td></tr>
+  <tr><td>Complexity</td><td>Simple request/response</td><td>Requires message broker, retry, DLQ</td></tr>
+  <tr><td>Data consistency</td><td>Immediate</td><td>Eventually consistent</td></tr>
+</table>
+<p><strong>Use REST when:</strong> You need an immediate response (get user profile before rendering), simple CRUD, the caller must react to the result right away.</p>
+<p><strong>Use Events when:</strong> Notifying multiple consumers, fire-and-forget operations, long-running processes (order fulfillment), decoupling services that don't need to know about each other, audit/history (event log).</p>
+<p><strong>Hybrid:</strong> Most real systems use both. REST for queries and synchronous commands. Events for domain changes that trigger workflows in other services.</p>
+</div>
+</details>
+
+<details>
+<summary>Q19. How do you handle schema evolution in event-driven microservices? <span class="badge very-advanced">Very Advanced</span></summary>
+<div class="answer">
+<p>Event schemas are a critical contract between producers and consumers. Breaking changes are dangerous because consumers may have old code.</p>
+<p><strong>Strategies:</strong></p>
+<ul>
+  <li><strong>Backward-compatible changes only:</strong> Add optional fields (never remove/rename). Consumers ignore unknown fields.</li>
+  <li><strong>Event versioning:</strong> Include version in event (<code>{"version": 2, ...}</code> or topic naming <code>order.placed.v2</code>). Consumers handle multiple versions during migration.</li>
+  <li><strong>Consumer-driven evolution:</strong> Before removing a field, check all consumers via Pact/schema registry</li>
+  <li><strong>Schema Registry (Confluent):</strong> Centralizes Avro/Protobuf schemas. Enforces compatibility rules (BACKWARD, FORWARD, FULL). Producers and consumers must register schemas.</li>
+</ul>
+<p><strong>Avro + Schema Registry example:</strong></p>
+<pre><code class="language-json">{
+  "type": "record",
+  "name": "OrderPlaced",
+  "namespace": "com.example.events",
+  "fields": [
+    {"name": "orderId", "type": "string"},
+    {"name": "amount", "type": "double"},
+    {"name": "discountCode", "type": ["null", "string"], "default": null}
+  ]
+}</code></pre>
+<p>Adding <code>discountCode</code> as nullable with a default is backward compatible — old consumers that don't know about it will use the default.</p>
+</div>
+</details>
+
+<details>
+<summary>Q20. How do you prevent a distributed system from suffering from "death by a thousand timeouts"? <span class="badge very-advanced">Very Advanced</span></summary>
+<div class="answer">
+<p>Timeout cascades: A → B → C → D. D is slow (30s timeout). C waits 30s then times out. B already timed out waiting for C (set to 25s). A already gave up (set to 20s). User gets an error after 20s but D was processing for 30s wasted.</p>
+<p><strong>Solutions:</strong></p>
+<ul>
+  <li><strong>Deadline propagation:</strong> Pass remaining deadline in requests. Each service knows the overall deadline and can fail fast if not enough time remains. gRPC has built-in deadline propagation.</li>
+  <li><strong>Context cancellation:</strong> Pass <code>Context</code>/<code>CancellationToken</code> through call chains. When API Gateway cancels (client gave up), downstream services detect cancellation and stop work.</li>
+  <li><strong>Circuit breaker:</strong> Fail fast when a service is known to be slow — don't even attempt the call.</li>
+  <li><strong>Budget timeout:</strong> API Gateway sets overall budget (e.g., 5s). Each service checks remaining budget before making downstream calls.</li>
+</ul>
+<pre><code class="language-java">// gRPC deadline propagation
+Channel channel = ManagedChannelBuilder.forAddress("payment-service", 443).build();
+PaymentServiceGrpc.PaymentServiceBlockingStub stub = PaymentServiceGrpc.newBlockingStub(channel)
+    .withDeadlineAfter(2, TimeUnit.SECONDS); // Deadline propagated to server
+
+// Server checks if deadline exceeded before expensive operations
+if (Context.current().getDeadline() != null &amp;&amp;
+    Context.current().getDeadline().isExpired()) {
+    throw Status.DEADLINE_EXCEEDED.asRuntimeException();
+}</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q21. What is the API Composition pattern and when does it fail? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>API Composition assembles data from multiple services to fulfill a client request. A BFF or aggregator service calls multiple services in parallel and combines results.</p>
+<p><strong>When it fails:</strong></p>
+<ul>
+  <li><strong>Performance:</strong> If you must call 10 services to render one page, the slowest call determines latency. Mitigate: caching, parallelism, GraphQL data loaders.</li>
+  <li><strong>Consistency:</strong> Data from different services may be at different points in time (Customer from t1, Orders from t2). Unavoidable in microservices.</li>
+  <li><strong>Large datasets:</strong> Complex joins/filters across datasets from different services are inefficient — you'd need to fetch all data and filter in memory. Prefer CQRS read model for complex queries.</li>
+  <li><strong>Transactions:</strong> You can read data from many services via composition but can't atomically write across them.</li>
+</ul>
+<p><strong>Better alternative for complex queries:</strong> CQRS read model — a dedicated service that subscribes to events from all relevant services and maintains a denormalized, queryable view. Complex queries run on this local DB with zero API calls.</p>
+</div>
+</details>
+
+<details>
+<summary>Q22. How do you design for observability in microservices? <span class="badge very-advanced">Very Advanced</span></summary>
+<div class="answer">
+<p>Observability = the ability to understand the internal state of a system from external outputs. Three pillars:</p>
+<ul>
+  <li><strong>Metrics:</strong> Quantitative measurements over time (request rate, error rate, latency percentiles, resource utilization). Tools: Prometheus + Grafana. Key metrics: RED (Rate, Errors, Duration) per service.</li>
+  <li><strong>Logs:</strong> Timestamped records of events. Must be structured (JSON), include trace ID, correlation ID, service name. Aggregated via ELK (Elasticsearch/Logstash/Kibana) or Datadog.</li>
+  <li><strong>Traces:</strong> End-to-end request journey across services. Tools: Jaeger, Zipkin, AWS X-Ray. Identifies latency bottlenecks and error sources in distributed flows.</li>
+</ul>
+<p><strong>Practices:</strong></p>
+<ul>
+  <li>Every log line includes <code>traceId</code>, <code>spanId</code>, <code>serviceName</code>, <code>version</code></li>
+  <li>Standardize health check endpoints (<code>/health/live</code>, <code>/health/ready</code>)</li>
+  <li>Expose business metrics (orders/sec, payment success rate) not just technical ones</li>
+  <li>Alert on SLOs (Service Level Objectives) not just raw error rates</li>
+  <li>Istio/service mesh auto-instruments service mesh metrics without code changes</li>
+</ul>
+</div>
+</details>
+
+<footer>Microservices — Comprehensive Reference</footer>
+</main>
+</div>
+
+<script>hljs.highlightAll();mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

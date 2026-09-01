@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>React Native — Comprehensive Learning Reference</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6;display:flex;flex-direction:column}.topnav{background:#161b22;padding:10px 24px;border-bottom:1px solid #30363d;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100}.topnav a{color:#58a6ff;text-decoration:none;font-size:13px}.topnav h1{font-size:16px;color:#e6edf3;margin:0}.layout{display:flex;flex:1}.sidebar{width:260px;background:#161b22;border-right:1px solid #30363d;padding:16px;position:sticky;top:41px;height:calc(100vh - 41px);overflow-y:auto;flex-shrink:0}.sidebar a{display:block;padding:4px 8px;color:#8b949e;text-decoration:none;font-size:13px;border-radius:4px;margin-bottom:2px}.sidebar a:hover{background:#21262d;color:#c9d1d9}.sidebar .section-title{color:#58a6ff;font-size:11px;text-transform:uppercase;letter-spacing:.5px;margin:16px 0 6px;padding:0 8px;font-weight:600}main{flex:1;padding:32px 48px;max-width:960px}h1{font-size:2rem;color:#e6edf3;border-bottom:1px solid #30363d;padding-bottom:16px;margin-bottom:24px}h2{font-size:1.5rem;color:#e6edf3;margin:48px 0 16px;border-bottom:1px solid #21262d;padding-bottom:8px}h3{font-size:1.15rem;color:#79c0ff;margin:24px 0 10px}h4{font-size:1rem;color:#d2a8ff;margin:16px 0 8px}p{margin-bottom:12px}ul,ol{margin:0 0 16px 24px}li{margin-bottom:4px}pre{margin:16px 0;border-radius:6px;overflow-x:auto;font-size:13px}code:not(pre code){background:#161b22;padding:2px 6px;border-radius:4px;font-size:13px;color:#f0883e;border:1px solid #30363d}table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}th{background:#161b22;color:#58a6ff;padding:10px 14px;text-align:left;border:1px solid #30363d}td{padding:10px 14px;border:1px solid #30363d;vertical-align:top}tr:nth-child(even) td{background:#0a0d12}.mermaid{background:#161b22;padding:20px;border-radius:6px;margin:16px 0;text-align:center}details{border:1px solid #30363d;border-radius:6px;margin:10px 0;overflow:hidden}summary{padding:12px 16px;cursor:pointer;background:#161b22;color:#79c0ff;font-weight:600;list-style:none}details[open] summary{border-bottom:1px solid #30363d}.answer{padding:16px 20px;background:#0d1117}.badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:700;margin-left:8px}.easy{background:#1a4731;color:#3fb950}.intermediate{background:#2d2b00;color:#e3b341}.advanced{background:#3d1f00;color:#f0883e}.very-advanced{background:#3d0000;color:#ff7b72}.callout{background:#161b22;border-left:4px solid #58a6ff;padding:12px 16px;border-radius:0 6px 6px 0;margin:16px 0}footer{text-align:center;padding:24px;color:#8b949e;font-size:12px;border-top:1px solid #30363d;margin-top:40px}
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <h1>React Native — Comprehensive Reference</h1>
+  <a href="nodejs.html">Node.js</a>
+  <a href="nestjs.html">NestJS</a>
+</nav>
+<div class="layout">
+<aside class="sidebar">
+  <div class="section-title">Core</div>
+  <a href="#core-components">Core Components</a>
+  <a href="#stylesheet-flexbox">StyleSheet &amp; Flexbox</a>
+  <a href="#platform-dimensions">Platform &amp; Dimensions</a>
+  <div class="section-title">Navigation</div>
+  <a href="#react-navigation">React Navigation</a>
+  <a href="#deep-linking">Deep Linking</a>
+  <div class="section-title">Animations</div>
+  <a href="#animated-api">Animated API</a>
+  <a href="#reanimated3">Reanimated 3</a>
+  <a href="#gesture-handler">Gesture Handler</a>
+  <div class="section-title">Architecture</div>
+  <a href="#new-architecture">New Architecture</a>
+  <a href="#native-modules">Native Modules</a>
+  <a href="#native-components">Native Components</a>
+  <div class="section-title">Performance</div>
+  <a href="#performance">Performance</a>
+  <a href="#hermes">Hermes Engine</a>
+  <div class="section-title">Workflow</div>
+  <a href="#expo-bare">Expo vs Bare</a>
+  <a href="#eas">EAS Build &amp; Updates</a>
+  <a href="#versions">Version History</a>
+  <div class="section-title">Interview Q&amp;A</div>
+  <a href="#interview">20+ Q&amp;As</a>
+</aside>
+<main>
+<h1>React Native — Comprehensive Learning Reference</h1>
+
+<!-- ==================== CORE COMPONENTS ==================== -->
+<h2 id="core-components">Core Components</h2>
+<p>React Native maps JavaScript components to native platform views. Unlike the web, there is no DOM — every component is a bridge to a native widget.</p>
+
+<h3>View, Text, Image</h3>
+<pre><code class="language-jsx">import { View, Text, Image, StyleSheet } from 'react-native';
+
+export default function Card() {
+  return (
+    &lt;View style={styles.card}&gt;
+      &lt;Image
+        source={{ uri: 'https://example.com/avatar.png' }}
+        style={styles.avatar}
+        resizeMode="cover"
+      /&gt;
+      &lt;Text style={styles.title} numberOfLines={2} ellipsizeMode="tail"&gt;
+        Hello React Native
+      &lt;/Text&gt;
+    &lt;/View&gt;
+  );
+}
+
+const styles = StyleSheet.create({
+  card: { backgroundColor: '#1c1c1e', padding: 16, borderRadius: 12 },
+  avatar: { width: 60, height: 60, borderRadius: 30 },
+  title: { fontSize: 18, fontWeight: '700', color: '#fff', marginTop: 8 },
+});</code></pre>
+
+<h3>ScrollView vs FlatList vs SectionList</h3>
+<table>
+<tr><th>Component</th><th>Best For</th><th>Virtualized?</th><th>Key Props</th></tr>
+<tr><td><code>ScrollView</code></td><td>Small static lists, forms</td><td>No — renders all children</td><td><code>horizontal</code>, <code>onScroll</code>, <code>stickyHeaderIndices</code></td></tr>
+<tr><td><code>FlatList</code></td><td>Large homogeneous lists</td><td>Yes</td><td><code>data</code>, <code>renderItem</code>, <code>keyExtractor</code>, <code>getItemLayout</code>, <code>windowSize</code></td></tr>
+<tr><td><code>SectionList</code></td><td>Grouped lists with headers</td><td>Yes</td><td><code>sections</code>, <code>renderSectionHeader</code>, <code>stickySectionHeadersEnabled</code></td></tr>
+</table>
+
+<pre><code class="language-jsx">// FlatList with performance optimisations
+&lt;FlatList
+  data={items}
+  keyExtractor={(item) =&gt; item.id}
+  renderItem={({ item }) =&gt; &lt;ItemRow item={item} /&gt;}
+  getItemLayout={(_, index) =&gt; ({ length: 72, offset: 72 * index, index })}
+  initialNumToRender={15}
+  maxToRenderPerBatch={10}
+  windowSize={5}
+  removeClippedSubviews
+  ItemSeparatorComponent={() =&gt; &lt;View style={{ height: 1, backgroundColor: '#30363d' }} /&gt;}
+/&gt;</code></pre>
+
+<h3>TextInput</h3>
+<pre><code class="language-jsx">import { TextInput, useState } from 'react-native';
+
+function SearchBar() {
+  const [query, setQuery] = useState('');
+  return (
+    &lt;TextInput
+      value={query}
+      onChangeText={setQuery}
+      placeholder="Search..."
+      placeholderTextColor="#8b949e"
+      autoCapitalize="none"
+      autoCorrect={false}
+      returnKeyType="search"
+      onSubmitEditing={() =&gt; handleSearch(query)}
+      style={{ color: '#c9d1d9', borderWidth: 1, borderColor: '#30363d', borderRadius: 8, padding: 12 }}
+    /&gt;
+  );
+}</code></pre>
+
+<h3>TouchableOpacity vs Pressable</h3>
+<p><code>Pressable</code> is the modern replacement — it provides pressed state via render prop and supports <code>hitSlop</code>, <code>delayLongPress</code>, and <code>android_ripple</code>.</p>
+<pre><code class="language-jsx">// Pressable with dynamic style
+&lt;Pressable
+  onPress={handlePress}
+  onLongPress={handleLongPress}
+  android_ripple={{ color: '#58a6ff33', borderless: false }}
+  style={({ pressed }) =&gt; [
+    styles.button,
+    pressed &amp;&amp; styles.buttonPressed
+  ]}
+&gt;
+  {({ pressed }) =&gt; (
+    &lt;Text style={[styles.label, pressed &amp;&amp; { opacity: 0.7 }]}&gt;Tap Me&lt;/Text&gt;
+  )}
+&lt;/Pressable&gt;</code></pre>
+
+<h3>Modal &amp; ActivityIndicator &amp; Switch</h3>
+<pre><code class="language-jsx">import { Modal, ActivityIndicator, Switch, View, Text } from 'react-native';
+
+function SettingsRow({ label, value, onChange }) {
+  return (
+    &lt;View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 16 }}&gt;
+      &lt;Text style={{ color: '#c9d1d9' }}&gt;{label}&lt;/Text&gt;
+      &lt;Switch
+        value={value}
+        onValueChange={onChange}
+        trackColor={{ false: '#30363d', true: '#1f6feb' }}
+        thumbColor={value ? '#58a6ff' : '#8b949e'}
+      /&gt;
+    &lt;/View&gt;
+  );
+}
+
+function LoadingModal({ visible }) {
+  return (
+    &lt;Modal transparent visible={visible} animationType="fade"&gt;
+      &lt;View style={{ flex: 1, backgroundColor: '#00000088', justifyContent: 'center', alignItems: 'center' }}&gt;
+        &lt;ActivityIndicator size="large" color="#58a6ff" /&gt;
+      &lt;/View&gt;
+    &lt;/Modal&gt;
+  );
+}</code></pre>
+
+<!-- ==================== STYLESHEET FLEXBOX ==================== -->
+<h2 id="stylesheet-flexbox">StyleSheet &amp; Flexbox in React Native</h2>
+<p>React Native implements a subset of CSS with Yoga layout engine. Key differences from web flexbox:</p>
+<table>
+<tr><th>Property</th><th>Web Default</th><th>React Native Default</th></tr>
+<tr><td><code>flexDirection</code></td><td><code>row</code></td><td><code>column</code></td></tr>
+<tr><td><code>position</code></td><td><code>static</code></td><td><code>relative</code></td></tr>
+<tr><td>Unitless numbers</td><td>Not allowed in layout</td><td>Density-independent pixels (dp)</td></tr>
+<tr><td><code>flex</code></td><td>Shorthand (grow shrink basis)</td><td>Only positive numbers (grow factor)</td></tr>
+<tr><td><code>overflow</code></td><td>Scrolls on web</td><td><code>hidden</code> or <code>visible</code> only (no <code>scroll</code>)</td></tr>
+<tr><td>Shadow</td><td><code>box-shadow</code></td><td><code>shadowColor/Offset/Opacity/Radius</code> (iOS), <code>elevation</code> (Android)</td></tr>
+</table>
+
+<pre><code class="language-jsx">const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'column',  // RN default
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingTop: 24,
+  },
+  row: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,  // supported in RN 0.71+
+  },
+  card: {
+    // iOS shadows
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    // Android
+    elevation: 4,
+    // Both
+    backgroundColor: '#161b22',
+    borderRadius: 8,
+  },
+});
+
+// StyleSheet.flatten — merges array styles
+const merged = StyleSheet.flatten([styles.card, { margin: 8 }]);</code></pre>
+
+<h3>Absolute Positioning</h3>
+<pre><code class="language-jsx">// Overlay badge
+const badge = {
+  position: 'absolute',
+  top: -4,
+  right: -4,
+  width: 18,
+  height: 18,
+  borderRadius: 9,
+  backgroundColor: '#f85149',
+  justifyContent: 'center',
+  alignItems: 'center',
+};</code></pre>
+
+<!-- ==================== PLATFORM DIMENSIONS ==================== -->
+<h2 id="platform-dimensions">Platform &amp; Dimensions</h2>
+<pre><code class="language-jsx">import { Platform, Dimensions, useWindowDimensions, PixelRatio } from 'react-native';
+
+// Platform-specific code
+const styles = StyleSheet.create({
+  header: {
+    paddingTop: Platform.OS === 'ios' ? 44 : 24,
+    ...Platform.select({
+      ios: { shadowOpacity: 0.3 },
+      android: { elevation: 4 },
+      default: { border: '1px solid #30363d' },
+    }),
+  },
+});
+
+// Platform.Version
+if (Platform.OS === 'android' &amp;&amp; Platform.Version &lt; 29) {
+  // Handle older Android
+}
+
+// Dimensions — static snapshot (re-renders on rotation if you listen)
+const { width, height } = Dimensions.get('window');  // excludes status bar on Android
+const { width: screenW } = Dimensions.get('screen');  // full screen
+
+// useWindowDimensions — reactive hook (auto-updates on rotation)
+function ResponsiveLayout() {
+  const { width, height, fontScale } = useWindowDimensions();
+  const isLandscape = width &gt; height;
+  return &lt;View style={{ flexDirection: isLandscape ? 'row' : 'column' }} /&gt;;
+}
+
+// PixelRatio — logical px to physical px
+const onePixel = 1 / PixelRatio.get();  // hairline border
+const imageSize = PixelRatio.getPixelSizeForLayoutSize(100);  // physical pixels needed</code></pre>
+
+<!-- ==================== REACT NAVIGATION ==================== -->
+<h2 id="react-navigation">React Navigation</h2>
+<h3>Setup &amp; Stack Navigator</h3>
+<pre><code class="language-bash">npm install @react-navigation/native @react-navigation/native-stack
+npm install react-native-screens react-native-safe-area-context</code></pre>
+
+<pre><code class="language-jsx">import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+const Stack = createNativeStackNavigator();
+
+export default function App() {
+  return (
+    &lt;NavigationContainer&gt;
+      &lt;Stack.Navigator
+        initialRouteName="Home"
+        screenOptions={{ headerStyle: { backgroundColor: '#161b22' }, headerTintColor: '#58a6ff' }}
+      &gt;
+        &lt;Stack.Screen name="Home" component={HomeScreen} /&gt;
+        &lt;Stack.Screen name="Detail" component={DetailScreen}
+          options={({ route }) =&gt; ({ title: route.params.title })} /&gt;
+      &lt;/Stack.Navigator&gt;
+    &lt;/NavigationContainer&gt;
+  );
+}</code></pre>
+
+<h3>Tab Navigator</h3>
+<pre><code class="language-jsx">import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+const Tab = createBottomTabNavigator();
+
+function TabNavigator() {
+  return (
+    &lt;Tab.Navigator
+      screenOptions={({ route }) =&gt; ({
+        tabBarIcon: ({ color, size }) =&gt; {
+          const icons = { Home: 'home', Profile: 'person' };
+          return &lt;Icon name={icons[route.name]} size={size} color={color} /&gt;;
+        },
+        tabBarActiveTintColor: '#58a6ff',
+        tabBarInactiveTintColor: '#8b949e',
+        tabBarStyle: { backgroundColor: '#161b22', borderTopColor: '#30363d' },
+      })}
+    &gt;
+      &lt;Tab.Screen name="Home" component={HomeScreen} /&gt;
+      &lt;Tab.Screen name="Profile" component={ProfileScreen}
+        options={{ tabBarBadge: 3 }} /&gt;
+    &lt;/Tab.Navigator&gt;
+  );
+}</code></pre>
+
+<h3>Drawer Navigator &amp; Nested Navigators</h3>
+<pre><code class="language-jsx">import { createDrawerNavigator } from '@react-navigation/drawer';
+const Drawer = createDrawerNavigator();
+
+// Nested: Stack inside Tab inside Drawer
+function RootNavigator() {
+  return (
+    &lt;NavigationContainer&gt;
+      &lt;Drawer.Navigator&gt;
+        &lt;Drawer.Screen name="Main" component={TabNavigator} /&gt;
+        &lt;Drawer.Screen name="Settings" component={SettingsScreen} /&gt;
+      &lt;/Drawer.Navigator&gt;
+    &lt;/NavigationContainer&gt;
+  );
+}</code></pre>
+
+<h3>Navigation Params &amp; TypeScript</h3>
+<pre><code class="language-typescript">// Type-safe navigation params
+type RootStackParamList = {
+  Home: undefined;
+  Detail: { id: string; title: string };
+  Modal: { message: string };
+};
+
+// In screen component:
+type DetailScreenProps = NativeStackScreenProps&lt;RootStackParamList, 'Detail'&gt;;
+
+function DetailScreen({ navigation, route }: DetailScreenProps) {
+  const { id, title } = route.params;
+  navigation.navigate('Modal', { message: `Viewing ${title}` });
+  navigation.goBack();
+  navigation.reset({ index: 0, routes: [{ name: 'Home' }] });
+}</code></pre>
+
+<h2 id="deep-linking">Deep Linking</h2>
+<pre><code class="language-jsx">const linking = {
+  prefixes: ['myapp://', 'https://myapp.com'],
+  config: {
+    screens: {
+      Home: '',
+      Detail: 'detail/:id',
+      Profile: {
+        path: 'user/:userId',
+        parse: { userId: (id) =&gt; parseInt(id) },
+      },
+    },
+  },
+};
+
+&lt;NavigationContainer linking={linking} fallback={&lt;Text&gt;Loading...&lt;/Text&gt;}&gt;</code></pre>
+
+<!-- ==================== ANIMATED API ==================== -->
+<h2 id="animated-api">Animated API</h2>
+<pre><code class="language-jsx">import { Animated, Easing } from 'react-native';
+
+function FadeIn({ children }) {
+  const opacity = useRef(new Animated.Value(0)).current;
+
+  useEffect(() =&gt; {
+    Animated.timing(opacity, {
+      toValue: 1,
+      duration: 400,
+      easing: Easing.out(Easing.cubic),
+      useNativeDriver: true,  // ALWAYS use for transform/opacity
+    }).start();
+  }, []);
+
+  return &lt;Animated.View style={{ opacity }}&gt;{children}&lt;/Animated.View&gt;;
+}
+
+// Spring — physics-based
+Animated.spring(scale, {
+  toValue: 1,
+  tension: 100,
+  friction: 7,
+  useNativeDriver: true,
+}).start(({ finished }) =&gt; console.log('done', finished));
+
+// Decay — momentum
+Animated.decay(velocity, {
+  velocity: 0.5,
+  deceleration: 0.997,
+  useNativeDriver: true,
+}).start();
+
+// Parallel, Sequence, Stagger
+Animated.sequence([
+  Animated.timing(opacity, { toValue: 1, duration: 200, useNativeDriver: true }),
+  Animated.spring(scale, { toValue: 1.1, useNativeDriver: true }),
+]).start();
+
+Animated.parallel([
+  Animated.timing(opacity, { toValue: 1, duration: 300, useNativeDriver: true }),
+  Animated.timing(translateY, { toValue: 0, duration: 300, useNativeDriver: true }),
+]).start();
+
+Animated.stagger(100, items.map((_, i) =&gt;
+  Animated.timing(animations[i], { toValue: 1, duration: 200, useNativeDriver: true })
+)).start();</code></pre>
+
+<h3>Interpolate</h3>
+<pre><code class="language-jsx">const rotation = scrollY.interpolate({
+  inputRange: [0, 200],
+  outputRange: ['0deg', '360deg'],
+  extrapolate: 'clamp',  // 'extend' | 'clamp' | 'identity'
+});
+
+const backgroundColor = progress.interpolate({
+  inputRange: [0, 0.5, 1],
+  outputRange: ['#ff0000', '#ffff00', '#00ff00'],
+});
+
+&lt;Animated.View style={{ transform: [{ rotate: rotation }], backgroundColor }} /&gt;</code></pre>
+
+<!-- ==================== REANIMATED 3 ==================== -->
+<h2 id="reanimated3">Reanimated 3</h2>
+<p>Reanimated 3 runs animations entirely on the UI thread using <strong>worklets</strong> — JavaScript functions marked with <code>'worklet'</code> directive that execute on the JS worklet runtime, bypassing the bridge.</p>
+
+<pre><code class="language-jsx">import Animated, {
+  useSharedValue, useAnimatedStyle,
+  withTiming, withSpring, withDecay,
+  withSequence, withRepeat, withDelay,
+  runOnJS, interpolate, Extrapolation,
+  useAnimatedScrollHandler,
+} from 'react-native-reanimated';
+
+function BouncingButton() {
+  const scale = useSharedValue(1);
+
+  const animatedStyle = useAnimatedStyle(() =&gt; ({
+    transform: [{ scale: scale.value }],
+  }));
+
+  const handlePress = () =&gt; {
+    scale.value = withSequence(
+      withTiming(0.9, { duration: 80 }),
+      withSpring(1, { damping: 4, stiffness: 200 }),
+    );
+  };
+
+  return (
+    &lt;Animated.View style={[styles.button, animatedStyle]}&gt;
+      &lt;Pressable onPress={handlePress}&gt;
+        &lt;Text&gt;Press Me&lt;/Text&gt;
+      &lt;/Pressable&gt;
+    &lt;/Animated.View&gt;
+  );
+}</code></pre>
+
+<h3>Worklets &amp; runOnJS</h3>
+<pre><code class="language-jsx">// Worklet — runs on UI thread
+function clamp(value, min, max) {
+  'worklet';
+  return Math.min(Math.max(value, min), max);
+}
+
+// runOnJS — call JS function from worklet
+const updateState = (val) =&gt; setCount(val);  // JS function
+
+const animatedStyle = useAnimatedStyle(() =&gt; {
+  const clamped = clamp(shared.value, 0, 100);
+  runOnJS(updateState)(clamped);  // bridge back to JS
+  return { opacity: clamped / 100 };
+});</code></pre>
+
+<h3>Scroll Animations</h3>
+<pre><code class="language-jsx">function ParallaxHeader() {
+  const scrollY = useSharedValue(0);
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: (event) =&gt; {
+      'worklet';
+      scrollY.value = event.contentOffset.y;
+    },
+  });
+
+  const headerStyle = useAnimatedStyle(() =&gt; ({
+    transform: [{ translateY: interpolate(scrollY.value, [0, 200], [0, -100], Extrapolation.CLAMP) }],
+    opacity: interpolate(scrollY.value, [0, 150], [1, 0], Extrapolation.CLAMP),
+  }));
+
+  return (
+    &lt;&gt;
+      &lt;Animated.View style={[styles.header, headerStyle]} /&gt;
+      &lt;Animated.ScrollView onScroll={scrollHandler} scrollEventThrottle={16}&gt;
+        {/* content */}
+      &lt;/Animated.ScrollView&gt;
+    &lt;/&gt;
+  );
+}</code></pre>
+
+<!-- ==================== GESTURE HANDLER ==================== -->
+<h2 id="gesture-handler">Gesture Handler</h2>
+<pre><code class="language-jsx">import { GestureDetector, Gesture, GestureHandlerRootView } from 'react-native-gesture-handler';
+import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
+
+function DraggableCard() {
+  const offsetX = useSharedValue(0);
+  const offsetY = useSharedValue(0);
+  const startX = useSharedValue(0);
+  const startY = useSharedValue(0);
+
+  const panGesture = Gesture.Pan()
+    .onStart(() =&gt; {
+      'worklet';
+      startX.value = offsetX.value;
+      startY.value = offsetY.value;
+    })
+    .onUpdate((e) =&gt; {
+      'worklet';
+      offsetX.value = startX.value + e.translationX;
+      offsetY.value = startY.value + e.translationY;
+    })
+    .onEnd(() =&gt; {
+      'worklet';
+      offsetX.value = withSpring(0);
+      offsetY.value = withSpring(0);
+    });
+
+  const animStyle = useAnimatedStyle(() =&gt; ({
+    transform: [{ translateX: offsetX.value }, { translateY: offsetY.value }],
+  }));
+
+  return (
+    &lt;GestureHandlerRootView style={{ flex: 1 }}&gt;
+      &lt;GestureDetector gesture={panGesture}&gt;
+        &lt;Animated.View style={[styles.card, animStyle]} /&gt;
+      &lt;/GestureDetector&gt;
+    &lt;/GestureHandlerRootView&gt;
+  );
+}
+
+// Composed gestures
+const tap = Gesture.Tap().onEnd(() =&gt; { 'worklet'; /* handle tap */ });
+const longPress = Gesture.LongPress().minDuration(500).onStart(() =&gt; { 'worklet'; });
+const composed = Gesture.Exclusive(tap, longPress);  // OR .Race() .Simultaneous()</code></pre>
+
+<!-- ==================== NEW ARCHITECTURE ==================== -->
+<h2 id="new-architecture">New Architecture</h2>
+<p>React Native's new architecture (default in 0.74) replaces the asynchronous bridge with three pillars: JSI, Fabric, and TurboModules.</p>
+
+<div class="mermaid">
+graph TB
+    subgraph "Old Architecture"
+        OJS[JS Thread] -->|JSON serialized messages| OBridge[Bridge]
+        OBridge -->|Async deserialization| ONative[Native Thread]
+        ONative --> OShadow[Shadow Tree / Yoga]
+        OShadow --> OUI[UI Thread]
+    end
+    subgraph "New Architecture"
+        NJS[JS Thread + JSI] -->|C++ direct call - no serialization| NTM[TurboModules C++]
+        NJS -->|React reconciler| NFabric[Fabric Renderer]
+        NFabric -->|C++ shadow tree| NConcurrent[Concurrent Features]
+        NConcurrent --> NUI[UI Thread]
+        NJS -.->|Codegen types| NTM
+    end
+    style OBridge fill:#3d1f00,color:#f0883e
+    style NJS fill:#1a4731,color:#3fb950
+    style NFabric fill:#1a4731,color:#3fb950
+</div>
+
+<h3>JSI (JavaScript Interface)</h3>
+<p>JSI allows JavaScript to hold references to C++ host objects and call methods synchronously. This eliminates JSON serialization overhead and enables synchronous method calls between JS and native.</p>
+
+<h3>Fabric Renderer</h3>
+<p>Fabric is a C++ reimplementation of the UIManager. It allows concurrent rendering (aligning with React 18's Concurrent Mode), priority-based updates, and synchronous layout reads (eliminating the double-render for <code>onLayout</code>).</p>
+
+<h3>TurboModules</h3>
+<p>TurboModules are lazily loaded native modules. They are defined with a TypeScript/Flow spec, and <strong>Codegen</strong> generates C++ and Java/ObjC boilerplate automatically, ensuring type safety at the bridge boundary.</p>
+
+<pre><code class="language-typescript">// TurboModule spec (NativeSampleModule.ts)
+import type { TurboModule } from 'react-native';
+import { TurboModuleRegistry } from 'react-native';
+
+export interface Spec extends TurboModule {
+  multiply(a: number, b: number): Promise&lt;number&gt;;
+  getConstantsSync(): { API_KEY: string };
+}
+
+export default TurboModuleRegistry.getEnforcing&lt;Spec&gt;('SampleModule');</code></pre>
+
+<h3>Bridgeless Mode (0.73+)</h3>
+<p>Bridgeless mode removes the legacy bridge entirely. All communication goes through JSI. Enabled in 0.74 by default. Requires all native modules to be TurboModules.</p>
+
+<pre><code class="language-javascript">// android/gradle.properties
+newArchEnabled=true
+bridgelessEnabled=true
+
+// ios — package.json
+"newArchEnabled": true</code></pre>
+
+<!-- ==================== NATIVE MODULES ==================== -->
+<h2 id="native-modules">Native Modules</h2>
+<pre><code class="language-java">// Android — SampleModule.java
+@ReactModule(name = SampleModule.NAME)
+public class SampleModule extends NativeModuleBase implements NativeSampleModuleSpec {
+  public static final String NAME = "SampleModule";
+
+  @Override
+  public String getName() { return NAME; }
+
+  @ReactMethod
+  public void multiply(double a, double b, Promise promise) {
+    promise.resolve(a * b);
+  }
+}</code></pre>
+
+<pre><code class="language-objc">// iOS — SampleModule.m
+@implementation SampleModule
+RCT_EXPORT_MODULE();
+
+RCT_EXPORT_METHOD(multiply:(double)a b:(double)b
+                  resolve:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject) {
+  resolve(@(a * b));
+}
+@end</code></pre>
+
+<!-- ==================== NATIVE COMPONENTS ==================== -->
+<h2 id="native-components">Native Components</h2>
+<pre><code class="language-typescript">// New Architecture — Fabric Native Component spec
+import type { ViewProps } from 'react-native';
+import type { HostComponent } from 'react-native';
+import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNativeComponent';
+
+interface NativeProps extends ViewProps {
+  color: string;
+  onColorChange: DirectEventHandler&lt;{ color: string }&gt;;
+}
+
+export default codegenNativeComponent&lt;NativeProps&gt;('ColorPicker') as HostComponent&lt;NativeProps&gt;;</code></pre>
+
+<!-- ==================== PERFORMANCE ==================== -->
+<h2 id="performance">Performance</h2>
+<h3>FlatList Optimisation Checklist</h3>
+<ul>
+  <li>Always provide <code>keyExtractor</code> returning a stable string</li>
+  <li>Use <code>getItemLayout</code> when all items are fixed height</li>
+  <li>Wrap <code>renderItem</code> callback in <code>useCallback</code></li>
+  <li>Wrap list item components in <code>React.memo</code></li>
+  <li>Reduce <code>windowSize</code> (default 21) for memory savings, increase for smoother scroll</li>
+  <li>Set <code>removeClippedSubviews={true}</code> on Android for large lists</li>
+  <li>Use <code>initialNumToRender</code> to match visible viewport items</li>
+</ul>
+
+<h3>InteractionManager</h3>
+<pre><code class="language-javascript">import { InteractionManager } from 'react-native';
+
+// Defer expensive work until animations/transitions complete
+useEffect(() =&gt; {
+  const task = InteractionManager.runAfterInteractions(() =&gt; {
+    // Heavy computation — runs after navigation transition finishes
+    loadHeavyData();
+  });
+  return () =&gt; task.cancel();
+}, []);</code></pre>
+
+<h3>React.memo &amp; useMemo</h3>
+<pre><code class="language-jsx">// Memoize list item — prevents re-render unless props change
+const ItemRow = React.memo(({ item, onPress }) =&gt; (
+  &lt;Pressable onPress={() =&gt; onPress(item.id)}&gt;
+    &lt;Text&gt;{item.title}&lt;/Text&gt;
+  &lt;/Pressable&gt;
+), (prev, next) =&gt; prev.item.id === next.item.id &amp;&amp; prev.onPress === next.onPress);
+
+// Stable callback reference
+const handlePress = useCallback((id) =&gt; navigate('Detail', { id }), [navigate]);</code></pre>
+
+<h2 id="hermes">Hermes JS Engine</h2>
+<p>Hermes is a JavaScript engine optimised for React Native. Enabled by default since RN 0.70.</p>
+<table>
+<tr><th>Feature</th><th>V8/JavaScriptCore</th><th>Hermes</th></tr>
+<tr><td>Compilation</td><td>JIT at runtime</td><td>AOT bytecode at build time</td></tr>
+<tr><td>TTI (Time to Interactive)</td><td>Slower — parses JS on device</td><td>Faster — loads pre-compiled bytecode</td></tr>
+<tr><td>Memory</td><td>Higher</td><td>Lower — smaller heap, no JIT overhead</td></tr>
+<tr><td>Debugger</td><td>Chrome DevTools (full)</td><td>Hermes CDP (Chrome DevTools via Metro)</td></tr>
+</table>
+
+<pre><code class="language-javascript">// Check if Hermes is active
+const isHermes = () =&gt; !!global.HermesInternal;
+console.log('Hermes:', isHermes());</code></pre>
+
+<!-- ==================== EXPO VS BARE ==================== -->
+<h2 id="expo-bare">Expo vs Bare Workflow</h2>
+<table>
+<tr><th>Aspect</th><th>Expo Managed</th><th>Expo Bare</th><th>React Native CLI</th></tr>
+<tr><td>Native code access</td><td>None (use Expo SDK)</td><td>Full</td><td>Full</td></tr>
+<tr><td>OTA updates</td><td>expo-updates built-in</td><td>expo-updates optional</td><td>Manual setup</td></tr>
+<tr><td>Build</td><td>EAS Build or local</td><td>EAS Build or local</td><td>Local or CI</td></tr>
+<tr><td>Eject required?</td><td>Yes for custom native</td><td>No</td><td>N/A</td></tr>
+<tr><td>SDK compatibility</td><td>Only Expo SDK packages</td><td>Any package</td><td>Any package</td></tr>
+<tr><td>Best for</td><td>Rapid prototyping</td><td>Most production apps</td><td>Existing native codebases</td></tr>
+</table>
+
+<!-- ==================== EAS ==================== -->
+<h2 id="eas">EAS Build &amp; Updates</h2>
+<pre><code class="language-bash"># Install EAS CLI
+npm install -g eas-cli
+
+# Login and configure
+eas login
+eas build:configure   # creates eas.json
+
+# Build
+eas build --platform ios --profile preview
+eas build --platform android --profile production
+eas build --platform all
+
+# Submit to stores
+eas submit --platform ios
+eas submit --platform android</code></pre>
+
+<pre><code class="language-json">// eas.json
+{
+  "cli": { "version": "&gt;= 5.0.0" },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "distribution": "internal",
+      "ios": { "simulator": true }
+    },
+    "production": {
+      "autoIncrement": true
+    }
+  },
+  "submit": {
+    "production": {
+      "ios": { "appleId": "dev@example.com", "ascAppId": "123456789" },
+      "android": { "serviceAccountKeyPath": "./svc-account.json", "track": "production" }
+    }
+  }
+}</code></pre>
+
+<h3>EAS Update (OTA)</h3>
+<pre><code class="language-bash"># Publish an update
+eas update --branch production --message "Fix crash on login"
+
+# Use expo-updates in app
+import * as Updates from 'expo-updates';
+
+async function checkForUpdate() {
+  const update = await Updates.checkForUpdateAsync();
+  if (update.isAvailable) {
+    await Updates.fetchUpdateAsync();
+    Updates.reloadAsync();
+  }
+}</code></pre>
+
+<!-- ==================== VERSIONS ==================== -->
+<h2 id="versions">Version History</h2>
+<table>
+<tr><th>Version</th><th>Key Features</th></tr>
+<tr><td>0.71 (Jan 2023)</td><td>TypeScript by default, flex gap support, React 18 concurrent features, Hermes on iOS default</td></tr>
+<tr><td>0.72 (Jun 2023)</td><td>Metro symlinks, bundler improvements, Yoga 2.0 (layout engine rewrite), improved error messages</td></tr>
+<tr><td>0.73 (Nov 2023)</td><td>Kotlin templates, debugging improvements (Hermes CDP stable), stable symlinks in Metro, bridgeless mode experimental</td></tr>
+<tr><td>0.74 (Apr 2024)</td><td>New Architecture stable &amp; default (Bridgeless default), Yoga 3.0 (align-content: space-evenly, % gaps), deprecated PropTypes removal</td></tr>
+<tr><td>0.75 (Aug 2024)</td><td>New Architecture recommended, auto-linking improvements, Swift 5.9 support, React Native DevTools (preview), Expo SDK 51 alignment</td></tr>
+</table>
+
+<!-- ==================== INTERVIEW ==================== -->
+<h2 id="interview">Interview Q&amp;A</h2>
+
+<details>
+<summary>Q1: What is the difference between React Native's old Bridge and the new JSI? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p><strong>Old Bridge:</strong> All communication between JavaScript and native happened asynchronously over a serialized JSON message queue. JS could not directly call native methods — it would post a message and wait for a response. This caused latency and could not pass complex objects by reference.</p>
+<p><strong>JSI (JavaScript Interface):</strong> JSI allows the JS runtime to hold C++ host object references and call methods synchronously (or schedule them without serialization). No JSON marshaling — objects are shared by reference across the bridge boundary. This enables synchronous layout reads, faster animations, and the foundation for TurboModules and Fabric.</p>
+</div>
+</details>
+
+<details>
+<summary>Q2: What is <code>useNativeDriver</code> and when must you use it? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p><code>useNativeDriver: true</code> tells the Animated API to run the animation on the native UI thread instead of the JS thread. This avoids the JS thread bottleneck and produces buttery-smooth 60 fps animations even when JS is busy.</p>
+<p><strong>Works with:</strong> <code>transform</code>, <code>opacity</code></p>
+<p><strong>Does NOT work with:</strong> layout properties like <code>width</code>, <code>height</code>, <code>backgroundColor</code>, <code>paddingTop</code></p>
+<p>For layout animations, use Reanimated 3 which runs on a separate worklet thread and supports more properties natively.</p>
+</div>
+</details>
+
+<details>
+<summary>Q3: What is the difference between <code>ScrollView</code> and <code>FlatList</code>? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p><strong>ScrollView</strong> renders all its children at once. Good for screens with a small, known number of elements (settings screens, forms). Bad for long lists — high memory usage and slow initial render.</p>
+<p><strong>FlatList</strong> is <em>virtualized</em>: it only renders items currently visible in the viewport (plus a configurable buffer). Items that scroll off-screen are unmounted (or recycled). Suitable for lists of 50+ items. Requires <code>data</code>, <code>renderItem</code>, and <code>keyExtractor</code>.</p>
+</div>
+</details>
+
+<details>
+<summary>Q4: Explain the React Navigation stack lifecycle — when do screens mount/unmount? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>In a <strong>Stack Navigator</strong>, screens remain mounted until popped. Navigating to a new screen pushes it; the previous screen stays in memory. Screens are unmounted only when popped off the stack.</p>
+<p>Use the <strong>focus/blur events</strong> or <code>useFocusEffect</code> hook to run side effects when a screen comes into/leaves focus without mounting/unmounting:</p>
+<pre><code class="language-jsx">useFocusEffect(
+  useCallback(() =&gt; {
+    fetchData();
+    return () =&gt; cleanup();
+  }, [])
+);</code></pre>
+<p>In a <strong>Tab Navigator</strong>, tabs remain mounted after first visit by default. Use <code>unmountOnBlur: true</code> in screen options to unmount on tab switch (saves memory but loses scroll position).</p>
+</div>
+</details>
+
+<details>
+<summary>Q5: What are Reanimated worklets and why do they improve performance? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>Worklets are JavaScript functions annotated with the <code>'worklet'</code> directive. Reanimated 3 compiles them to run on the <em>UI thread</em> (a separate JS runtime called the worklet runtime, powered by Hermes), not the main JS thread.</p>
+<p>This means gesture callbacks, scroll handlers, and animation computations execute synchronously on the UI thread — no async bridge round-trips. The result is animations that stay smooth even when the JS thread is doing heavy computation.</p>
+<p>To call back into JS from a worklet, use <code>runOnJS(fn)(args)</code>. To call into the worklet runtime from JS, use <code>runOnUI(fn)(args)</code>.</p>
+</div>
+</details>
+
+<details>
+<summary>Q6: How would you implement a pull-to-refresh with custom animation? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<pre><code class="language-jsx">import Animated, {
+  useSharedValue, useAnimatedScrollHandler, useAnimatedStyle, interpolate
+} from 'react-native-reanimated';
+
+const PULL_THRESHOLD = 80;
+
+function PullToRefresh({ onRefresh }) {
+  const pullDistance = useSharedValue(0);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: (e) =&gt; {
+      'worklet';
+      if (e.contentOffset.y &lt; 0) {
+        pullDistance.value = Math.abs(e.contentOffset.y);
+      }
+    },
+    onEndDrag: (e) =&gt; {
+      'worklet';
+      if (pullDistance.value &gt; PULL_THRESHOLD) {
+        runOnJS(triggerRefresh)();
+      }
+      pullDistance.value = withSpring(0);
+    },
+  });
+
+  const indicatorStyle = useAnimatedStyle(() =&gt; ({
+    transform: [{ rotate: `${interpolate(pullDistance.value, [0, PULL_THRESHOLD], [0, 360])}deg` }],
+    opacity: interpolate(pullDistance.value, [0, PULL_THRESHOLD], [0, 1]),
+  }));
+
+  return (/* ... */);
+}</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q7: What is Fabric and how does it differ from the old UIManager? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>Old UIManager:</strong> Written in Java/ObjC, communicated asynchronously with the JS thread. Shadow tree (layout calculations via Yoga) ran on a separate shadow thread. UI updates were batched and applied asynchronously — could cause frame drops.</p>
+<p><strong>Fabric:</strong> C++ implementation of the renderer, shared across platforms. Key advantages:</p>
+<ul>
+<li>Synchronous layout reads from JS (no double render for <code>onLayout</code>)</li>
+<li>Supports React 18 Concurrent Mode (priority-based updates, <code>startTransition</code>)</li>
+<li>C++ shadow tree is directly accessible from JS via JSI — no async handoff</li>
+<li>Enables View Flattening — fewer native views needed for common patterns</li>
+</ul>
+</div>
+</details>
+
+<details>
+<summary>Q8: How do TurboModules differ from legacy Native Modules? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>Legacy Native Modules:</strong> All loaded eagerly at startup regardless of use. Communication via the async bridge. No type safety — parameters passed as dynamic JSON.</p>
+<p><strong>TurboModules:</strong></p>
+<ul>
+<li>Loaded lazily (on first use) — faster app startup</li>
+<li>Communicate via JSI — synchronous capability</li>
+<li>Defined via TypeScript/Flow spec + Codegen generates type-safe C++/Java/ObjC bindings</li>
+<li>Codegen generates the glue code — no manual bridge marshaling</li>
+</ul>
+</div>
+</details>
+
+<details>
+<summary>Q9: How does Metro bundler handle module resolution differently from webpack? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>Metro is React Native's bundler. Key differences from webpack:</p>
+<ul>
+<li>Designed for hot module replacement on mobile (Fast Refresh)</li>
+<li>Supports platform-specific extensions: <code>.ios.js</code>, <code>.android.js</code>, <code>.native.js</code> resolved automatically</li>
+<li>Delta bundles — sends only changed modules over the wire during development</li>
+<li>Symlink support (stable in 0.72+)</li>
+<li>No code splitting by default (single bundle), though RAM bundles exist for large apps</li>
+<li>Inline requires (lazy evaluation) enabled in production via Hermes</li>
+</ul>
+</div>
+</details>
+
+<details>
+<summary>Q10: What is Fast Refresh and how does it differ from Hot Reload? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p><strong>Hot Reload</strong> (deprecated): Attempted to patch running app state — was fragile and often broke when class components were used or module-level state existed.</p>
+<p><strong>Fast Refresh</strong> (introduced in RN 0.61): Built on React's new hot reloading API. Rerenders only the component whose source changed, preserving React state where possible. If a file exports non-React items or has module-level side effects, it does a full reload. Works correctly with hooks.</p>
+</div>
+</details>
+
+<details>
+<summary>Q11: How would you detect and fix a memory leak in a React Native app? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>Common causes in RN:</p>
+<ul>
+<li>Event listeners not removed in <code>useEffect</code> cleanup</li>
+<li>Animated values or gesture handlers holding stale closures</li>
+<li>Long-lived timers (<code>setInterval</code>) not cleared</li>
+<li>Large images in FlatList without <code>removeClippedSubviews</code></li>
+</ul>
+<p><strong>Detection:</strong></p>
+<ul>
+<li>Hermes CDP memory snapshot in Chrome DevTools (via Metro tunnel)</li>
+<li><code>react-native-performance-monitor</code> for runtime heap tracking</li>
+<li>Android Studio Memory Profiler / Xcode Instruments Allocations</li>
+</ul>
+<p><strong>Pattern:</strong> Always return cleanup functions from <code>useEffect</code>:</p>
+<pre><code class="language-jsx">useEffect(() =&gt; {
+  const subscription = eventEmitter.addListener('event', handler);
+  const id = setInterval(tick, 1000);
+  return () =&gt; {
+    subscription.remove();
+    clearInterval(id);
+  };
+}, []);</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q12: What are RAM Bundles and why would you use them? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>RAM (Random Access Module) bundles split the JS bundle into individual module files. At startup, only the bootstrap code is loaded into memory. Modules are loaded on-demand as they're <code>require()</code>d.</p>
+<p><strong>Use cases:</strong> Large apps with many screens/modules where loading all code at startup causes slow TTI.</p>
+<p><strong>Types:</strong>
+<ul>
+<li>Indexed RAM bundle (iOS) — single file with a lookup index</li>
+<li>File RAM bundle (Android) — separate files per module</li>
+</ul>
+</p>
+<p>Hermes bytecode bundles largely obsolete this pattern since Hermes's lazy compilation achieves similar benefits. For Hermes + New Architecture, prefer Hermes bytecode.</p>
+</div>
+</details>
+
+<details>
+<summary>Q13: Explain the Gesture Handler v1 vs v2 API changes <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>v1 (old API):</strong> Used HOC wrappers like <code>PanGestureHandler</code>, <code>TapGestureHandler</code> as JSX components. Composed gestures with <code>simultaneousHandlers</code>/<code>waitFor</code> props — verbose and error-prone.</p>
+<p><strong>v2 (RNGH 2.0+):</strong> Declarative <code>Gesture</code> object API with method chaining. Composed with <code>Gesture.Race()</code>, <code>Gesture.Simultaneous()</code>, <code>Gesture.Exclusive()</code>. Passed to <code>GestureDetector</code> component. Much cleaner and integrates natively with Reanimated 3 worklets.</p>
+</div>
+</details>
+
+<details>
+<summary>Q14: How does EAS Update handle rollbacks and channels? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>EAS Update uses <strong>channels</strong> (e.g., production, staging, preview) and <strong>branches</strong>. An app build subscribes to a channel. Updates published to a branch are routed to channels via mappings.</p>
+<p><strong>Rollback:</strong> Republish a previous update to the branch, or use <code>eas update:republish</code> to point the channel at an earlier update. The next app foreground will receive the old update.</p>
+<p><strong>Runtime version compatibility:</strong> Each update must match the build's <code>runtimeVersion</code>. If native code changed (new TurboModule, new Expo SDK), increment <code>runtimeVersion</code> — OTA updates won't be applied to incompatible binaries.</p>
+</div>
+</details>
+
+<details>
+<summary>Q15: What is <code>InteractionManager</code> and when should you use it? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><code>InteractionManager.runAfterInteractions(callback)</code> queues work to run after all running animations and interactions complete. This prevents expensive JS work from competing with navigation transitions or gesture animations.</p>
+<p><strong>Use for:</strong> Data fetching on screen mount after navigation, expensive list rendering, analytics events triggered on screen entry.</p>
+<p>Note: In Reanimated 3 with the new architecture, worklets run on the UI thread so this pattern is less critical for animation-competing work — but it remains useful for scheduling expensive JS computation after screen transitions.</p>
+</div>
+</details>
+
+<details>
+<summary>Q16: How does the New Architecture handle concurrent rendering? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>Fabric aligns with React 18's Concurrent Mode. Key behaviours:</p>
+<ul>
+<li>React can interrupt and restart render phases — renders are no longer synchronous "all or nothing"</li>
+<li>High-priority updates (user input) can preempt lower-priority updates (data loading)</li>
+<li>React's <code>startTransition</code> works: UI remains responsive during heavy state updates</li>
+<li>Suspense boundaries work natively with Fabric's async layout</li>
+<li>Fabric's C++ shadow tree supports concurrent tree diffing</li>
+</ul>
+<p>In practice: use <code>startTransition</code> around non-urgent state updates (filtering a list, loading more data) to keep animations and inputs responsive.</p>
+</div>
+</details>
+
+<details>
+<summary>Q17: What is the difference between <code>expo-modules-core</code> and the old <code>react-native</code> NativeModule pattern? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p><code>expo-modules-core</code> provides a modern Swift/Kotlin-first API for writing native modules with minimal boilerplate, using the new architecture's Codegen-style approach via Expo's own code generation.</p>
+<p>Key advantages: type safety enforced via Swift/Kotlin generics, automatic conversion between JS and native types, no manual <code>RCT_EXPORT_METHOD</code> or <code>@ReactMethod</code> annotations, hooks for module lifecycle (<code>OnCreate</code>, <code>OnDestroy</code>), and View props defined as Kotlin/Swift properties.</p>
+<pre><code class="language-swift">// Swift — Expo Module
+public class SampleModule: Module {
+  public func definition() -&gt; ModuleDefinition {
+    Name("Sample")
+    AsyncFunction("multiply") { (a: Double, b: Double) -&gt; Double in
+      return a * b
+    }
+  }
+}</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q18: Explain how <code>getItemLayout</code> improves FlatList performance <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>Without <code>getItemLayout</code>, FlatList must render and measure each item before it can calculate scroll positions. This means jumping to an index (<code>scrollToIndex</code>) requires rendering all items up to that index first — O(n) rendering.</p>
+<p>With <code>getItemLayout</code>, the list pre-computes layout for any index in O(1):</p>
+<pre><code class="language-jsx">getItemLayout={(data, index) =&gt; ({
+  length: ITEM_HEIGHT,       // fixed height of each item
+  offset: ITEM_HEIGHT * index + SEPARATOR_HEIGHT * index,
+  index,
+})}</code></pre>
+<p>This enables fast <code>scrollToIndex</code>, reduces blank frames during fast scrolling, and avoids initial measurement renders.</p>
+</div>
+</details>
+
+<details>
+<summary>Q19: How do you handle safe areas across iOS notch, Dynamic Island, and Android cutouts? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<pre><code class="language-jsx">import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
+
+function Screen() {
+  const insets = useSafeAreaInsets();
+  return (
+    &lt;View style={{ paddingTop: insets.top, paddingBottom: insets.bottom,
+                   paddingLeft: insets.left, paddingRight: insets.right }}&gt;
+      {/* content */}
+    &lt;/View&gt;
+  );
+}
+
+// Or use SafeAreaView (less flexible)
+import { SafeAreaView } from 'react-native-safe-area-context';
+&lt;SafeAreaView edges={['top', 'bottom']} style={{ flex: 1 }}&gt;</code></pre>
+<p>The Dynamic Island on iPhone 14 Pro+ has a larger top inset (~59pt). <code>useSafeAreaInsets()</code> returns the correct value automatically. Never hardcode inset values.</p>
+</div>
+</details>
+
+<details>
+<summary>Q20: What is the Yoga layout engine and what changed in Yoga 3.0? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>Yoga is the cross-platform C++ layout engine that implements the Flexbox spec for React Native (and Litho, ComponentKit). It runs on the shadow thread computing layout before Fabric commits to the UI thread.</p>
+<p><strong>Yoga 3.0 (RN 0.74):</strong></p>
+<ul>
+<li>Corrects the <code>gap</code> property to accept percentage values</li>
+<li>Implements <code>align-content: space-evenly</code></li>
+<li>Fixes absolute positioning interactions with padding</li>
+<li>Closer conformance to the CSS Flexbox specification</li>
+<li>Breaking: some edge case layout behaviours changed — test layout-heavy screens after upgrading</li>
+</ul>
+</div>
+</details>
+
+<details>
+<summary>Q21: How does Hermes handle source maps for debugging production crashes? <span class="badge very-advanced">Very Advanced</span></summary>
+<div class="answer">
+<p>Hermes bytecode bundles are compiled from JS at build time. Stack traces from production crashes reference bytecode offsets, not JS line numbers. To symbolicate:</p>
+<ol>
+<li>Build generates <code>index.android.bundle.map</code> (source map)</li>
+<li>Upload the source map to your crash reporter (Sentry, Bugsnag) alongside the binary</li>
+<li>The reporter uses the source map to map bytecode offset → original TS/JS line</li>
+</ol>
+<pre><code class="language-bash"># Manual symbolication with metro-symbolicate
+npx metro-symbolicate index.android.bundle.map &lt; crashlog.txt</code></pre>
+<p>EAS Build automatically generates and can optionally upload source maps to Sentry via <code>sentry-expo</code>.</p>
+</div>
+</details>
+
+<details>
+<summary>Q22: Explain View Flattening in the New Architecture <span class="badge very-advanced">Very Advanced</span></summary>
+<div class="answer">
+<p>View Flattening is an optimisation in Fabric where unnecessary native view nodes are eliminated. In the old architecture, every React component with a <code>style</code> or <code>layout</code> prop created a corresponding native view node. Complex component hierarchies created deep native view trees — expensive to traverse and render.</p>
+<p>Fabric analyses the C++ shadow tree and merges view nodes that only provide layout props (no visual effect like background, border, overflow:hidden) into their parent. This reduces the number of native views created, lowering memory and rendering cost.</p>
+<p>Developers can opt out with <code>collapsable={false}</code> (needed when you need a ref to the native view for measurement or animation).</p>
+</div>
+</details>
+
+<footer>React Native Comprehensive Reference &mdash; covers v0.71–0.75 &amp; New Architecture</footer>
+</main>
+</div>
+<script>hljs.highlightAll();mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

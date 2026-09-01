@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JavaScript — Deep Reference</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #0d1117;
+      color: #c9d1d9;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 15px;
+      line-height: 1.65;
+      padding: 0 16px 60px;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    h1 { font-size: 2rem; color: #e6edf3; border-bottom: 2px solid #21262d; padding-bottom: 10px; margin: 36px 0 8px; }
+    h2 { font-size: 1.35rem; color: #58a6ff; margin: 36px 0 10px; border-left: 3px solid #1f6feb; padding-left: 10px; }
+    h3 { font-size: 1.05rem; color: #79c0ff; margin: 22px 0 6px; }
+    p { margin: 6px 0 10px; color: #c9d1d9; }
+    code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; font-size: 0.85em; }
+    pre { border-radius: 8px; margin: 10px 0 18px; overflow-x: auto; }
+    pre code.hljs { border-radius: 8px; padding: 14px 16px; font-size: 0.84rem; line-height: 1.55; }
+    .badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-weight: 600;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+    .badge-easy   { background: #0d4429; color: #3fb950; border: 1px solid #238636; }
+    .badge-inter  { background: #0c2d6b; color: #58a6ff; border: 1px solid #1f6feb; }
+    .badge-adv    { background: #2d1a00; color: #e3b341; border: 1px solid #9e6a03; }
+    .badge-vadv   { background: #3d0014; color: #ff7b72; border: 1px solid #da3633; }
+    details {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      margin: 10px 0;
+      padding: 0;
+    }
+    summary {
+      cursor: pointer;
+      padding: 12px 16px;
+      font-weight: 600;
+      color: #c9d1d9;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      user-select: none;
+    }
+    summary::-webkit-details-marker { display: none; }
+    summary::before {
+      content: "▶";
+      font-size: 0.7rem;
+      color: #8b949e;
+      transition: transform 0.2s;
+      display: inline-block;
+    }
+    details[open] > summary::before { transform: rotate(90deg); }
+    .answer {
+      padding: 10px 16px 14px;
+      border-top: 1px solid #21262d;
+      color: #c9d1d9;
+    }
+    .answer p { margin: 6px 0; }
+    .note {
+      background: #132030;
+      border-left: 3px solid #1f6feb;
+      border-radius: 4px;
+      padding: 8px 12px;
+      margin: 10px 0;
+      font-size: 0.88rem;
+      color: #8b949e;
+    }
+    .warn {
+      background: #1f1500;
+      border-left: 3px solid #9e6a03;
+      border-radius: 4px;
+      padding: 8px 12px;
+      margin: 10px 0;
+      font-size: 0.88rem;
+      color: #e3b341;
+    }
+    .mermaid { background: #161b22; border-radius: 8px; padding: 16px; margin: 14px 0; text-align: center; }
+    hr { border: none; border-top: 1px solid #21262d; margin: 40px 0; }
+    .toc { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 14px 18px; margin: 20px 0 34px; }
+    .toc h3 { margin: 0 0 8px; color: #8b949e; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .toc ol { padding-left: 18px; }
+    .toc li { margin: 3px 0; font-size: 0.9rem; }
+    .toc a { color: #58a6ff; text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    .qa-section h2 { color: #e3b341; border-left-color: #9e6a03; }
+  </style>
+</head>
+<body>
+
+<h1>JavaScript — Deep Reference</h1>
+<p style="color:#8b949e;margin-bottom:6px;">ES2024 · Core concepts, patterns, and interview Q&amp;A</p>
+
+<div class="toc">
+  <h3>Contents</h3>
+  <ol>
+    <li><a href="#data-types">Data Types &amp; Variables</a></li>
+    <li><a href="#functions">Functions</a></li>
+    <li><a href="#scope">Scope &amp; Closures</a></li>
+    <li><a href="#this">this Keyword</a></li>
+    <li><a href="#prototypes">Prototypes &amp; Classes</a></li>
+    <li><a href="#event-loop">Event Loop</a></li>
+    <li><a href="#promises">Promises &amp; Async/Await</a></li>
+    <li><a href="#es6">ES6+ Features</a></li>
+    <li><a href="#iterators">Iterators &amp; Generators</a></li>
+    <li><a href="#modules">Modules</a></li>
+    <li><a href="#errors">Error Handling</a></li>
+    <li><a href="#dom">DOM Basics</a></li>
+    <li><a href="#patterns">Patterns</a></li>
+    <li><a href="#perf">Performance</a></li>
+    <li><a href="#qa">Q&amp;A (15 questions)</a></li>
+  </ol>
+</div>
+
+<!-- ───────────────────────────────────────────────── -->
+<h2 id="data-types">1. Data Types &amp; Variables</h2>
+
+<p>JavaScript has 7 primitives (<code>string</code>, <code>number</code>, <code>bigint</code>, <code>boolean</code>, <code>undefined</code>, <code>null</code>, <code>symbol</code>) stored by value, and one reference type (objects/arrays/functions) stored by reference. Primitives are immutable; reference types can be mutated in place. <code>typeof null === "object"</code> is a historic bug.</p>
+
+<h3>var / let / const hoisting</h3>
+<p><code>var</code> declarations are hoisted to function scope and initialised to <code>undefined</code>. <code>let</code> and <code>const</code> are hoisted to block scope but sit in a Temporal Dead Zone (TDZ) until the declaration line — accessing them before that throws a ReferenceError. <code>const</code> prevents rebinding but not mutation of the referenced object.</p>
+
+<pre><code class="language-javascript">console.log(a); // undefined (var hoisted)
+var a = 10;
+
+// console.log(b); // ReferenceError: TDZ
+let b = 20;
+
+const obj = { x: 1 };
+obj.x = 2;        // OK — mutation allowed
+// obj = {};      // TypeError — rebinding not allowed
+</code></pre>
+
+<h3>Type Coercion — == vs ===</h3>
+<p><code>==</code> applies abstract equality with implicit coercion rules (e.g., <code>"5" == 5</code> is <code>true</code>). <code>===</code> requires the same type and value with no coercion. Always prefer <code>===</code> to avoid surprising results. Use explicit conversions (<code>Number()</code>, <code>String()</code>, <code>Boolean()</code>) when type conversion is intentional.</p>
+
+<pre><code class="language-javascript">console.log(0 == false);    // true  (coercion)
+console.log(0 === false);   // false (different types)
+console.log(null == undefined); // true
+console.log(null === undefined);// false
+console.log(NaN === NaN);   // false — use Number.isNaN()
+console.log([] == false);   // true — [] → "" → 0, false → 0
+</code></pre>
+
+<!-- ───────────────────────────────────────────────── -->
+<h2 id="functions">2. Functions</h2>
+
+<p>Function declarations are fully hoisted (name + body). Function expressions and arrow functions are not hoisted. Arrow functions capture <code>this</code> lexically from their enclosing scope; they cannot be used as constructors and have no <code>arguments</code> object.</p>
+
+<h3>Declaration vs Expression vs Arrow</h3>
+<pre><code class="language-javascript">// Declaration — hoisted
+function greet(name) { return `Hello, ${name}`; }
+
+// Expression — NOT hoisted
+const greetExp = function(name) { return `Hi, ${name}`; };
+
+// Arrow — lexical this, concise body
+const greetArr = name => `Hey, ${name}`;
+
+// Arrow cannot be a constructor
+// new greetArr(); // TypeError
+</code></pre>
+
+<h3>Closure — Counter Example</h3>
+<p>A closure is a function that retains access to its outer scope even after the outer function returns. The inner function "closes over" the variables of its parent. This is the foundation of data encapsulation in JavaScript.</p>
+
+<pre><code class="language-javascript">function makeCounter(start = 0) {
+  let count = start;
+  return {
+    increment: () => ++count,
+    decrement: () => --count,
+    value:     () => count,
+  };
+}
+const c = makeCounter(10);
+c.increment(); c.increment();
+console.log(c.value()); // 12
+</code></pre>
+
+<h3>IIFE</h3>
+<pre><code class="language-javascript">const result = (function() {
+  const private = "hidden";
+  return { get: () => private };
+})();
+console.log(result.get()); // "hidden"
+// console.log(private);   // ReferenceError
+</code></pre>
+
+<!-- ───────────────────────────────────────────────── -->
+<h2 id="scope">3. Scope &amp; Closures</h2>
+
+<p>JavaScript uses lexical (static) scoping — the scope of a variable is determined by where it is written in source code, not where it is called from. Each function creates a new scope. Block statements (<code>if</code>, <code>for</code>) create block scope for <code>let</code>/<code>const</code> but not for <code>var</code>.</p>
+
+<h3>Closure in Loops — var vs let</h3>
+<p>Classic loop gotcha: <code>var</code> shares one binding across all iterations. <code>let</code> creates a fresh binding per iteration, fixing the closure-in-loop bug without needing an IIFE workaround.</p>
+
+<pre><code class="language-javascript">// var — all callbacks share the SAME `i`
+for (var i = 0; i < 3; i++) {
+  setTimeout(() => console.log("var:", i), 0); // 3, 3, 3
+}
+
+// let — each iteration gets its OWN binding
+for (let j = 0; j < 3; j++) {
+  setTimeout(() => console.log("let:", j), 0); // 0, 1, 2
+}
+</code></pre>
+
+<!-- ───────────────────────────────────────────────── -->
+<h2 id="this">4. The <code>this</code> Keyword</h2>
+
+<p>The value of <code>this</code> depends on call-site context, not where the function is defined — except for arrow functions which inherit <code>this</code> from their enclosing lexical scope at definition time. In strict mode the default binding (standalone call) is <code>undefined</code> instead of the global object.</p>
+
+<h3>call / apply / bind</h3>
+<pre><code class="language-javascript">function introduce(greeting, punct) {
+  return `${greeting}, I'm ${this.name}${punct}`;
+}
+const user = { name: "Alice" };
+
+introduce.call(user, "Hello", "!");   // "Hello, I'm Alice!"
+introduce.apply(user, ["Hi", "."]);   // "Hi, I'm Alice."
+const bound = introduce.bind(user, "Hey");
+bound("?"); // "Hey, I'm Alice?"
+</code></pre>
+
+<h3>Arrow vs Regular in Object</h3>
+<pre><code class="language-javascript">const obj = {
+  name: "Bob",
+  regular() { return this.name; },       // "Bob"
+  arrow: () => obj.name,                 // "Bob" (closes over outer)
+  broken: () => this?.name ?? "undefined", // undefined in module scope
+};
+</code></pre>
+
+<!-- ───────────────────────────────────────────────── -->
+<h2 id="prototypes">5. Prototypes &amp; Classes</h2>
+
+<p>Every object has an internal <code>[[Prototype]]</code> link. Property lookups traverse the chain until found or until <code>null</code> is reached. ES6 classes are syntactic sugar over prototype-based inheritance — no new runtime mechanism, just cleaner syntax.</p>
+
+<h3>Object.create() and the chain</h3>
+<pre><code class="language-javascript">const animal = { breathe() { return "inhale/exhale"; } };
+const dog = Object.create(animal);
+dog.bark = () => "Woof!";
+
+console.log(dog.breathe()); // found on prototype
+console.log(Object.getPrototypeOf(dog) === animal); // true
+</code></pre>
+
+<h3>ES6 Class with extends / super</h3>
+<pre><code class="language-javascript">class Shape {
+  constructor(color) { this.color = color; }
+  describe() { return `A ${this.color} shape`; }
+}
+class Circle extends Shape {
+  constructor(color, r) { super(color); this.r = r; }
+  area() { return Math.PI * this.r ** 2; }
+  describe() { return `${super.describe()} (circle r=${this.r})`; }
+}
+const c = new Circle("red", 5);
+console.log(c.area().toFixed(2)); // 78.54
+</code></pre>
+
+<!-- ───────────────────────────────────────────────── -->
+<h2 id="event-loop">6. Event Loop</h2>
+
+<p>JavaScript is single-threaded. The event loop picks tasks from queues and pushes them onto the call stack when the stack is empty. Microtasks (Promise callbacks, <code>queueMicrotask</code>) drain completely after each task before the next macrotask (setTimeout, setInterval, I/O) runs. This means Promises resolve before timers even if timers were set first.</p>
+
+<div class="mermaid">
+flowchart LR
+    subgraph Runtime
+        CS["Call Stack"]
+        WEB["Web APIs / Node APIs"]
+    end
+    subgraph Queues
+        MQ["Microtask Queue\n(Promise.then, queueMicrotask)"]
+        CQ["Callback Queue (Macrotask)\n(setTimeout, setInterval, I/O)"]
+    end
+    CS -- "async op" --> WEB
+    WEB -- "resolved" --> MQ
+    WEB -- "timer / I/O done" --> CQ
+    MQ -- "drain all microtasks\n(after each task)" --> CS
+    CQ -- "one task at a time\n(when stack empty)" --> CS
+</div>
+
+<pre><code class="language-javascript">console.log("1 — sync");
+
+setTimeout(() => console.log("4 — macrotask"), 0);
+
+Promise.resolve()
+  .then(() => console.log("2 — microtask 1"))
+  .then(() => console.log("3 — microtask 2"));
+
+console.log("1b — still sync");
+// Output order: 1, 1b, 2, 3, 4
+</code></pre>
+
+<!-- ───────────────────────────────────────────────── -->
+<h2 id="promises">7. Promises &amp; Async/Await</h2>
+
+<p>A Promise represents an eventual value and is in one of three immutable states: <em>pending</em>, <em>fulfilled</em>, or <em>rejected</em>. Once settled it never changes. <code>async/await</code> is syntactic sugar over Promises that makes asynchronous code look synchronous without blocking the thread.</p>
+
+<h3>Promise combinators</h3>
+<pre><code class="language-javascript">const p1 = Promise.resolve(1);
+const p2 = Promise.resolve(2);
+const p3 = Promise.reject("err");
+
+// all — rejects on first rejection
+await Promise.all([p1, p2]);            // [1, 2]
+
+// allSettled — waits for all, never rejects
+await Promise.allSettled([p1, p3]);
+// [{status:"fulfilled",value:1},{status:"rejected",reason:"err"}]
+
+// race — first settled wins
+await Promise.race([p1, p2]);           // 1
+</code></pre>
+
+<h3>async / await with error handling</h3>
+<pre><code class="language-javascript">async function fetchUser(id) {
+  try {
+    const res = await fetch(`/api/users/${id}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.json();
+  } catch (err) {
+    console.error("Fetch failed:", err.message);
+    return null;
+  } finally {
+    console.log("Always runs");
+  }
+}
+</code></pre>
+
+<!-- ───────────────────────────────────────────────── -->
+<h2 id="es6">8. ES6+ Features</h2>
+
+<p>Modern JavaScript provides concise syntax improvements that reduce boilerplate and improve readability. Key additions include destructuring, spread/rest operators, template literals, optional chaining, nullish coalescing, and Symbol for unique identifiers.</p>
+
+<h3>Destructuring &amp; Rest/Spread</h3>
+<pre><code class="language-javascript">const { name, age = 25, ...rest } = { name: "Ana", age: 30, city: "NY" };
+const [first, , third] = [10, 20, 30];
+
+const merged = { ...rest, active: true };   // spread into new object
+const nums   = [...[1,2], ...[3,4]];        // spread into array
+</code></pre>
+
+<h3>Optional chaining &amp; Nullish coalescing</h3>
+<pre><code class="language-javascript">const user = { profile: { address: null } };
+
+const city   = user?.profile?.address?.city ?? "Unknown";
+const method = user?.getAge?.();  // undefined (no error)
+const arr    = user?.tags?.[0];   // undefined (no error)
+
+console.log(city); // "Unknown"
+</code></pre>
+
+<h3>Symbol</h3>
+<pre><code class="language-javascript">const id  = Symbol("id");
+const obj = { [id]: 42, name: "test" };
+
+console.log(obj[id]);                     // 42
+console.log(Object.keys(obj));            // ["name"] — Symbol hidden
+console.log(Symbol("x") === Symbol("x")); // false — always unique
+</code></pre>
+
+<!-- ───────────────────────────────────────────────── -->
+<h2 id="iterators">9. Iterators &amp; Generators</h2>
+
+<p>An iterable is any object with a <code>[Symbol.iterator]</code> method returning an iterator (an object with <code>next()</code> that yields <code>{ value, done }</code>). Generator functions (<code>function*</code>) simplify writing iterators by pausing at each <code>yield</code>. They enable lazy, on-demand sequences including infinite ones.</p>
+
+<h3>Custom iterable &amp; infinite generator</h3>
+<pre><code class="language-javascript">function* naturals(start = 1) {
+  while (true) yield start++;
+}
+
+const gen = naturals();
+console.log(gen.next().value); // 1
+console.log(gen.next().value); // 2
+
+// Take first n values
+function take(iter, n) {
+  const result = [];
+  for (const val of iter) {
+    result.push(val);
+    if (result.length === n) break;
+  }
+  return result;
+}
+console.log(take(naturals(5), 4)); // [5,6,7,8]
+</code></pre>
+
+<!-- ───────────────────────────────────────────────── -->
+<h2 id="modules">10. Modules</h2>
+
+<p>CommonJS (<code>require</code>/<code>module.exports</code>) is synchronous and used in Node.js by default — it evaluates the entire module on first require and caches the result. ES Modules (<code>import</code>/<code>export</code>) are static, asynchronous, and tree-shakeable. Dynamic <code>import()</code> returns a Promise enabling code-splitting.</p>
+
+<pre><code class="language-javascript">// CommonJS (Node.js)
+const fs = require("fs");
+module.exports = { readFile: fs.readFileSync };
+
+// ES Module (static)
+import { readFile } from "fs/promises";
+export const double = x => x * 2;
+export default class App {}
+
+// Dynamic import (lazy loading)
+const { heavy } = await import("./heavy-module.js");
+</code></pre>
+
+<div class="note">Use <code>"type": "module"</code> in <code>package.json</code> to enable ESM in Node.js. ESM files use <code>.mjs</code> extension by default when <code>type</code> is not set.</div>
+
+<!-- ───────────────────────────────────────────────── -->
+<h2 id="errors">11. Error Handling</h2>
+
+<p><code>try/catch/finally</code> handles synchronous errors and works with <code>await</code> inside <code>async</code> functions. The <code>finally</code> block always runs regardless of success or failure and is ideal for cleanup. Custom error classes (extending <code>Error</code>) allow meaningful type checking with <code>instanceof</code>.</p>
+
+<pre><code class="language-javascript">class ValidationError extends Error {
+  constructor(field, message) {
+    super(message);
+    this.name = "ValidationError";
+    this.field = field;
+  }
+}
+
+function validateAge(age) {
+  if (typeof age !== "number") throw new ValidationError("age", "Must be a number");
+  if (age < 0 || age > 150)   throw new ValidationError("age", "Out of range");
+  return age;
+}
+
+try {
+  validateAge("old");
+} catch (e) {
+  if (e instanceof ValidationError) console.error(`Field: ${e.field} — ${e.message}`);
+  else throw e; // re-throw unexpected errors
+}
+</code></pre>
+
+<!-- ───────────────────────────────────────────────── -->
+<h2 id="dom">12. DOM Basics</h2>
+
+<p>The DOM API lets JavaScript read and modify HTML structure, styles, and content. Event listeners can be attached in the capture phase (root → target) or bubble phase (target → root). The <code>fetch</code> API is Promise-based and replaces <code>XMLHttpRequest</code> for HTTP requests.</p>
+
+<h3>Event bubbling vs capturing</h3>
+<pre><code class="language-javascript">// Capturing (3rd arg true) runs parent before child
+document.getElementById("parent").addEventListener("click", () => {
+  console.log("parent capture");
+}, true);
+
+// Bubbling (default) runs child before parent
+document.getElementById("child").addEventListener("click", e => {
+  console.log("child bubble");
+  e.stopPropagation(); // stops event from bubbling further
+});
+</code></pre>
+
+<h3>fetch API</h3>
+<pre><code class="language-javascript">async function postData(url, body) {
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+  return res.json();
+}
+</code></pre>
+
+<!-- ───────────────────────────────────────────────── -->
+<h2 id="patterns">13. Patterns</h2>
+
+<h3>Debounce</h3>
+<p>Delays execution until a burst of calls stops. Useful for search-as-you-type inputs where you want to wait until the user pauses typing before firing the expensive request.</p>
+<pre><code class="language-javascript">function debounce(fn, delay) {
+  let timer;
+  return function(...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn.apply(this, args), delay);
+  };
+}
+const search = debounce(q => console.log("search:", q), 300);
+</code></pre>
+
+<h3>Throttle</h3>
+<p>Guarantees a function fires at most once per interval. Useful for scroll/resize handlers where you want regular updates but not on every pixel change.</p>
+<pre><code class="language-javascript">function throttle(fn, limit) {
+  let inThrottle = false;
+  return function(...args) {
+    if (!inThrottle) {
+      fn.apply(this, args);
+      inThrottle = true;
+      setTimeout(() => (inThrottle = false), limit);
+    }
+  };
+}
+const onScroll = throttle(() => console.log("scroll"), 200);
+</code></pre>
+
+<h3>Memoize</h3>
+<p>Caches results of pure function calls keyed by arguments. Subsequent calls with the same arguments return the cached value immediately, trading memory for speed.</p>
+<pre><code class="language-javascript">function memoize(fn) {
+  const cache = new Map();
+  return function(...args) {
+    const key = JSON.stringify(args);
+    if (cache.has(key)) return cache.get(key);
+    const result = fn.apply(this, args);
+    cache.set(key, result);
+    return result;
+  };
+}
+const fib = memoize(n => n <= 1 ? n : fib(n-1) + fib(n-2));
+</code></pre>
+
+<h3>Observer Pattern</h3>
+<pre><code class="language-javascript">class EventEmitter {
+  #listeners = {};
+  on(event, fn)  { (this.#listeners[event] ??= []).push(fn); return this; }
+  off(event, fn) { this.#listeners[event] = (this.#listeners[event] ?? []).filter(l => l !== fn); }
+  emit(event, ...args) { (this.#listeners[event] ?? []).forEach(fn => fn(...args)); }
+}
+const bus = new EventEmitter();
+bus.on("data", d => console.log("got:", d));
+bus.emit("data", { id: 1 }); // got: {id:1}
+</code></pre>
+
+<!-- ───────────────────────────────────────────────── -->
+<h2 id="perf">14. Performance</h2>
+
+<h3>WeakMap vs Map</h3>
+<p><code>WeakMap</code> holds weak references to its keys (must be objects) so they can be garbage-collected when no other references remain. <code>Map</code> keeps strong references, preventing GC. Use <code>WeakMap</code> for caching data associated with DOM nodes or objects you don't own.</p>
+<pre><code class="language-javascript">const cache = new WeakMap();
+
+function process(domNode) {
+  if (cache.has(domNode)) return cache.get(domNode);
+  const result = expensiveOp(domNode);
+  cache.set(domNode, result);  // released when domNode is GC'd
+  return result;
+}
+// Map equivalent would prevent GC of domNode
+</code></pre>
+
+<h3>Memory Leak Example</h3>
+<pre><code class="language-javascript">// LEAK: event listener keeps 'data' alive via closure
+function attach(el) {
+  const data = new Array(1e5).fill("x");
+  el.addEventListener("click", () => console.log(data.length));
+  // Fix: remove listener when done
+  // return () => el.removeEventListener("click", handler);
+}
+</code></pre>
+
+<h3>requestAnimationFrame</h3>
+<p><code>requestAnimationFrame</code> schedules work before the next repaint, running at the display's refresh rate (~60fps). Prefer it over <code>setInterval</code> for animations as it pauses when the tab is hidden, saving CPU.</p>
+<pre><code class="language-javascript">function animate(el) {
+  let x = 0;
+  function step() {
+    x = (x + 1) % 300;
+    el.style.transform = `translateX(${x}px)`;
+    requestAnimationFrame(step); // ~60fps, pauses in background tabs
+  }
+  requestAnimationFrame(step);
+}
+</code></pre>
+
+<hr />
+
+<!-- ───────────────────────────────────────────────── -->
+<h2 id="gotchas">15. Common Gotchas</h2>
+
+<h3>Floating-point arithmetic</h3>
+<p>JavaScript numbers are IEEE 754 double-precision. Decimal arithmetic is not exact. Use integer math or a library like <code>decimal.js</code> for financial calculations, and always compare with a tolerance (epsilon) rather than strict equality.</p>
+<pre><code class="language-javascript">console.log(0.1 + 0.2 === 0.3); // false — 0.30000000000000004
+console.log(Math.abs(0.1 + 0.2 - 0.3) < Number.EPSILON); // true
+
+// Safe integer range
+console.log(Number.MAX_SAFE_INTEGER); // 9007199254740991
+const big = 9007199254740993n;        // BigInt avoids this
+</code></pre>
+
+<h3>Array sort is lexicographic by default</h3>
+<p><code>Array.prototype.sort</code> converts elements to strings for comparison by default. Always pass a comparator for numeric or custom sorting. Without one, <code>[10, 9, 2].sort()</code> yields <code>[10, 2, 9]</code> — the most common sort bug.</p>
+<pre><code class="language-javascript">const nums = [10, 1, 9, 2];
+nums.sort();                        // [1, 10, 2, 9] — WRONG
+nums.sort((a, b) => a - b);        // [1, 2, 9, 10] — correct asc
+nums.sort((a, b) => b - a);        // [10, 9, 2, 1] — correct desc
+</code></pre>
+
+<h3>Mutable default arguments in functions</h3>
+<p>Assigning a mutable object as a default parameter value creates a single shared object across all calls (in Python this is notorious; in JS it only matters for objects/arrays). Use a factory default instead.</p>
+<pre><code class="language-javascript">// Bug: all callers share the SAME array
+function addItem(item, list = []) {
+  list.push(item);
+  return list;
+}
+// Fix: produce a new array each call
+function addItemSafe(item, list) {
+  list = list ? [...list] : [];
+  list.push(item);
+  return list;
+}
+</code></pre>
+
+<h3>async forEach does NOT await</h3>
+<p><code>Array.forEach</code> ignores the returned Promise from an async callback — the loop runs to completion before any awaited work finishes. Use <code>for...of</code> for sequential async iteration or <code>Promise.all(arr.map(...))</code> for parallel.</p>
+<pre><code class="language-javascript">// WRONG — forEach doesn't await
+items.forEach(async item => { await process(item); });
+
+// Sequential
+for (const item of items) { await process(item); }
+
+// Parallel
+await Promise.all(items.map(item => process(item)));
+</code></pre>
+
+<hr />
+
+<!-- ───────────────────────────────────────────────── -->
+<div class="qa-section">
+<h2 id="qa">Q&amp;A — 15 Interview Questions</h2>
+
+<h3>Easy</h3>
+
+<details>
+  <summary>What is hoisting? How does var differ from let/const? <span class="badge badge-easy">Easy</span></summary>
+  <div class="answer">
+    <p>Hoisting is JavaScript's behavior of moving declarations to the top of their scope during compilation. <code>var</code> declarations are hoisted to function scope and initialised to <code>undefined</code>, so you can read them before the line without a ReferenceError (you just get <code>undefined</code>).</p>
+    <p><code>let</code> and <code>const</code> are hoisted to block scope but remain in the <strong>Temporal Dead Zone</strong> (TDZ) until execution reaches the declaration. Accessing them before that point throws a <code>ReferenceError</code>. Function declarations are fully hoisted (name + body), meaning you can call them before they appear in source.</p>
+    <pre><code class="language-javascript">console.log(x); // undefined — var hoisted
+var x = 5;
+
+console.log(y); // ReferenceError — TDZ
+let y = 5;
+</code></pre>
+  </div>
+</details>
+
+<details>
+  <summary>What is the difference between == and ===? <span class="badge badge-easy">Easy</span></summary>
+  <div class="answer">
+    <p><code>===</code> (strict equality) checks both value and type with no conversion. <code>==</code> (abstract equality) applies a set of type-coercion rules: if the types differ, JavaScript converts one or both operands before comparing.</p>
+    <p>Key coercion rules for <code>==</code>: <code>null == undefined</code> is true; a string compared to a number converts the string; <code>false</code> becomes <code>0</code>; objects call <code>valueOf</code>/<code>toString</code>. Always use <code>===</code> unless you specifically need coercion.</p>
+    <pre><code class="language-javascript">0 == "0"    // true  — string coerced to number
+0 === "0"   // false — different types
+null == undefined  // true
+null === undefined // false
+</code></pre>
+  </div>
+</details>
+
+<details>
+  <summary>What is a closure and why is it useful? <span class="badge badge-easy">Easy</span></summary>
+  <div class="answer">
+    <p>A closure is a function that remembers and accesses variables from its enclosing lexical scope even after that outer function has returned. The inner function "closes over" those variables, keeping them alive in memory.</p>
+    <p>Closures enable data privacy (encapsulating state), partial application (fixing some arguments), and the module pattern. They are the mechanism behind counters, factory functions, and memoisation.</p>
+    <pre><code class="language-javascript">function multiplier(factor) {
+  return n => n * factor; // closes over `factor`
+}
+const triple = multiplier(3);
+console.log(triple(5)); // 15 — `factor` still accessible
+</code></pre>
+  </div>
+</details>
+
+<details>
+  <summary>What is the difference between null and undefined? <span class="badge badge-easy">Easy</span></summary>
+  <div class="answer">
+    <p><code>undefined</code> means a variable has been declared but not assigned, or a function parameter was not provided, or an object property doesn't exist. It is the JS engine's default "nothing". <code>null</code> is an explicit, intentional absence of a value — you set it on purpose.</p>
+    <p><code>typeof undefined === "undefined"</code>; <code>typeof null === "object"</code> (historic bug). Both are falsy. Both equal each other with <code>==</code> but not with <code>===</code>. Use nullish coalescing (<code>??</code>) to handle both: <code>val ?? "default"</code>.</p>
+  </div>
+</details>
+
+<h3>Intermediate</h3>
+
+<details>
+  <summary>Explain the JavaScript Event Loop. What runs first — setTimeout(0) or Promise.then? <span class="badge badge-inter">Intermediate</span></summary>
+  <div class="answer">
+    <p>The event loop runs JavaScript on a single thread by processing a queue of tasks. After each macrotask (script, setTimeout, setInterval, I/O), the engine drains the entire <strong>microtask queue</strong> before picking the next macrotask. Promise callbacks (<code>.then</code>/<code>.catch</code>/<code>.finally</code>) and <code>queueMicrotask</code> are microtasks; <code>setTimeout</code>/<code>setInterval</code> callbacks are macrotasks.</p>
+    <p>Therefore <code>Promise.then</code> always runs before <code>setTimeout(fn, 0)</code> even if the promise resolves synchronously, because microtasks drain before the callback queue is checked.</p>
+    <pre><code class="language-javascript">setTimeout(() => console.log("A"), 0);   // macrotask
+Promise.resolve().then(() => console.log("B")); // microtask
+console.log("C"); // sync
+// Output: C → B → A
+</code></pre>
+  </div>
+</details>
+
+<details>
+  <summary>What is the difference between Promises and async/await? When would you choose one over the other? <span class="badge badge-inter">Intermediate</span></summary>
+  <div class="answer">
+    <p><code>async/await</code> is syntactic sugar built on top of Promises — under the hood it creates and chains Promises. There is no runtime difference. <code>async/await</code> is preferred for its readability: sequential async steps look synchronous, and <code>try/catch</code> handles rejections naturally.</p>
+    <p>Raw Promise chains are better when you need to run operations concurrently with <code>Promise.all</code>, or when writing utilities that compose Promises. Avoid <code>async</code> functions inside <code>.then()</code> chains — it creates an implicit inner Promise you can accidentally forget to return.</p>
+    <pre><code class="language-javascript">// Concurrent with Promise.all (preferred over sequential await)
+const [user, posts] = await Promise.all([fetchUser(id), fetchPosts(id)]);
+</code></pre>
+  </div>
+</details>
+
+<details>
+  <summary>How does the prototype chain work? What happens when you access a property? <span class="badge badge-inter">Intermediate</span></summary>
+  <div class="answer">
+    <p>Every object has an internal <code>[[Prototype]]</code> slot (accessible via <code>Object.getPrototypeOf()</code>). When you access a property, the engine checks the object itself first; if not found, it follows the prototype link, then that object's prototype, continuing up the chain until it reaches <code>null</code> (<code>Object.prototype</code>'s prototype). If still not found, the result is <code>undefined</code>.</p>
+    <p>With ES6 classes, <code>extends</code> sets up the prototype chain automatically: <code>instance.__proto__ === ChildClass.prototype</code> and <code>ChildClass.prototype.__proto__ === ParentClass.prototype</code>.</p>
+    <pre><code class="language-javascript">function Animal(name) { this.name = name; }
+Animal.prototype.speak = function() { return `${this.name} makes a sound`; };
+const dog = new Animal("Rex");
+console.log(dog.hasOwnProperty("name"));  // true (own)
+console.log(dog.hasOwnProperty("speak")); // false (on prototype)
+</code></pre>
+  </div>
+</details>
+
+<details>
+  <summary>What is the difference between debounce and throttle? Give a use case for each. <span class="badge badge-inter">Intermediate</span></summary>
+  <div class="answer">
+    <p><strong>Debounce</strong> delays execution until a burst of calls stops for a given period. The timer resets on every call. Best for: search input (fire API only after user stops typing), window resize recalculation, form validation on blur.</p>
+    <p><strong>Throttle</strong> guarantees execution at most once per interval regardless of how many calls arrive. Best for: scroll handlers (update sticky nav at most 10×/sec), mousemove tracking, API rate limiting, button click guard.</p>
+    <p>Key mental model: debounce = "wait until quiet"; throttle = "fire at regular cadence, ignore the rest".</p>
+  </div>
+</details>
+
+<h3>Advanced</h3>
+
+<details>
+  <summary>Implement Promise.all from scratch. <span class="badge badge-adv">Advanced</span></summary>
+  <div class="answer">
+    <p><code>Promise.all</code> takes an iterable of promises, resolves with an array of results when all fulfill (in original order), and rejects immediately with the first rejection.</p>
+    <pre><code class="language-javascript">function promiseAll(promises) {
+  return new Promise((resolve, reject) => {
+    const results = [];
+    let remaining = promises.length;
+    if (remaining === 0) return resolve(results);
+    promises.forEach((p, i) => {
+      Promise.resolve(p).then(val => {
+        results[i] = val;
+        if (--remaining === 0) resolve(results);
+      }, reject); // first rejection propagates immediately
+    });
+  });
+}
+</code></pre>
+    <p>Edge cases: empty array resolves synchronously to <code>[]</code>; non-Promise values are wrapped with <code>Promise.resolve()</code>; results are stored at the original index so order is preserved even if promises settle out of order.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Explain microtask vs macrotask queues in depth. Name all sources of each. <span class="badge badge-adv">Advanced</span></summary>
+  <div class="answer">
+    <p><strong>Microtasks</strong> (drained after every task, before rendering):</p>
+    <ul>
+      <li><code>Promise.then / .catch / .finally</code></li>
+      <li><code>queueMicrotask(fn)</code></li>
+      <li><code>MutationObserver</code> callbacks</li>
+      <li><code>await</code> continuations (desugars to <code>.then</code>)</li>
+    </ul>
+    <p><strong>Macrotasks / Tasks</strong> (one per event loop turn):</p>
+    <ul>
+      <li>Script evaluation (initial load)</li>
+      <li><code>setTimeout</code> / <code>setInterval</code></li>
+      <li><code>setImmediate</code> (Node.js)</li>
+      <li>I/O callbacks, MessageChannel, <code>postMessage</code></li>
+      <li>UI events (click, keydown)</li>
+    </ul>
+    <p><code>requestAnimationFrame</code> is in neither — it runs before the next paint, after microtasks, as part of the render step. <code>process.nextTick</code> in Node.js runs before the microtask queue.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Write a generic curry function that supports both partial application and direct call. <span class="badge badge-adv">Advanced</span></summary>
+  <div class="answer">
+    <p>Currying transforms a multi-argument function into a chain of single-argument functions. The key insight: if enough arguments have been collected (≥ arity), invoke the original; otherwise return a new curried function waiting for more.</p>
+    <pre><code class="language-javascript">function curry(fn) {
+  return function curried(...args) {
+    if (args.length >= fn.length) {
+      return fn.apply(this, args);
+    }
+    return function(...more) {
+      return curried.apply(this, args.concat(more));
+    };
+  };
+}
+const add = curry((a, b, c) => a + b + c);
+add(1)(2)(3);   // 6
+add(1, 2)(3);   // 6
+add(1)(2, 3);   // 6
+add(1, 2, 3);   // 6
+</code></pre>
+  </div>
+</details>
+
+<details>
+  <summary>How do you implement generator-based async flow control (like async/await)? <span class="badge badge-adv">Advanced</span></summary>
+  <div class="answer">
+    <p>Before <code>async/await</code>, libraries (co.js, redux-saga) used generators: yield a Promise, receive the resolved value back. A runner drives the generator, calling <code>.next(resolvedValue)</code> on each fulfillment and <code>.throw(error)</code> on rejection.</p>
+    <pre><code class="language-javascript">function run(genFn) {
+  return new Promise((resolve, reject) => {
+    const gen = genFn();
+    function step(val, isErr) {
+      let result;
+      try { result = isErr ? gen.throw(val) : gen.next(val); }
+      catch (e) { return reject(e); }
+      if (result.done) return resolve(result.value);
+      Promise.resolve(result.value).then(v => step(v, false), e => step(e, true));
+    }
+    step();
+  });
+}
+run(function* () {
+  const data = yield fetch("/api/data").then(r => r.json());
+  console.log(data);
+});
+</code></pre>
+  </div>
+</details>
+
+<h3>Very Advanced</h3>
+
+<details>
+  <summary>What are V8 hidden classes (shapes) and how do they affect performance? <span class="badge badge-vadv">Very Advanced</span></summary>
+  <div class="answer">
+    <p>V8 JIT-compiles JavaScript by assuming objects with the same "shape" (property names added in the same order) share a <strong>hidden class</strong> (also called a Map/Shape). This lets the engine generate fast native code that accesses properties at a fixed memory offset instead of doing a dictionary lookup.</p>
+    <p>When you change an object's shape (add/delete properties, add them in a different order), V8 creates a new hidden class and the property-access code becomes a slower "megamorphic" call site. Best practices:</p>
+    <ul>
+      <li>Always initialise all properties in the constructor (same order).</li>
+      <li>Avoid <code>delete obj.prop</code> — set to <code>undefined</code> instead.</li>
+      <li>Don't add properties dynamically outside the constructor.</li>
+      <li>Keep property types consistent (monomorphic sites are fastest).</li>
+    </ul>
+    <pre><code class="language-javascript">// GOOD — single hidden class
+class Point { constructor(x, y) { this.x = x; this.y = y; } }
+
+// BAD — two shapes, deoptimises call sites
+const a = {}; a.x = 1; a.y = 2;
+const b = {}; b.y = 1; b.x = 2; // different insertion order
+</code></pre>
+  </div>
+</details>
+
+<details>
+  <summary>Implement a basic Observable (RxJS-style) with subscribe, next, error, and complete. <span class="badge badge-vadv">Very Advanced</span></summary>
+  <div class="answer">
+    <p>An Observable is a lazy push-based data source. It does nothing until subscribed. The subscriber object receives <code>next</code>, <code>error</code>, and <code>complete</code> callbacks. The subscribe function returns a teardown/unsubscribe handle.</p>
+    <pre><code class="language-javascript">class Observable {
+  constructor(subscribeFn) { this._subscribeFn = subscribeFn; }
+  subscribe(observer) {
+    const safe = {
+      next:     v  => !safe._closed && observer.next?.(v),
+      error:    e  => { if (!safe._closed) { safe._closed = true; observer.error?.(e); } },
+      complete: () => { if (!safe._closed) { safe._closed = true; observer.complete?.(); } },
+      _closed: false,
+    };
+    const teardown = this._subscribeFn(safe);
+    return { unsubscribe: () => { safe._closed = true; teardown?.(); } };
+  }
+  static from(arr) {
+    return new Observable(obs => {
+      arr.forEach(v => obs.next(v)); obs.complete();
+    });
+  }
+}
+Observable.from([1,2,3]).subscribe({ next: v => console.log(v), complete: () => console.log("done") });
+</code></pre>
+  </div>
+</details>
+
+<details>
+  <summary>Implement a reactive state management system (like a mini-Vue/MobX signal). <span class="badge badge-vadv">Very Advanced</span></summary>
+  <div class="answer">
+    <p>Reactive state tracks which computations ("effects") read each piece of state. When state changes, dependent effects re-run automatically. The pattern uses a global "currently running effect" pointer to auto-subscribe during reads.</p>
+    <pre><code class="language-javascript">let activeEffect = null;
+function signal(initial) {
+  let value = initial;
+  const subscribers = new Set();
+  return {
+    get() { if (activeEffect) subscribers.add(activeEffect); return value; },
+    set(v) { value = v; subscribers.forEach(fn => fn()); },
+  };
+}
+function effect(fn) {
+  const run = () => { activeEffect = run; fn(); activeEffect = null; };
+  run();
+}
+const count  = signal(0);
+const double = signal(0);
+effect(() => { double.set(count.get() * 2); });
+count.set(5);
+console.log(double.get()); // 10 — auto-derived
+</code></pre>
+    <p>This is the foundation of Vue 3 Composition API signals, SolidJS, and TC39 Signals proposal. The key invariant: always clear <code>activeEffect</code> after running to avoid stale subscriptions.</p>
+  </div>
+</details>
+
+</div><!-- /qa-section -->
+
+<script>
+  hljs.highlightAll();
+  mermaid.initialize({ startOnLoad: true, theme: "dark", themeVariables: {
+    background: "#161b22", primaryColor: "#1f6feb", primaryTextColor: "#c9d1d9",
+    edgeLabelBackground: "#0d1117", tertiaryColor: "#161b22"
+  }});
+</script>
+</body>
+</html>

@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude API Complete Guide</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6;display:flex;flex-direction:column}.topnav{background:#161b22;padding:10px 24px;border-bottom:1px solid #30363d;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100}.topnav a{color:#58a6ff;text-decoration:none;font-size:13px}.topnav h1{font-size:16px;color:#e6edf3;margin:0}.layout{display:flex;flex:1}.sidebar{width:260px;background:#161b22;border-right:1px solid #30363d;padding:16px;position:sticky;top:41px;height:calc(100vh - 41px);overflow-y:auto;flex-shrink:0}.sidebar a{display:block;padding:4px 8px;color:#8b949e;text-decoration:none;font-size:13px;border-radius:4px;margin-bottom:2px}.sidebar a:hover{background:#21262d;color:#c9d1d9}.sidebar .section-title{color:#58a6ff;font-size:11px;text-transform:uppercase;letter-spacing:.5px;margin:16px 0 6px;padding:0 8px;font-weight:600}main{flex:1;padding:32px 48px;max-width:960px}h1{font-size:2rem;color:#e6edf3;border-bottom:1px solid #30363d;padding-bottom:16px;margin-bottom:24px}h2{font-size:1.5rem;color:#e6edf3;margin:48px 0 16px;border-bottom:1px solid #21262d;padding-bottom:8px}h3{font-size:1.15rem;color:#79c0ff;margin:24px 0 10px}h4{font-size:1rem;color:#d2a8ff;margin:16px 0 8px}p{margin-bottom:12px}ul,ol{margin:0 0 16px 24px}li{margin-bottom:4px}pre{margin:16px 0;border-radius:6px;overflow-x:auto;font-size:13px}code:not(pre code){background:#161b22;padding:2px 6px;border-radius:4px;font-size:13px;color:#f0883e;border:1px solid #30363d}table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}th{background:#161b22;color:#58a6ff;padding:10px 14px;text-align:left;border:1px solid #30363d}td{padding:10px 14px;border:1px solid #30363d;vertical-align:top}tr:nth-child(even) td{background:#0a0d12}.mermaid{background:#161b22;padding:20px;border-radius:6px;margin:16px 0;text-align:center}details{border:1px solid #30363d;border-radius:6px;margin:10px 0;overflow:hidden}summary{padding:12px 16px;cursor:pointer;background:#161b22;color:#79c0ff;font-weight:600;list-style:none}details[open] summary{border-bottom:1px solid #30363d}.answer{padding:16px 20px;background:#0d1117}.badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:700;margin-left:8px}.easy{background:#1a4731;color:#3fb950}.intermediate{background:#2d2b00;color:#e3b341}.advanced{background:#3d1f00;color:#f0883e}.very-advanced{background:#3d0000;color:#ff7b72}.callout{background:#161b22;border-left:4px solid #58a6ff;padding:12px 16px;border-radius:0 6px 6px 0;margin:16px 0}footer{text-align:center;padding:24px;color:#8b949e;font-size:12px;border-top:1px solid #30363d;margin-top:40px}
+</style>
+</head>
+<body>
+<nav class="topnav"><h1>Claude API Complete Guide</h1><a href="../index.html">← Back to Index</a></nav>
+<div class="layout">
+<aside class="sidebar">
+  <div class="section-title">Models</div>
+  <a href="#model-family">Model Family</a>
+  <div class="section-title">Messages API</div>
+  <a href="#messages-api">Messages API Basics</a>
+  <a href="#streaming">Streaming</a>
+  <a href="#parameters">Parameters</a>
+  <div class="section-title">Vision</div>
+  <a href="#vision">Image Input</a>
+  <div class="section-title">Tool Use</div>
+  <a href="#tool-definition">Defining Tools</a>
+  <a href="#tool-loop">Tool Use Loop</a>
+  <a href="#parallel-tools">Parallel Tool Calls</a>
+  <div class="section-title">Advanced Features</div>
+  <a href="#extended-thinking">Extended Thinking</a>
+  <a href="#prompt-caching">Prompt Caching</a>
+  <a href="#batch-api">Batch API</a>
+  <div class="section-title">MCP</div>
+  <a href="#mcp">Model Context Protocol</a>
+  <div class="section-title">Building Agents</div>
+  <a href="#agent-loop">Agent Tool Loop</a>
+  <a href="#conversation-mgmt">Conversation Management</a>
+  <div class="section-title">Best Practices</div>
+  <a href="#best-practices">Prompt Engineering</a>
+  <a href="#sdk">SDK Reference</a>
+  <div class="section-title">Interview Q&amp;A</div>
+  <a href="#interview">15 Interview Questions</a>
+</aside>
+<main>
+<h1>Claude API Complete Guide</h1>
+
+<h2 id="model-family">Model Family</h2>
+<table>
+  <tr><th>Model</th><th>Model ID</th><th>Context</th><th>Speed</th><th>Cost (Input/Output per MTok)</th><th>Best For</th></tr>
+  <tr><td><strong>Claude Haiku 3.5</strong></td><td>claude-3-5-haiku-20241022</td><td>200K</td><td>Fastest</td><td>$0.80 / $4.00</td><td>Classification, routing, simple tasks, high-throughput</td></tr>
+  <tr><td><strong>Claude Sonnet 3.5</strong></td><td>claude-3-5-sonnet-20241022</td><td>200K</td><td>Fast</td><td>$3.00 / $15.00</td><td>General-purpose, coding, analysis, RAG</td></tr>
+  <tr><td><strong>Claude Sonnet 3.7</strong></td><td>claude-3-7-sonnet-20250219</td><td>200K</td><td>Fast</td><td>$3.00 / $15.00</td><td>Extended thinking, complex reasoning</td></tr>
+  <tr><td><strong>Claude Opus 3</strong></td><td>claude-3-opus-20240229</td><td>200K</td><td>Slowest</td><td>$15.00 / $75.00</td><td>Complex analysis, nuanced tasks, research</td></tr>
+  <tr><td><strong>Claude Opus 4</strong></td><td>claude-opus-4-5</td><td>200K</td><td>Moderate</td><td>$15.00 / $75.00</td><td>Most capable, complex reasoning, agentic</td></tr>
+</table>
+<div class="callout">
+  <strong>Choosing a model:</strong> Start with Sonnet 3.5 for most tasks. Use Haiku for high-throughput/cost-sensitive. Use Opus for complex reasoning, writing, or when quality is paramount.
+</div>
+
+<h2 id="messages-api">Messages API Basics</h2>
+<pre><code class="language-python">import anthropic
+
+client = anthropic.Anthropic(api_key="YOUR_API_KEY")  # or env ANTHROPIC_API_KEY
+
+# Basic message
+message = client.messages.create(
+    model="claude-3-5-sonnet-20241022",
+    max_tokens=1024,
+    messages=[{"role": "user", "content": "Explain quantum computing in 2 sentences."}]
+)
+print(message.content[0].text)
+print(f"Stop reason: {message.stop_reason}")  # "end_turn" | "max_tokens" | "tool_use" | "stop_sequence"
+print(f"Usage: {message.usage}")  # input_tokens, output_tokens
+
+# With system prompt
+message = client.messages.create(
+    model="claude-3-5-sonnet-20241022",
+    max_tokens=2048,
+    system="You are an expert Python developer. Always include type hints.",
+    messages=[{"role": "user", "content": "Write a function to flatten a nested list"}]
+)
+
+# Multi-turn conversation
+messages = []
+for user_input in ["Hi, I'm Alice", "What is my name?"]:
+    messages.append({"role": "user", "content": user_input})
+    response = client.messages.create(
+        model="claude-3-5-haiku-20241022",
+        max_tokens=512,
+        messages=messages
+    )
+    assistant_reply = response.content[0].text
+    messages.append({"role": "assistant", "content": assistant_reply})
+    print(f"Claude: {assistant_reply}")</code></pre>
+
+<h4>TypeScript</h4>
+<pre><code class="language-typescript">import Anthropic from "@anthropic-ai/sdk";
+
+const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+
+const message = await client.messages.create({
+  model: "claude-3-5-sonnet-20241022",
+  max_tokens: 1024,
+  system: "You are a helpful assistant.",
+  messages: [{ role: "user", content: "Hello Claude!" }],
+});
+console.log(message.content[0].type === "text" ? message.content[0].text : "");</code></pre>
+
+<h2 id="streaming">Streaming</h2>
+<pre><code class="language-python">import anthropic
+
+client = anthropic.Anthropic()
+
+# Basic streaming with context manager
+with client.messages.stream(
+    model="claude-3-5-sonnet-20241022",
+    max_tokens=1024,
+    messages=[{"role": "user", "content": "Tell me a story about a robot."}]
+) as stream:
+    for text in stream.text_stream:
+        print(text, end="", flush=True)
+
+# Access final message after streaming
+final = stream.get_final_message()
+print(f"\nTotal tokens: {final.usage.input_tokens + final.usage.output_tokens}")
+
+# SSE events breakdown
+with client.messages.stream(...) as stream:
+    for event in stream:
+        if event.type == "message_start":
+            print(f"Message ID: {event.message.id}")
+        elif event.type == "content_block_start":
+            print(f"Block type: {event.content_block.type}")  # "text" | "thinking" | "tool_use"
+        elif event.type == "content_block_delta":
+            if event.delta.type == "text_delta":
+                print(event.delta.text, end="", flush=True)
+            elif event.delta.type == "input_json_delta":
+                print(event.delta.partial_json, end="")  # tool use args streaming
+        elif event.type == "message_stop":
+            print("\nDone!")
+
+# Async streaming
+import asyncio
+
+async def stream_response():
+    async with client.messages.stream(
+        model="claude-3-5-sonnet-20241022",
+        max_tokens=1024,
+        messages=[{"role": "user", "content": "Explain async/await"}]
+    ) as stream:
+        async for text in stream.text_stream:
+            print(text, end="", flush=True)
+
+asyncio.run(stream_response())</code></pre>
+
+<pre><code class="language-typescript">// TypeScript streaming
+import Anthropic from "@anthropic-ai/sdk";
+const client = new Anthropic();
+
+const stream = await client.messages.stream({
+  model: "claude-3-5-sonnet-20241022",
+  max_tokens: 1024,
+  messages: [{ role: "user", content: "Tell me about the ocean" }],
+});
+
+for await (const event of stream) {
+  if (event.type === "content_block_delta" &&
+      event.delta.type === "text_delta") {
+    process.stdout.write(event.delta.text);
+  }
+}
+const finalMsg = await stream.getFinalMessage();
+console.log("\nStop reason:", finalMsg.stop_reason);</code></pre>
+
+<h2 id="parameters">Key Parameters</h2>
+<table>
+  <tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr>
+  <tr><td><code>model</code></td><td>string</td><td>—</td><td>Model ID (required)</td></tr>
+  <tr><td><code>max_tokens</code></td><td>int</td><td>—</td><td>Max output tokens (required). Haiku max: 8192, Sonnet/Opus: 8192 (64K with extended output)</td></tr>
+  <tr><td><code>temperature</code></td><td>float</td><td>1.0</td><td>0=deterministic, 1=default, max varies by model. Use 0 for factual/code tasks.</td></tr>
+  <tr><td><code>top_p</code></td><td>float</td><td>—</td><td>Nucleus sampling. Recommended: use only one of temperature OR top_p</td></tr>
+  <tr><td><code>top_k</code></td><td>int</td><td>—</td><td>Top-k sampling (not recommended for most use cases)</td></tr>
+  <tr><td><code>stop_sequences</code></td><td>list[str]</td><td>[]</td><td>Custom sequences where generation stops</td></tr>
+  <tr><td><code>system</code></td><td>string or list</td><td>—</td><td>System prompt. Can be list with cache_control.</td></tr>
+  <tr><td><code>stream</code></td><td>bool</td><td>false</td><td>Enable SSE streaming</td></tr>
+  <tr><td><code>metadata.user_id</code></td><td>string</td><td>—</td><td>Unique user identifier for safety/abuse tracking</td></tr>
+</table>
+
+<h2 id="vision">Vision — Image Input</h2>
+<pre><code class="language-python">import anthropic
+import base64
+from pathlib import Path
+
+client = anthropic.Anthropic()
+
+# Method 1: URL source
+message = client.messages.create(
+    model="claude-3-5-sonnet-20241022",
+    max_tokens=1024,
+    messages=[{
+        "role": "user",
+        "content": [
+            {
+                "type": "image",
+                "source": {
+                    "type": "url",
+                    "url": "https://example.com/architecture.png"
+                }
+            },
+            {
+                "type": "text",
+                "text": "Describe this system architecture diagram."
+            }
+        ]
+    }]
+)
+
+# Method 2: Base64 encoded
+image_data = base64.b64encode(Path("chart.png").read_bytes()).decode("utf-8")
+message = client.messages.create(
+    model="claude-3-5-sonnet-20241022",
+    max_tokens=1024,
+    messages=[{
+        "role": "user",
+        "content": [
+            {
+                "type": "image",
+                "source": {
+                    "type": "base64",
+                    "media_type": "image/png",  # "image/jpeg" | "image/gif" | "image/webp"
+                    "data": image_data
+                }
+            },
+            {"type": "text", "text": "What are the key trends in this chart?"}
+        ]
+    }]
+)
+
+# Multi-image: compare two diagrams
+message = client.messages.create(
+    model="claude-3-5-sonnet-20241022",
+    max_tokens=2048,
+    messages=[{
+        "role": "user",
+        "content": [
+            {"type": "text", "text": "Compare these two UI designs:"},
+            {"type": "image", "source": {"type": "base64", "media_type": "image/png",
+                                         "data": image_1_b64}},
+            {"type": "text", "text": "Design A above. Design B below:"},
+            {"type": "image", "source": {"type": "base64", "media_type": "image/png",
+                                         "data": image_2_b64}},
+            {"type": "text", "text": "Which is better for a banking app and why?"}
+        ]
+    }]
+)</code></pre>
+
+<h2 id="tool-definition">Defining Tools (Function Calling)</h2>
+<pre><code class="language-python">import anthropic
+import json
+
+client = anthropic.Anthropic()
+
+# Tool definition with JSON Schema
+tools = [
+    {
+        "name": "get_weather",
+        "description": "Get current weather for a location. Returns temperature, conditions, humidity.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "location": {
+                    "type": "string",
+                    "description": "City and country, e.g. 'Paris, France'"
+                },
+                "unit": {
+                    "type": "string",
+                    "enum": ["celsius", "fahrenheit"],
+                    "description": "Temperature unit. Default is celsius."
+                }
+            },
+            "required": ["location"]
+        }
+    },
+    {
+        "name": "search_database",
+        "description": "Search the product database by name or category.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "query": {"type": "string", "description": "Search query"},
+                "category": {
+                    "type": "string",
+                    "enum": ["electronics", "clothing", "books", "all"],
+                    "description": "Product category to filter"
+                },
+                "limit": {"type": "integer", "description": "Max results (1-50)", "default": 10}
+            },
+            "required": ["query"]
+        }
+    }
+]
+
+# tool_choice: control which tools Claude uses
+# {"type": "auto"}        — Claude decides (default)
+# {"type": "any"}         — Must use at least one tool
+# {"type": "tool", "name": "get_weather"}  — Force specific tool
+# {"type": "none"}        — No tool use
+
+response = client.messages.create(
+    model="claude-3-5-sonnet-20241022",
+    max_tokens=1024,
+    tools=tools,
+    tool_choice={"type": "auto"},
+    messages=[{"role": "user", "content": "What's the weather in Tokyo?"}]
+)
+print(response.stop_reason)  # "tool_use" — Claude wants to call a tool
+print(response.content)</code></pre>
+
+<h2 id="tool-loop">Full Tool Use Loop</h2>
+<pre><code class="language-python">import anthropic
+import json
+
+client = anthropic.Anthropic()
+
+# Implement actual tool functions
+def get_weather(location: str, unit: str = "celsius") -> dict:
+    """Simulated weather API"""
+    return {"location": location, "temperature": 22, "unit": unit,
+            "conditions": "Sunny", "humidity": 65}
+
+def search_database(query: str, category: str = "all", limit: int = 10) -> list:
+    """Simulated database search"""
+    return [{"id": 1, "name": f"{query} result", "category": category}]
+
+TOOLS_MAP = {"get_weather": get_weather, "search_database": search_database}
+
+def run_agent(user_message: str) -> str:
+    messages = [{"role": "user", "content": user_message}]
+
+    while True:
+        response = client.messages.create(
+            model="claude-3-5-sonnet-20241022",
+            max_tokens=4096,
+            tools=tools,
+            messages=messages
+        )
+
+        # Add assistant's response to messages
+        messages.append({"role": "assistant", "content": response.content})
+
+        if response.stop_reason == "end_turn":
+            # Extract text response
+            for block in response.content:
+                if hasattr(block, "text"):
+                    return block.text
+            return "Done"
+
+        elif response.stop_reason == "tool_use":
+            # Process each tool call
+            tool_results = []
+            for block in response.content:
+                if block.type == "tool_use":
+                    tool_fn = TOOLS_MAP[block.name]
+                    result = tool_fn(**block.input)
+                    tool_results.append({
+                        "type": "tool_result",
+                        "tool_use_id": block.id,
+                        "content": json.dumps(result)
+                    })
+
+            # Add tool results as user message
+            messages.append({"role": "user", "content": tool_results})
+        else:
+            break
+
+    return "Unexpected stop reason"
+
+answer = run_agent("What's the weather in Paris and search for 'laptop' electronics?")
+print(answer)</code></pre>
+
+<h2 id="parallel-tools">Parallel Tool Calls</h2>
+<pre><code class="language-python">import asyncio
+import anthropic
+
+async def run_tool_async(tool_name: str, tool_input: dict, tool_id: str) -> dict:
+    """Execute a single tool asynchronously"""
+    tool_fn = TOOLS_MAP[tool_name]
+    result = await asyncio.to_thread(tool_fn, **tool_input)
+    return {
+        "type": "tool_result",
+        "tool_use_id": tool_id,
+        "content": json.dumps(result)
+    }
+
+async def run_agent_with_parallel_tools(user_message: str) -> str:
+    client = anthropic.AsyncAnthropic()
+    messages = [{"role": "user", "content": user_message}]
+
+    while True:
+        response = await client.messages.create(
+            model="claude-3-5-sonnet-20241022",
+            max_tokens=4096,
+            tools=tools,
+            messages=messages
+        )
+        messages.append({"role": "assistant", "content": response.content})
+
+        if response.stop_reason == "end_turn":
+            return next((b.text for b in response.content if hasattr(b, "text")), "Done")
+
+        elif response.stop_reason == "tool_use":
+            tool_calls = [b for b in response.content if b.type == "tool_use"]
+
+            # Execute ALL tool calls in PARALLEL
+            tool_results = await asyncio.gather(*[
+                run_tool_async(tc.name, tc.input, tc.id)
+                for tc in tool_calls
+            ])
+
+            messages.append({"role": "user", "content": list(tool_results)})
+
+# Claude may call get_weather(Tokyo) AND get_weather(London) AND search_database in one shot
+# These execute concurrently — much faster than sequential
+result = asyncio.run(run_agent_with_parallel_tools(
+    "Compare weather in Tokyo, London, and Berlin, and search for weather apps"
+))</code></pre>
+
+<h2 id="extended-thinking">Extended Thinking</h2>
+<div class="callout">
+  Extended thinking enables Claude to reason through complex problems step by step before responding. Available on Claude 3.7 Sonnet and Claude 3 Opus.
+</div>
+<pre><code class="language-python">import anthropic
+
+client = anthropic.Anthropic()
+
+# Extended thinking with budget_tokens
+response = client.messages.create(
+    model="claude-3-7-sonnet-20250219",
+    max_tokens=16000,  # Must be > budget_tokens
+    thinking={
+        "type": "enabled",
+        "budget_tokens": 10000  # Tokens Claude can use for thinking (min 1024)
+    },
+    messages=[{
+        "role": "user",
+        "content": "Solve this step by step: A train leaves NYC at 60mph. Another leaves LA at 80mph. They are 2800 miles apart. When do they meet?"
+    }]
+)
+
+# Response has thinking blocks + text blocks
+for block in response.content:
+    if block.type == "thinking":
+        print(f"<thinking>\n{block.thinking}\n</thinking>")
+    elif block.type == "text":
+        print(f"Answer: {block.text}")
+
+# Streaming extended thinking
+with client.messages.stream(
+    model="claude-3-7-sonnet-20250219",
+    max_tokens=16000,
+    thinking={"type": "enabled", "budget_tokens": 5000},
+    messages=[{"role": "user", "content": "Design a distributed rate limiter"}]
+) as stream:
+    for event in stream:
+        if event.type == "content_block_delta":
+            if event.delta.type == "thinking_delta":
+                print(event.delta.thinking, end="")
+            elif event.delta.type == "text_delta":
+                print(event.delta.text, end="")</code></pre>
+
+<h2 id="prompt-caching">Prompt Caching</h2>
+<div class="callout">
+  <strong>Prompt Caching</strong> caches specific portions of your prompt on Anthropic's servers. Cache read discount: ~90% cheaper than full input pricing. Cache TTL: 5 minutes (default) or 1 hour (with extended cache). Minimum cacheable tokens: 1024 for Sonnet/Opus, 2048 for Haiku.
+</div>
+<pre><code class="language-python">import anthropic
+
+client = anthropic.Anthropic()
+
+# Large static content that you want to cache
+large_document = "..." * 500  # A long document, codebase, or knowledge base
+
+# Mark content with cache_control to cache it
+response = client.messages.create(
+    model="claude-3-5-sonnet-20241022",
+    max_tokens=1024,
+    system=[
+        {
+            "type": "text",
+            "text": "You are a helpful assistant analyzing documents.",
+        },
+        {
+            "type": "text",
+            "text": large_document,
+            "cache_control": {"type": "ephemeral"}  # Cache this block (5 min TTL)
+        }
+    ],
+    messages=[{"role": "user", "content": "Summarize the document"}]
+)
+
+# Check caching stats in usage
+print(response.usage.cache_creation_input_tokens)  # Tokens cached (first time)
+print(response.usage.cache_read_input_tokens)       # Tokens read from cache (subsequent)
+print(response.usage.input_tokens)                  # Non-cached tokens
+
+# Multi-turn with cached system prompt
+# The large system prompt is cached — only small user messages billed at full price
+messages = []
+for question in questions:
+    messages.append({"role": "user", "content": question})
+    response = client.messages.create(
+        model="claude-3-5-sonnet-20241022",
+        max_tokens=512,
+        system=[
+            {"type": "text", "text": "You are an expert.", "cache_control": {"type": "ephemeral"}},
+            {"type": "text", "text": large_context, "cache_control": {"type": "ephemeral"}}
+        ],
+        messages=messages
+    )
+    assistant_reply = response.content[0].text
+    messages.append({"role": "assistant", "content": assistant_reply})
+    print(f"Cache hit: {response.usage.cache_read_input_tokens > 0}")
+
+# Pricing example:
+# Without cache: 100K tokens × 20 calls = 2M input tokens billed
+# With cache: 100K tokens (create) + 100K × 0.1 × 20 calls = 300K tokens billed (85% savings)</code></pre>
+
+<h2 id="batch-api">Batch API (Message Batches)</h2>
+<pre><code class="language-python">import anthropic
+import time
+
+client = anthropic.Anthropic()
+
+# Create a batch of up to 10,000 requests
+batch = client.messages.batches.create(
+    requests=[
+        {
+            "custom_id": f"request-{i}",  # Your identifier for this request
+            "params": {
+                "model": "claude-3-5-haiku-20241022",
+                "max_tokens": 256,
+                "messages": [{"role": "user", "content": f"Classify sentiment: '{text}'"}]
+            }
+        }
+        for i, text in enumerate(texts_to_classify)
+    ]
+)
+print(f"Batch ID: {batch.id}")
+print(f"Status: {batch.processing_status}")  # "in_progress"
+
+# Poll for completion (or use webhooks)
+while True:
+    batch = client.messages.batches.retrieve(batch.id)
+    print(f"Status: {batch.processing_status}, "
+          f"Succeeded: {batch.request_counts.succeeded}, "
+          f"Failed: {batch.request_counts.errored}")
+    if batch.processing_status == "ended":
+        break
+    time.sleep(60)  # Poll every minute
+
+# Retrieve results (streaming JSONL)
+for result in client.messages.batches.results(batch.id):
+    if result.result.type == "succeeded":
+        print(f"[{result.custom_id}]: {result.result.message.content[0].text}")
+    elif result.result.type == "errored":
+        print(f"[{result.custom_id}] Error: {result.result.error.error.message}")
+
+# Cost savings: Batch API is 50% cheaper than real-time Messages API
+# Tradeoff: Results in up to 24 hours (not real-time)</code></pre>
+
+<h2 id="mcp">Model Context Protocol (MCP)</h2>
+<div class="mermaid">
+graph LR
+    Host["MCP Host\n(Claude Desktop, IDE)"] --> |"MCP Protocol"| Server["MCP Server\n(tools + resources)"]
+    Server --> |"Tool results"| Host
+    Server --> DB["Database"]
+    Server --> API["External API"]
+    Server --> FS["File System"]
+    style Host fill:#1f3d5c
+    style Server fill:#2d2b00
+</div>
+<pre><code class="language-python"># Building an MCP Server (Python)
+from mcp.server import Server
+from mcp.server.models import InitializationOptions
+from mcp.types import Tool, TextContent
+import mcp.server.stdio
+
+app = Server("my-mcp-server")
+
+@app.list_tools()
+async def handle_list_tools() -> list[Tool]:
+    return [
+        Tool(
+            name="get_customer",
+            description="Retrieve customer information from CRM",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "customer_id": {"type": "string", "description": "Customer ID"}
+                },
+                "required": ["customer_id"]
+            }
+        ),
+        Tool(
+            name="create_ticket",
+            description="Create a support ticket",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "title": {"type": "string"},
+                    "description": {"type": "string"},
+                    "priority": {"type": "string", "enum": ["low", "medium", "high"]}
+                },
+                "required": ["title", "description"]
+            }
+        )
+    ]
+
+@app.call_tool()
+async def handle_call_tool(name: str, arguments: dict) -> list[TextContent]:
+    if name == "get_customer":
+        customer = await crm.get_customer(arguments["customer_id"])
+        return [TextContent(type="text", text=str(customer))]
+    elif name == "create_ticket":
+        ticket_id = await ticketing.create(arguments)
+        return [TextContent(type="text", text=f"Ticket {ticket_id} created")]
+    raise ValueError(f"Unknown tool: {name}")
+
+async def main():
+    async with mcp.server.stdio.stdio_server() as (read_stream, write_stream):
+        await app.run(read_stream, write_stream,
+                      InitializationOptions(server_name="my-mcp-server", server_version="0.1.0"))
+
+# MCP Client usage with Claude
+# In claude_desktop_config.json:
+# {
+#   "mcpServers": {
+#     "my-server": {
+#       "command": "python",
+#       "args": ["server.py"]
+#     }
+#   }
+# }</code></pre>
+
+<h2 id="agent-loop">Building Agents: Tool Loop Pattern</h2>
+<pre><code class="language-python">import anthropic
+import json
+from typing import Callable
+
+class ClaudeAgent:
+    def __init__(self, model: str = "claude-3-5-sonnet-20241022",
+                 system: str = "You are a helpful assistant.",
+                 tools: list = None):
+        self.client = anthropic.Anthropic()
+        self.model = model
+        self.system = system
+        self.tools = tools or []
+        self.tool_implementations: dict[str, Callable] = {}
+
+    def register_tool(self, name: str, fn: Callable):
+        self.tool_implementations[name] = fn
+
+    def run(self, user_message: str, conversation_history: list = None) -> tuple[str, list]:
+        messages = (conversation_history or []) + [
+            {"role": "user", "content": user_message}
+        ]
+        max_iterations = 20
+        iteration = 0
+
+        while iteration < max_iterations:
+            iteration += 1
+
+            try:
+                response = self.client.messages.create(
+                    model=self.model,
+                    max_tokens=4096,
+                    system=self.system,
+                    tools=self.tools if self.tools else [],
+                    messages=messages
+                )
+            except anthropic.RateLimitError:
+                import time; time.sleep(60)
+                continue
+            except anthropic.APIStatusError as e:
+                return f"API error: {e}", messages
+
+            # Append assistant response
+            messages.append({"role": "assistant", "content": response.content})
+
+            if response.stop_reason == "end_turn":
+                text = next((b.text for b in response.content
+                             if hasattr(b, "text")), "")
+                return text, messages
+
+            elif response.stop_reason == "tool_use":
+                tool_results = []
+                for block in response.content:
+                    if block.type != "tool_use":
+                        continue
+                    tool_name = block.name
+                    if tool_name not in self.tool_implementations:
+                        result = f"Error: Unknown tool '{tool_name}'"
+                    else:
+                        try:
+                            result = self.tool_implementations[tool_name](**block.input)
+                            result = json.dumps(result) if not isinstance(result, str) else result
+                        except Exception as e:
+                            result = f"Error executing {tool_name}: {str(e)}"
+
+                    tool_results.append({
+                        "type": "tool_result",
+                        "tool_use_id": block.id,
+                        "content": result
+                    })
+
+                messages.append({"role": "user", "content": tool_results})
+
+            elif response.stop_reason == "max_tokens":
+                return "Response truncated (max_tokens reached)", messages
+
+        return "Max iterations reached", messages</code></pre>
+
+<h2 id="conversation-mgmt">Conversation History Management</h2>
+<pre><code class="language-python">from anthropic import Anthropic
+
+client = Anthropic()
+
+class ConversationManager:
+    def __init__(self, max_tokens_in_context: int = 100000):
+        self.messages = []
+        self.max_tokens = max_tokens_in_context
+
+    def estimate_tokens(self, messages: list) -> int:
+        """Rough token estimate (actual counting requires tokenizer)"""
+        total_chars = sum(
+            len(str(m.get("content", ""))) for m in messages
+        )
+        return total_chars // 4  # ~4 chars per token
+
+    def trim_history(self):
+        """Keep messages within token budget"""
+        while (len(self.messages) > 2 and
+               self.estimate_tokens(self.messages) > self.max_tokens):
+            # Remove oldest non-system pair (keep alternating structure)
+            if len(self.messages) >= 2:
+                self.messages.pop(0)  # Remove oldest user
+                self.messages.pop(0)  # Remove oldest assistant
+
+    def summarize_old_messages(self, keep_recent: int = 6):
+        """Compress old history into a summary"""
+        if len(self.messages) <= keep_recent:
+            return
+        old_messages = self.messages[:-keep_recent]
+        summary_prompt = "Summarize this conversation in 3-4 sentences: " + \
+            " | ".join(f"{m['role']}: {str(m['content'])[:200]}" for m in old_messages)
+
+        summary_response = client.messages.create(
+            model="claude-3-5-haiku-20241022",
+            max_tokens=512,
+            messages=[{"role": "user", "content": summary_prompt}]
+        )
+        summary = summary_response.content[0].text
+        self.messages = [
+            {"role": "user", "content": f"Previous conversation summary: {summary}"},
+            {"role": "assistant", "content": "Understood. I'll keep that context in mind."}
+        ] + self.messages[-keep_recent:]
+
+    def chat(self, user_input: str, system: str = "") -> str:
+        self.messages.append({"role": "user", "content": user_input})
+        self.trim_history()
+
+        response = client.messages.create(
+            model="claude-3-5-sonnet-20241022",
+            max_tokens=2048,
+            system=system,
+            messages=self.messages
+        )
+        assistant_reply = response.content[0].text
+        self.messages.append({"role": "assistant", "content": assistant_reply})
+        return assistant_reply</code></pre>
+
+<h2 id="best-practices">Prompt Engineering Best Practices</h2>
+<pre><code class="language-python"># 1. XML tags for structure — Claude trained to understand XML structure
+SYSTEM_PROMPT = """You are a code reviewer. Analyze the code and provide structured feedback.
+
+Format your response as:
+<analysis>
+  <summary>Brief overall assessment</summary>
+  <issues>
+    <issue severity="high|medium|low">Issue description</issue>
+  </issues>
+  <suggestions>Improvement suggestions</suggestions>
+</analysis>"""
+
+# 2. Chain of thought — explicit reasoning
+COT_PROMPT = """Analyze this business decision.
+
+Think through this step-by-step:
+1. What are the key factors?
+2. What are the risks?
+3. What are the alternatives?
+4. What is your recommendation?
+
+<decision>
+{decision_text}
+</decision>"""
+
+# 3. Persona + expertise
+EXPERT_PROMPT = """You are a Senior Software Architect with 15 years of experience at
+FAANG companies. You are reviewing a junior developer's code design proposal.
+Be specific, actionable, and reference industry best practices."""
+
+# 4. Output format specification
+FORMAT_PROMPT = """Extract the following from the resume and return ONLY valid JSON:
+{
+  "name": "string",
+  "email": "string",
+  "skills": ["list", "of", "skills"],
+  "years_experience": number,
+  "education": [{"degree": "string", "institution": "string", "year": number}]
+}
+
+Resume:
+{resume_text}"""
+
+# 5. Few-shot examples
+FEW_SHOT_PROMPT = """Convert natural language to SQL. Examples:
+
+User: Show me all customers from California
+SQL: SELECT * FROM customers WHERE state = 'CA'
+
+User: Find orders over $500 from last month
+SQL: SELECT * FROM orders WHERE total > 500 AND created_at >= DATE_SUB(NOW(), INTERVAL 1 MONTH)
+
+User: {user_query}
+SQL:"""
+
+# 6. Role-based prompting for safety
+SAFE_EXTRACTION = """You are a data extraction assistant. Extract ONLY the requested
+information from the provided text. Do not add, infer, or generate information not
+explicitly present in the source text. If information is not present, return null for that field."""</code></pre>
+
+<h2 id="sdk">SDK Reference</h2>
+<pre><code class="language-python"># Python SDK — Async with error handling
+import anthropic
+import asyncio
+from anthropic import AsyncAnthropic
+
+async def advanced_usage():
+    # AsyncAnthropic for high-throughput applications
+    async_client = AsyncAnthropic(
+        api_key="YOUR_KEY",
+        max_retries=3,      # Auto-retry on 529/529 errors
+        timeout=60.0,       # 60 second timeout
+        default_headers={"X-Custom-Header": "value"}
+    )
+
+    # Concurrent requests
+    tasks = [
+        async_client.messages.create(
+            model="claude-3-5-haiku-20241022",
+            max_tokens=256,
+            messages=[{"role": "user", "content": f"Question {i}"}]
+        )
+        for i in range(10)
+    ]
+    responses = await asyncio.gather(*tasks)
+
+    # Count tokens before sending
+    token_count = await async_client.messages.count_tokens(
+        model="claude-3-5-sonnet-20241022",
+        messages=[{"role": "user", "content": "Large document here..."}]
+    )
+    print(f"Input tokens: {token_count.input_tokens}")
+
+# Error handling
+from anthropic import APIConnectionError, RateLimitError, APIStatusError
+
+try:
+    response = client.messages.create(...)
+except RateLimitError:
+    print("Rate limited — back off and retry")
+except APIConnectionError:
+    print("Network error")
+except APIStatusError as e:
+    print(f"API error {e.status_code}: {e.message}")</code></pre>
+
+<pre><code class="language-typescript">// TypeScript SDK — advanced usage
+import Anthropic from "@anthropic-ai/sdk";
+import { MessageParam } from "@anthropic-ai/sdk/resources/messages";
+
+const client = new Anthropic({
+  apiKey: process.env.ANTHROPIC_API_KEY,
+  maxRetries: 3,
+  timeout: 60000,
+});
+
+// Strongly typed conversation history
+const messages: MessageParam[] = [];
+
+async function chat(userInput: string): Promise<string> {
+  messages.push({ role: "user", content: userInput });
+
+  const response = await client.messages.create({
+    model: "claude-3-5-sonnet-20241022",
+    max_tokens: 1024,
+    messages,
+  });
+
+  const assistantMessage = response.content[0].type === "text"
+    ? response.content[0].text : "";
+
+  messages.push({ role: "assistant", content: assistantMessage });
+  return assistantMessage;
+}
+
+// Token counting (TypeScript)
+const count = await client.messages.countTokens({
+  model: "claude-3-5-sonnet-20241022",
+  messages: [{ role: "user", content: "Hello" }],
+});
+console.log(count.input_tokens);</code></pre>
+
+<h2 id="interview">Interview Questions &amp; Answers</h2>
+
+<details>
+<summary>Q1: What are the key differences between Claude Haiku, Sonnet, and Opus? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<table>
+  <tr><th>Model</th><th>Speed</th><th>Cost</th><th>Capability</th><th>Best For</th></tr>
+  <tr><td>Haiku 3.5</td><td>Fastest (300 tok/s)</td><td>Cheapest ($0.80/MTok)</td><td>Good</td><td>Classification, routing, high-volume</td></tr>
+  <tr><td>Sonnet 3.5</td><td>Fast (80 tok/s)</td><td>Medium ($3/MTok)</td><td>Very Good</td><td>General use, RAG, coding, analysis</td></tr>
+  <tr><td>Opus 4</td><td>Moderate</td><td>Most ($15/MTok)</td><td>Best</td><td>Complex reasoning, research, creative</td></tr>
+</table>
+<p><strong>Rule of thumb:</strong> Default to Sonnet 3.5. Switch to Haiku when cost/speed is critical. Switch to Opus when output quality is paramount and you've confirmed Sonnet doesn't meet the bar.</p>
+</div>
+</details>
+
+<details>
+<summary>Q2: How does prompt caching work and when should you use it? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>Prompt caching stores specific prompt sections on Anthropic's infrastructure. When the same content is used again, you pay ~10% of the normal input price for cached tokens.</p>
+<p><strong>When to use:</strong></p>
+<ul>
+  <li>Large static system prompts (&gt;1024 tokens) reused across many requests</li>
+  <li>Long documents/codebases sent with multiple questions</li>
+  <li>Few-shot examples that don't change</li>
+  <li>Multi-turn conversations with the same large context</li>
+</ul>
+<p><strong>How:</strong> Add <code>"cache_control": {"type": "ephemeral"}</code> to the content block you want cached. The system matches on exact prefix — everything up to the cache_control marker is cached.</p>
+<p><strong>TTL:</strong> 5 minutes for ephemeral. The cache refreshes on each hit, so continuous use keeps it alive.</p>
+</div>
+</details>
+
+<details>
+<summary>Q3: Explain the tool_use content block lifecycle in a multi-turn conversation. <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>When Claude wants to use a tool:</p>
+<ol>
+  <li>Claude returns <code>stop_reason="tool_use"</code> and content contains both text and tool_use blocks</li>
+  <li>You add the assistant's full content (text + tool_use blocks) as the next "assistant" message</li>
+  <li>You execute the tools, get results</li>
+  <li>You add a "user" message with content = list of <code>tool_result</code> blocks (matching tool_use_id)</li>
+  <li>Claude receives the results and continues generation</li>
+</ol>
+<p>The conversation structure must alternate user/assistant strictly. Tool results are sent as a "user" message — this is why you must include both the assistant's tool_use blocks AND the tool results in the conversation history.</p>
+</div>
+</details>
+
+<details>
+<summary>Q4: What is the difference between stop_reason "end_turn" and "tool_use"? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<ul>
+  <li><strong>end_turn:</strong> Claude finished naturally — final response is complete. Extract text content and return to user.</li>
+  <li><strong>tool_use:</strong> Claude wants to call one or more tools. You must execute the tools and return results before Claude can continue. Do NOT show this response to the user.</li>
+  <li><strong>max_tokens:</strong> Response was cut off. Consider increasing max_tokens or handling partial responses.</li>
+  <li><strong>stop_sequence:</strong> Claude generated a custom stop sequence you specified in stop_sequences parameter.</li>
+</ul>
+</div>
+</details>
+
+<details>
+<summary>Q5: How does extended thinking differ from standard Claude responses? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>Standard: Claude generates the response in one pass, mixing reasoning and output implicitly.</p>
+<p>Extended thinking: Claude explicitly reasons in "thinking" blocks (visible as <code>type="thinking"</code> in content) before producing the final text. The thinking is more thorough, structured, and exploratory.</p>
+<p><strong>budget_tokens:</strong> Controls how many tokens Claude can use for thinking. Larger budget = more thorough reasoning, higher cost and latency. The total max_tokens must exceed budget_tokens.</p>
+<p><strong>Use cases:</strong> Multi-step math, complex coding problems, strategic planning, tasks where Claude needs to consider multiple approaches before committing.</p>
+<p><strong>Tradeoff:</strong> 2-3x latency and cost for complex tasks. For simple tasks, the thinking adds overhead without benefit.</p>
+</div>
+</details>
+
+<details>
+<summary>Q6: How do you handle rate limits and retries in a production Claude application? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<pre><code class="language-python">import anthropic
+import time
+import random
+
+client = anthropic.Anthropic(max_retries=0)  # Disable SDK auto-retry, handle manually
+
+def call_with_retry(fn, max_retries=5):
+    for attempt in range(max_retries):
+        try:
+            return fn()
+        except anthropic.RateLimitError as e:
+            if attempt == max_retries - 1:
+                raise
+            # Exponential backoff with jitter
+            wait = (2 ** attempt) + random.uniform(0, 1)
+            print(f"Rate limited. Waiting {wait:.1f}s...")
+            time.sleep(wait)
+        except anthropic.APIConnectionError:
+            if attempt == max_retries - 1:
+                raise
+            time.sleep(5)
+        except anthropic.APIStatusError as e:
+            if e.status_code == 529:  # Overloaded
+                time.sleep(30)
+            else:
+                raise</code></pre>
+<p>Also use the Batch API for non-real-time workloads — 50% cheaper, no rate limit concerns for bulk processing.</p>
+</div>
+</details>
+
+<details>
+<summary>Q7: What is MCP (Model Context Protocol) and why was it created? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>MCP is an open protocol by Anthropic for connecting AI models to data sources and tools in a standardized way.</p>
+<p><strong>Problem before MCP:</strong> Every AI application needed custom integrations for each tool (database connector, API client, file reader). N tools × M applications = N×M integrations to build and maintain.</p>
+<p><strong>MCP solution:</strong> Standardized client-server protocol. Build one MCP server for a tool, works with any MCP client (Claude Desktop, IDE plugins, custom apps).</p>
+<p><strong>Components:</strong></p>
+<ul>
+  <li>MCP Server: exposes tools, resources, and prompts via the protocol</li>
+  <li>MCP Client: connects to servers (Claude Desktop, Cursor IDE)</li>
+  <li>MCP Host: application embedding the client</li>
+</ul>
+</div>
+</details>
+
+<details>
+<summary>Q8: How do you implement streaming in a web application with Server-Sent Events? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<pre><code class="language-python">from fastapi import FastAPI
+from fastapi.responses import StreamingResponse
+import anthropic
+
+app = FastAPI()
+client = anthropic.Anthropic()
+
+@app.post("/stream")
+async def stream_response(request: dict):
+    async def generate():
+        with client.messages.stream(
+            model="claude-3-5-sonnet-20241022",
+            max_tokens=2048,
+            messages=[{"role": "user", "content": request["message"]}]
+        ) as stream:
+            for text in stream.text_stream:
+                yield f"data: {text}\n\n"
+            yield "data: [DONE]\n\n"
+
+    return StreamingResponse(generate(),
+        media_type="text/event-stream",
+        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"})
+
+# Frontend (JS):
+# const evtSource = new EventSource('/stream');
+# evtSource.onmessage = (e) => {
+#   if (e.data === '[DONE]') { evtSource.close(); return; }
+#   document.getElementById('output').textContent += e.data;
+# };</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q9: What are the best practices for structuring system prompts for agentic applications? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p><strong>Effective agentic system prompt structure:</strong></p>
+<ol>
+  <li><strong>Role and persona:</strong> "You are [role] with [expertise]. Your goal is [objective]."</li>
+  <li><strong>Capabilities:</strong> List available tools and when to use each</li>
+  <li><strong>Constraints:</strong> What Claude should NOT do ("Never delete files without confirmation")</li>
+  <li><strong>Output format:</strong> How to structure responses</li>
+  <li><strong>Error handling:</strong> "If uncertain, ask for clarification rather than proceeding"</li>
+  <li><strong>Context:</strong> Relevant domain knowledge as cached content</li>
+</ol>
+<p><strong>Use XML tags:</strong> <code>&lt;role&gt;</code>, <code>&lt;tools&gt;</code>, <code>&lt;constraints&gt;</code> — Claude is specifically trained on this format.</p>
+<p><strong>Cache large context:</strong> Put static knowledge base content with cache_control. Only the last few turns need to be fresh.</p>
+</div>
+</details>
+
+<details>
+<summary>Q10: Explain token counting and why it matters for cost optimization. <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<pre><code class="language-python"># Count tokens BEFORE sending to estimate cost
+token_response = client.messages.count_tokens(
+    model="claude-3-5-sonnet-20241022",
+    system="Your system prompt here",
+    messages=[{"role": "user", "content": your_message}]
+)
+estimated_input_tokens = token_response.input_tokens
+estimated_cost = (estimated_input_tokens / 1_000_000) * 3.00  # Sonnet input price
+
+# Strategies to reduce tokens (and cost):
+# 1. Prompt caching for repeated context (90% savings on cached portions)
+# 2. Use Haiku for simple tasks (4x cheaper than Sonnet)
+# 3. Compress context — summarize old conversation history
+# 4. Reduce system prompt verbosity while maintaining clarity
+# 5. Batch API for non-real-time work (50% savings)
+# 6. Limit max_tokens to what you actually need</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q11: How do you use tool_choice to control Claude's tool behavior? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<table>
+  <tr><th>tool_choice</th><th>Behavior</th><th>Use When</th></tr>
+  <tr><td><code>{"type": "auto"}</code></td><td>Claude decides whether and which tool to use</td><td>Default, most flexible</td></tr>
+  <tr><td><code>{"type": "any"}</code></td><td>Must use at least one tool (any)</td><td>Ensuring grounded response (not just hallucination)</td></tr>
+  <tr><td><code>{"type": "tool", "name": "X"}</code></td><td>Must use exactly tool X</td><td>Structured data extraction, forcing specific workflow step</td></tr>
+  <tr><td><code>{"type": "none"}</code></td><td>No tools, plain text response</td><td>Conversational turns where tools not needed</td></tr>
+</table>
+<p><strong>Tip:</strong> Use <code>{"type": "tool", "name": "extract_data"}</code> with a Pydantic-like schema tool for reliable structured extraction — more reliable than asking Claude to output JSON in text.</p>
+</div>
+</details>
+
+<details>
+<summary>Q12: What is the Batch API and when is it appropriate vs real-time Messages API? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<table>
+  <tr><th>Dimension</th><th>Messages API</th><th>Batch API</th></tr>
+  <tr><td>Latency</td><td>Seconds</td><td>Up to 24 hours</td></tr>
+  <tr><td>Cost</td><td>Full price</td><td>50% cheaper</td></tr>
+  <tr><td>Max requests</td><td>Rate limited</td><td>10,000 per batch</td></tr>
+  <tr><td>Use case</td><td>User-facing chat, real-time</td><td>Bulk classification, offline processing</td></tr>
+</table>
+<p><strong>Good Batch API use cases:</strong></p>
+<ul>
+  <li>Classifying thousands of customer reviews overnight</li>
+  <li>Generating product descriptions for catalog</li>
+  <li>Summarizing a year's worth of documents</li>
+  <li>Running evals against large test sets</li>
+  <li>Data transformation pipelines</li>
+</ul>
+</div>
+</details>
+
+<details>
+<summary>Q13: How do you implement a reliable extraction pipeline using Claude's structured output? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<pre><code class="language-python">from pydantic import BaseModel, Field
+from typing import Optional, List
+import anthropic
+import json
+
+class ExtractedInvoice(BaseModel):
+    invoice_number: str
+    vendor_name: str
+    date: str  # YYYY-MM-DD
+    total_amount: float
+    line_items: List[dict]
+    payment_terms: Optional[str]
+
+# Method 1: Force tool use with the schema
+def extract_invoice_via_tool(text: str) -> ExtractedInvoice:
+    client = anthropic.Anthropic()
+    response = client.messages.create(
+        model="claude-3-5-sonnet-20241022",
+        max_tokens=1024,
+        tools=[{
+            "name": "extract_invoice",
+            "description": "Extract invoice data from text",
+            "input_schema": ExtractedInvoice.model_json_schema()
+        }],
+        tool_choice={"type": "tool", "name": "extract_invoice"},
+        messages=[{"role": "user",
+                   "content": f"Extract invoice data:\n\n{text}"}]
+    )
+    tool_use = next(b for b in response.content if b.type == "tool_use")
+    return ExtractedInvoice(**tool_use.input)
+
+# Method 2: Retry on validation failure
+def extract_with_retry(text: str, max_retries: int = 3) -> ExtractedInvoice:
+    errors = []
+    for attempt in range(max_retries):
+        try:
+            result = extract_invoice_via_tool(text)
+            return result
+        except Exception as e:
+            errors.append(str(e))
+            # Tell Claude about the error on next attempt
+            text = f"Previous attempt failed: {e}\nPlease fix and retry.\n\n{text}"
+    raise ValueError(f"Extraction failed after {max_retries} attempts: {errors}")</code></pre>
+</div>
+</details>
+
+<details>
+<summary>Q14: What are the security considerations when building Claude-powered applications? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<ul>
+  <li><strong>API key security:</strong> Never expose API key in frontend code. Always call Claude from server-side. Use environment variables.</li>
+  <li><strong>Prompt injection:</strong> Sanitize user input before including in prompts. Use XML tags to clearly demarcate user content from instructions.</li>
+  <li><strong>Jailbreak resistance:</strong> System prompt with clear prohibitions. Use metadata.user_id to help Anthropic's safety systems. Add content filtering layer.</li>
+  <li><strong>Data privacy:</strong> Claude processes data you send — don't send PII unless necessary. Use prompt caching for system context (not user data).</li>
+  <li><strong>Output validation:</strong> Never execute Claude's code output directly. Parse and validate structured outputs before using them.</li>
+  <li><strong>Rate limiting per user:</strong> Implement your own rate limiting to prevent abuse of your Claude integration.</li>
+  <li><strong>Audit logging:</strong> Log all inputs/outputs with user IDs for compliance and debugging.</li>
+</ul>
+</div>
+</details>
+
+<details>
+<summary>Q15: How do you optimize Claude for a production RAG system to minimize hallucinations? <span class="badge very-advanced">Very Advanced</span></summary>
+<div class="answer">
+<pre><code class="language-python">ANTI_HALLUCINATION_SYSTEM = """You are a question-answering assistant.
+
+CRITICAL RULES:
+1. Answer ONLY using information from the provided <context> tags
+2. If the context doesn't contain enough information, say exactly: "I don't have enough information in the provided context to answer this question."
+3. Never infer, extrapolate, or use prior knowledge beyond the context
+4. Always cite your sources: "According to [source name], ..."
+5. If asked for a specific fact (number, date, name) that isn't in context, say it's not available
+
+<context>
+{retrieved_context}
+</context>"""
+
+# Additional techniques:
+# 1. Temperature = 0 for factual RAG (deterministic)
+# 2. Ask Claude to list confidence: "Rate your confidence 1-5"
+# 3. Use extended thinking to reason about whether context supports the claim
+# 4. Post-process: extract citations and verify they appear in retrieved docs
+# 5. Self-critique: ask Claude "Does your answer contradict the context?"</code></pre>
+<p>The most effective mitigation: combine good retrieval (get the right context), structured anti-hallucination prompting, and output verification (check that stated facts appear in retrieved documents).</p>
+</div>
+</details>
+
+</main>
+</div>
+<footer>Dinesh Kumar's Learning Hub | 2024-2025</footer>
+<script>hljs.highlightAll();mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

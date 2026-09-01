@@ -1,0 +1,1435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CI/CD & Jenkins — Comprehensive Learning Reference</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6;display:flex;flex-direction:column}.topnav{background:#161b22;padding:10px 24px;border-bottom:1px solid #30363d;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100}.topnav a{color:#58a6ff;text-decoration:none;font-size:13px}.topnav h1{font-size:16px;color:#e6edf3;margin:0}.layout{display:flex;flex:1}.sidebar{width:260px;background:#161b22;border-right:1px solid #30363d;padding:16px;position:sticky;top:41px;height:calc(100vh - 41px);overflow-y:auto;flex-shrink:0}.sidebar a{display:block;padding:4px 8px;color:#8b949e;text-decoration:none;font-size:13px;border-radius:4px;margin-bottom:2px}.sidebar a:hover{background:#21262d;color:#c9d1d9}.sidebar .section-title{color:#58a6ff;font-size:11px;text-transform:uppercase;letter-spacing:.5px;margin:16px 0 6px;padding:0 8px;font-weight:600}main{flex:1;padding:32px 48px;max-width:960px}h1{font-size:2rem;color:#e6edf3;border-bottom:1px solid #30363d;padding-bottom:16px;margin-bottom:24px}h2{font-size:1.5rem;color:#e6edf3;margin:48px 0 16px;border-bottom:1px solid #21262d;padding-bottom:8px}h3{font-size:1.15rem;color:#79c0ff;margin:24px 0 10px}h4{font-size:1rem;color:#d2a8ff;margin:16px 0 8px}p{margin-bottom:12px}ul,ol{margin:0 0 16px 24px}li{margin-bottom:4px}pre{margin:16px 0;border-radius:6px;overflow-x:auto;font-size:13px}code:not(pre code){background:#161b22;padding:2px 6px;border-radius:4px;font-size:13px;color:#f0883e;border:1px solid #30363d}table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}th{background:#161b22;color:#58a6ff;padding:10px 14px;text-align:left;border:1px solid #30363d}td{padding:10px 14px;border:1px solid #30363d;vertical-align:top}tr:nth-child(even) td{background:#0a0d12}.mermaid{background:#161b22;padding:20px;border-radius:6px;margin:16px 0;text-align:center}details{border:1px solid #30363d;border-radius:6px;margin:10px 0;overflow:hidden}summary{padding:12px 16px;cursor:pointer;background:#161b22;color:#79c0ff;font-weight:600;list-style:none}details[open] summary{border-bottom:1px solid #30363d}.answer{padding:16px 20px;background:#0d1117}.badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:700;margin-left:8px}.easy{background:#1a4731;color:#3fb950}.intermediate{background:#2d2b00;color:#e3b341}.advanced{background:#3d1f00;color:#f0883e}.very-advanced{background:#3d0000;color:#ff7b72}.callout{background:#161b22;border-left:4px solid #58a6ff;padding:12px 16px;border-radius:0 6px 6px 0;margin:16px 0}footer{text-align:center;padding:24px;color:#8b949e;font-size:12px;border-top:1px solid #30363d;margin-top:40px}
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <h1>⚙ CI/CD & Jenkins — Comprehensive Learning Reference</h1>
+  <a href="docker.html">Docker</a>
+  <a href="kubernetes.html">Kubernetes</a>
+  <a href="aws.html">AWS</a>
+</nav>
+<div class="layout">
+<aside class="sidebar">
+  <div class="section-title">Fundamentals</div>
+  <a href="#cicd-concepts">CI vs CD vs CD</a>
+  <a href="#principles">CI/CD Principles</a>
+  <div class="section-title">Source Control</div>
+  <a href="#gitflow">GitFlow</a>
+  <a href="#trunk">Trunk-Based Dev</a>
+  <div class="section-title">Build & Test</div>
+  <a href="#build-tools">Build Tools</a>
+  <a href="#test-pyramid">Test Pyramid</a>
+  <div class="section-title">Quality & Security</div>
+  <a href="#sonarqube">SonarQube</a>
+  <a href="#security-scanning">Security Scanning</a>
+  <div class="section-title">Artifacts</div>
+  <a href="#artifacts">Artifact Management</a>
+  <div class="section-title">Deployment</div>
+  <a href="#deploy-strategies">Deployment Strategies</a>
+  <div class="section-title">GitHub Actions</div>
+  <a href="#github-actions">GitHub Actions</a>
+  <div class="section-title">GitLab CI</div>
+  <a href="#gitlab-ci">GitLab CI</a>
+  <div class="section-title">Jenkins</div>
+  <a href="#jenkins">Jenkins Architecture</a>
+  <a href="#jenkinsfile">Jenkinsfile</a>
+  <a href="#jenkins-shared">Shared Libraries</a>
+  <div class="section-title">GitOps</div>
+  <a href="#argocd">ArgoCD</a>
+  <div class="section-title">IaC</div>
+  <a href="#terraform">Terraform</a>
+  <div class="section-title">SDLC</div>
+  <a href="#sdlc">SDLC Methodologies</a>
+  <div class="section-title">Interview</div>
+  <a href="#interview">Q&amp;A</a>
+</aside>
+<main>
+<h1>CI/CD & Jenkins — Comprehensive Learning Reference</h1>
+
+<!-- ============================================================ -->
+<h2 id="cicd-concepts">CI vs CD vs CD</h2>
+
+<div class="mermaid">
+graph LR
+  DEV[Developer<br/>Code Commit]
+  CI[Continuous Integration<br/>Build + Unit Test + Lint]
+  CDE[Continuous Delivery<br/>Integration Test + UAT<br/>Staging Deploy]
+  CDP[Continuous Deployment<br/>Auto Deploy to Production]
+  DEV --> CI --> CDE --> CDP
+</div>
+
+<table>
+  <tr><th>Practice</th><th>Definition</th><th>Human Approval?</th></tr>
+  <tr><td><strong>Continuous Integration (CI)</strong></td><td>Automatically build and test code on every commit. Catch integration bugs early.</td><td>No</td></tr>
+  <tr><td><strong>Continuous Delivery (CD)</strong></td><td>CI + automatically deploy to staging/test environments. Production deploy is MANUAL approval.</td><td>Yes — for production</td></tr>
+  <tr><td><strong>Continuous Deployment (CDP)</strong></td><td>CI + automatically deploy to production on every commit that passes all tests. No human gate.</td><td>No</td></tr>
+</table>
+
+<div class="callout">
+  <strong>Key distinction:</strong> Continuous Delivery = ability to deploy anytime (human decides when). Continuous Deployment = every passing commit automatically goes to production.
+</div>
+
+<!-- ============================================================ -->
+<h2 id="principles">CI/CD Principles & Benefits</h2>
+
+<h3>Core Principles</h3>
+<ul>
+  <li><strong>Everything as Code</strong> — Pipeline definitions, infrastructure, configuration all in version control</li>
+  <li><strong>Fast feedback</strong> — Build/test failures detected within minutes, not days</li>
+  <li><strong>Small batches</strong> — Commit and deploy frequently (reduce risk per change)</li>
+  <li><strong>Fail fast</strong> — Run fastest checks first (lint → unit tests → integration tests)</li>
+  <li><strong>Idempotent deployments</strong> — Same artifact deployed the same way every time</li>
+  <li><strong>Single source of truth</strong> — Git is the source of truth for code AND infrastructure</li>
+  <li><strong>Immutable artifacts</strong> — Build once, deploy the same artifact through all environments</li>
+</ul>
+
+<h3>Benefits</h3>
+<ul>
+  <li>Reduced time to market (release faster)</li>
+  <li>Higher quality (bugs caught earlier when cost to fix is lower)</li>
+  <li>Reduced risk (smaller changes = easier rollback)</li>
+  <li>Developer productivity (no manual deployments)</li>
+  <li>Consistent environments (infra as code)</li>
+</ul>
+
+<!-- ============================================================ -->
+<h2 id="gitflow">GitFlow</h2>
+
+<div class="mermaid">
+gitGraph
+  commit id: "initial"
+  branch develop
+  checkout develop
+  commit id: "dev work"
+  branch feature/login
+  checkout feature/login
+  commit id: "login feature"
+  commit id: "tests"
+  checkout develop
+  merge feature/login id: "merge feature"
+  branch release/1.0
+  checkout release/1.0
+  commit id: "release prep"
+  checkout main
+  merge release/1.0 id: "release" tag: "v1.0"
+  checkout develop
+  merge release/1.0
+  checkout main
+  branch hotfix/bug
+  commit id: "hotfix"
+  checkout main
+  merge hotfix/bug tag: "v1.0.1"
+  checkout develop
+  merge hotfix/bug
+</div>
+
+<h3>GitFlow Branches</h3>
+<table>
+  <tr><th>Branch</th><th>Purpose</th><th>Source</th><th>Merges Into</th></tr>
+  <tr><td><strong>main/master</strong></td><td>Production-ready code</td><td>—</td><td>—</td></tr>
+  <tr><td><strong>develop</strong></td><td>Integration branch for features</td><td>main</td><td>—</td></tr>
+  <tr><td><strong>feature/*</strong></td><td>New features</td><td>develop</td><td>develop</td></tr>
+  <tr><td><strong>release/*</strong></td><td>Release preparation (bug fixes, version bump)</td><td>develop</td><td>main + develop</td></tr>
+  <tr><td><strong>hotfix/*</strong></td><td>Emergency production fixes</td><td>main</td><td>main + develop</td></tr>
+</table>
+
+<h3>Pros and Cons of GitFlow</h3>
+<ul>
+  <li><strong>Pro:</strong> Clear structure, works well for scheduled releases, parallel development</li>
+  <li><strong>Con:</strong> Complex, hard to maintain for CI/CD, long-lived branches cause merge conflicts</li>
+</ul>
+
+<!-- ============================================================ -->
+<h2 id="trunk">Trunk-Based Development</h2>
+<p>All developers integrate to a single branch (trunk/main) at least daily. Feature branches are short-lived (hours to 1-2 days max).</p>
+
+<h3>Feature Flags</h3>
+<p>Allow merging incomplete features to trunk without exposing them to users. Flags enable/disable features at runtime.</p>
+<ul>
+  <li><strong>Release flags</strong> — Enable for testing, disable for users until ready</li>
+  <li><strong>Experiment flags</strong> — A/B testing</li>
+  <li><strong>Ops flags</strong> — Kill switches for failing features</li>
+  <li><strong>Permission flags</strong> — Enable for specific user groups</li>
+</ul>
+<pre><code class="language-javascript">// Feature flag check
+if (featureFlags.isEnabled('new-checkout-flow', userId)) {
+  return newCheckoutFlow();
+} else {
+  return legacyCheckoutFlow();
+}</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="build-tools">Build Tools</h2>
+
+<table>
+  <tr><th>Tool</th><th>Language/Ecosystem</th><th>Key Concepts</th></tr>
+  <tr><td><strong>Maven</strong></td><td>Java/JVM</td><td>POM.xml, lifecycles (validate/compile/test/package/verify/install/deploy), repositories (local ~/.m2, central, corporate Nexus)</td></tr>
+  <tr><td><strong>Gradle</strong></td><td>Java/Kotlin/Android</td><td>Build scripts (Groovy/Kotlin DSL), tasks, incremental builds, build cache, Gradle wrapper</td></tr>
+  <tr><td><strong>npm/yarn/pnpm</strong></td><td>JavaScript/TypeScript</td><td>package.json scripts, node_modules, lockfiles, workspaces</td></tr>
+  <tr><td><strong>make</strong></td><td>Universal</td><td>Makefile, targets, dependencies, phony targets; used as build orchestrator</td></tr>
+  <tr><td><strong>bazel</strong></td><td>Multi-language (Google)</td><td>Hermetic builds, extreme caching, monorepo support</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<h2 id="test-pyramid">Test Pyramid</h2>
+
+<div class="mermaid">
+graph BT
+  UT["Unit Tests<br/>Fast, isolated, many<br/>No external deps<br/>70% of tests"]
+  IT["Integration Tests<br/>Test component interactions<br/>DB, message queues<br/>20% of tests"]
+  E2E["E2E / UI Tests<br/>Full user flows<br/>Browser automation<br/>7% of tests"]
+  SM["Smoke Tests<br/>Basic sanity checks post-deploy<br/>3% of tests"]
+  UT --> IT --> E2E --> SM
+</div>
+
+<table>
+  <tr><th>Test Type</th><th>Speed</th><th>Scope</th><th>Tools</th></tr>
+  <tr><td><strong>Unit</strong></td><td>Milliseconds</td><td>Single function/class</td><td>JUnit, Jest, pytest, Mocha</td></tr>
+  <tr><td><strong>Integration</strong></td><td>Seconds</td><td>Multiple components + DB/queue</td><td>Testcontainers, Spring Test</td></tr>
+  <tr><td><strong>E2E</strong></td><td>Minutes</td><td>Full user journey</td><td>Selenium, Cypress, Playwright</td></tr>
+  <tr><td><strong>Smoke</strong></td><td>Minutes</td><td>Critical paths post-deploy</td><td>Custom scripts, Postman</td></tr>
+  <tr><td><strong>Performance</strong></td><td>Minutes-Hours</td><td>Load, stress, spike testing</td><td>JMeter, Gatling, k6, Locust</td></tr>
+  <tr><td><strong>Contract</strong></td><td>Seconds</td><td>API contract between services</td><td>Pact, Spring Cloud Contract</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<h2 id="sonarqube">SonarQube — Code Quality</h2>
+
+<h3>Key Concepts</h3>
+<ul>
+  <li><strong>Quality Gate</strong> — Pass/fail criteria for the build (e.g., coverage &gt; 80%, no new critical bugs). If quality gate fails, pipeline stops.</li>
+  <li><strong>Quality Profile</strong> — Set of active rules for a language</li>
+  <li><strong>Code Smells</strong> — Maintainability issues (long methods, duplicated code, complex logic)</li>
+  <li><strong>Bugs</strong> — Code issues likely to cause runtime errors</li>
+  <li><strong>Vulnerabilities</strong> — Security hotspots (XSS, SQL injection patterns)</li>
+  <li><strong>Technical Debt</strong> — Estimated time to fix all code smells</li>
+  <li><strong>Coverage</strong> — % of code exercised by unit tests</li>
+  <li><strong>Duplications</strong> — % of duplicated code blocks</li>
+</ul>
+
+<pre><code class="language-yaml"># SonarQube in GitHub Actions
+- name: SonarQube Scan
+  uses: SonarSource/sonarqube-scan-action@master
+  env:
+    SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+  with:
+    args: >
+      -Dsonar.projectKey=my-project
+      -Dsonar.sources=src
+      -Dsonar.tests=tests
+      -Dsonar.coverage.exclusions=**/*.test.js
+      -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+
+- name: Quality Gate Check
+  uses: SonarSource/sonarqube-quality-gate-action@master
+  timeout-minutes: 5
+  env:
+    SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="security-scanning">Security Scanning</h2>
+
+<table>
+  <tr><th>Category</th><th>Tools</th><th>What it scans</th></tr>
+  <tr><td><strong>SAST</strong> (Static)</td><td>Checkmarx, SonarQube, Semgrep, CodeQL, SpotBugs</td><td>Source code for vulnerabilities (SQL injection, XSS, hardcoded secrets)</td></tr>
+  <tr><td><strong>DAST</strong> (Dynamic)</td><td>OWASP ZAP, Burp Suite, Nuclei</td><td>Running application — active attacks simulation</td></tr>
+  <tr><td><strong>SCA</strong> (Dependencies)</td><td>Snyk, Dependabot, OWASP Dependency-Check, Trivy (fs mode)</td><td>Known CVEs in open-source dependencies</td></tr>
+  <tr><td><strong>Container Scanning</strong></td><td>Trivy, Grype, Clair, Docker Scout, Snyk Container</td><td>Docker image layers for OS + app package CVEs</td></tr>
+  <tr><td><strong>Secret Scanning</strong></td><td>GitLeaks, TruffleHog, git-secrets, GitHub Secret Scanning</td><td>Hardcoded secrets, API keys, passwords in code/git history</td></tr>
+  <tr><td><strong>IAST</strong> (Interactive)</td><td>Contrast Security, Seeker</td><td>Runtime + instrumented — hybrid of SAST+DAST</td></tr>
+</table>
+
+<pre><code class="language-yaml"># Trivy container scanning in GitHub Actions
+- name: Scan Docker image
+  uses: aquasecurity/trivy-action@master
+  with:
+    image-ref: myapp:${{ github.sha }}
+    format: sarif
+    output: trivy-results.sarif
+    severity: CRITICAL,HIGH
+    exit-code: 1         # Fail on found vulnerabilities
+
+- name: Upload Trivy results
+  uses: github/codeql-action/upload-sarif@v3
+  with:
+    sarif_file: trivy-results.sarif</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="artifacts">Artifact Management</h2>
+
+<h3>JFrog Artifactory / Sonatype Nexus Repository Types</h3>
+<table>
+  <tr><th>Repository Type</th><th>Purpose</th><th>Example</th></tr>
+  <tr><td><strong>Release</strong></td><td>Immutable, versioned releases</td><td>myapp-1.2.3.jar (never overwritten)</td></tr>
+  <tr><td><strong>Snapshot</strong></td><td>Development snapshots (can overwrite)</td><td>myapp-1.2.4-SNAPSHOT.jar</td></tr>
+  <tr><td><strong>Proxy/Cache</strong></td><td>Caches downloads from external registries</td><td>Maven Central cache, npm registry cache</td></tr>
+  <tr><td><strong>Virtual/Group</strong></td><td>Aggregates multiple repos as one URL</td><td>Unified view: release + snapshot + proxy</td></tr>
+</table>
+
+<div class="callout">
+  <strong>Immutable artifacts principle:</strong> Build once, deploy the same binary to dev → staging → production. Never rebuild for different environments. Use environment-specific config injection at runtime.
+</div>
+
+<!-- ============================================================ -->
+<h2 id="deploy-strategies">Deployment Strategies</h2>
+
+<h3>Blue/Green Deployment</h3>
+<div class="mermaid">
+graph LR
+  LB[Load Balancer]
+  BLUE[Blue Environment<br/>v1 - Current Production]
+  GREEN[Green Environment<br/>v2 - New Version]
+  LB -->|100% traffic| BLUE
+  LB -.->|switch to green| GREEN
+</div>
+<ul>
+  <li>Run two identical production environments (blue = current, green = new)</li>
+  <li>Deploy to green, run smoke tests, then switch LB to green</li>
+  <li>Blue remains as instant rollback target</li>
+  <li><strong>Pros:</strong> Zero downtime, instant rollback</li>
+  <li><strong>Cons:</strong> 2x infrastructure cost during deployment</li>
+</ul>
+
+<h3>Canary Deployment</h3>
+<div class="mermaid">
+graph LR
+  LB[Load Balancer]
+  V1[v1 Pods<br/>95% traffic]
+  V2[v2 Pods - Canary<br/>5% traffic]
+  LB --> V1
+  LB --> V2
+</div>
+<ul>
+  <li>Deploy new version to a small subset of users/pods (5-10%)</li>
+  <li>Monitor metrics (errors, latency) then gradually increase traffic</li>
+  <li><strong>Pros:</strong> Low risk, real user testing, easy rollback</li>
+  <li><strong>Cons:</strong> Complex routing, monitoring critical, multiple versions running</li>
+</ul>
+
+<h3>Rolling Deployment</h3>
+<div class="mermaid">
+graph LR
+  P1[Pod v1]
+  P2[Pod v1 - Updating...]
+  P3[Pod v2]
+  P4[Pod v2]
+  P1 --> P2 --> P3 --> P4
+</div>
+<ul>
+  <li>Replace pods/instances one by one (or in batches)</li>
+  <li>Old and new versions run simultaneously during rollout</li>
+  <li><strong>Pros:</strong> No extra infrastructure, simple, Kubernetes default</li>
+  <li><strong>Cons:</strong> Slow rollback, mixed versions during rollout</li>
+</ul>
+
+<h3>Recreate</h3>
+<ul>
+  <li>Stop all old instances, then start all new instances</li>
+  <li><strong>Pros:</strong> Simple, no version mixing</li>
+  <li><strong>Cons:</strong> Downtime during deployment</li>
+</ul>
+
+<h3>A/B Testing</h3>
+<ul>
+  <li>Route specific users (based on header/cookie/region) to different versions</li>
+  <li>Statistical comparison of user behavior/conversion rates</li>
+  <li>Not for deployment but for experimentation</li>
+</ul>
+
+<!-- ============================================================ -->
+<h2 id="github-actions">GitHub Actions</h2>
+
+<pre><code class="language-yaml">name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:          # Manual trigger
+    inputs:
+      environment:
+        description: "Deploy environment"
+        required: true
+        default: "staging"
+        type: choice
+        options: [staging, production]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  # ── Test Job ────────────────────────────────────────────────
+  test:
+    runs-on: ubuntu-latest
+    services:                 # Sidecar services
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: testdb
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+    strategy:
+      matrix:                 # Matrix strategy — multiple variations
+        node-version: [18, 20]
+        os: [ubuntu-latest, windows-latest]
+      fail-fast: false        # Don't cancel other jobs on failure
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+      - run: npm ci
+      - run: npm test
+        env:
+          DATABASE_URL: postgres://test:test@localhost:5432/testdb
+      - name: Upload coverage
+        uses: codecov/codecov-action@v4
+
+  # ── Build & Push Image ──────────────────────────────────────
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      image-tag: ${{ steps.meta.outputs.tags }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=sha
+            type=semver,pattern={{version}}
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  # ── Deploy to Staging ───────────────────────────────────────
+  deploy-staging:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:              # GitHub Environment with protection rules
+      name: staging
+      url: https://staging.example.com
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure AWS credentials via OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::123456789:role/GitHubActionsRole
+          aws-region: us-east-1
+      - name: Deploy to EKS
+        run: |
+          aws eks update-kubeconfig --name my-cluster
+          kubectl set image deployment/myapp \
+            app=${{ needs.build.outputs.image-tag }}
+          kubectl rollout status deployment/myapp
+
+  # ── Deploy to Production ────────────────────────────────────
+  deploy-production:
+    needs: deploy-staging
+    runs-on: ubuntu-latest
+    environment:
+      name: production          # Requires approval from CODEOWNERS
+      url: https://example.com
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Deploy to production
+        run: echo "Deploying ${{ needs.build.outputs.image-tag }}"</code></pre>
+
+<h3>Reusable Workflows</h3>
+<pre><code class="language-yaml"># .github/workflows/reusable-deploy.yml
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+      image-tag:
+        required: true
+        type: string
+    secrets:
+      DEPLOY_TOKEN:
+        required: true
+
+# Caller workflow
+jobs:
+  deploy:
+    uses: ./.github/workflows/reusable-deploy.yml
+    with:
+      environment: staging
+      image-tag: ${{ needs.build.outputs.tag }}
+    secrets:
+      DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}</code></pre>
+
+<h3>Composite Actions</h3>
+<pre><code class="language-yaml"># .github/actions/setup-node-app/action.yml
+name: Setup Node App
+inputs:
+  node-version:
+    default: '20'
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+        cache: npm
+    - run: npm ci
+      shell: bash</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="gitlab-ci">GitLab CI</h2>
+
+<pre><code class="language-yaml"># .gitlab-ci.yml
+stages:
+  - build
+  - test
+  - scan
+  - deploy
+
+variables:
+  DOCKER_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+  DOCKER_BUILDKIT: "1"
+
+# Reusable job template
+.deploy-template: &deploy-template
+  image: bitnami/kubectl:latest
+  before_script:
+    - kubectl config use-context $KUBE_CONTEXT
+
+# ── Build Stage ─────────────────────────────────────────────
+build-image:
+  stage: build
+  image: docker:24
+  services:
+    - docker:24-dind
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build --cache-from $CI_REGISTRY_IMAGE:latest -t $DOCKER_IMAGE .
+    - docker push $DOCKER_IMAGE
+    - docker tag $DOCKER_IMAGE $CI_REGISTRY_IMAGE:latest
+    - docker push $CI_REGISTRY_IMAGE:latest
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+
+# ── Test Stage ──────────────────────────────────────────────
+unit-tests:
+  stage: test
+  image: node:20-alpine
+  cache:
+    key: $CI_COMMIT_REF_SLUG
+    paths:
+      - node_modules/
+  script:
+    - npm ci
+    - npm test -- --coverage
+  artifacts:
+    when: always
+    reports:
+      junit: junit.xml
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage/cobertura-coverage.xml
+    expire_in: 1 week
+  coverage: '/All files[^|]*\|[^|]*\s+([\d\.]+)/'
+
+# ── Security Stage ──────────────────────────────────────────
+sast:
+  stage: scan
+  include:
+    - template: Security/SAST.gitlab-ci.yml
+
+container-scanning:
+  stage: scan
+  include:
+    - template: Security/Container-Scanning.gitlab-ci.yml
+  variables:
+    CS_IMAGE: $DOCKER_IMAGE
+
+# ── Deploy Staging ──────────────────────────────────────────
+deploy-staging:
+  stage: deploy
+  <<: *deploy-template
+  environment:
+    name: staging
+    url: https://staging.example.com
+    on_stop: stop-staging
+  script:
+    - kubectl set image deployment/app app=$DOCKER_IMAGE -n staging
+    - kubectl rollout status deployment/app -n staging
+  needs:
+    - job: build-image
+    - job: unit-tests
+  rules:
+    - if: $CI_COMMIT_BRANCH == "develop"
+
+stop-staging:
+  stage: deploy
+  environment:
+    name: staging
+    action: stop
+  script:
+    - kubectl scale deployment/app --replicas=0 -n staging
+  when: manual
+  rules:
+    - if: $CI_COMMIT_BRANCH == "develop"
+
+# ── Deploy Production ───────────────────────────────────────
+deploy-production:
+  stage: deploy
+  <<: *deploy-template
+  environment:
+    name: production
+    url: https://example.com
+  script:
+    - kubectl set image deployment/app app=$DOCKER_IMAGE -n prod
+  when: manual
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="jenkins">Jenkins Architecture</h2>
+
+<div class="mermaid">
+graph TB
+  subgraph JC["Jenkins Controller"]
+    UI[Web UI / REST API]
+    JQ[Job Queue]
+    SCH[Scheduler]
+    PLG[Plugins 1800+]
+  end
+  subgraph A1["Agent 1 - Linux"]
+    E1[Executor 1]
+    E2[Executor 2]
+  end
+  subgraph A2["Agent 2 - Windows"]
+    E3[Executor 1]
+  end
+  subgraph A3["Kubernetes Agent"]
+    POD[Dynamic Pod<br/>Spun on demand]
+  end
+  JC --> A1 & A2 & A3
+  JQ --> SCH --> E1 & E2 & E3 & POD
+</div>
+
+<h3>Key Concepts</h3>
+<ul>
+  <li><strong>Controller</strong> — Central server managing configuration, jobs, scheduling</li>
+  <li><strong>Agent/Node</strong> — Machine that executes build steps; connected via JNLP or SSH</li>
+  <li><strong>Executor</strong> — A slot on an agent for running builds (concurrency = executor count)</li>
+  <li><strong>Labels</strong> — Tag agents with capabilities (linux, docker, gpu); jobs run on matching agents</li>
+  <li><strong>Workspace</strong> — Working directory on the agent where job runs</li>
+  <li><strong>Credentials</strong> — Secrets stored encrypted in Jenkins; accessed by ID</li>
+</ul>
+
+<!-- ============================================================ -->
+<h2 id="jenkinsfile">Jenkinsfile — Declarative Pipeline</h2>
+
+<pre><code class="language-groovy">// Declarative Pipeline (recommended)
+pipeline {
+  agent {
+    kubernetes {                         // Run on K8s pod
+      yaml """
+        apiVersion: v1
+        kind: Pod
+        spec:
+          containers:
+            - name: maven
+              image: maven:3.9-eclipse-temurin-17
+              command: ['sleep', 'infinity']
+            - name: docker
+              image: docker:24-dind
+              securityContext:
+                privileged: true
+      """
+      defaultContainer 'maven'
+    }
+  }
+
+  options {
+    timeout(time: 1, unit: 'HOURS')
+    buildDiscarder(logRotator(numToKeepStr: '10'))
+    skipDefaultCheckout()                // Manual checkout below
+    disableConcurrentBuilds()
+    timestamps()
+  }
+
+  environment {
+    DOCKER_REGISTRY = 'registry.company.com'
+    APP_NAME         = 'myapp'
+    // withCredentials pattern
+    SONAR_TOKEN = credentials('sonar-token')
+  }
+
+  parameters {
+    choice(name: 'DEPLOY_ENV', choices: ['dev','staging','prod'], description: 'Deploy to?')
+    booleanParam(name: 'SKIP_TESTS', defaultValue: false)
+    string(name: 'IMAGE_TAG', defaultValue: '', description: 'Override image tag')
+  }
+
+  stages {
+    stage('Checkout') {
+      steps {
+        checkout scm
+        sh "git log -1 --format='%H %s'"
+      }
+    }
+
+    stage('Build & Test') {
+      parallel {                         // Parallel stages
+        stage('Unit Tests') {
+          when {
+            not { expression { params.SKIP_TESTS } }
+          }
+          steps {
+            sh 'mvn test'
+            junit 'target/surefire-reports/*.xml'
+            jacoco()
+          }
+          post {
+            always {
+              publishHTML([
+                reportDir: 'target/site/jacoco',
+                reportFiles: 'index.html',
+                reportName: 'Code Coverage'
+              ])
+            }
+          }
+        }
+        stage('Code Analysis') {
+          steps {
+            withSonarQubeEnv('SonarQube') {
+              sh 'mvn sonar:sonar'
+            }
+          }
+        }
+      }
+    }
+
+    stage('Quality Gate') {
+      steps {
+        timeout(time: 5, unit: 'MINUTES') {
+          waitForQualityGate abortPipeline: true
+        }
+      }
+    }
+
+    stage('Package') {
+      steps {
+        sh 'mvn package -DskipTests'
+        archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+      }
+    }
+
+    stage('Docker Build & Push') {
+      steps {
+        container('docker') {
+          withCredentials([usernamePassword(
+            credentialsId: 'registry-creds',
+            usernameVariable: 'USER',
+            passwordVariable: 'PASS'
+          )]) {
+            sh """
+              docker login ${DOCKER_REGISTRY} -u ${USER} -p ${PASS}
+              docker build -t ${DOCKER_REGISTRY}/${APP_NAME}:${BUILD_NUMBER} .
+              docker push ${DOCKER_REGISTRY}/${APP_NAME}:${BUILD_NUMBER}
+            """
+          }
+        }
+      }
+    }
+
+    stage('Deploy') {
+      matrix {                           // Matrix: deploy to multiple envs
+        axes {
+          axis {
+            name 'REGION'
+            values 'us-east-1', 'eu-west-1'
+          }
+        }
+        stages {
+          stage('Deploy to Region') {
+            steps {
+              sh "deploy.sh ${REGION} ${BUILD_NUMBER}"
+            }
+          }
+        }
+      }
+    }
+
+    stage('Approval') {
+      when {
+        branch 'main'
+      }
+      steps {
+        input(
+          message: 'Deploy to Production?',
+          ok: 'Deploy',
+          submitter: 'release-managers',
+          parameters: [
+            string(name: 'RELEASE_NOTES', description: 'Release notes')
+          ]
+        )
+      }
+    }
+  }
+
+  post {
+    always {
+      cleanWs()                          // Clean workspace
+    }
+    success {
+      slackSend(
+        channel: '#deployments',
+        color: 'good',
+        message: "Build ${BUILD_NUMBER} deployed successfully"
+      )
+    }
+    failure {
+      emailext(
+        to: 'team@example.com',
+        subject: "Build FAILED: ${JOB_NAME} #${BUILD_NUMBER}",
+        body: "${BUILD_URL}"
+      )
+    }
+  }
+}</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="jenkins-shared">Jenkins Shared Libraries</h2>
+
+<pre><code class="language-text">// Repository structure: jenkins-shared-library
+vars/
+  deployApp.groovy         // Global variable (callable from Jenkinsfile)
+  buildDocker.groovy
+src/
+  org/company/
+    Utils.groovy           // Class-based helpers
+resources/
+  org/company/
+    config.yaml</code></pre>
+
+<pre><code class="language-groovy">// vars/deployApp.groovy
+def call(Map config) {
+  def defaults = [
+    namespace: 'default',
+    timeout: '5m',
+    replicas: 1
+  ]
+  def params = defaults + config
+
+  sh """
+    kubectl set image deployment/${params.appName} \
+      app=${params.image} -n ${params.namespace}
+    kubectl rollout status deployment/${params.appName} \
+      -n ${params.namespace} --timeout=${params.timeout}
+  """
+}
+
+// In Jenkinsfile — import shared library
+@Library('my-shared-library@main') _
+
+pipeline {
+  stages {
+    stage('Deploy') {
+      steps {
+        deployApp(
+          appName: 'myapp',
+          image: "registry.company.com/myapp:${BUILD_NUMBER}",
+          namespace: 'production',
+          timeout: '10m'
+        )
+      }
+    }
+  }
+}</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="argocd">ArgoCD — GitOps</h2>
+
+<h3>GitOps Principles</h3>
+<ol>
+  <li><strong>Declarative</strong> — Entire system state described declaratively</li>
+  <li><strong>Versioned</strong> — Git is the single source of truth</li>
+  <li><strong>Automatic</strong> — Approved changes are applied automatically</li>
+  <li><strong>Self-healing</strong> — Software agents reconcile actual vs desired state</li>
+</ol>
+
+<pre><code class="language-yaml"># ArgoCD Application
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: myapp
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/myorg/myapp-gitops.git
+    targetRevision: HEAD
+    path: k8s/overlays/production
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: production
+  syncPolicy:
+    automated:                  # Auto-sync when git changes
+      prune: true               # Remove resources not in git
+      selfHeal: true            # Fix drift (manual changes)
+    syncOptions:
+      - CreateNamespace=true
+      - PruneLast=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        maxDuration: 3m
+        factor: 2</code></pre>
+
+<h3>App of Apps Pattern</h3>
+<p>A parent ArgoCD Application that manages other ArgoCD Applications — enables bootstrapping an entire cluster from Git.</p>
+
+<pre><code class="language-yaml"># apps/templates/myapp.yaml (Helm chart inside an App of Apps)
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .Values.name }}
+spec:
+  source:
+    repoURL: {{ .Values.repoURL }}
+    path: {{ .Values.path }}
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: {{ .Values.namespace }}</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="terraform">Terraform Basics</h2>
+
+<pre><code class="language-hcl"># main.tf
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
+  backend "s3" {           # Remote state
+    bucket         = "my-terraform-state"
+    key            = "prod/terraform.tfstate"
+    region         = "us-east-1"
+    dynamodb_table = "terraform-locks"  # State locking
+    encrypt        = true
+  }
+}
+
+provider "aws" {
+  region = var.aws_region
+}
+
+# Variables
+variable "aws_region" {
+  type    = string
+  default = "us-east-1"
+}
+
+variable "instance_type" {
+  type    = string
+  default = "t3.micro"
+}
+
+# Resources
+resource "aws_vpc" "main" {
+  cidr_block = "10.0.0.0/16"
+  tags = {
+    Name        = "main-vpc"
+    Environment = var.environment
+  }
+}
+
+resource "aws_instance" "web" {
+  ami           = data.aws_ami.amazon_linux.id
+  instance_type = var.instance_type
+  vpc_id        = aws_vpc.main.id
+
+  tags = {
+    Name = "web-server"
+  }
+}
+
+# Data source
+data "aws_ami" "amazon_linux" {
+  most_recent = true
+  owners      = ["amazon"]
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+  }
+}
+
+# Outputs
+output "instance_public_ip" {
+  value = aws_instance.web.public_ip
+}
+
+# Module usage
+module "vpc" {
+  source  = "terraform-aws-modules/vpc/aws"
+  version = "5.0.0"
+  name    = "my-vpc"
+  cidr    = "10.0.0.0/16"
+  azs     = ["us-east-1a", "us-east-1b"]
+  private_subnets = ["10.0.1.0/24", "10.0.2.0/24"]
+  public_subnets  = ["10.0.101.0/24", "10.0.102.0/24"]
+}</code></pre>
+
+<pre><code class="language-bash">terraform init          # Initialize, download providers
+terraform plan          # Preview changes (dry run)
+terraform apply         # Apply changes
+terraform apply -auto-approve  # No interactive approval
+terraform destroy       # Destroy all resources
+terraform state list    # List resources in state
+terraform state show aws_instance.web
+terraform import aws_instance.web i-1234567890abcdef0  # Import existing
+terraform workspace new staging  # Create workspace
+terraform workspace select staging</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="sdlc">SDLC Methodologies</h2>
+
+<table>
+  <tr><th>Methodology</th><th>Key Characteristics</th><th>When to Use</th></tr>
+  <tr><td><strong>Waterfall</strong></td><td>Sequential phases (Requirements → Design → Build → Test → Deploy). No iteration.</td><td>Fixed requirements, regulatory/compliance, construction/hardware</td></tr>
+  <tr><td><strong>Agile</strong></td><td>Iterative development, collaboration, adaptive planning, working software over docs</td><td>Changing requirements, software products</td></tr>
+  <tr><td><strong>Scrum</strong></td><td>2-week sprints, Product Backlog, Sprint Planning/Review/Retrospective, Daily Standup, Velocity tracking</td><td>Teams of 3-9, clear product ownership</td></tr>
+  <tr><td><strong>Kanban</strong></td><td>Visual board, WIP limits, continuous flow, no fixed iterations</td><td>Operations, support, maintenance teams</td></tr>
+  <tr><td><strong>SAFe</strong></td><td>Scaled Agile for enterprise: Agile Release Trains (ARTs), Program Increments (PI), 8-12 week PI planning</td><td>Large organizations, multiple teams</td></tr>
+</table>
+
+<h3>Scrum Ceremonies</h3>
+<table>
+  <tr><th>Ceremony</th><th>Duration</th><th>Purpose</th></tr>
+  <tr><td>Sprint Planning</td><td>4-8 hrs (2wk sprint)</td><td>Select stories from backlog; create Sprint Backlog</td></tr>
+  <tr><td>Daily Standup</td><td>15 min</td><td>What did I do? What will I do? Blockers?</td></tr>
+  <tr><td>Sprint Review</td><td>2-4 hrs</td><td>Demo completed work to stakeholders</td></tr>
+  <tr><td>Sprint Retrospective</td><td>1-2 hrs</td><td>What went well? Improve? Stop/start/continue</td></tr>
+  <tr><td>Backlog Refinement</td><td>1-2 hrs/week</td><td>Estimate and clarify upcoming stories</td></tr>
+</table>
+
+<h3>Scrum Roles</h3>
+<ul>
+  <li><strong>Product Owner</strong> — Owns product backlog, prioritizes features, represents business</li>
+  <li><strong>Scrum Master</strong> — Facilitates ceremonies, removes blockers, coaches team on Scrum</li>
+  <li><strong>Development Team</strong> — Self-organizing, cross-functional, delivers shippable increments</li>
+</ul>
+
+<h3>Agile Metrics</h3>
+<table>
+  <tr><th>Metric</th><th>What it Measures</th></tr>
+  <tr><td><strong>Velocity</strong></td><td>Story points completed per sprint (team capacity benchmark)</td></tr>
+  <tr><td><strong>Burndown Chart</strong></td><td>Remaining work vs time in a sprint</td></tr>
+  <tr><td><strong>Burnup Chart</strong></td><td>Work completed + scope over time</td></tr>
+  <tr><td><strong>Cycle Time</strong></td><td>Time from work started to work done (Kanban)</td></tr>
+  <tr><td><strong>Lead Time</strong></td><td>Time from request to delivery</td></tr>
+  <tr><td><strong>Cumulative Flow</strong></td><td>Visualize WIP, bottlenecks</td></tr>
+  <tr><td><strong>DORA Metrics</strong></td><td>Deployment frequency, Lead time for changes, Change failure rate, Time to restore</td></tr>
+</table>
+
+<h3>Definition of Done (DoD)</h3>
+<ul>
+  <li>Code written and peer-reviewed (PR approved)</li>
+  <li>Unit tests written and passing (&gt;80% coverage)</li>
+  <li>Integration tests passing</li>
+  <li>SonarQube quality gate passed</li>
+  <li>Security scan passed (no critical/high CVEs)</li>
+  <li>Documentation updated</li>
+  <li>Deployed to staging and smoke-tested</li>
+  <li>Product Owner accepted the story</li>
+  <li>No known unresolved defects</li>
+</ul>
+
+<!-- ============================================================ -->
+<h2 id="interview">Interview Q&amp;A</h2>
+
+<details>
+  <summary>Q1: What is the difference between Continuous Delivery and Continuous Deployment? <span class="badge easy">Easy</span></summary>
+  <div class="answer">
+    <p><strong>Continuous Delivery:</strong> Every code change that passes all automated tests is automatically released to a staging/pre-production environment and is <em>ready</em> to be deployed to production. The actual production deployment requires a <strong>human approval/trigger</strong>.</p>
+    <p><strong>Continuous Deployment:</strong> Every code change that passes all automated tests is automatically deployed to <strong>production without any human intervention</strong>.</p>
+    <p>Both require robust automated testing. Continuous Delivery is common in enterprises where regulatory approval is needed. Continuous Deployment is used by high-velocity teams (Netflix, Amazon).</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q2: What is GitFlow and when would you choose trunk-based development instead? <span class="badge intermediate">Intermediate</span></summary>
+  <div class="answer">
+    <p><strong>GitFlow:</strong> Uses multiple long-lived branches (main, develop, feature, release, hotfix). Good for versioned releases, multiple parallel versions.</p>
+    <p><strong>Trunk-based development:</strong> All developers commit to main daily; feature branches live &lt;2 days; feature flags hide incomplete work. Better for CI/CD.</p>
+    <p><strong>Choose trunk-based when:</strong></p>
+    <ul>
+      <li>Practicing true CI/CD (frequent, small releases)</li>
+      <li>You want to avoid long-lived branch merge conflicts</li>
+      <li>Team is mature with strong automated testing</li>
+    </ul>
+    <p><strong>Stick with GitFlow when:</strong></p>
+    <ul>
+      <li>Multiple release versions in production simultaneously</li>
+      <li>Regulatory release freeze periods</li>
+      <li>Large teams with less CI/CD maturity</li>
+    </ul>
+  </div>
+</details>
+
+<details>
+  <summary>Q3: What is a Jenkinsfile and what are the two types of Jenkins pipelines? <span class="badge easy">Easy</span></summary>
+  <div class="answer">
+    <p>A Jenkinsfile is a text file stored in source control that defines the Jenkins pipeline as code.</p>
+    <p><strong>Declarative Pipeline:</strong> Structured, opinionated syntax using <code>pipeline { }</code> block. Easier to read, validates syntax, supports Blue Ocean visualization. Recommended for most use cases.</p>
+    <p><strong>Scripted Pipeline:</strong> Full Groovy code using <code>node { }</code>. More powerful/flexible but complex. Legacy option.</p>
+    <p><strong>Benefits of Pipeline as Code:</strong> Version controlled, code reviewed, reusable (shared libraries), auditable, reproducible.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q4: Explain blue/green vs canary deployment strategies <span class="badge intermediate">Intermediate</span></summary>
+  <div class="answer">
+    <p><strong>Blue/Green:</strong></p>
+    <ul>
+      <li>Run two full environments (blue = live, green = new)</li>
+      <li>Deploy to green, test, then switch LB instantly</li>
+      <li>Blue kept for instant rollback</li>
+      <li>Zero downtime, instant rollback, but 2x infrastructure cost</li>
+      <li>Good for: major version changes, database schema changes</li>
+    </ul>
+    <p><strong>Canary:</strong></p>
+    <ul>
+      <li>Deploy to small % (5-10%) of production traffic first</li>
+      <li>Monitor error rates, latency, conversions</li>
+      <li>Gradually increase if healthy</li>
+      <li>Low risk, real production testing, no extra infra cost</li>
+      <li>Complex: version mismatch, monitoring-heavy</li>
+      <li>Good for: feature rollouts, A/B experiments</li>
+    </ul>
+  </div>
+</details>
+
+<details>
+  <summary>Q5: What is SonarQube and what is a Quality Gate? <span class="badge intermediate">Intermediate</span></summary>
+  <div class="answer">
+    <p>SonarQube is a code quality and security platform that performs static analysis on source code to detect bugs, code smells, and vulnerabilities.</p>
+    <p><strong>Quality Gate:</strong> A set of conditions the code must meet before it can proceed in the pipeline. Example: coverage &gt;= 80%, no new critical bugs, no new high vulnerabilities, duplications &lt; 3%.</p>
+    <p>If the quality gate fails, the build fails — preventing poor quality code from progressing to deployment.</p>
+    <p><strong>Key metrics:</strong> Code coverage, duplications, code smells (maintainability), bugs (reliability), vulnerabilities (security), technical debt estimate.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q6: What security scanning tools would you include in a CI/CD pipeline? <span class="badge intermediate">Intermediate</span></summary>
+  <div class="answer">
+    <p>A comprehensive DevSecOps pipeline includes:</p>
+    <ol>
+      <li><strong>Secret scanning</strong> (pre-commit/CI): GitLeaks, TruffleHog — prevent API keys in code</li>
+      <li><strong>SAST</strong> (static analysis): SonarQube, Semgrep, CodeQL — analyze source code</li>
+      <li><strong>SCA</strong> (dependency scanning): Snyk, Dependabot, OWASP DC — check CVEs in deps</li>
+      <li><strong>Container scanning</strong>: Trivy, Grype — scan Docker image layers</li>
+      <li><strong>IaC scanning</strong>: Checkov, tfsec — check Terraform/K8s manifests for misconfigs</li>
+      <li><strong>DAST</strong> (dynamic): OWASP ZAP against deployed application</li>
+    </ol>
+    <p><strong>Fail early:</strong> Run fast checks (secret scanning, SAST) early in pipeline. Save slow checks (DAST) for after deployment to staging.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q7: What is GitOps and how does ArgoCD implement it? <span class="badge advanced">Advanced</span></summary>
+  <div class="answer">
+    <p>GitOps is an operational framework where Git is the single source of truth for infrastructure and application configuration. Changes are made via Git (PR/merge), and an operator automatically applies them.</p>
+    <p><strong>ArgoCD implementation:</strong></p>
+    <ol>
+      <li>Developer merges PR to GitOps repo (manifests/Helm charts)</li>
+      <li>ArgoCD polls/webhooks detects change</li>
+      <li>ArgoCD compares desired state (Git) vs actual state (cluster)</li>
+      <li>With automated sync: applies diff automatically</li>
+      <li>With selfHeal: reverts any manual kubectl changes</li>
+      <li>With prune: removes resources deleted from Git</li>
+    </ol>
+    <p><strong>Benefits:</strong> Audit trail (git history), rollback = git revert, declarative, self-healing, works with any Kubernetes cluster.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q8: How do Jenkins shared libraries work? <span class="badge advanced">Advanced</span></summary>
+  <div class="answer">
+    <p>Shared libraries allow reusable pipeline code (functions, classes) stored in a separate Git repository, shared across all Jenkinsfiles.</p>
+    <p><strong>Structure:</strong></p>
+    <ul>
+      <li><code>vars/</code> — Global variables (functions callable as steps)</li>
+      <li><code>src/</code> — Groovy classes (imported with <code>import</code>)</li>
+      <li><code>resources/</code> — Non-Groovy files (JSON, YAML configs)</li>
+    </ul>
+    <p><strong>Configuration:</strong> Defined in Jenkins → Manage Jenkins → Configure System → Global Pipeline Libraries. Can be loaded implicitly or explicitly with <code>@Library('name') _</code>.</p>
+    <p><strong>Benefits:</strong> DRY principle, consistent pipelines across teams, centrally maintained, tested separately.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q9: What is the test pyramid and why does it matter for CI/CD? <span class="badge intermediate">Intermediate</span></summary>
+  <div class="answer">
+    <p>The test pyramid (coined by Mike Cohn) recommends having many unit tests, fewer integration tests, and even fewer E2E tests.</p>
+    <p><strong>Rationale:</strong></p>
+    <ul>
+      <li>Unit tests: milliseconds, cheap to write, pinpoint failures</li>
+      <li>Integration tests: seconds, test component interactions</li>
+      <li>E2E tests: minutes, test full flows, brittle, expensive</li>
+    </ul>
+    <p><strong>Anti-pattern (ice cream cone):</strong> Many E2E tests, few unit tests → slow CI, flaky tests, difficult to debug failures.</p>
+    <p><strong>For CI/CD:</strong> Unit tests run on every commit (fast gate). Integration tests on PR. E2E tests after staging deploy. This provides fast feedback without blocking deployments.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q10: Explain Terraform state and why it's important <span class="badge intermediate">Intermediate</span></summary>
+  <div class="answer">
+    <p>Terraform state (<code>terraform.tfstate</code>) is a JSON file mapping Terraform resources to real infrastructure. It tracks what Terraform manages.</p>
+    <p><strong>Why critical:</strong></p>
+    <ul>
+      <li>Terraform uses state to know what exists and needs changing</li>
+      <li>Without state, Terraform can't track drift</li>
+      <li>State contains sensitive data (resource IDs, some outputs)</li>
+    </ul>
+    <p><strong>Remote state best practices:</strong></p>
+    <ul>
+      <li>Store in S3/GCS/Azure Blob + DynamoDB for locking</li>
+      <li>Never commit state to Git</li>
+      <li>Enable encryption</li>
+      <li>Use workspaces or separate state per environment</li>
+      <li>State locking prevents concurrent modifications</li>
+    </ul>
+  </div>
+</details>
+
+<details>
+  <summary>Q11: What is the difference between Scrum and Kanban? <span class="badge easy">Easy</span></summary>
+  <div class="answer">
+    <table>
+      <tr><th>Feature</th><th>Scrum</th><th>Kanban</th></tr>
+      <tr><td>Cadence</td><td>Fixed sprints (1-4 weeks)</td><td>Continuous flow</td></tr>
+      <tr><td>Roles</td><td>PO, SM, Dev Team</td><td>No prescribed roles</td></tr>
+      <tr><td>WIP Limits</td><td>Sprint backlog is WIP limit</td><td>Explicit column WIP limits</td></tr>
+      <tr><td>Estimation</td><td>Story points, velocity</td><td>Cycle time, throughput</td></tr>
+      <tr><td>Change</td><td>No changes during sprint</td><td>Can reprioritize anytime</td></tr>
+      <tr><td>Best for</td><td>Product development teams</td><td>Ops, support, maintenance</td></tr>
+    </table>
+  </div>
+</details>
+
+<details>
+  <summary>Q12: What are DORA metrics and why are they important? <span class="badge advanced">Advanced</span></summary>
+  <div class="answer">
+    <p>DORA (DevOps Research & Assessment) metrics are 4 key measures of software delivery performance:</p>
+    <ol>
+      <li><strong>Deployment Frequency</strong> — How often code is deployed to production. Elite: multiple/day.</li>
+      <li><strong>Lead Time for Changes</strong> — Time from commit to production. Elite: &lt;1 hour.</li>
+      <li><strong>Change Failure Rate</strong> — % of deployments causing production failure. Elite: 0-15%.</li>
+      <li><strong>Time to Restore</strong> — Time to recover from failures. Elite: &lt;1 hour.</li>
+    </ol>
+    <p>These metrics predict organizational performance and are backed by extensive research. High performers in DORA metrics deliver more value with less burnout.</p>
+    <p><strong>How to improve:</strong> CI/CD automation, smaller batch sizes, feature flags, observability, incident management processes.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q13: How would you implement a zero-downtime deployment pipeline? <span class="badge advanced">Advanced</span></summary>
+  <div class="answer">
+    <ol>
+      <li><strong>Containerize the app</strong> with proper health checks</li>
+      <li><strong>Use rolling update or blue/green</strong> deployment strategy</li>
+      <li><strong>Database migrations</strong> must be backward-compatible (additive only, never remove columns immediately)</li>
+      <li><strong>Feature flags</strong> to decouple deploy from release</li>
+      <li><strong>Readiness probes</strong> ensure traffic only routes to healthy pods</li>
+      <li><strong>Graceful shutdown</strong> — handle SIGTERM, complete in-flight requests, drain connections</li>
+      <li><strong>PodDisruptionBudget</strong> — maintain minimum availability during rolling updates</li>
+      <li><strong>Circuit breakers</strong> — prevent cascading failures</li>
+      <li><strong>Automated rollback</strong> — on error rate spike, trigger rollback (ArgoCD rollback or helm rollback)</li>
+    </ol>
+  </div>
+</details>
+
+<details>
+  <summary>Q14: What is GitHub Actions OIDC and why is it preferred over long-lived secrets? <span class="badge advanced">Advanced</span></summary>
+  <div class="answer">
+    <p>OIDC (OpenID Connect) allows GitHub Actions workflows to authenticate directly to cloud providers (AWS, GCP, Azure) without storing long-lived credentials as secrets.</p>
+    <p><strong>How it works:</strong></p>
+    <ol>
+      <li>GitHub generates a short-lived JWT token for each workflow run</li>
+      <li>Workflow exchanges JWT for cloud provider credentials via AssumeRoleWithWebIdentity (AWS)</li>
+      <li>Credentials are temporary (1 hour) and scoped to the workflow</li>
+    </ol>
+    <p><strong>Why preferred:</strong></p>
+    <ul>
+      <li>No long-lived secrets to rotate or leak</li>
+      <li>Automatic expiry — credentials valid only during run</li>
+      <li>Auditable — cloud logs show exactly which workflow ran</li>
+      <li>Conditional access — restrict by repo/branch/environment</li>
+    </ul>
+  </div>
+</details>
+
+<details>
+  <summary>Q15: How do you handle secrets in CI/CD pipelines? <span class="badge advanced">Advanced</span></summary>
+  <div class="answer">
+    <p><strong>Never:</strong></p>
+    <ul>
+      <li>Hardcode secrets in Jenkinsfile/workflow files</li>
+      <li>Store secrets in environment variables in plaintext CI config</li>
+      <li>Log secrets in build output</li>
+    </ul>
+    <p><strong>Best practices:</strong></p>
+    <ul>
+      <li><strong>GitHub Secrets / GitLab CI Variables</strong> — Encrypted at rest, masked in logs</li>
+      <li><strong>HashiCorp Vault</strong> — Dynamic secrets, short-lived, audit trail</li>
+      <li><strong>AWS Secrets Manager / Parameter Store</strong> — IAM-controlled access</li>
+      <li><strong>OIDC for cloud auth</strong> — No stored cloud credentials</li>
+      <li><strong>Jenkins Credentials</strong> — Encrypted store, accessed by ID</li>
+      <li><strong>Secret scanning</strong> in CI — Detect leaked secrets in code</li>
+    </ul>
+    <p><strong>Rotation:</strong> Automate secret rotation; use short-lived secrets where possible.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q16: What is artifact management and why is it important? <span class="badge intermediate">Intermediate</span></summary>
+  <div class="answer">
+    <p>Artifact management is the storage and distribution of build outputs (JARs, Docker images, npm packages) in a centralized repository.</p>
+    <p><strong>Why important:</strong></p>
+    <ul>
+      <li><strong>Immutability</strong> — Build once, promote the same artifact (no rebuilds per env)</li>
+      <li><strong>Reproducibility</strong> — Exact binary deployed to prod can be traced back to source commit</li>
+      <li><strong>Dependency proxying</strong> — Cache external deps (Maven Central, npm), prevent internet dependency</li>
+      <li><strong>Security scanning</strong> — Scan before publishing/pulling</li>
+      <li><strong>Access control</strong> — Who can publish to release vs snapshot repos</li>
+    </ul>
+    <p><strong>Tools:</strong> JFrog Artifactory (enterprise, supports all formats), Nexus Repository, AWS ECR (Docker), GitHub Packages.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q17: How would you structure a CI/CD pipeline for a microservices application? <span class="badge very-advanced">Very Advanced</span></summary>
+  <div class="answer">
+    <p><strong>Mono-repo approach:</strong></p>
+    <ul>
+      <li>Detect which services changed (path-based filtering)</li>
+      <li>Run CI only for changed services + dependent services</li>
+      <li>Build/test/push image per service independently</li>
+    </ul>
+    <p><strong>Per-service pipeline stages:</strong></p>
+    <ol>
+      <li>Lint + unit tests (fast gate)</li>
+      <li>Build Docker image</li>
+      <li>Security scan (Trivy + Snyk)</li>
+      <li>Integration tests (Testcontainers)</li>
+      <li>Push to registry with git SHA tag</li>
+      <li>Update GitOps repo with new image tag (ArgoCD sync)</li>
+    </ol>
+    <p><strong>Cross-service concerns:</strong></p>
+    <ul>
+      <li>Contract tests (Pact) to verify API compatibility</li>
+      <li>E2E tests after all services deployed to staging</li>
+      <li>Centralized observability for tracking deployment health</li>
+    </ul>
+  </div>
+</details>
+
+<details>
+  <summary>Q18: What is trunk-based development and how do feature flags enable it? <span class="badge advanced">Advanced</span></summary>
+  <div class="answer">
+    <p>Trunk-based development: all developers integrate code to the main branch (trunk) at least once daily. Feature branches are short-lived (&lt;2 days).</p>
+    <p><strong>The problem:</strong> How do you merge incomplete features?</p>
+    <p><strong>Feature flags solve this:</strong></p>
+    <ul>
+      <li>Merge code to main with feature disabled by default</li>
+      <li>Enable flag for internal testers first</li>
+      <li>Gradual rollout: 1% → 10% → 50% → 100%</li>
+      <li>Kill switch: disable if issues found in production</li>
+    </ul>
+    <p><strong>Tools:</strong> LaunchDarkly, Unleash, AWS AppConfig, Split.io, custom Redis-backed flags.</p>
+    <p><strong>Benefits for CI/CD:</strong> True CI (everyone integrates daily), no merge conflicts, decouple deploy from release, instant rollback via flag disable.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Q19: What Jenkins plugins are commonly used and what do they provide? <span class="badge intermediate">Intermediate</span></summary>
+  <div class="answer">
+    <table>
+      <tr><th>Plugin</th><th>Purpose</th></tr>
+      <tr><td>Pipeline</td><td>Declarative/Scripted Pipeline support</td></tr>
+      <tr><td>Git</td><td>SCM integration, trigger on push</td></tr>
+      <tr><td>GitHub Integration</td><td>PR builds, status checks</td></tr>
+      <tr><td>Docker Pipeline</td><td>docker.build, docker.withRegistry</td></tr>
+      <tr><td>Kubernetes</td><td>Dynamic pod agents in K8s</td></tr>
+      <tr><td>Credentials Binding</td><td>withCredentials() DSL</td></tr>
+      <tr><td>JUnit</td><td>Test result visualization</td></tr>
+      <tr><td>SonarQube Scanner</td><td>Code quality analysis</td></tr>
+      <tr><td>Blue Ocean</td><td>Modern pipeline visualization UI</td></tr>
+      <tr><td>Slack Notification</td><td>Build notifications to Slack</td></tr>
+      <tr><td>AWS Steps</td><td>ECR login, ECS/EKS deployments</td></tr>
+      <tr><td>Shared Libraries</td><td>Reusable pipeline code</td></tr>
+    </table>
+  </div>
+</details>
+
+<details>
+  <summary>Q20: What is the Definition of Done and why is it important in Agile? <span class="badge easy">Easy</span></summary>
+  <div class="answer">
+    <p>The Definition of Done (DoD) is a shared agreement among the team on what criteria must be met before a User Story or feature can be considered "done." It prevents different interpretations of completion.</p>
+    <p><strong>Why important:</strong></p>
+    <ul>
+      <li>Ensures consistent quality — all work meets the same standard</li>
+      <li>Prevents "almost done" — no partially done items count as complete</li>
+      <li>Enables accurate velocity — only truly done work counts</li>
+      <li>Reduces technical debt — testing and documentation are non-negotiable</li>
+      <li>Builds trust — product owners know exactly what delivered means</li>
+    </ul>
+    <p>DoD is different from Acceptance Criteria — DoD applies to ALL stories; AC is specific to one story.</p>
+  </div>
+</details>
+
+<footer>CI/CD & Jenkins Comprehensive Reference — Generated 2024 | All rights reserved</footer>
+</main>
+</div>
+<script>hljs.highlightAll();mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

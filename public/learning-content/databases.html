@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Databases — SQL, NoSQL, MongoDB, Cassandra, Vector DB</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6;display:flex;flex-direction:column}.topnav{background:#161b22;padding:10px 24px;border-bottom:1px solid #30363d;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100}.topnav a{color:#58a6ff;text-decoration:none;font-size:13px}.topnav h1{font-size:16px;color:#e6edf3;margin:0}.layout{display:flex;flex:1}.sidebar{width:260px;background:#161b22;border-right:1px solid #30363d;padding:16px;position:sticky;top:41px;height:calc(100vh - 41px);overflow-y:auto;flex-shrink:0}.sidebar a{display:block;padding:4px 8px;color:#8b949e;text-decoration:none;font-size:13px;border-radius:4px;margin-bottom:2px}.sidebar a:hover{background:#21262d;color:#c9d1d9}.sidebar .section-title{color:#58a6ff;font-size:11px;text-transform:uppercase;letter-spacing:.5px;margin:16px 0 6px;padding:0 8px;font-weight:600}main{flex:1;padding:32px 48px;max-width:960px}h1{font-size:2rem;color:#e6edf3;border-bottom:1px solid #30363d;padding-bottom:16px;margin-bottom:24px}h2{font-size:1.5rem;color:#e6edf3;margin:48px 0 16px;border-bottom:1px solid #21262d;padding-bottom:8px}h3{font-size:1.15rem;color:#79c0ff;margin:24px 0 10px}h4{font-size:1rem;color:#d2a8ff;margin:16px 0 8px}p{margin-bottom:12px}ul,ol{margin:0 0 16px 24px}li{margin-bottom:4px}pre{margin:16px 0;border-radius:6px;overflow-x:auto;font-size:13px}code:not(pre code){background:#161b22;padding:2px 6px;border-radius:4px;font-size:13px;color:#f0883e;border:1px solid #30363d}table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}th{background:#161b22;color:#58a6ff;padding:10px 14px;text-align:left;border:1px solid #30363d}td{padding:10px 14px;border:1px solid #30363d;vertical-align:top}tr:nth-child(even) td{background:#0a0d12}.mermaid{background:#161b22;padding:20px;border-radius:6px;margin:16px 0;text-align:center}details{border:1px solid #30363d;border-radius:6px;margin:10px 0;overflow:hidden}summary{padding:12px 16px;cursor:pointer;background:#161b22;color:#79c0ff;font-weight:600;list-style:none}details[open] summary{border-bottom:1px solid #30363d}.answer{padding:16px 20px;background:#0d1117}.badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:700;margin-left:8px}.easy{background:#1a4731;color:#3fb950}.intermediate{background:#2d2b00;color:#e3b341}.advanced{background:#3d1f00;color:#f0883e}.very-advanced{background:#3d0000;color:#ff7b72}.callout{background:#161b22;border-left:4px solid #58a6ff;padding:12px 16px;border-radius:0 6px 6px 0;margin:16px 0}footer{text-align:center;padding:24px;color:#8b949e;font-size:12px;border-top:1px solid #30363d;margin-top:40px}
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <h1>Databases — SQL, NoSQL, MongoDB, Cassandra, Vector DB</h1>
+  <a href="caching.html">Caching</a>
+  <a href="kafka.html">Kafka</a>
+  <a href="elasticsearch.html">Elasticsearch</a>
+</nav>
+<div class="layout">
+<aside class="sidebar">
+  <div class="section-title">SQL / MySQL</div>
+  <a href="#acid">ACID Properties</a>
+  <a href="#transactions">Transactions</a>
+  <a href="#isolation">Isolation Levels</a>
+  <a href="#locks">Locks &amp; Deadlocks</a>
+  <a href="#indexes">Indexes Deep Dive</a>
+  <a href="#explain">EXPLAIN Plan</a>
+  <a href="#query-opt">Query Optimization</a>
+  <a href="#normalization">Normalization</a>
+  <a href="#joins">JOINs</a>
+  <a href="#cte">Subqueries vs CTEs</a>
+  <a href="#window">Window Functions</a>
+  <a href="#stored">Stored Procs / Triggers / Views</a>
+  <a href="#partitioning">Partitioning</a>
+  <a href="#sharding">Sharding</a>
+  <a href="#replication">Replication</a>
+  <a href="#pooling">Connection Pooling</a>
+  <div class="section-title">NoSQL</div>
+  <a href="#nosql-overview">Types Overview</a>
+  <a href="#base-acid">BASE vs ACID</a>
+  <a href="#sql-vs-nosql">SQL vs NoSQL Decision</a>
+  <div class="section-title">MongoDB</div>
+  <a href="#mongo-model">Data Model</a>
+  <a href="#mongo-crud">CRUD &amp; Operators</a>
+  <a href="#mongo-agg">Aggregation Pipeline</a>
+  <a href="#mongo-indexes">Indexes &amp; Transactions</a>
+  <a href="#mongo-cluster">Replica Sets &amp; Sharding</a>
+  <div class="section-title">Cassandra</div>
+  <a href="#cass-model">Data Model</a>
+  <a href="#cass-consistency">Consistency Levels</a>
+  <a href="#cass-paths">Read/Write Path</a>
+  <a href="#cass-internals">Compaction &amp; Internals</a>
+  <div class="section-title">Vector Databases</div>
+  <a href="#embeddings">Embeddings</a>
+  <a href="#ann">ANN Algorithms</a>
+  <a href="#vector-dbs">Popular Databases</a>
+  <div class="section-title">Interview Q&amp;As</div>
+  <a href="#interview">20+ Questions</a>
+</aside>
+<main>
+<h1>Databases: SQL, NoSQL, MongoDB, Cassandra &amp; Vector Databases</h1>
+
+<!-- ============================================================ -->
+<h2 id="acid">ACID Properties</h2>
+<p>ACID guarantees that database transactions are processed reliably. Every relational database engine (MySQL InnoDB, PostgreSQL, Oracle) enforces ACID at its core.</p>
+
+<table>
+<tr><th>Property</th><th>Definition</th><th>Example</th></tr>
+<tr><td><strong>Atomicity</strong></td><td>A transaction is an all-or-nothing unit. Either all operations succeed or none take effect. The undo log is used to roll back partial work.</td><td>Bank transfer: debit + credit must both succeed or both fail.</td></tr>
+<tr><td><strong>Consistency</strong></td><td>A transaction brings the database from one valid state to another. All integrity constraints, triggers, and cascades are satisfied.</td><td>A transfer cannot leave a negative balance if a CHECK constraint prevents it.</td></tr>
+<tr><td><strong>Isolation</strong></td><td>Concurrent transactions execute as if they were serial. Intermediate state is invisible to other transactions.</td><td>Two users booking the last seat simultaneously — only one succeeds.</td></tr>
+<tr><td><strong>Durability</strong></td><td>Once committed, a transaction's changes survive crashes. Achieved via the write-ahead log (WAL / redo log) flushed to disk before ACK.</td><td>After COMMIT, a server crash cannot undo the transfer.</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<h2 id="transactions">Transactions</h2>
+
+<pre><code class="language-sql">-- Basic transaction
+START TRANSACTION;
+  UPDATE accounts SET balance = balance - 500 WHERE id = 1;
+  UPDATE accounts SET balance = balance + 500 WHERE id = 2;
+COMMIT;
+
+-- With rollback on error
+START TRANSACTION;
+  INSERT INTO orders (customer_id, total) VALUES (42, 299.99);
+  -- If inventory update fails:
+  UPDATE inventory SET qty = qty - 1 WHERE product_id = 7;
+  -- Check affected rows; if 0 → not enough stock
+  -- Application calls ROLLBACK
+ROLLBACK;
+
+-- Savepoints
+START TRANSACTION;
+  INSERT INTO logs VALUES ('step1');
+  SAVEPOINT sp1;
+  INSERT INTO logs VALUES ('step2');
+  ROLLBACK TO SAVEPOINT sp1;  -- undo step2 only
+  INSERT INTO logs VALUES ('step2-corrected');
+COMMIT;</code></pre>
+
+<div class="callout">
+  <strong>InnoDB internals:</strong> Every DML statement is wrapped in an implicit transaction. The undo log stores before-images for rollback; the redo log (iblogfile) ensures durability. Transactions are identified by a transaction ID (TID) used for MVCC visibility checks.
+</div>
+
+<!-- ============================================================ -->
+<h2 id="isolation">Isolation Levels</h2>
+
+<table>
+<tr><th>Isolation Level</th><th>Dirty Read</th><th>Non-Repeatable Read</th><th>Phantom Read</th><th>Default In</th></tr>
+<tr><td>Read Uncommitted</td><td>Possible</td><td>Possible</td><td>Possible</td><td>—</td></tr>
+<tr><td>Read Committed</td><td>Prevented</td><td>Possible</td><td>Possible</td><td>PostgreSQL, Oracle</td></tr>
+<tr><td>Repeatable Read</td><td>Prevented</td><td>Prevented</td><td>Possible*</td><td>MySQL InnoDB</td></tr>
+<tr><td>Serializable</td><td>Prevented</td><td>Prevented</td><td>Prevented</td><td>—</td></tr>
+</table>
+
+<p>*InnoDB Repeatable Read prevents phantom reads for <em>consistent reads</em> (snapshots) but not for <em>locking reads</em> (<code>SELECT ... FOR UPDATE</code>). It uses gap locks + next-key locks for that.</p>
+
+<h4>Anomaly Definitions</h4>
+<ul>
+  <li><strong>Dirty Read:</strong> Transaction A reads data written but not yet committed by Transaction B. If B rolls back, A has read invalid data.</li>
+  <li><strong>Non-Repeatable Read:</strong> Transaction A reads the same row twice; between the reads, Transaction B commits an UPDATE. A sees different values.</li>
+  <li><strong>Phantom Read:</strong> Transaction A executes the same range query twice; between the reads, Transaction B inserts/deletes rows that match. A sees different row counts.</li>
+</ul>
+
+<pre><code class="language-sql">SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
+
+-- Check current isolation level
+SELECT @@transaction_isolation;</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="locks">Locks &amp; Deadlocks</h2>
+
+<h3>Lock Types</h3>
+<table>
+<tr><th>Lock</th><th>Notation</th><th>Description</th><th>Compatibility</th></tr>
+<tr><td>Shared (S)</td><td>S</td><td>Read lock; multiple transactions can hold S locks simultaneously</td><td>S+S compatible; S+X incompatible</td></tr>
+<tr><td>Exclusive (X)</td><td>X</td><td>Write lock; prevents any other lock</td><td>X incompatible with S and X</td></tr>
+<tr><td>Intent Shared (IS)</td><td>IS</td><td>Signals intent to set S locks on rows</td><td>Table-level coordination</td></tr>
+<tr><td>Intent Exclusive (IX)</td><td>IX</td><td>Signals intent to set X locks on rows</td><td>Table-level coordination</td></tr>
+<tr><td>Gap Lock</td><td>—</td><td>Locks gap between index records (prevents phantom inserts)</td><td>Used in RR isolation</td></tr>
+<tr><td>Next-Key Lock</td><td>—</td><td>Row lock + gap lock on the gap before the row; default in InnoDB</td><td>Prevents phantom reads</td></tr>
+</table>
+
+<h3>Deadlocks</h3>
+<p>A deadlock occurs when two transactions each hold a lock the other needs. InnoDB detects cycles in the waits-for graph and rolls back the transaction with fewer undo log records (cheapest victim).</p>
+
+<pre><code class="language-sql">-- Transaction 1                   -- Transaction 2
+START TRANSACTION;                 START TRANSACTION;
+UPDATE t SET v=1 WHERE id=1;      UPDATE t SET v=2 WHERE id=2;
+-- waits for T2's lock on id=2    -- waits for T1's lock on id=1
+UPDATE t SET v=3 WHERE id=2;      UPDATE t SET v=4 WHERE id=1;
+-- DEADLOCK DETECTED → T1 or T2 rolled back by InnoDB</code></pre>
+
+<h4>Deadlock Prevention Strategies</h4>
+<ul>
+  <li>Always acquire locks in the same order across transactions.</li>
+  <li>Keep transactions short; commit quickly.</li>
+  <li>Use <code>SELECT ... FOR UPDATE SKIP LOCKED</code> for queue-style processing.</li>
+  <li>Use optimistic locking (version column) for low-contention scenarios.</li>
+  <li>Use <code>innodb_deadlock_detect=ON</code> (default) and monitor <code>SHOW ENGINE INNODB STATUS</code>.</li>
+</ul>
+
+<!-- ============================================================ -->
+<h2 id="indexes">Indexes Deep Dive</h2>
+
+<h3>B-Tree Structure</h3>
+<p>MySQL InnoDB uses B+ trees for all indexes. The tree is balanced — all leaf nodes are at the same depth. Leaf nodes in the primary (clustered) index store the full row data. Leaf nodes in secondary indexes store the primary key value (used for a second lookup called a "bookmark lookup").</p>
+
+<div class="mermaid">
+graph TD
+  Root["Root Node<br/>(10, 50, 90)"]
+  N1["Internal<br/>(10,20,30)"]
+  N2["Internal<br/>(50,60,70)"]
+  N3["Internal<br/>(90,95)"]
+  L1["Leaf: 5,8,9<br/>→ row data"]
+  L2["Leaf: 10,15,20<br/>→ row data"]
+  L3["Leaf: 50,55,60<br/>→ row data"]
+  L4["Leaf: 90,92,95<br/>→ row data"]
+  Root --> N1
+  Root --> N2
+  Root --> N3
+  N1 --> L1
+  N1 --> L2
+  N2 --> L3
+  N3 --> L4
+  L1 -.->|next ptr| L2
+  L2 -.->|next ptr| L3
+  L3 -.->|next ptr| L4
+</div>
+
+<h3>Index Types</h3>
+<table>
+<tr><th>Type</th><th>Description</th><th>Use Case</th></tr>
+<tr><td>Clustered (Primary)</td><td>Data rows stored in B+ tree leaf nodes in PK order. One per table.</td><td>Range scans on PK, efficient PK lookups</td></tr>
+<tr><td>Secondary</td><td>Separate B+ tree; leaf stores PK; needs bookmark lookup unless covering</td><td>Non-PK queries</td></tr>
+<tr><td>Hash</td><td>In-memory hash table (Memory engine, InnoDB adaptive hash)</td><td>Exact equality lookups only</td></tr>
+<tr><td>Composite</td><td>Multi-column index; follows left-prefix rule</td><td>Queries filtering on leading columns</td></tr>
+<tr><td>Covering</td><td>Index contains all columns needed by query — no row lookup</td><td>High-throughput reads</td></tr>
+<tr><td>Partial</td><td>Indexes only rows matching a condition (MySQL 8: functional indexes)</td><td>Sparse data, soft-delete patterns</td></tr>
+<tr><td>Full-text</td><td>Inverted index for text tokens</td><td>MATCH() AGAINST() full-text search</td></tr>
+<tr><td>Spatial/Geo</td><td>R-tree for geometry types</td><td>Geospatial queries</td></tr>
+</table>
+
+<h4>Left-Prefix Rule for Composite Indexes</h4>
+<pre><code class="language-sql">-- Index: (last_name, first_name, dob)
+-- Uses index:
+SELECT * FROM employees WHERE last_name = 'Smith';
+SELECT * FROM employees WHERE last_name = 'Smith' AND first_name = 'John';
+SELECT * FROM employees WHERE last_name = 'Smith' AND first_name = 'John' AND dob = '1990-01-01';
+
+-- Does NOT use index (skips leading column):
+SELECT * FROM employees WHERE first_name = 'John';
+SELECT * FROM employees WHERE dob = '1990-01-01';
+
+-- Partial use (stops at range):
+SELECT * FROM employees WHERE last_name = 'Smith' AND first_name LIKE 'J%';
+-- Uses last_name equality + first_name range scan; dob column not used</code></pre>
+
+<h4>Index Selectivity &amp; Cardinality</h4>
+<p>Selectivity = unique values / total rows. High selectivity (close to 1) → index is efficient. Low-cardinality columns (gender: M/F) rarely benefit from a standalone index. Check with:</p>
+<pre><code class="language-sql">SELECT COUNT(DISTINCT column) / COUNT(*) AS selectivity FROM table;
+SHOW INDEX FROM table;  -- shows Cardinality column</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="explain">EXPLAIN Plan Analysis</h2>
+
+<pre><code class="language-sql">EXPLAIN SELECT o.id, c.name
+FROM orders o
+JOIN customers c ON c.id = o.customer_id
+WHERE o.status = 'pending' AND o.created_at > '2024-01-01';
+
+-- EXPLAIN FORMAT=JSON for full detail
+EXPLAIN FORMAT=JSON SELECT ...;
+-- EXPLAIN ANALYZE (MySQL 8.0+) runs the query and shows actual times
+EXPLAIN ANALYZE SELECT ...;</code></pre>
+
+<table>
+<tr><th>Column</th><th>Meaning</th><th>What to Look For</th></tr>
+<tr><td>type</td><td>Join/access type</td><td>Best→worst: system, const, eq_ref, ref, range, index, ALL</td></tr>
+<tr><td>key</td><td>Index used</td><td>NULL = no index (table scan)</td></tr>
+<tr><td>rows</td><td>Estimated rows examined</td><td>Large numbers indicate full/partial scans</td></tr>
+<tr><td>filtered</td><td>% rows passing WHERE after index</td><td>Low % = inefficient; index not selective enough</td></tr>
+<tr><td>Extra</td><td>Additional info</td><td>"Using filesort", "Using temporary" = potential issue; "Using index" = covering index hit</td></tr>
+<tr><td>possible_keys</td><td>Indexes MySQL could use</td><td>Key column shows which one was chosen</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<h2 id="query-opt">Query Optimization</h2>
+
+<h4>Key Rules</h4>
+<ul>
+  <li>Avoid <code>SELECT *</code> — fetch only needed columns, enables covering indexes.</li>
+  <li>Avoid functions on indexed columns in WHERE: <code>WHERE YEAR(created_at) = 2024</code> disables the index; rewrite as <code>WHERE created_at BETWEEN '2024-01-01' AND '2024-12-31'</code>.</li>
+  <li>Avoid implicit type conversions: <code>WHERE id = '42'</code> on an INT column causes full scan.</li>
+  <li>Use <code>LIMIT</code> with <code>ORDER BY</code> on indexed columns.</li>
+  <li>Prefer <code>EXISTS</code> over <code>IN</code> for correlated subqueries against large sets.</li>
+  <li>Use covering indexes to eliminate bookmark lookups.</li>
+  <li>Enable slow query log: <code>slow_query_log=1</code>, <code>long_query_time=1</code>.</li>
+</ul>
+
+<pre><code class="language-sql">-- Bad: function on indexed column
+SELECT * FROM orders WHERE DATE(created_at) = '2024-06-01';
+
+-- Good: range scan on index
+SELECT id, total FROM orders
+WHERE created_at >= '2024-06-01' AND created_at < '2024-06-02';
+
+-- Bad: wildcard prefix kills index
+SELECT * FROM products WHERE name LIKE '%phone%';
+
+-- Good: full-text search
+SELECT * FROM products WHERE MATCH(name) AGAINST('phone' IN BOOLEAN MODE);
+
+-- Covering index example
+CREATE INDEX idx_orders_cover ON orders(customer_id, status, created_at, total);
+SELECT status, created_at, total FROM orders WHERE customer_id = 42;
+-- Extra: Using index (no table row lookup needed)</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="normalization">Normalization</h2>
+
+<h3>Normal Forms</h3>
+
+<h4>First Normal Form (1NF)</h4>
+<p>Each column must contain atomic (indivisible) values. No repeating groups. Each row must be uniquely identifiable.</p>
+<table>
+<tr><th>Before (Violation)</th><th>After (1NF)</th></tr>
+<tr><td>Orders: id=1, items="book,pen,ruler"</td><td>order_items: order_id=1, item="book"; order_id=1, item="pen"</td></tr>
+</table>
+
+<h4>Second Normal Form (2NF)</h4>
+<p>Must be 1NF. Every non-key attribute must depend on the <em>whole</em> composite primary key (no partial dependency).</p>
+<pre><code class="language-sql">-- Violation: StudentID+CourseID composite PK
+-- CourseName depends only on CourseID (partial dependency)
+StudentCourse(StudentID, CourseID, Grade, CourseName)
+
+-- Fixed: split into two tables
+StudentCourse(StudentID, CourseID, Grade)  -- Grade depends on full PK
+Course(CourseID, CourseName)               -- CourseName depends only on CourseID</code></pre>
+
+<h4>Third Normal Form (3NF)</h4>
+<p>Must be 2NF. No transitive dependencies — non-key columns must not depend on other non-key columns.</p>
+<pre><code class="language-sql">-- Violation: ZipCode → City (transitive dependency through non-key)
+Employee(EmpID, Name, ZipCode, City)
+
+-- Fixed:
+Employee(EmpID, Name, ZipCode)
+ZipCodes(ZipCode, City)</code></pre>
+
+<h4>Boyce-Codd Normal Form (BCNF)</h4>
+<p>Stricter than 3NF. For every functional dependency X → Y, X must be a superkey. Handles anomalies 3NF misses when there are overlapping candidate keys.</p>
+
+<h4>Denormalization</h4>
+<p>Intentionally introducing redundancy for performance. Common when joins become too expensive at scale.</p>
+<ul>
+  <li>Pre-joining: store user_name in orders table to avoid JOIN at read time.</li>
+  <li>Aggregates: store order_count in customers table; update via trigger.</li>
+  <li>Trade-off: faster reads, slower/complex writes, potential data inconsistency.</li>
+</ul>
+
+<!-- ============================================================ -->
+<h2 id="joins">JOINs</h2>
+
+<div class="mermaid">
+graph LR
+  subgraph "JOIN Types — Set Visualization"
+    A["Table A"]
+    B["Table B"]
+  end
+</div>
+
+<table>
+<tr><th>JOIN Type</th><th>Returns</th><th>Example Use Case</th></tr>
+<tr><td>INNER JOIN</td><td>Only rows with matching keys in BOTH tables (intersection)</td><td>Orders with their customer details (only orders that have a customer)</td></tr>
+<tr><td>LEFT JOIN</td><td>All rows from left + matching from right; NULL for no match</td><td>All customers with their orders — including customers who never ordered</td></tr>
+<tr><td>RIGHT JOIN</td><td>All rows from right + matching from left; NULL for no match</td><td>All orders, including those with no customer (orphaned records)</td></tr>
+<tr><td>FULL OUTER JOIN</td><td>All rows from both tables; NULL where no match</td><td>Find all mismatches between two tables</td></tr>
+<tr><td>CROSS JOIN</td><td>Cartesian product — every row of A × every row of B</td><td>Generate all size/color combinations</td></tr>
+<tr><td>SELF JOIN</td><td>Table joined with itself</td><td>Employee-manager hierarchy (same employees table)</td></tr>
+</table>
+
+<pre><code class="language-sql">-- INNER JOIN
+SELECT o.id, c.name FROM orders o
+INNER JOIN customers c ON c.id = o.customer_id;
+
+-- LEFT JOIN (customers without orders)
+SELECT c.name, COUNT(o.id) AS order_count
+FROM customers c
+LEFT JOIN orders o ON o.customer_id = c.id
+GROUP BY c.id;
+
+-- SELF JOIN (employee manager)
+SELECT e.name AS employee, m.name AS manager
+FROM employees e
+LEFT JOIN employees m ON m.id = e.manager_id;
+
+-- FULL OUTER JOIN (MySQL doesn't support it natively; use UNION)
+SELECT * FROM a LEFT JOIN b ON a.id = b.id
+UNION
+SELECT * FROM a RIGHT JOIN b ON a.id = b.id;</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="cte">Subqueries vs CTEs</h2>
+
+<pre><code class="language-sql">-- Subquery (inline)
+SELECT name, salary
+FROM employees
+WHERE salary > (SELECT AVG(salary) FROM employees);
+
+-- CTE (WITH clause) — same result, more readable
+WITH avg_salary AS (
+  SELECT AVG(salary) AS avg_sal FROM employees
+)
+SELECT e.name, e.salary
+FROM employees e
+CROSS JOIN avg_salary a
+WHERE e.salary > a.avg_sal;
+
+-- Recursive CTE — organizational hierarchy
+WITH RECURSIVE hierarchy AS (
+  SELECT id, name, manager_id, 1 AS level
+  FROM employees WHERE manager_id IS NULL
+  UNION ALL
+  SELECT e.id, e.name, e.manager_id, h.level + 1
+  FROM employees e
+  JOIN hierarchy h ON e.manager_id = h.id
+)
+SELECT * FROM hierarchy ORDER BY level;
+
+-- CTE advantages: reusable in same query, can be recursive,
+-- easier to read complex multi-step transformations</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="window">Window Functions</h2>
+
+<pre><code class="language-sql">-- ROW_NUMBER — unique sequential number
+SELECT name, salary, department,
+  ROW_NUMBER() OVER (PARTITION BY department ORDER BY salary DESC) AS rn
+FROM employees;
+
+-- RANK — same rank for ties, gaps after ties (1,2,2,4)
+-- DENSE_RANK — same rank for ties, no gaps (1,2,2,3)
+SELECT name, salary,
+  RANK()       OVER (ORDER BY salary DESC) AS rank_with_gaps,
+  DENSE_RANK() OVER (ORDER BY salary DESC) AS rank_no_gaps
+FROM employees;
+
+-- NTILE — divide into N buckets
+SELECT name, salary,
+  NTILE(4) OVER (ORDER BY salary DESC) AS quartile
+FROM employees;
+
+-- LAG/LEAD — access previous/next rows
+SELECT name, salary, hire_date,
+  LAG(salary,  1, 0) OVER (ORDER BY hire_date) AS prev_salary,
+  LEAD(salary, 1, 0) OVER (ORDER BY hire_date) AS next_salary
+FROM employees;
+
+-- SUM OVER PARTITION — running total per department
+SELECT name, department, salary,
+  SUM(salary) OVER (
+    PARTITION BY department
+    ORDER BY hire_date
+    ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+  ) AS running_total
+FROM employees;
+
+-- FIRST_VALUE / LAST_VALUE
+SELECT name, department, salary,
+  FIRST_VALUE(name) OVER (
+    PARTITION BY department ORDER BY salary DESC
+    ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+  ) AS top_earner
+FROM employees;</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="stored">Stored Procedures, Triggers &amp; Views</h2>
+
+<pre><code class="language-sql">-- Stored Procedure
+DELIMITER $$
+CREATE PROCEDURE transfer_funds(
+  IN from_id INT, IN to_id INT, IN amount DECIMAL(10,2)
+)
+BEGIN
+  DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN ROLLBACK; END;
+  START TRANSACTION;
+    UPDATE accounts SET balance = balance - amount WHERE id = from_id;
+    UPDATE accounts SET balance = balance + amount WHERE id = to_id;
+  COMMIT;
+END$$
+DELIMITER ;
+CALL transfer_funds(1, 2, 500.00);
+
+-- Trigger (audit log)
+CREATE TRIGGER after_salary_update
+AFTER UPDATE ON employees
+FOR EACH ROW
+BEGIN
+  IF OLD.salary != NEW.salary THEN
+    INSERT INTO salary_audit(emp_id, old_sal, new_sal, changed_at)
+    VALUES (OLD.id, OLD.salary, NEW.salary, NOW());
+  END IF;
+END;
+
+-- View
+CREATE OR REPLACE VIEW active_orders AS
+SELECT o.id, o.total, c.name AS customer
+FROM orders o
+JOIN customers c ON c.id = o.customer_id
+WHERE o.status != 'cancelled';
+-- Updatable views: no GROUP BY, DISTINCT, aggregate functions, subqueries
+-- Materialized views: not native in MySQL (use scheduled table refresh)</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="partitioning">Partitioning</h2>
+
+<table>
+<tr><th>Strategy</th><th>Description</th><th>Example</th></tr>
+<tr><td>RANGE</td><td>Rows assigned to partitions based on column value ranges</td><td>Partition by year(created_at): p2022, p2023, p2024</td></tr>
+<tr><td>LIST</td><td>Explicit list of values per partition</td><td>Partition by region: p_us ('US'), p_eu ('DE','FR','GB')</td></tr>
+<tr><td>HASH</td><td>Rows distributed by hash of column; even distribution</td><td>PARTITION BY HASH(customer_id) PARTITIONS 8</td></tr>
+<tr><td>KEY</td><td>Like HASH but uses MySQL's own hashing function</td><td>PARTITION BY KEY(id) PARTITIONS 4</td></tr>
+<tr><td>Composite (sub-partition)</td><td>RANGE + HASH for two-level partitioning</td><td>Range by year, then hash by customer_id within each year</td></tr>
+</table>
+
+<pre><code class="language-sql">CREATE TABLE orders (
+  id INT NOT NULL,
+  customer_id INT NOT NULL,
+  created_at DATE NOT NULL,
+  total DECIMAL(10,2)
+)
+PARTITION BY RANGE (YEAR(created_at)) (
+  PARTITION p2022 VALUES LESS THAN (2023),
+  PARTITION p2023 VALUES LESS THAN (2024),
+  PARTITION p2024 VALUES LESS THAN (2025),
+  PARTITION p_future VALUES LESS THAN MAXVALUE
+);
+-- Partition pruning: WHERE created_at BETWEEN '2024-01-01' AND '2024-12-31'
+-- only scans p2024 — massive performance gain</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="sharding">Sharding Strategies</h2>
+
+<table>
+<tr><th>Strategy</th><th>How It Works</th><th>Pros</th><th>Cons</th></tr>
+<tr><td><strong>Range-based</strong></td><td>Shard key partitioned by value ranges (IDs 1–1M → Shard 1)</td><td>Simple, easy range queries</td><td>Hotspots if writes cluster at high end</td></tr>
+<tr><td><strong>Hash-based</strong></td><td>shard = hash(key) % N</td><td>Even distribution, no hotspots</td><td>Range queries scatter, resharding is expensive</td></tr>
+<tr><td><strong>Directory-based</strong></td><td>Lookup table maps key → shard</td><td>Flexible, no rehashing on reshard</td><td>Lookup table becomes bottleneck/SPOF; extra hop</td></tr>
+<tr><td><strong>Geographic</strong></td><td>Route by user's region</td><td>Data locality, compliance</td><td>Uneven shard sizes if user distribution is skewed</td></tr>
+</table>
+
+<div class="callout">
+  <strong>Consistent Hashing</strong> is used by DynamoDB, Cassandra, and distributed caches. It arranges shards on a virtual ring; adding/removing a node only remaps 1/N of the keys rather than rehashing everything.
+</div>
+
+<!-- ============================================================ -->
+<h2 id="replication">Replication</h2>
+
+<h4>MySQL Replication</h4>
+<ul>
+  <li><strong>Async Master-Slave:</strong> Binary log events sent to replica asynchronously. Replica lag possible. Read scaling. Failover requires manual promotion.</li>
+  <li><strong>Semi-sync:</strong> Master waits for at least one replica to acknowledge before returning to client. Reduces data loss risk.</li>
+  <li><strong>GTID-based:</strong> Global Transaction Identifiers enable automatic failover. Each transaction gets a unique ID; replicas track which GTIDs they have applied.</li>
+  <li><strong>Group Replication / InnoDB Cluster:</strong> Multi-master with distributed consensus (Paxos). Used in MySQL InnoDB Cluster / MySQL Shell.</li>
+</ul>
+
+<pre><code class="language-sql">-- Check replica lag
+SHOW SLAVE STATUS\G
+-- Look at: Seconds_Behind_Master, Relay_Log_Pos, Exec_Master_Log_Pos
+
+-- GTID setup
+SET GLOBAL gtid_mode = ON;
+SET GLOBAL enforce_gtid_consistency = ON;
+CHANGE MASTER TO MASTER_HOST='primary', MASTER_AUTO_POSITION=1;</code></pre>
+
+<!-- ============================================================ -->
+<h2 id="pooling">Connection Pooling — HikariCP</h2>
+
+<pre><code class="language-java">// HikariCP — fastest Java connection pool
+HikariConfig config = new HikariConfig();
+config.setJdbcUrl("jdbc:mysql://localhost:3306/mydb");
+config.setUsername("user");
+config.setPassword("secret");
+config.setMaximumPoolSize(20);          // max connections
+config.setMinimumIdle(5);              // min idle connections
+config.setIdleTimeout(600000);         // 10 min idle before eviction
+config.setMaxLifetime(1800000);        // 30 min max connection lifetime
+config.setConnectionTimeout(30000);    // 30s wait for connection from pool
+config.setLeakDetectionThreshold(2000); // warn if connection held > 2s
+HikariDataSource ds = new HikariDataSource(config);</code></pre>
+
+<div class="callout">
+  <strong>Pool sizing rule (Little's Law):</strong> pool_size = (core_count * 2) + effective_spindle_count. For I/O-bound workloads on SSDs, start with core_count * 2. Too large a pool wastes memory and causes context switching. Netflix and others find 10-20 connections often outperforms 100.
+</div>
+
+<!-- ============================================================ NOSQL ============ -->
+<h2 id="nosql-overview">NoSQL — Types Overview</h2>
+
+<table>
+<tr><th>Type</th><th>Databases</th><th>Data Model</th><th>Use Case</th><th>Query Model</th></tr>
+<tr><td>Document</td><td>MongoDB, CouchDB, Firestore</td><td>JSON/BSON documents in collections</td><td>User profiles, product catalogs, CMS</td><td>Rich query + aggregation pipeline</td></tr>
+<tr><td>Key-Value</td><td>Redis, DynamoDB, Riak</td><td>Simple K→V pairs</td><td>Sessions, caching, shopping cart</td><td>GET/PUT/DELETE by key only</td></tr>
+<tr><td>Wide-Column</td><td>Cassandra, HBase, Bigtable</td><td>Rows with dynamic columns grouped by partition key</td><td>Time-series, IoT, audit logs, messaging</td><td>CQL / Scan on rowkey range</td></tr>
+<tr><td>Graph</td><td>Neo4j, ArangoDB, Amazon Neptune</td><td>Nodes + edges with properties</td><td>Social networks, fraud detection, recommendations</td><td>Cypher / Gremlin / SPARQL</td></tr>
+<tr><td>Time-Series</td><td>InfluxDB, TimescaleDB, Prometheus</td><td>Timestamped metrics/events</td><td>Monitoring, IoT sensor data, financial ticks</td><td>Flux / PromQL / SQL</td></tr>
+<tr><td>Search</td><td>Elasticsearch, Solr, OpenSearch</td><td>Inverted index on documents</td><td>Full-text search, log analytics</td><td>DSL / Lucene query syntax</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<h2 id="base-acid">BASE vs ACID</h2>
+
+<table>
+<tr><th>Aspect</th><th>ACID (Relational)</th><th>BASE (NoSQL)</th></tr>
+<tr><td>Consistency</td><td>Strong consistency at all times</td><td><strong>B</strong>asically Available — eventual consistency</td></tr>
+<tr><td>Availability</td><td>May sacrifice availability for consistency (CAP)</td><td><strong>S</strong>oft state — state may change without input</td></tr>
+<tr><td>Partition Tolerance</td><td>Limited; single-node or tight cluster</td><td><strong>E</strong>ventually consistent — will converge over time</td></tr>
+<tr><td>Use When</td><td>Financial, inventory, identity</td><td>Social feeds, analytics, sessions, search</td></tr>
+</table>
+
+<h2 id="sql-vs-nosql">SQL vs NoSQL Decision</h2>
+
+<table>
+<tr><th>Factor</th><th>Choose SQL</th><th>Choose NoSQL</th></tr>
+<tr><td>Data structure</td><td>Structured, well-defined schema</td><td>Flexible, evolving, or polymorphic data</td></tr>
+<tr><td>Relationships</td><td>Complex multi-table joins needed</td><td>Denormalized or embedded data</td></tr>
+<tr><td>Transactions</td><td>Multi-table ACID required</td><td>Single-document or eventual OK</td></tr>
+<tr><td>Scale</td><td>Vertical primarily; read replicas</td><td>Horizontal write scaling needed</td></tr>
+<tr><td>Consistency</td><td>Strong consistency required</td><td>Eventual consistency acceptable</td></tr>
+<tr><td>Query patterns</td><td>Ad-hoc, complex queries, analytics</td><td>Known access patterns, high throughput</td></tr>
+<tr><td>Examples</td><td>Banking, ERP, e-commerce orders</td><td>User sessions, IoT, social timelines</td></tr>
+</table>
+
+<!-- ============================================================ MONGODB ========= -->
+<h2 id="mongo-model">MongoDB — Data Model</h2>
+
+<p>MongoDB stores data as <strong>BSON</strong> (Binary JSON) documents inside <strong>collections</strong> inside <strong>databases</strong>. Documents are schema-flexible (each document can have different fields). A document's maximum size is 16 MB.</p>
+
+<h4>BSON Types</h4>
+<ul>
+  <li>String, Integer (32/64-bit), Double, Boolean, Date, Null, Regex, Array, Object, ObjectId (12-byte unique ID), Binary, Timestamp, Decimal128, MinKey/MaxKey</li>
+</ul>
+
+<h2 id="mongo-crud">CRUD Operations &amp; Query Operators</h2>
+
+<pre><code class="language-javascript">// Insert
+db.users.insertOne({ name: "Alice", age: 30, tags: ["admin", "user"] });
+db.users.insertMany([{ name: "Bob" }, { name: "Carol" }]);
+
+// Read
+db.users.find({ age: { $gt: 25, $lte: 40 } });           // $gt, $gte, $lt, $lte
+db.users.find({ tags: { $in: ["admin", "moderator"] } }); // $in
+db.users.find({ email: { $exists: true } });              // $exists
+db.users.find({ name: { $regex: /^Al/i } });              // $regex
+db.users.find({ $and: [{ age: { $gt: 20 } }, { active: true }] }); // $and
+db.users.find({ $or: [{ role: "admin" }, { role: "superuser" }] }); // $or
+db.users.find({ age: { $not: { $lt: 18 } } });            // $not
+db.users.find({}, { name: 1, age: 1, _id: 0 });           // projection
+
+// Update
+db.users.updateOne({ name: "Alice" }, { $set: { age: 31 }, $push: { tags: "verified" } });
+db.users.updateMany({ active: false }, { $set: { deleted: true } });
+db.users.findOneAndUpdate({ name: "Bob" }, { $inc: { loginCount: 1 } }, { returnDocument: "after" });
+
+// Delete
+db.users.deleteOne({ name: "Bob" });
+db.users.deleteMany({ deleted: true });</code></pre>
+
+<h2 id="mongo-agg">Aggregation Pipeline</h2>
+
+<pre><code class="language-javascript">// Full pipeline example: revenue by category for active orders
+db.orders.aggregate([
+  { $match: { status: "completed", createdAt: { $gte: new Date("2024-01-01") } } },
+  { $unwind: "$items" },
+  { $lookup: {
+      from: "products",
+      localField: "items.productId",
+      foreignField: "_id",
+      as: "product"
+  }},
+  { $unwind: "$product" },
+  { $group: {
+      _id: "$product.category",
+      totalRevenue: { $sum: { $multiply: ["$items.qty", "$items.price"] } },
+      orderCount: { $sum: 1 },
+      avgOrderValue: { $avg: "$items.price" }
+  }},
+  { $addFields: { category: "$_id" } },
+  { $project: { _id: 0, category: 1, totalRevenue: 1, orderCount: 1, avgOrderValue: 1 } },
+  { $sort: { totalRevenue: -1 } },
+  { $limit: 10 }
+]);</code></pre>
+
+<h4>Pipeline Stage Reference</h4>
+<table>
+<tr><th>Stage</th><th>Purpose</th></tr>
+<tr><td>$match</td><td>Filter documents (like SQL WHERE). Place early to use indexes.</td></tr>
+<tr><td>$group</td><td>Group by _id, apply accumulators: $sum, $avg, $min, $max, $push, $addToSet</td></tr>
+<tr><td>$project</td><td>Reshape documents: include/exclude fields, compute expressions</td></tr>
+<tr><td>$sort</td><td>Sort documents. Uses index only if first stage after $match.</td></tr>
+<tr><td>$limit / $skip</td><td>Pagination</td></tr>
+<tr><td>$lookup</td><td>LEFT OUTER JOIN from another collection (like SQL JOIN)</td></tr>
+<tr><td>$unwind</td><td>Deconstruct array field into multiple documents</td></tr>
+<tr><td>$addFields</td><td>Add new fields to documents</td></tr>
+<tr><td>$replaceRoot</td><td>Promote embedded document to top level</td></tr>
+<tr><td>$facet</td><td>Multiple aggregation pipelines in parallel (faceted search)</td></tr>
+</table>
+
+<h2 id="mongo-indexes">MongoDB Indexes &amp; Transactions</h2>
+
+<pre><code class="language-javascript">// Single field index
+db.users.createIndex({ email: 1 }, { unique: true });
+
+// Compound index
+db.orders.createIndex({ customer_id: 1, created_at: -1 });
+
+// Multikey index (automatic when indexing array field)
+db.users.createIndex({ tags: 1 });
+
+// Text index
+db.articles.createIndex({ title: "text", body: "text" }, { weights: { title: 3, body: 1 } });
+db.articles.find({ $text: { $search: "mongodb aggregation" } });
+
+// Geospatial
+db.locations.createIndex({ coords: "2dsphere" });
+db.locations.find({ coords: { $near: { $geometry: { type: "Point", coordinates: [-73.9, 40.7] }, $maxDistance: 1000 } } });
+
+// TTL index (auto-delete after N seconds)
+db.sessions.createIndex({ createdAt: 1 }, { expireAfterSeconds: 3600 });
+
+// Multi-document ACID transactions (MongoDB 4.0+)
+const session = client.startSession();
+session.startTransaction({ readConcern: { level: "snapshot" }, writeConcern: { w: "majority" } });
+try {
+  await db.accounts.updateOne({ _id: from }, { $inc: { balance: -amount } }, { session });
+  await db.accounts.updateOne({ _id: to },   { $inc: { balance:  amount } }, { session });
+  await session.commitTransaction();
+} catch (err) {
+  await session.abortTransaction();
+} finally {
+  session.endSession();
+}</code></pre>
+
+<h2 id="mongo-cluster">Replica Sets &amp; Sharding</h2>
+
+<div class="mermaid">
+graph TD
+  Client["Client / Driver"]
+  Primary["Primary Node<br/>(reads + writes)"]
+  Secondary1["Secondary 1<br/>(async replication)"]
+  Secondary2["Secondary 2<br/>(async replication)"]
+  Arbiter["Arbiter<br/>(votes, no data)"]
+  Client -->|write/read| Primary
+  Primary -->|oplog| Secondary1
+  Primary -->|oplog| Secondary2
+  Primary -.->|election vote| Arbiter
+</div>
+
+<h4>Sharding Architecture</h4>
+<ul>
+  <li><strong>mongos:</strong> Router — receives client queries, routes to correct shards</li>
+  <li><strong>Config servers:</strong> Store cluster metadata (chunk ranges → shard mapping)</li>
+  <li><strong>Shards:</strong> Each shard is itself a replica set</li>
+  <li><strong>Shard key selection:</strong> High cardinality + low frequency + not monotonically increasing. Hashed shard key distributes writes evenly; ranged shard key enables range queries on one shard.</li>
+</ul>
+
+<!-- ============================================================ CASSANDRA ======= -->
+<h2 id="cass-model">Cassandra — Data Model</h2>
+
+<p>Cassandra is a wide-column store designed for massive write throughput and linear horizontal scalability. Data is modeled around <em>query patterns</em>, not entity relationships.</p>
+
+<table>
+<tr><th>Concept</th><th>Description</th></tr>
+<tr><td>Keyspace</td><td>Top-level namespace; defines replication strategy and factor</td></tr>
+<tr><td>Table</td><td>Collection of rows; each row identified by primary key</td></tr>
+<tr><td>Partition Key</td><td>Determines which node stores the data (via consistent hashing of token ring). Rows with same PK are on same node — design for even distribution.</td></tr>
+<tr><td>Clustering Columns</td><td>Sort order within a partition. Enables efficient range scans inside a partition.</td></tr>
+<tr><td>Static Columns</td><td>Shared across all rows in a partition; stored once per partition</td></tr>
+</table>
+
+<pre><code class="language-sql">-- Cassandra Query Language (CQL)
+CREATE KEYSPACE ecommerce WITH replication = {
+  'class': 'NetworkTopologyStrategy',
+  'dc1': 3
+};
+
+-- User messages table: query by user_id, sorted by time
+CREATE TABLE messages_by_user (
+  user_id   UUID,
+  sent_at   TIMESTAMP,
+  message   TEXT,
+  sender    TEXT,
+  thread_id UUID STATIC,           -- same for all rows in partition
+  PRIMARY KEY (user_id, sent_at)
+) WITH CLUSTERING ORDER BY (sent_at DESC);
+
+-- Query: last 50 messages for user
+SELECT * FROM messages_by_user WHERE user_id = ? LIMIT 50;
+
+-- Lightweight Transaction (Compare-and-Set)
+INSERT INTO users (id, email) VALUES (uuid(), 'user@example.com')
+IF NOT EXISTS;
+
+UPDATE accounts SET balance = 950 WHERE id = ?
+IF balance = 1000;  -- Only applies if condition is met</code></pre>
+
+<h2 id="cass-consistency">Cassandra Consistency Levels</h2>
+
+<table>
+<tr><th>Level</th><th>Reads</th><th>Writes</th><th>Trade-off</th></tr>
+<tr><td>ONE</td><td>1 replica responds</td><td>1 replica acknowledges</td><td>Fastest, highest chance of stale read</td></tr>
+<tr><td>TWO / THREE</td><td>2/3 replicas respond</td><td>2/3 replicas ack</td><td>Balance</td></tr>
+<tr><td>QUORUM</td><td>(RF/2)+1 replicas</td><td>(RF/2)+1 replicas</td><td>Strong consistency if R+W > RF; recommended</td></tr>
+<tr><td>LOCAL_QUORUM</td><td>Quorum within local DC only</td><td>Same</td><td>Multi-DC: avoids cross-DC latency</td></tr>
+<tr><td>EACH_QUORUM</td><td>—</td><td>Quorum in every DC</td><td>Maximum durability across DCs</td></tr>
+<tr><td>ALL</td><td>All replicas</td><td>All replicas</td><td>Strongest, least available (any node down → fail)</td></tr>
+</table>
+
+<div class="callout"><strong>Strong Consistency:</strong> Read + Write consistency levels must satisfy: R + W &gt; Replication Factor. With RF=3, QUORUM+QUORUM (2+2 &gt; 3) guarantees at least one replica is in the intersection.</div>
+
+<h2 id="cass-paths">Cassandra Read &amp; Write Path</h2>
+
+<h4>Write Path</h4>
+<ol>
+  <li>Write to <strong>CommitLog</strong> (sequential disk append — crash recovery)</li>
+  <li>Write to <strong>MemTable</strong> (in-memory, per table)</li>
+  <li>Return ACK to client</li>
+  <li>When MemTable reaches threshold → flush to <strong>SSTable</strong> (immutable, sorted on disk)</li>
+</ol>
+
+<h4>Read Path</h4>
+<ol>
+  <li>Check <strong>Bloom Filter</strong> — probabilistic check: "Does this SSTable potentially contain this key?" Skip if definitely not.</li>
+  <li>Check <strong>Key Cache</strong> (partition key → offset in SSTable)</li>
+  <li>Check <strong>Row Cache</strong> if enabled</li>
+  <li>Read <strong>SSTable Partition Summary</strong> → locate partition index range</li>
+  <li>Read <strong>SSTable Partition Index</strong> → exact offset</li>
+  <li>Seek to offset and read from SSTable(s)</li>
+  <li>Merge results from MemTable + all SSTables using timestamps (most recent wins)</li>
+</ol>
+
+<h2 id="cass-internals">Compaction, Gossip &amp; Tombstones</h2>
+
+<table>
+<tr><th>Compaction Strategy</th><th>Description</th><th>Use Case</th></tr>
+<tr><td>SizeTieredCompactionStrategy (STCS)</td><td>Merges SSTables of similar sizes. Good write throughput. Temporarily doubles disk usage.</td><td>Write-heavy workloads</td></tr>
+<tr><td>LeveledCompactionStrategy (LCS)</td><td>Merges into fixed-size 10x levels. Each level 10x bigger. Better read performance, predictable amplification.</td><td>Read-heavy workloads, low latency reads</td></tr>
+<tr><td>TimeWindowCompactionStrategy (TWCS)</td><td>Groups SSTables by time window; ideal for time-series data with TTLs. Whole windows expire and are deleted.</td><td>Time-series, IoT, log data</td></tr>
+</table>
+
+<h4>Gossip Protocol</h4>
+<p>Each node exchanges state with 1-3 other nodes every second. Within ~log(N) rounds, all nodes know the state of every other node (membership, load, schema version). No single point of failure for cluster membership.</p>
+
+<h4>Tombstones</h4>
+<p>Deletes in Cassandra write a tombstone marker (not physical delete). Tombstones are removed during compaction after <code>gc_grace_seconds</code> (default: 10 days). Too many tombstones cause GC pressure and slow reads. Monitor with <code>nodetool tablehistograms</code>.</p>
+
+<h4>Cassandra vs HBase</h4>
+<table>
+<tr><th>Aspect</th><th>Cassandra</th><th>HBase</th></tr>
+<tr><td>Architecture</td><td>Masterless peer-to-peer ring</td><td>Master-RegionServer hierarchy (HMaster + ZooKeeper)</td></tr>
+<tr><td>Write throughput</td><td>Extremely high (no master bottleneck)</td><td>High but limited by RegionServer splits</td></tr>
+<tr><td>Consistency</td><td>Tunable (ONE to ALL)</td><td>Strong consistency within region</td></tr>
+<tr><td>Query</td><td>CQL (SQL-like)</td><td>Java API / Scan / HBase Shell</td></tr>
+<tr><td>Ecosystem</td><td>DataStax, Astra</td><td>Part of Hadoop ecosystem; works with Spark/MapReduce</td></tr>
+<tr><td>Operations</td><td>Easier operationally; vnodes handle rebalancing</td><td>Requires ZooKeeper + HDFS + more components</td></tr>
+</table>
+
+<!-- ============================================================ VECTOR DBs ====== -->
+<h2 id="embeddings">Vector Databases — Embeddings</h2>
+
+<p>An <strong>embedding</strong> is a dense numerical vector (e.g., 1536 floats) produced by a neural network that captures semantic meaning. Similar concepts end up geometrically close in vector space. Models like OpenAI <code>text-embedding-3-small</code>, BERT, or Sentence Transformers produce these vectors.</p>
+
+<h4>Similarity Metrics</h4>
+<table>
+<tr><th>Metric</th><th>Formula</th><th>Best For</th></tr>
+<tr><td>Cosine Similarity</td><td>cos(θ) = (A·B) / (|A||B|) — range [-1, 1]</td><td>Text embeddings; direction matters, not magnitude</td></tr>
+<tr><td>Dot Product</td><td>A·B = Σ(a_i × b_i)</td><td>When vectors are normalized (same as cosine); recommendation systems</td></tr>
+<tr><td>Euclidean Distance (L2)</td><td>√Σ(a_i - b_i)²</td><td>Image embeddings; absolute position matters</td></tr>
+</table>
+
+<h2 id="ann">Approximate Nearest Neighbor (ANN) Algorithms</h2>
+
+<h4>HNSW — Hierarchical Navigable Small World</h4>
+<p>Builds a multi-layer graph. Top layers are sparse (long-range connections for fast navigation); bottom layer is dense (all nodes connected to neighbors). Search starts at top, greedily moves toward query, descends to next layer when local minimum found. Used by Weaviate, Qdrant, Milvus, pgvector.</p>
+<ul>
+  <li><code>M</code>: max connections per node per layer — higher = better recall, more memory</li>
+  <li><code>ef_construction</code>: search width during indexing — higher = better quality index, slower build</li>
+  <li><code>ef</code>: search width at query time — tunable recall/latency trade-off</li>
+</ul>
+
+<h4>IVF — Inverted File Index</h4>
+<p>Divides vector space into <code>nlist</code> clusters (k-means). At query time, search only the <code>nprobe</code> closest clusters. Faster than brute-force but approximate. Used by Faiss, Milvus.</p>
+
+<h4>Product Quantization (PQ)</h4>
+<p>Compresses vectors by splitting into sub-vectors and quantizing each independently. Reduces memory 4-32x at cost of accuracy. Often combined with IVF (IVF-PQ) for large datasets.</p>
+
+<h2 id="vector-dbs">Vector Database Comparison</h2>
+
+<table>
+<tr><th>Database</th><th>ANN Algorithm</th><th>Hosting</th><th>Filter Support</th><th>Best For</th></tr>
+<tr><td>Pinecone</td><td>HNSW + proprietary</td><td>Managed cloud only</td><td>Metadata filters (pre/post-filter)</td><td>Production RAG, fast setup, no infra</td></tr>
+<tr><td>Weaviate</td><td>HNSW</td><td>Self-hosted / managed</td><td>GraphQL filters, BM25 hybrid</td><td>Hybrid search (vector + keyword), rich schema</td></tr>
+<tr><td>Chroma</td><td>HNSW (via hnswlib)</td><td>Embedded / server</td><td>Metadata filtering</td><td>Local development, prototyping, LangChain</td></tr>
+<tr><td>Qdrant</td><td>HNSW</td><td>Self-hosted / managed</td><td>Rich payload filters, sparse vector</td><td>High performance, sparse+dense hybrid search</td></tr>
+<tr><td>Milvus</td><td>HNSW, IVF, IVF-PQ, DiskANN</td><td>Self-hosted / Zilliz cloud</td><td>Scalar attribute filters</td><td>Billion-scale search, enterprise</td></tr>
+<tr><td>pgvector</td><td>HNSW, IVFFlat</td><td>PostgreSQL extension</td><td>Full SQL WHERE</td><td>Existing Postgres users, SQL joins with embeddings</td></tr>
+</table>
+
+<h4>Use Cases</h4>
+<ul>
+  <li><strong>RAG (Retrieval-Augmented Generation):</strong> Embed documents → store vectors → at query time embed question → find top-k similar chunks → pass to LLM as context.</li>
+  <li><strong>Semantic Search:</strong> "Find articles about climate change" → embedding search transcends keyword matching.</li>
+  <li><strong>Recommendation:</strong> User preference vector → find similar item vectors.</li>
+  <li><strong>Duplicate Detection:</strong> Near-duplicate documents have high cosine similarity.</li>
+  <li><strong>Anomaly Detection:</strong> Data points far from cluster centroids are anomalous.</li>
+</ul>
+
+<h4>Indexing vs Querying Trade-offs</h4>
+<table>
+<tr><th>Approach</th><th>Index Build Time</th><th>Query Latency</th><th>Recall</th><th>Memory</th></tr>
+<tr><td>Brute-force (exact)</td><td>None</td><td>O(N×D)</td><td>100%</td><td>Low (just vectors)</td></tr>
+<tr><td>IVFFlat</td><td>Medium</td><td>Fast (nprobe clusters)</td><td>~90-99%</td><td>Low</td></tr>
+<tr><td>HNSW</td><td>Slow</td><td>Very fast (log N)</td><td>~95-99%</td><td>High (graph overhead)</td></tr>
+<tr><td>IVF-PQ</td><td>Medium</td><td>Very fast</td><td>~80-95%</td><td>Very low (compressed)</td></tr>
+</table>
+
+<!-- ============================================================ INTERVIEW Q&As == -->
+<h2 id="interview">Interview Q&amp;As — 20+ Questions</h2>
+
+<details>
+<summary>Q1. What is the difference between Atomicity and Consistency in ACID? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p><strong>Atomicity</strong> ensures all operations in a transaction succeed or none do — it's an all-or-nothing guarantee enforced by the undo log. <strong>Consistency</strong> ensures the database transitions from one valid state to another, honoring all integrity constraints (foreign keys, CHECK constraints, triggers). Atomicity is about <em>execution</em>; consistency is about <em>state validity</em>. A transaction can be atomic (fully committed) yet still violate consistency if the application logic is wrong — that's why consistency is partly the application's responsibility.</p>
+</div>
+</details>
+
+<details>
+<summary>Q2. Explain the difference between Dirty Read, Non-Repeatable Read, and Phantom Read. <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<ul>
+  <li><strong>Dirty Read:</strong> Tx A reads uncommitted changes from Tx B. If B rolls back, A read data that never existed. Prevented by Read Committed+.</li>
+  <li><strong>Non-Repeatable Read:</strong> Tx A reads a row twice; between reads, Tx B commits an UPDATE. A gets different values. Prevented by Repeatable Read+.</li>
+  <li><strong>Phantom Read:</strong> Tx A executes a range query twice; between reads, Tx B inserts a row that matches the range. A sees a different number of rows. Prevented by Serializable (and by InnoDB's gap locks in Repeatable Read for locking reads).</li>
+</ul>
+</div>
+</details>
+
+<details>
+<summary>Q3. How does InnoDB implement MVCC? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>InnoDB adds two hidden columns to every row: <code>DB_TRX_ID</code> (ID of the last transaction that inserted/updated) and <code>DB_ROLL_PTR</code> (pointer to the undo log record for the previous version). When a transaction reads, it uses its snapshot timestamp to follow the undo log chain until it finds a version created before its own start. This means readers never block writers and writers never block readers — crucial for high concurrency. The snapshot is taken at the first read in the transaction (RR) or at each statement (RC).</p>
+</div>
+</details>
+
+<details>
+<summary>Q4. What is a covering index and when should you use one? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>A covering index contains all columns referenced in a query (SELECT, WHERE, JOIN, ORDER BY) so the query can be satisfied entirely from the index without fetching the actual row (no "bookmark lookup"). In EXPLAIN, you see "Using index" in the Extra column. Use it for high-frequency, performance-critical queries with a predictable shape. Example: <code>SELECT status, total FROM orders WHERE customer_id = ? ORDER BY created_at</code> → create index <code>(customer_id, created_at, status, total)</code>. Downsides: larger index, slower writes.</p>
+</div>
+</details>
+
+<details>
+<summary>Q5. What does the type column in EXPLAIN mean? What types indicate problems? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>The <code>type</code> column shows how MySQL joins/accesses the table:</p>
+<ul>
+  <li><strong>system/const:</strong> At most 1 row — best. Constant lookup (equality on PK).</li>
+  <li><strong>eq_ref:</strong> One row per row from previous table. JOIN on PK or unique index.</li>
+  <li><strong>ref:</strong> Multiple rows per join; non-unique index or leftmost prefix.</li>
+  <li><strong>range:</strong> Index range scan (BETWEEN, &gt;, &lt;, IN). OK for selective ranges.</li>
+  <li><strong>index:</strong> Full index scan — reads all index entries. Faster than ALL but still O(N).</li>
+  <li><strong>ALL:</strong> Full table scan. Usually a problem on large tables — add an index.</li>
+</ul>
+<p>"Using filesort" and "Using temporary" in Extra also indicate expensive operations that may need index or query redesign.</p>
+</div>
+</details>
+
+<details>
+<summary>Q6. Explain 3NF vs BCNF with an example. <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>Table: <code>CourseSchedule(student, course, teacher)</code> where each course has exactly one teacher, and each teacher teaches only one course. Candidate keys: {student, course} and {student, teacher}. FDs: course → teacher, teacher → course.</p>
+<p>This is in 3NF (no transitive dependencies via non-key attributes) because teacher is part of a candidate key. But it violates BCNF because the FD <code>course → teacher</code> has a left side (course) that is not a superkey. BCNF requires decomposing into <code>CourseTeacher(course, teacher)</code> + <code>StudentCourse(student, course)</code>. BCNF may lose FD preservation (teacher→course can't be enforced without JOIN) — sometimes 3NF is preferred for that reason.</p>
+</div>
+</details>
+
+<details>
+<summary>Q7. How would you design a schema for a messaging app in Cassandra? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>Key query: "Get last N messages in a conversation, sorted by time." Design around the read pattern:</p>
+<pre><code class="language-sql">CREATE TABLE messages (
+  conversation_id UUID,
+  sent_at         TIMEUUID,    -- TIMEUUID = timestamp + UUID, monotonically unique
+  sender_id       UUID,
+  content         TEXT,
+  PRIMARY KEY (conversation_id, sent_at)
+) WITH CLUSTERING ORDER BY (sent_at DESC)
+  AND default_time_to_live = 7776000;  -- 90 days TTL</code></pre>
+<p>Partition key = conversation_id → all messages for one conversation on same node (efficient). Clustering by sent_at DESC → range scan without sort. For "get conversations for a user," maintain a separate table <code>conversations_by_user(user_id, last_message_at, conversation_id)</code>. Avoid wide partitions: enforce a time-bucketing strategy (<code>conversation_id + bucket_date</code>) to cap partition size for high-traffic conversations.</p>
+</div>
+</details>
+
+<details>
+<summary>Q8. What is a ghost record in InnoDB and how does it relate to gap locks? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>When InnoDB uses Repeatable Read, range queries use <strong>next-key locks</strong> (row lock + gap lock on the preceding gap). The gap lock prevents other transactions from inserting into the range between existing index entries, preventing phantom reads for locking reads (<code>SELECT ... FOR UPDATE / LOCK IN SHARE MODE</code>). However, gap locks can increase deadlock probability — two transactions both holding gap locks and then trying to insert into the same gap will deadlock. For workloads needing maximum concurrency, Read Committed (which doesn't use gap locks) + application-level conflict handling is sometimes preferable.</p>
+</div>
+</details>
+
+<details>
+<summary>Q9. Explain MongoDB's aggregation $lookup and its limitations. <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><code>$lookup</code> performs a LEFT OUTER JOIN from the current collection to another. It adds matched documents as an array field. Limitations: (1) The "from" collection must be in the same database. (2) The pipeline variant (<code>$lookup</code> with <code>pipeline</code>) allows filtering but is more expensive. (3) For sharded collections, <code>$lookup</code> on the shard key works; otherwise it may require scatter-gather. (4) Results can hit the 16 MB document size limit. For high-throughput use cases, consider denormalizing (embedding related data) rather than using $lookup at read time.</p>
+</div>
+</details>
+
+<details>
+<summary>Q10. How does Cassandra handle writes and what is the write path? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>1. Write arrives at coordinator node (any node can be coordinator). 2. Coordinator routes to replica nodes based on partition key hash + consistent hashing ring. 3. Each replica: (a) appends to CommitLog sequentially (crash recovery); (b) updates in-memory MemTable. 4. Coordinator waits for responses based on write consistency level (ONE, QUORUM, ALL). 5. When MemTable hits threshold → flushed to immutable SSTable on disk. 6. Compaction periodically merges SSTables, removes tombstones, reclaims space. This design makes writes extremely fast (sequential disk writes to CommitLog, no lock contention) at the cost of read amplification (must merge multiple SSTables).</p>
+</div>
+</details>
+
+<details>
+<summary>Q11. What is sharding and how is consistent hashing used? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>Sharding distributes data across multiple database servers (shards) to scale writes beyond a single machine. <strong>Consistent hashing</strong> arranges virtual nodes (vnodes) on a hash ring (0 to 2^128-1). Each physical server owns several vnodes. A key is hashed to a position on the ring; it belongs to the first vnode clockwise from that position. Adding a server: only 1/N of keys move (those between the new server and its predecessor). Without consistent hashing, a modulo-based approach requires remapping almost all keys when N changes. Cassandra uses 256 vnodes per node by default, giving even distribution and fine-grained rebalancing.</p>
+</div>
+</details>
+
+<details>
+<summary>Q12. Explain the CAP theorem and give examples of where different databases sit. <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>CAP: a distributed system can guarantee at most two of: <strong>Consistency</strong> (every read gets the latest write), <strong>Availability</strong> (every request gets a response), <strong>Partition Tolerance</strong> (system works despite network partitions). Since partitions happen in real networks, you effectively choose CP or AP:</p>
+<ul>
+  <li><strong>CP:</strong> HBase, Zookeeper, etcd — sacrifice availability (refuse requests) during partition to stay consistent.</li>
+  <li><strong>AP:</strong> Cassandra (tunable), DynamoDB, CouchDB — remain available but may serve stale data.</li>
+  <li><strong>CA:</strong> Traditional single-node RDBMS (MySQL, Postgres) — not partition tolerant by design; not a distributed system.</li>
+</ul>
+<p>PACELC extends CAP: even when no partition, there's a latency vs consistency trade-off (L vs C).</p>
+</div>
+</details>
+
+<details>
+<summary>Q13. What is a B-tree vs B+ tree and why do databases use B+ trees? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>In a <strong>B-tree</strong>, data is stored in all nodes (internal + leaf). In a <strong>B+ tree</strong>, data is stored only in leaf nodes; internal nodes contain only keys for navigation. Leaf nodes are linked in a doubly linked list. Databases use B+ trees because: (1) Range scans are O(log N + K) — navigate to start, then scan the leaf chain; (2) Internal nodes hold more keys (no data pointers) → shorter tree height → fewer I/O reads; (3) Sequential reads of leaves exploit disk prefetching; (4) All queries go to leaves, giving predictable performance.</p>
+</div>
+</details>
+
+<details>
+<summary>Q14. How do you handle pagination efficiently in MySQL for millions of rows? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>Offset-based pagination (<code>LIMIT 20 OFFSET 10000</code>) requires scanning and discarding the first 10,000 rows — O(offset) performance. Solutions:</p>
+<ul>
+  <li><strong>Keyset/Cursor pagination:</strong> <code>WHERE id &gt; last_seen_id ORDER BY id LIMIT 20</code> — O(log N), uses index, no degradation at deep pages. Works for monotonic ordering.</li>
+  <li><strong>Deferred join:</strong> <code>SELECT * FROM t JOIN (SELECT id FROM t ORDER BY created_at LIMIT 20 OFFSET 10000) x ON t.id = x.id</code> — covering index scan for IDs, then row lookup for only 20 rows. Better than naive OFFSET but still O(offset).</li>
+  <li>For random-access pagination, consider Elasticsearch for search-as-you-scroll or Cassandra's token-based pagination.</li>
+</ul>
+</div>
+</details>
+
+<details>
+<summary>Q15. What is a vector database and how does HNSW work? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>A vector database indexes high-dimensional embedding vectors for fast approximate nearest neighbor (ANN) search. HNSW (Hierarchical Navigable Small World) builds a multi-layer graph: each node represents a vector; edges connect it to its M nearest neighbors. Upper layers are sparse (coarse navigation); the bottom layer is dense (all nodes). Searching: start at the entry point of the top layer, greedily move to the neighbor closest to the query vector, descend to the next layer when stuck at a local minimum, repeat until layer 0. Index construction: each new vector is inserted at a random maximum layer; connections are made to ef_construction nearest neighbors at each layer it participates in. HNSW achieves sub-millisecond query times on millions of vectors with 95-99% recall.</p>
+</div>
+</details>
+
+<details>
+<summary>Q16. Explain window functions vs GROUP BY — when does each apply? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><code>GROUP BY</code> collapses multiple rows into one (aggregation) — you lose individual row data. Window functions (<code>OVER()</code>) perform calculations across rows <em>related to the current row</em> without collapsing them — each row retains its identity plus the computed value. Use GROUP BY for: "total revenue by category." Use window functions for: "rank each employee by salary within their department while keeping all employee rows," "running totals," "compare a row to the previous row (LAG/LEAD)." Window functions are processed after WHERE/GROUP BY/HAVING but before ORDER BY and LIMIT.</p>
+</div>
+</details>
+
+<details>
+<summary>Q17. What is connection pooling and why does pool size matter? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p>Connection pooling maintains a cache of pre-established database connections that can be reused, avoiding the expensive overhead (TCP handshake + auth) of opening a new connection per request. Pool size matters because: (1) too few → requests queue and timeout under load; (2) too many → each connection consumes memory on the DB server (~1-8 MB/connection in MySQL), and context switching overhead increases. The sweet spot (per Little's Law) is often core_count × 2 for CPU-bound queries. HikariCP metrics to monitor: active connections, idle connections, connection acquisition time, pool wait count.</p>
+</div>
+</details>
+
+<details>
+<summary>Q18. How do you prevent and resolve deadlocks in MySQL? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>Prevention:</strong> (1) Always access tables and rows in the same order across transactions. (2) Keep transactions small and short-lived. (3) Use optimistic locking (version column + CAS) for read-heavy patterns. (4) Use <code>SELECT ... FOR UPDATE SKIP LOCKED</code> for work queues. (5) Avoid user input inside transactions.</p>
+<p><strong>Detection/Recovery:</strong> InnoDB detects deadlocks automatically via the waits-for graph; it rolls back the transaction with fewer undo records. The application must catch <code>ER_LOCK_DEADLOCK (1213)</code> and retry. Enable <code>innodb_print_all_deadlocks=1</code> and analyze <code>SHOW ENGINE INNODB STATUS</code> for the deadlock section.</p>
+</div>
+</details>
+
+<details>
+<summary>Q19. Compare MongoDB vs Cassandra for a write-heavy IoT use case. <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p><strong>Cassandra wins for:</strong> Linear write scalability (no master), predictable low latency for high-frequency writes, built-in TTL for data expiry, TWCS compaction ideal for time-series, tunable consistency allows sacrifice of strong consistency for throughput, multi-DC replication. <strong>MongoDB wins for:</strong> Rich query capabilities, aggregation pipeline for ad-hoc analytics, flexible schema (varying sensor types), change streams for real-time apps. <strong>Recommendation:</strong> Cassandra for pure ingestion + time-range reads with known access patterns; MongoDB if you need ad-hoc queries, richer data models, or multi-document transactions alongside IoT data.</p>
+</div>
+</details>
+
+<details>
+<summary>Q20. What is the difference between horizontal and vertical scaling? When does each break down? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p><strong>Vertical scaling</strong> (scale up): add more CPU/RAM/faster disk to existing server. Simple, no application changes, but has hardware limits, single point of failure, and diminishing returns (doubling cores doesn't double throughput due to lock contention). <strong>Horizontal scaling</strong> (scale out): add more servers. Linear scalability in theory, fault tolerant, but requires application changes (sharding logic, eventual consistency handling, distributed transactions become hard). Relational databases traditionally scale vertically; NoSQL databases (Cassandra, MongoDB with sharding, DynamoDB) are designed for horizontal scaling. Read-heavy SQL workloads can scale horizontally with read replicas.</p>
+</div>
+</details>
+
+<details>
+<summary>Q21. What is index cardinality and how does it affect query performance? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p>Cardinality is the number of distinct values in a column. High cardinality (e.g., user_id, email) → highly selective index → optimizer chooses it for most queries. Low cardinality (e.g., gender, boolean flag) → not selective → index scan reads almost all rows, so optimizer may prefer a full table scan. The MySQL optimizer uses index statistics (stored in <code>information_schema.STATISTICS</code>, updated by <code>ANALYZE TABLE</code>) to estimate selectivity. For a low-cardinality column used with a high-cardinality column, a composite index (low_card_col, high_card_col) can still be useful if queries filter on both, though the order in the index should match the query's equality conditions before range conditions.</p>
+</div>
+</details>
+
+<details>
+<summary>Q22. What are the trade-offs between embedding vs referencing in MongoDB? <span class="badge intermediate">Intermediate</span></summary>
+<div class="answer">
+<p><strong>Embedding</strong> (nested document): denormalized; single-document read — no $lookup; great for one-to-few relationships with data that is frequently read together; update propagation is simple (one document to update). Downsides: document grows large (16 MB limit); updating a single embedded field requires locking the parent document; data duplication when same sub-entity appears in many documents. <strong>Referencing</strong> (foreign key as ObjectId): normalized; requires $lookup (extra I/O, cannot use efficiently across shards in all cases); better for large sub-documents or one-to-many/many-to-many. Rule of thumb: embed for "owns" relationships (order → line items); reference for "refers to" (order → customer).</p>
+</div>
+</details>
+
+<details>
+<summary>Q23. Explain the Cassandra "denormalize by query" principle. <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p>In Cassandra, you cannot do arbitrary JOINs or secondary index scans efficiently. Instead, you create a table for every distinct query pattern you need, duplicating data across tables. Example: for a ride-sharing app you might have: <code>rides_by_driver(driver_id, started_at, ...)</code> for driver history queries and <code>rides_by_rider(rider_id, started_at, ...)</code> for rider history — same ride data stored twice. The application writes to both tables (ideally in a batch using <code>LOGGED BATCH</code> for atomicity across tables in the same partition, or with idempotent retries). This trades storage for query performance and eliminates the need for expensive scatter-gather reads.</p>
+</div>
+</details>
+
+<details>
+<summary>Q24. What is the "N+1 query problem" and how do you solve it? <span class="badge easy">Easy</span></summary>
+<div class="answer">
+<p>N+1 occurs when code fetches a list of N records (1 query) then executes an additional query for each record to fetch related data (N queries) — total N+1 queries. Example: fetch 100 orders (1 query), then for each order fetch the customer (100 queries) = 101 queries. Solutions: (1) <strong>JOIN / eager loading:</strong> fetch orders + customers in one query; (2) <strong>IN clause batch:</strong> collect all customer IDs from orders, execute one <code>WHERE id IN (...)</code> query; (3) <strong>DataLoader pattern:</strong> batch + cache loads within a request (used in GraphQL). ORM solutions: Hibernate's <code>JOIN FETCH</code>, Sequelize's <code>include</code>, Prisma's nested <code>include</code>.</p>
+</div>
+</details>
+
+<details>
+<summary>Q25. How does pgvector compare to dedicated vector databases? <span class="badge advanced">Advanced</span></summary>
+<div class="answer">
+<p><strong>pgvector advantages:</strong> Lives inside PostgreSQL — combine vector similarity search with full SQL (JOINs, transactions, RBAC, existing tooling). No additional infrastructure. Use HNSW or IVFFlat index. Good for &lt;10M vectors with moderate QPS. <strong>pgvector limitations:</strong> Not optimized for pure vector workloads; HNSW index build is single-threaded (slow for large datasets); memory-bound (index must fit in shared_buffers/RAM for good performance); limited to cosine, L2, and inner product. <strong>Dedicated DBs (Pinecone, Qdrant, Weaviate) advantages:</strong> Purpose-built for billion-scale ANN search, distributed, serve 1000s of QPS, richer filtering (pre-filter vs post-filter strategies), metadata storage optimized alongside vectors. Choose pgvector for pragmatism and small-medium scale; choose dedicated for high QPS or billion-scale.</p>
+</div>
+</details>
+
+<footer>Databases Reference Guide — SQL, NoSQL, MongoDB, Cassandra, Vector Databases</footer>
+</main>
+</div>
+<script>hljs.highlightAll();mermaid.initialize({startOnLoad:true,theme:'dark'});</script>
+</body>
+</html>

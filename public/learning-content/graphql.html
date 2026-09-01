@@ -1,0 +1,1520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GraphQL Complete Guide</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0d1117;
+      --bg-secondary: #161b22;
+      --bg-tertiary: #21262d;
+      --border: #30363d;
+      --text: #c9d1d9;
+      --text-muted: #8b949e;
+      --text-bright: #f0f6fc;
+      --accent: #58a6ff;
+      --accent-green: #3fb950;
+      --accent-orange: #d29922;
+      --accent-red: #f85149;
+      --accent-purple: #bc8cff;
+      --badge-easy: #238636;
+      --badge-easy-text: #7ee787;
+      --badge-inter: #9e6a03;
+      --badge-inter-text: #f0c84a;
+      --badge-adv: #b62324;
+      --badge-adv-text: #ff7b72;
+      --badge-vadv: #6e40c9;
+      --badge-vadv-text: #d2a8ff;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .page-wrapper { display: flex; min-height: 100vh; }
+    nav.sidebar {
+      width: 260px; min-width: 260px;
+      background: var(--bg-secondary);
+      border-right: 1px solid var(--border);
+      position: sticky; top: 0; height: 100vh;
+      overflow-y: auto; padding: 20px 0;
+    }
+    nav.sidebar h2 {
+      font-size: 11px; text-transform: uppercase;
+      letter-spacing: .08em; color: var(--text-muted);
+      padding: 0 16px 8px;
+    }
+    nav.sidebar a {
+      display: block; padding: 5px 16px;
+      font-size: 13px; color: var(--text-muted);
+      border-left: 2px solid transparent; transition: all .15s;
+    }
+    nav.sidebar a:hover { color: var(--text-bright); background: var(--bg-tertiary); border-left-color: var(--accent); text-decoration: none; }
+    main { flex: 1; max-width: 960px; padding: 40px 48px; }
+
+    .hero {
+      background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #1c2128 100%);
+      border: 1px solid var(--border); border-radius: 12px;
+      padding: 40px; margin-bottom: 40px; text-align: center;
+    }
+    .hero h1 { font-size: 2rem; color: var(--text-bright); margin-bottom: 8px; }
+    .hero .subtitle { color: var(--text-muted); font-size: 1rem; }
+    .hero .tags { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 16px; }
+    .tag { background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: 20px; padding: 2px 12px; font-size: 12px; color: var(--text-muted); }
+
+    section { margin-bottom: 48px; }
+    h2.section-title {
+      font-size: 1.4rem; color: var(--text-bright);
+      border-bottom: 2px solid var(--border); padding-bottom: 10px; margin-bottom: 24px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    h2.section-title .sec-icon {
+      width: 28px; height: 28px; background: var(--accent-purple); border-radius: 6px;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 13px; color: #000; font-weight: 700; flex-shrink: 0;
+    }
+    h3 { color: var(--accent-purple); font-size: 1.05rem; margin: 24px 0 10px; }
+    p { margin-bottom: 12px; }
+
+    pre {
+      background: var(--bg-secondary) !important; border: 1px solid var(--border);
+      border-radius: 8px; padding: 20px; overflow-x: auto;
+      margin: 16px 0; font-size: 13px; line-height: 1.6;
+    }
+    code:not(pre code) {
+      background: var(--bg-tertiary); border: 1px solid var(--border);
+      border-radius: 4px; padding: 1px 6px; font-size: 12.5px;
+      color: var(--accent-orange);
+      font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+    }
+
+    .info-box {
+      border-radius: 8px; padding: 16px 20px; margin: 16px 0;
+      border-left: 4px solid; font-size: 14px;
+    }
+    .info-box.tip { background: rgba(63,185,80,.07); border-color: var(--accent-green); }
+    .info-box.warn { background: rgba(210,153,34,.07); border-color: var(--accent-orange); }
+    .info-box.note { background: rgba(88,166,255,.07); border-color: var(--accent); }
+    .info-box.danger { background: rgba(248,81,73,.07); border-color: var(--accent-red); }
+    .info-box strong { display: block; margin-bottom: 4px; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
+
+    table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13.5px; }
+    th {
+      background: var(--bg-tertiary); color: var(--text-bright);
+      padding: 10px 14px; text-align: left; border: 1px solid var(--border);
+      font-size: 12px; text-transform: uppercase; letter-spacing: .05em;
+    }
+    td { padding: 9px 14px; border: 1px solid var(--border); color: var(--text); vertical-align: top; }
+    tr:nth-child(even) td { background: rgba(255,255,255,.02); }
+
+    details.qa {
+      background: var(--bg-secondary); border: 1px solid var(--border);
+      border-radius: 8px; margin: 10px 0; transition: box-shadow .2s;
+    }
+    details.qa[open] { box-shadow: 0 0 0 2px var(--accent-purple); }
+    details.qa summary {
+      padding: 14px 18px; cursor: pointer; display: flex;
+      align-items: center; gap: 10px; font-weight: 600;
+      color: var(--text-bright); list-style: none; user-select: none; font-size: 14px;
+    }
+    details.qa summary::-webkit-details-marker { display: none; }
+    details.qa summary::before {
+      content: '▶'; font-size: 10px; color: var(--text-muted);
+      transition: transform .2s; flex-shrink: 0;
+    }
+    details.qa[open] summary::before { transform: rotate(90deg); }
+    .qa-body { padding: 0 18px 18px; border-top: 1px solid var(--border); }
+    .qa-body p:first-child { margin-top: 14px; }
+
+    .badge {
+      font-size: 10px; font-weight: 700; padding: 2px 8px;
+      border-radius: 10px; text-transform: uppercase; letter-spacing: .05em; flex-shrink: 0;
+    }
+    .badge.easy { background: var(--badge-easy); color: var(--badge-easy-text); }
+    .badge.intermediate { background: var(--badge-inter); color: var(--badge-inter-text); }
+    .badge.advanced { background: var(--badge-adv); color: var(--badge-adv-text); }
+    .badge.very-advanced { background: var(--badge-vadv); color: var(--badge-vadv-text); }
+
+    .mermaid { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin: 16px 0; text-align: center; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin: 16px 0; }
+    .card { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+    .card h4 { color: var(--accent-purple); margin-bottom: 8px; font-size: 13px; }
+    ul.bullet { margin: 8px 0 12px 20px; }
+    ul.bullet li { margin-bottom: 4px; }
+
+    @media (max-width: 900px) {
+      nav.sidebar { display: none; }
+      main { padding: 20px 20px; }
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="page-wrapper">
+  <nav class="sidebar">
+    <h2>Sections</h2>
+    <a href="#what-is">1. What is GraphQL</a>
+    <a href="#core-concepts">2. Core Concepts &amp; SDL</a>
+    <a href="#queries">3. Queries</a>
+    <a href="#mutations">4. Mutations</a>
+    <a href="#subscriptions">5. Subscriptions</a>
+    <a href="#resolvers">6. Resolvers</a>
+    <a href="#n-plus-one">7. N+1 Problem &amp; DataLoader</a>
+    <a href="#schema-design">8. Schema Design</a>
+    <a href="#federation">9. Apollo Federation</a>
+    <a href="#apollo-client">10. Apollo Client</a>
+    <a href="#alternatives">11. Client Alternatives</a>
+    <a href="#error-handling">12. Error Handling</a>
+    <a href="#performance">13. Performance</a>
+    <a href="#security">14. Security</a>
+    <a href="#codegen">15. Code Generation</a>
+    <a href="#ecosystem">16. Ecosystem &amp; Versions</a>
+    <a href="#qna">17. Q&amp;A (20 questions)</a>
+  </nav>
+
+  <main>
+    <div class="hero">
+      <h1>GraphQL Complete Guide</h1>
+      <p class="subtitle">Schema, Queries, Mutations, Federation, Apollo Client, Security &amp; More</p>
+      <div class="tags">
+        <span class="tag">GraphQL 2021</span>
+        <span class="tag">Apollo Client v3</span>
+        <span class="tag">Federation v2</span>
+        <span class="tag">DataLoader</span>
+        <span class="tag">Code Generation</span>
+        <span class="tag">Subscriptions</span>
+        <span class="tag">Security</span>
+      </div>
+    </div>
+
+    <!-- ===== SECTION 1 ===== -->
+    <section id="what-is">
+      <h2 class="section-title"><span class="sec-icon">1</span>What is GraphQL?</h2>
+      <p>GraphQL is a <strong>query language for APIs</strong> and a runtime for fulfilling those queries, developed at Facebook (Meta) in 2012 and open-sourced in 2015. Clients define the exact shape of data they need; the server returns exactly that — no more, no less.</p>
+
+      <h3>REST vs GraphQL Comparison</h3>
+      <table>
+        <thead><tr><th>Concern</th><th>REST</th><th>GraphQL</th></tr></thead>
+        <tbody>
+          <tr><td>Over-fetching</td><td>Common — endpoint returns fixed shape, client may only need 2 of 20 fields</td><td>Eliminated — client selects exact fields needed</td></tr>
+          <tr><td>Under-fetching (N+1)</td><td>Common — fetch user, then fetch their posts separately (multiple round trips)</td><td>Single request can fetch user + posts + comments in one query</td></tr>
+          <tr><td>Endpoints</td><td>Multiple endpoints: GET /users, POST /posts, GET /users/:id/posts</td><td>Single endpoint: POST /graphql (or GET for persisted queries)</td></tr>
+          <tr><td>Versioning</td><td>URL versioning (/v1, /v2) or header versioning needed for breaking changes</td><td>Schema evolves via deprecation — no versioning needed</td></tr>
+          <tr><td>Type safety</td><td>OpenAPI/Swagger schemas are optional; inconsistently adopted</td><td>Schema is the contract — introspection built-in, type safety first-class</td></tr>
+          <tr><td>Documentation</td><td>Requires external tooling (Swagger UI, Postman)</td><td>Self-documenting via introspection; GraphiQL/Apollo Studio built-in</td></tr>
+          <tr><td>Real-time</td><td>Requires WebSocket, SSE, or polling setup separately</td><td>Subscriptions are first-class in the GraphQL spec</td></tr>
+          <tr><td>Tooling ecosystem</td><td>Mature, broad</td><td>Growing, very strong code-gen story</td></tr>
+          <tr><td>Caching</td><td>HTTP caching (ETags, Cache-Control) works naturally with GET</td><td>HTTP caching harder (POST body); requires application-level caching (Apollo, normalized)</td></tr>
+          <tr><td>Learning curve</td><td>Lower — familiar HTTP semantics</td><td>Moderate — need to learn SDL, resolvers, schema design</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ===== SECTION 2 ===== -->
+    <section id="core-concepts">
+      <h2 class="section-title"><span class="sec-icon">2</span>Core Concepts — SDL &amp; Type System</h2>
+
+      <p>The <strong>Schema Definition Language (SDL)</strong> is the human-readable syntax for defining a GraphQL schema. The schema is the contract between client and server.</p>
+
+      <h3>Scalar Types</h3>
+      <div class="grid-3">
+        <div class="card"><h4>String</h4><p>UTF-8 character sequence</p></div>
+        <div class="card"><h4>Int</h4><p>Signed 32-bit integer</p></div>
+        <div class="card"><h4>Float</h4><p>Signed double-precision float</p></div>
+        <div class="card"><h4>Boolean</h4><p>true or false</p></div>
+        <div class="card"><h4>ID</h4><p>Unique identifier (serialized as String but semantically distinct)</p></div>
+        <div class="card"><h4>Custom Scalars</h4><p>Date, DateTime, JSON, URL, UUID — defined with scalar keyword + custom serializer</p></div>
+      </div>
+
+      <h3>Type Definitions</h3>
+      <pre><code class="language-graphql"># Object Type — main building block
+type User {
+  id: ID!              # ! = non-null (required)
+  name: String!
+  email: String!
+  age: Int             # nullable — may be null
+  posts: [Post!]!      # non-null list of non-null Post objects
+  role: UserRole!      # enum
+}
+
+# Enum
+enum UserRole {
+  ADMIN
+  EDITOR
+  VIEWER
+}
+
+# Interface — shared fields across types
+interface Node {
+  id: ID!
+}
+
+type Post implements Node {
+  id: ID!
+  title: String!
+  author: User!
+  tags: [String!]!
+}
+
+# Union — one of several types (no shared fields required)
+union SearchResult = User | Post | Comment
+
+# Input Type — used for mutation arguments (cannot use object types as args)
+input CreatePostInput {
+  title: String!
+  content: String!
+  authorId: ID!
+  tags: [String!]
+}
+
+# The root operation types
+type Query {
+  user(id: ID!): User
+  users(filter: UserFilter): [User!]!
+  search(term: String!): [SearchResult!]!
+}
+
+type Mutation {
+  createPost(input: CreatePostInput!): Post!
+  deletePost(id: ID!): Boolean!
+}
+
+type Subscription {
+  postCreated: Post!
+  commentAdded(postId: ID!): Comment!
+}</code></pre>
+
+      <div class="info-box note">
+        <strong>Non-null (!) semantics</strong>
+        <code>String!</code> means the field will never be null (server guarantees it). <code>[Post!]!</code> means the list itself is non-null AND each item in the list is non-null. A field without <code>!</code> is nullable and may return <code>null</code>. Over-using <code>!</code> makes schemas brittle — nullable fields allow graceful degradation when partial data is available.
+      </div>
+    </section>
+
+    <!-- ===== SECTION 3 ===== -->
+    <section id="queries">
+      <h2 class="section-title"><span class="sec-icon">3</span>Queries</h2>
+
+      <h3>Basic Query, Fields, and Nested Fields</h3>
+      <pre><code class="language-graphql"># Named query with variable
+query GetUser($id: ID!) {
+  user(id: $id) {
+    id
+    name
+    email           # only the fields you need
+    posts {
+      id
+      title
+      # deeply nested
+      author {
+        name
+      }
+    }
+  }
+}
+
+# Variables (sent as JSON alongside the query)
+{ "id": "user-123" }</code></pre>
+
+      <h3>Aliases — Fetch Same Field Twice</h3>
+      <pre><code class="language-graphql">query ComparePosts {
+  firstPost: post(id: "1") {    # alias: firstPost
+    title
+    likes
+  }
+  secondPost: post(id: "2") {   # alias: secondPost
+    title
+    likes
+  }
+}</code></pre>
+
+      <h3>Fragments — Reusable Field Sets</h3>
+      <pre><code class="language-graphql">fragment UserFields on User {
+  id
+  name
+  email
+  avatar
+}
+
+query GetUsers {
+  admin: user(id: "1") { ...UserFields }   # spread fragment
+  editor: user(id: "2") { ...UserFields }
+}</code></pre>
+
+      <h3>Inline Fragments — Polymorphic Queries on Unions/Interfaces</h3>
+      <pre><code class="language-graphql">query Search($term: String!) {
+  search(term: $term) {
+    ... on User {        # inline fragment — only if result is User
+      name
+      email
+    }
+    ... on Post {
+      title
+      createdAt
+    }
+    ... on Comment {
+      body
+      author { name }
+    }
+  }
+}</code></pre>
+
+      <h3>Directives — @include and @skip</h3>
+      <pre><code class="language-graphql">query GetUser($id: ID!, $withPosts: Boolean!, $skipEmail: Boolean!) {
+  user(id: $id) {
+    name
+    email @skip(if: $skipEmail)        # omit field if variable is true
+    posts @include(if: $withPosts) {   # include field only if variable is true
+      title
+    }
+  }
+}
+# Variables: { "id": "1", "withPosts": true, "skipEmail": false }</code></pre>
+    </section>
+
+    <!-- ===== SECTION 4 ===== -->
+    <section id="mutations">
+      <h2 class="section-title"><span class="sec-icon">4</span>Mutations</h2>
+
+      <p>Mutations modify server-side data. By convention, mutation names use verbs: <code>createPost</code>, <code>updateUser</code>, <code>deleteComment</code>. Mutations always return data — typically the affected object so the client can update its cache.</p>
+
+      <pre><code class="language-graphql"># Mutation definition using Input Types
+mutation CreatePost($input: CreatePostInput!) {
+  createPost(input: $input) {   # return the created post for cache update
+    id
+    title
+    createdAt
+    author {
+      id
+      name
+    }
+  }
+}
+
+# Variables
+{
+  "input": {
+    "title": "Hello GraphQL",
+    "content": "My first post",
+    "authorId": "user-1",
+    "tags": ["graphql", "tutorial"]
+  }
+}</code></pre>
+
+      <h3>Mutation Naming Conventions</h3>
+      <table>
+        <thead><tr><th>Pattern</th><th>Example</th><th>Use Case</th></tr></thead>
+        <tbody>
+          <tr><td>Verb + Noun</td><td><code>createUser</code>, <code>deletePost</code></td><td>Standard CRUD</td></tr>
+          <tr><td>Nested Input</td><td><code>updateUser(input: UpdateUserInput!)</code></td><td>Complex updates with multiple fields</td></tr>
+          <tr><td>Payload type return</td><td><code>createPost: CreatePostPayload!</code></td><td>Return both data and errors/metadata</td></tr>
+        </tbody>
+      </table>
+
+      <pre><code class="language-graphql"># Payload pattern — separate success data from errors
+type CreatePostPayload {
+  post: Post            # null if failed
+  errors: [UserError!]! # empty if succeeded
+}
+
+type UserError {
+  message: String!
+  field: String         # which field caused the error
+}
+
+type Mutation {
+  createPost(input: CreatePostInput!): CreatePostPayload!
+}</code></pre>
+
+      <div class="info-box tip">
+        <strong>Multiple mutations in one request</strong>
+        Unlike queries (which execute in parallel), mutations in a single request execute <strong>serially in order</strong>. This allows you to safely chain dependent mutations: <code>mutation { createUser(...) { id } updateProfile(...) { ... } }</code>.
+      </div>
+    </section>
+
+    <!-- ===== SECTION 5 ===== -->
+    <section id="subscriptions">
+      <h2 class="section-title"><span class="sec-icon">5</span>Subscriptions</h2>
+
+      <p>GraphQL subscriptions provide real-time updates via long-lived connections (typically WebSocket). They are defined in the schema's <code>Subscription</code> type and use the same field selection syntax as queries.</p>
+
+      <h3>Schema Definition</h3>
+      <pre><code class="language-graphql">type Subscription {
+  commentAdded(postId: ID!): Comment!       # scoped to a specific post
+  userTyping(roomId: ID!): TypingEvent!     # real-time typing indicator
+  orderStatusUpdated(orderId: ID!): Order!  # order tracking
+}
+
+type TypingEvent {
+  user: User!
+  isTyping: Boolean!
+}</code></pre>
+
+      <h3>Client Subscription (Apollo Client)</h3>
+      <pre><code class="language-tsx">import { useSubscription, gql } from '@apollo/client'
+
+const COMMENT_ADDED = gql`
+  subscription OnCommentAdded($postId: ID!) {
+    commentAdded(postId: $postId) {
+      id
+      body
+      author { name avatar }
+      createdAt
+    }
+  }
+`
+
+function Comments({ postId }) {
+  const { data, loading } = useSubscription(COMMENT_ADDED, {
+    variables: { postId },
+    onData: ({ client, data }) => {
+      // Can update the cache manually here
+      client.cache.modify({
+        id: client.cache.identify({ __typename: 'Post', id: postId }),
+        fields: {
+          comments: (existing, { toReference }) =>
+            [...existing, toReference(data.data.commentAdded)],
+        },
+      })
+    },
+  })
+}</code></pre>
+
+      <h3>GraphQL over WebSocket Protocol</h3>
+      <p>The modern standard is the <strong>graphql-ws</strong> protocol (successor to the older <code>subscriptions-transport-ws</code>). Transport sequence:</p>
+
+      <div class="mermaid">
+sequenceDiagram
+    participant Client
+    participant Server
+    Client->>Server: WebSocket connection (ws://)
+    Client->>Server: connection_init message
+    Server-->>Client: connection_ack
+    Client->>Server: subscribe {id, payload: {query, variables}}
+    loop Real-time events
+        Server-->>Client: next {id, payload: {data}}
+    end
+    Client->>Server: complete {id}  OR  Server sends complete
+      </div>
+
+      <h3>Use Cases</h3>
+      <div class="grid-2">
+        <div class="card"><h4>Real-time Chat</h4><p>New messages pushed to all subscribers in a chat room as they are posted.</p></div>
+        <div class="card"><h4>Live Dashboard</h4><p>Metrics, analytics, or monitoring data updated in real-time as server-side values change.</p></div>
+        <div class="card"><h4>Collaborative Editing</h4><p>Cursor positions, document changes, and presence indicators in collaborative tools.</p></div>
+        <div class="card"><h4>Order/Job Tracking</h4><p>Status updates pushed to the client when an order or background job changes state.</p></div>
+      </div>
+    </section>
+
+    <!-- ===== SECTION 6 ===== -->
+    <section id="resolvers">
+      <h2 class="section-title"><span class="sec-icon">6</span>Resolvers</h2>
+
+      <p>Resolvers are functions that <strong>fulfill each field</strong> in a GraphQL schema. The resolver tree mirrors the schema structure — every field can have a resolver.</p>
+
+      <h3>Resolver Function Signature</h3>
+      <pre><code class="language-ts">// Every resolver receives these 4 arguments
+function fieldResolver(
+  parent: ParentType,  // result of the parent resolver (or root value for root fields)
+  args: ArgsType,      // arguments passed to this field in the query
+  context: Context,    // shared object: { db, user, dataloaders, request, ... }
+  info: GraphQLResolveInfo  // AST info: field name, schema, path, etc.
+): FieldType | Promise&lt;FieldType&gt;</code></pre>
+
+      <h3>Resolver Map Example (Apollo Server)</h3>
+      <pre><code class="language-ts">const resolvers = {
+  // Root resolvers
+  Query: {
+    user: async (_, { id }, { db }) =&gt;
+      db.users.findById(id),
+
+    users: async (_, { filter }, { db }) =&gt;
+      db.users.findAll(filter),
+  },
+
+  Mutation: {
+    createPost: async (_, { input }, { db, user }) =&gt; {
+      if (!user) throw new GraphQLError('Not authenticated', {
+        extensions: { code: 'UNAUTHENTICATED' },
+      })
+      return db.posts.create({ ...input, authorId: user.id })
+    },
+  },
+
+  // Object type resolvers — field-level
+  User: {
+    posts: async (parent, _, { db }) =&gt;
+      // parent is the User object returned by the Query.user resolver
+      db.posts.findByAuthorId(parent.id),
+
+    // Default resolver behavior — if no resolver defined:
+    // returns parent[fieldName] — works automatically for scalar fields
+    name: (parent) =&gt; parent.name,  // this resolver is redundant (default)
+  },
+
+  // Union/Interface resolver
+  SearchResult: {
+    __resolveType: (obj) =&gt; {
+      if (obj.email) return 'User'
+      if (obj.title) return 'Post'
+      return null
+    },
+  },
+}
+
+// Context factory — runs on every request
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  context: async ({ req }) =&gt; ({
+    db: database,
+    user: await authenticateToken(req.headers.authorization),
+    dataloaders: createDataLoaders(database),
+  }),
+})</code></pre>
+
+      <div class="info-box note">
+        <strong>Default resolvers</strong>
+        For scalar and enum fields, if no resolver is defined, GraphQL uses a default resolver that returns <code>parent[fieldName]</code>. You only need explicit resolvers for computed fields, fields with different names between DB and schema, or fields requiring data from another source.
+      </div>
+    </section>
+
+    <!-- ===== SECTION 7 ===== -->
+    <section id="n-plus-one">
+      <h2 class="section-title"><span class="sec-icon">7</span>N+1 Problem &amp; DataLoader</h2>
+
+      <h3>The N+1 Problem</h3>
+      <p>When querying a list of items where each item has a related object resolved by a separate database call, you get 1 query for the list + N queries for the related objects — the "N+1 problem".</p>
+
+      <pre><code class="language-graphql"># This query triggers the N+1 problem
+query {
+  posts {          # 1 query: SELECT * FROM posts  → returns 100 posts
+    title
+    author {       # 100 queries: SELECT * FROM users WHERE id = ?
+      name         # ...for each of the 100 posts
+    }
+  }
+}</code></pre>
+
+      <pre><code class="language-ts">// Root resolver fires 1 query
+Query: {
+  posts: () => db.query('SELECT * FROM posts'),  // returns 100 rows
+}
+// Post.author resolver fires 1 query PER post
+Post: {
+  author: (post) => db.query('SELECT * FROM users WHERE id = ?', post.authorId),
+  // Called 100 times = 100 DB queries!
+}</code></pre>
+
+      <h3>DataLoader Solution</h3>
+      <p>DataLoader batches multiple individual loads that happen within a single JavaScript event loop tick into a single call. It also caches results within a request lifecycle.</p>
+
+      <pre><code class="language-ts">import DataLoader from 'dataloader'
+
+// batchFn receives an ARRAY of keys collected within one event loop tick
+const userLoader = new DataLoader(async (userIds: readonly string[]) =&gt; {
+  // ONE batch query for all collected IDs
+  const users = await db.query(
+    'SELECT * FROM users WHERE id IN (?)',
+    [userIds]
+  )
+  // CRITICAL: return results in the SAME ORDER as the input IDs
+  const userMap = new Map(users.map(u =&gt; [u.id, u]))
+  return userIds.map(id =&gt; userMap.get(id) ?? new Error(`User ${id} not found`))
+})
+
+// Use in resolver context — create per-request to prevent cross-request caching
+const resolvers = {
+  Post: {
+    // Now all 100 author lookups within the same tick are batched into 1 DB query
+    author: (post, _, { dataloaders }) =&gt;
+      dataloaders.users.load(post.authorId),
+  },
+}
+
+// Context factory — create fresh loaders per request
+const context = ({ req }) =&gt; ({
+  db,
+  dataloaders: {
+    users: new DataLoader(batchUsers),
+    posts: new DataLoader(batchPosts),
+  },
+})</code></pre>
+
+      <div class="mermaid">
+graph TD
+    A[GraphQL Request: 100 posts] --> B[Post.author called 100 times]
+    B --> C[DataLoader collects IDs in event loop tick]
+    C --> D[Single batch: SELECT WHERE id IN 100 IDs]
+    D --> E[Return ordered results]
+    E --> F[Each load promise resolves]
+      </div>
+
+      <div class="info-box tip">
+        <strong>DataLoader caching</strong>
+        DataLoader caches by key within a request lifecycle — if the same user is an author of multiple posts, it only fetches that user once. Create new DataLoader instances per request (not global singleton) to avoid serving stale data across requests.
+      </div>
+
+      <h3>loadMany</h3>
+      <pre><code class="language-ts">// Load multiple IDs at once from a single resolver
+const users = await dataloaders.users.loadMany(['id-1', 'id-2', 'id-3'])
+// Returns array: each element is either the value or an Error instance</code></pre>
+    </section>
+
+    <!-- ===== SECTION 8 ===== -->
+    <section id="schema-design">
+      <h2 class="section-title"><span class="sec-icon">8</span>Schema Design</h2>
+
+      <h3>Connections Pattern (Relay Spec)</h3>
+      <p>The Relay specification defines a standard for cursor-based pagination using <strong>connections</strong>. This pattern is widely adopted even outside of Relay because it's comprehensive and forward-compatible.</p>
+      <pre><code class="language-graphql">type UserConnection {
+  edges: [UserEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type UserEdge {
+  node: User!           # the actual data object
+  cursor: String!       # opaque pagination cursor
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+type Query {
+  users(
+    first: Int          # forward pagination: take N items
+    after: String       # forward pagination: cursor to start after
+    last: Int           # backward pagination
+    before: String      # backward pagination
+    filter: UserFilter
+  ): UserConnection!
+}</code></pre>
+
+      <h3>Nullable vs Non-Null Design</h3>
+      <div class="grid-2">
+        <div class="card">
+          <h4>Make fields nullable when...</h4>
+          <ul class="bullet">
+            <li>The data is optional by nature</li>
+            <li>A partial failure shouldn't null out the entire object</li>
+            <li>The relationship may not always be populated</li>
+            <li>You're exposing a field whose existence is uncertain</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>Use non-null (!) when...</h4>
+          <ul class="bullet">
+            <li>The field is always present when the object exists</li>
+            <li>The ID of an entity</li>
+            <li>Required system fields (createdAt, updatedAt)</li>
+            <li>List containers (the list itself, not necessarily items)</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>Schema Stitching vs Federation</h3>
+      <table>
+        <thead><tr><th></th><th>Schema Stitching</th><th>Apollo Federation</th></tr></thead>
+        <tbody>
+          <tr><td>Approach</td><td>Merge multiple GraphQL schemas in a gateway layer</td><td>Each service owns its subgraph; gateway composes them</td></tr>
+          <tr><td>Coupling</td><td>Gateway has knowledge of all schemas</td><td>Services are independently deployable</td></tr>
+          <tr><td>Cross-service types</td><td>Manual type merging</td><td>@key directives; entity references</td></tr>
+          <tr><td>Best for</td><td>Smaller setups, migrating from monolith</td><td>Large microservice architectures</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ===== SECTION 9 ===== -->
+    <section id="federation">
+      <h2 class="section-title"><span class="sec-icon">9</span>Apollo Federation</h2>
+
+      <p>Apollo Federation allows you to build a <strong>distributed GraphQL schema</strong> where each microservice owns a piece of the schema (a "subgraph") and a central Router/Gateway composes them into a unified API.</p>
+
+      <div class="mermaid">
+graph TD
+    Client --> Router[Apollo Router/Gateway]
+    Router --> UsersService[Users Subgraph]
+    Router --> PostsService[Posts Subgraph]
+    Router --> ReviewsService[Reviews Subgraph]
+    UsersService -.-> SharedEntity[User Entity key: id]
+    PostsService -.-> SharedEntity
+    ReviewsService -.-> SharedEntity
+      </div>
+
+      <h3>Subgraph — Defining an Entity</h3>
+      <pre><code class="language-graphql"># users-service/schema.graphql
+extend schema
+  @link(url: "https://specs.apollo.dev/federation/v2.0", import: ["@key"])
+
+type User @key(fields: "id") {    # @key marks this as a Federation entity
+  id: ID!
+  name: String!
+  email: String!
+}
+
+type Query {
+  user(id: ID!): User
+  me: User
+}</code></pre>
+
+      <h3>Subgraph — Extending an Entity from Another Service</h3>
+      <pre><code class="language-graphql"># posts-service/schema.graphql
+extend schema
+  @link(url: "https://specs.apollo.dev/federation/v2.0",
+        import: ["@key", "@external"])
+
+# Reference the User entity defined in users-service
+type User @key(fields: "id") {
+  id: ID! @external   # field lives in users-service, referenced here
+  posts: [Post!]!     # extension field owned by posts-service
+}
+
+type Post {
+  id: ID!
+  title: String!
+  author: User!
+}
+
+type Query {
+  post(id: ID!): Post
+  posts: [Post!]!
+}</code></pre>
+
+      <h3>Entity Resolver — __resolveReference</h3>
+      <pre><code class="language-ts">// posts-service resolvers
+const resolvers = {
+  User: {
+    // Called by the Router when it needs to resolve User fields
+    // from the posts-service — receives the key fields { id }
+    __resolveReference: async (reference, { db }) =&gt; {
+      // reference = { __typename: 'User', id: '123' }
+      return db.users.findById(reference.id)
+    },
+    posts: (user, _, { db }) =&gt;
+      db.posts.findByAuthorId(user.id),
+  },
+}</code></pre>
+
+      <div class="info-box note">
+        <strong>Federation Router</strong>
+        The Apollo Router (Rust-based, replaces the JS Gateway) composes the subgraphs' schemas, generates a query plan, and routes fields to the appropriate subservice — transparently to clients who see a single unified schema.
+      </div>
+    </section>
+
+    <!-- ===== SECTION 10 ===== -->
+    <section id="apollo-client">
+      <h2 class="section-title"><span class="sec-icon">10</span>Apollo Client</h2>
+
+      <h3>Setup</h3>
+      <pre><code class="language-tsx">import { ApolloClient, InMemoryCache, ApolloProvider, gql } from '@apollo/client'
+
+const client = new ApolloClient({
+  uri: 'https://api.example.com/graphql',
+  cache: new InMemoryCache(),
+})
+
+function App() {
+  return (
+    &lt;ApolloProvider client={client}&gt;
+      &lt;Router /&gt;
+    &lt;/ApolloProvider&gt;
+  )
+}</code></pre>
+
+      <h3>useQuery, useMutation, useSubscription Hooks</h3>
+      <pre><code class="language-tsx">import { useQuery, useMutation, gql } from '@apollo/client'
+
+const GET_USERS = gql`
+  query GetUsers($role: UserRole) {
+    users(filter: { role: $role }) {
+      id
+      name
+      email
+    }
+  }
+`
+
+function UserList() {
+  const { loading, error, data, refetch } = useQuery(GET_USERS, {
+    variables: { role: 'ADMIN' },
+    fetchPolicy: 'cache-first',      // cache policy (see below)
+    pollInterval: 0,                 // 0 = no polling; set ms for polling
+    skip: false,                     // skip query entirely
+  })
+
+  if (loading) return &lt;Spinner /&gt;
+  if (error) return &lt;Error error={error} /&gt;
+  return &lt;ul&gt;{data.users.map(u =&gt; &lt;li key={u.id}&gt;{u.name}&lt;/li&gt;)}&lt;/ul&gt;
+}</code></pre>
+
+      <h3>InMemoryCache — Normalization</h3>
+      <p>Apollo Client normalizes cached data by <code>__typename + id</code>. Every object with an <code>id</code> (or custom key fields) is stored as a flat reference, so the same entity referenced in multiple queries is stored once and updates propagate everywhere.</p>
+      <pre><code class="language-ts">const cache = new InMemoryCache({
+  typePolicies: {
+    Query: {
+      fields: {
+        users: {
+          // Merge paginated results instead of replacing them
+          keyArgs: ['filter'],  // cache by filter arg, not pagination args
+          merge(existing = [], incoming) {
+            return [...existing, ...incoming]
+          },
+        },
+      },
+    },
+    User: {
+      // Custom key fields if not using 'id'
+      keyFields: ['email'],  // normalize by email instead of id
+    },
+  },
+})</code></pre>
+
+      <h3>Cache Fetch Policies</h3>
+      <table>
+        <thead><tr><th>Policy</th><th>Cache</th><th>Network</th><th>Use Case</th></tr></thead>
+        <tbody>
+          <tr><td><code>cache-first</code> (default)</td><td>Read first</td><td>Only if cache miss</td><td>Data that doesn't change often</td></tr>
+          <tr><td><code>cache-and-network</code></td><td>Return cached immediately</td><td>Always fetch to update</td><td>Fresh data preferred, instant display</td></tr>
+          <tr><td><code>network-only</code></td><td>Ignored</td><td>Always</td><td>Critical real-time data</td></tr>
+          <tr><td><code>cache-only</code></td><td>Always</td><td>Never</td><td>Offline-first, read from local state</td></tr>
+          <tr><td><code>no-cache</code></td><td>Not written</td><td>Always</td><td>Sensitive data that shouldn't persist</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Optimistic Responses</h3>
+      <pre><code class="language-tsx">const [updateTodo] = useMutation(UPDATE_TODO, {
+  optimisticResponse: ({ id, title }) =&gt; ({
+    __typename: 'Mutation',
+    updateTodo: {
+      __typename: 'Todo',
+      id,
+      title,
+      updatedAt: new Date().toISOString(),
+    },
+  }),
+})</code></pre>
+
+      <h3>Reactive Variables — Local State</h3>
+      <pre><code class="language-ts">import { makeVar, useReactiveVar } from '@apollo/client'
+
+// Reactive variable — triggers re-render when changed
+const isLoggedInVar = makeVar(false)
+const cartItemsVar = makeVar&lt;CartItem[]&gt;([])
+
+// In component
+function Header() {
+  const isLoggedIn = useReactiveVar(isLoggedInVar)
+  return &lt;div&gt;{isLoggedIn ? 'Logout' : 'Login'}&lt;/div&gt;
+}
+
+// Update from anywhere
+isLoggedInVar(true)
+cartItemsVar(prev =&gt; [...prev, newItem])</code></pre>
+    </section>
+
+    <!-- ===== SECTION 11 ===== -->
+    <section id="alternatives">
+      <h2 class="section-title"><span class="sec-icon">11</span>Client-Side Alternatives</h2>
+
+      <div class="grid-2">
+        <div class="card">
+          <h4>urql — Lightweight &amp; Flexible</h4>
+          <p>Exchange-based architecture — each capability (caching, auth, subscriptions, offline) is a composable exchange. Smaller bundle (~7KB gz). Built-in document caching and normalized caching (via <code>@urql/exchange-graphcache</code>).</p>
+          <pre><code class="language-tsx">import { createClient, Provider } from 'urql'
+const client = createClient({ url: '/graphql' })
+// &lt;Provider value={client}&gt;
+// useQuery, useMutation, useSubscription hooks same API pattern</code></pre>
+        </div>
+        <div class="card">
+          <h4>TanStack Query + graphql-request</h4>
+          <p>For teams already using TanStack Query for REST APIs — add <code>graphql-request</code> as the fetch layer and use <code>useQuery</code>/<code>useMutation</code> normally. No normalized caching but full TanStack Query features (staleTime, refetching, devtools).</p>
+          <pre><code class="language-tsx">import { request } from 'graphql-request'
+useQuery({
+  queryKey: ['users'],
+  queryFn: () => request('/graphql', GET_USERS),
+})</code></pre>
+        </div>
+      </div>
+
+      <h3>Comparison</h3>
+      <table>
+        <thead><tr><th></th><th>Apollo Client</th><th>urql</th><th>TanStack Query + graphql-request</th></tr></thead>
+        <tbody>
+          <tr><td>Normalized cache</td><td>Yes (InMemoryCache)</td><td>Optional (graphcache exchange)</td><td>No (key-based)</td></tr>
+          <tr><td>Bundle size</td><td>~32KB gz</td><td>~7KB gz</td><td>~12KB + ~2KB</td></tr>
+          <tr><td>Subscriptions</td><td>Built-in</td><td>Built-in (exchange)</td><td>Manual/custom</td></tr>
+          <tr><td>DevTools</td><td>Apollo DevTools browser extension</td><td>urql devtools</td><td>TanStack Query Devtools</td></tr>
+          <tr><td>Best for</td><td>Complex apps, Federation, rich cache control</td><td>Flexibility, small bundle</td><td>Teams mixing REST + GraphQL</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ===== SECTION 12 ===== -->
+    <section id="error-handling">
+      <h2 class="section-title"><span class="sec-icon">12</span>Error Handling</h2>
+
+      <h3>GraphQL Errors vs Network Errors</h3>
+      <pre><code class="language-json">// GraphQL response with PARTIAL data + errors
+{
+  "data": {
+    "user": { "id": "1", "name": "Alice" },
+    "posts": null    // this field failed
+  },
+  "errors": [
+    {
+      "message": "Cannot fetch posts: DB timeout",
+      "locations": [{ "line": 3, "column": 3 }],
+      "path": ["posts"],
+      "extensions": {
+        "code": "INTERNAL_SERVER_ERROR",
+        "timestamp": "2024-01-15T10:30:00Z"
+      }
+    }
+  ]
+}</code></pre>
+
+      <p>A GraphQL response can have BOTH <code>data</code> AND <code>errors</code> — this is called a "partial success." The client can still render the user data even though posts failed to load.</p>
+
+      <h3>Apollo Client Error Policies</h3>
+      <table>
+        <thead><tr><th>errorPolicy</th><th>Behaviour</th></tr></thead>
+        <tbody>
+          <tr><td><code>none</code> (default)</td><td>Any error causes the entire data to be set to undefined. <code>error</code> is populated. No partial data.</td></tr>
+          <tr><td><code>ignore</code></td><td>Errors are silently discarded. Only the partial data is returned. <code>error</code> is undefined.</td></tr>
+          <tr><td><code>all</code></td><td>Both <code>data</code> (partial) AND <code>error</code> are populated. Allows rendering partial results while showing error state for failed fields.</td></tr>
+        </tbody>
+      </table>
+
+      <pre><code class="language-tsx">const { data, error } = useQuery(QUERY, { errorPolicy: 'all' })
+
+// With errorPolicy: 'all', both can be present simultaneously
+if (error) console.warn('Partial error:', error.graphQLErrors)
+if (data) renderPartialUI(data)  // render what succeeded</code></pre>
+
+      <h3>Custom Error Codes (server-side)</h3>
+      <pre><code class="language-ts">import { GraphQLError } from 'graphql'
+import { ApolloServerErrorCode } from '@apollo/server/errors'
+
+throw new GraphQLError('User not found', {
+  extensions: {
+    code: 'NOT_FOUND',
+    http: { status: 404 },
+  },
+})
+
+// Built-in error codes (ApolloServerErrorCode):
+// BAD_USER_INPUT, UNAUTHENTICATED, FORBIDDEN,
+// BAD_REQUEST, INTERNAL_SERVER_ERROR, GRAPHQL_PARSE_FAILED</code></pre>
+    </section>
+
+    <!-- ===== SECTION 13 ===== -->
+    <section id="performance">
+      <h2 class="section-title"><span class="sec-icon">13</span>Performance</h2>
+
+      <h3>Query Complexity Limiting</h3>
+      <pre><code class="language-ts">import costAnalysis from 'graphql-cost-analysis'
+
+const server = new ApolloServer({
+  plugins: [
+    costAnalysis({
+      maximumCost: 1000,       // reject queries above this cost
+      defaultCost: 1,
+      onComplete: (cost) =&gt; console.log('Query cost:', cost),
+    }),
+  ],
+})</code></pre>
+
+      <h3>Depth Limiting</h3>
+      <pre><code class="language-ts">import depthLimit from 'graphql-depth-limit'
+
+const server = new ApolloServer({
+  validationRules: [depthLimit(7)],  // reject queries deeper than 7 levels
+})</code></pre>
+
+      <h3>Persisted Queries</h3>
+      <p>Instead of sending full query strings on every request (expensive to parse), store queries server-side by their hash. Clients send only the hash — the server looks up the query string.</p>
+      <pre><code class="language-ts">// Automatic Persisted Queries (APQ) — Apollo built-in
+import { createPersistedQueryLink } from '@apollo/client/link/persisted-queries'
+import { sha256 } from 'crypto-hash'
+
+const link = createPersistedQueryLink({ sha256 }).concat(httpLink)
+// First request: sends hash + full query; server caches it
+// Subsequent requests: sends only hash — smaller payload, CDN cacheable</code></pre>
+
+      <h3>Field-Level Caching with @cacheControl</h3>
+      <pre><code class="language-graphql">type Post @cacheControl(maxAge: 60) {  # cache responses for 60s
+  id: ID!
+  title: String!
+  author: User @cacheControl(maxAge: 300)  # author data cached 5min
+  content: String! @cacheControl(maxAge: 0)  # never cache
+}</code></pre>
+    </section>
+
+    <!-- ===== SECTION 14 ===== -->
+    <section id="security">
+      <h2 class="section-title"><span class="sec-icon">14</span>Security</h2>
+
+      <h3>Disable Introspection in Production</h3>
+      <pre><code class="language-ts">const server = new ApolloServer({
+  introspection: process.env.NODE_ENV !== 'production',
+  // Introspection exposes your entire schema to attackers — disable in prod
+})</code></pre>
+
+      <h3>Rate Limiting</h3>
+      <pre><code class="language-ts">import rateLimit from 'express-rate-limit'
+
+// Limit to 100 requests per 15 minutes per IP
+app.use('/graphql', rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  message: { errors: [{ message: 'Too many requests' }] },
+}))</code></pre>
+
+      <h3>Authentication in Context</h3>
+      <pre><code class="language-ts">const server = new ApolloServer({
+  context: async ({ req }) =&gt; {
+    const token = req.headers.authorization?.replace('Bearer ', '')
+    let user = null
+    if (token) {
+      try {
+        user = await verifyJWT(token)  // throws if invalid
+      } catch (e) {
+        // Invalid token — user stays null; resolvers handle authorization
+      }
+    }
+    return { user, db, dataloaders: createLoaders(db) }
+  },
+})</code></pre>
+
+      <h3>Authorization Patterns</h3>
+      <div class="grid-2">
+        <div class="card">
+          <h4>Resolver-Level Authorization</h4>
+          <pre><code class="language-ts">Mutation: {
+  deletePost: (_, { id }, { user }) =&gt; {
+    if (!user) throw new GraphQLError(
+      'Not authenticated',
+      { extensions: { code: 'UNAUTHENTICATED' } }
+    )
+    if (user.role !== 'ADMIN') throw new GraphQLError(
+      'Not authorized',
+      { extensions: { code: 'FORBIDDEN' } }
+    )
+    return db.posts.delete(id)
+  }
+}</code></pre>
+        </div>
+        <div class="card">
+          <h4>Schema-Level with @auth Directive</h4>
+          <pre><code class="language-graphql">directive @auth(
+  requires: UserRole = USER
+) on OBJECT | FIELD_DEFINITION
+
+type Mutation {
+  deletePost(id: ID!): Boolean!
+    @auth(requires: ADMIN)
+  updatePost(id: ID!, input: UpdatePostInput!): Post!
+    @auth(requires: EDITOR)
+}</code></pre>
+        </div>
+      </div>
+
+      <h3>Security Checklist</h3>
+      <table>
+        <thead><tr><th>Concern</th><th>Solution</th></tr></thead>
+        <tbody>
+          <tr><td>Schema exposure</td><td>Disable introspection in production</td></tr>
+          <tr><td>Deeply nested queries (DoS)</td><td>Depth limiting (graphql-depth-limit)</td></tr>
+          <tr><td>Complex expensive queries</td><td>Query complexity analysis</td></tr>
+          <tr><td>Abuse / scraping</td><td>Rate limiting per IP/user</td></tr>
+          <tr><td>Authentication</td><td>JWT/session in context; check in resolvers</td></tr>
+          <tr><td>Authorization</td><td>Check user role in resolvers or via directives</td></tr>
+          <tr><td>Query size</td><td>Limit request body size (e.g., 10KB max)</td></tr>
+          <tr><td>Batch attacks</td><td>Disable or limit query batching</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ===== SECTION 15 ===== -->
+    <section id="codegen">
+      <h2 class="section-title"><span class="sec-icon">15</span>Code Generation</h2>
+
+      <p>GraphQL Code Generator (<code>@graphql-codegen/cli</code>) generates TypeScript types from your schema and your operation documents — giving end-to-end type safety from server schema to React component.</p>
+
+      <h3>Setup</h3>
+      <pre><code class="language-bash">npm install -D @graphql-codegen/cli @graphql-codegen/typescript \
+  @graphql-codegen/typescript-operations \
+  @graphql-codegen/typescript-react-apollo</code></pre>
+
+      <pre><code class="language-yaml"># codegen.ts or codegen.yml
+import type { CodegenConfig } from '@graphql-codegen/cli'
+
+const config: CodegenConfig = {
+  schema: 'https://api.example.com/graphql',   # or local file
+  documents: ['src/**/*.graphql', 'src/**/*.tsx'],  # scan for gql tags
+  generates: {
+    'src/generated/graphql.ts': {
+      plugins: [
+        'typescript',
+        'typescript-operations',
+        'typescript-react-apollo',  # generates typed hooks
+      ],
+      config: {
+        withHooks: true,
+        withResultType: true,
+        scalars: {
+          DateTime: 'string',
+          JSON: 'Record&lt;string, unknown&gt;',
+        },
+      },
+    },
+  },
+  watch: true,   # watch mode for development
+}
+export default config</code></pre>
+
+      <h3>Generated Output</h3>
+      <pre><code class="language-ts">// AUTO-GENERATED — do not edit manually (src/generated/graphql.ts)
+
+export type User = {
+  __typename?: 'User'
+  id: Scalars['ID']
+  name: Scalars['String']
+  email: Scalars['String']
+  posts: Array&lt;Post&gt;
+}
+
+export type GetUsersQueryVariables = Exact&lt;{
+  role?: InputMaybe&lt;UserRole&gt;
+}&gt;
+
+export type GetUsersQuery = {
+  __typename?: 'Query'
+  users: Array&lt;{ __typename?: 'User'; id: string; name: string; email: string }&gt;
+}
+
+// Fully typed hook — no manual types needed!
+export function useGetUsersQuery(
+  baseOptions?: Apollo.QueryHookOptions&lt;GetUsersQuery, GetUsersQueryVariables&gt;
+): Apollo.QueryResult&lt;GetUsersQuery, GetUsersQueryVariables&gt;</code></pre>
+
+      <pre><code class="language-tsx">// Usage in component — fully typed, no casting
+import { useGetUsersQuery, UserRole } from '../generated/graphql'
+
+function UserList() {
+  const { data, loading } = useGetUsersQuery({
+    variables: { role: UserRole.Admin },  // enum from generated code
+  })
+  // data.users is typed as Array&lt;{id: string, name: string, email: string}&gt;
+}</code></pre>
+
+      <div class="info-box tip">
+        <strong>Fragment colocation</strong>
+        Codegen supports colocating fragments with components. Define a fragment in the component file, and codegen generates a typed <code>*Fragment</code> type and a <code>useFragment</code> hook, enabling components to declare their own data dependencies — the "Relay pattern" in Apollo.
+      </div>
+    </section>
+
+    <!-- ===== SECTION 16 ===== -->
+    <section id="ecosystem">
+      <h2 class="section-title"><span class="sec-icon">16</span>Ecosystem &amp; Versions</h2>
+
+      <h3>GraphQL Spec Evolution</h3>
+      <table>
+        <thead><tr><th>Version</th><th>Year</th><th>Key Additions</th></tr></thead>
+        <tbody>
+          <tr><td>Initial Release</td><td>2015</td><td>Core spec: queries, mutations, type system, introspection</td></tr>
+          <tr><td>June 2018</td><td>2018</td><td>Subscriptions formalized, input coercion improvements, deprecation directive</td></tr>
+          <tr><td>October 2021</td><td>2021</td><td>@defer and @stream directives (experimental), repeatable directives, schema SDL standard, Int64 discussion</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Server Implementations</h3>
+      <div class="grid-2">
+        <div class="card">
+          <h4>JavaScript / Node.js</h4>
+          <ul class="bullet">
+            <li><strong>graphql-js</strong> — Reference implementation by Meta</li>
+            <li><strong>Apollo Server 4</strong> — Production-grade, framework-agnostic</li>
+            <li><strong>Pothos</strong> — Code-first schema builder with TypeScript</li>
+            <li><strong>Yoga</strong> — GraphQL Yoga by The Guild, spec-compliant</li>
+            <li><strong>Mercurius</strong> — Fastify plugin</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>Other Languages</h4>
+          <ul class="bullet">
+            <li><strong>Hot Chocolate</strong> — .NET, schema-first or code-first</li>
+            <li><strong>strawberry</strong> — Python, code-first with type hints</li>
+            <li><strong>graphql-ruby</strong> — Ruby, mature ecosystem</li>
+            <li><strong>gqlgen</strong> — Go, schema-first, code generation</li>
+            <li><strong>Sangria</strong> — Scala / Akka</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>Schema Registry &amp; Tooling</h3>
+      <table>
+        <thead><tr><th>Tool</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td>Apollo Studio / Rover CLI</td><td>Schema registry, schema checks, federation supergraph management</td></tr>
+          <tr><td>GraphQL Inspector</td><td>Schema diffing, breaking change detection, coverage reports</td></tr>
+          <tr><td>GraphQL Code Generator</td><td>Type generation from schema + operations for any language</td></tr>
+          <tr><td>GraphiQL / Apollo Sandbox</td><td>Interactive in-browser IDE for exploring schemas and testing queries</td></tr>
+          <tr><td>Postman / Insomnia</td><td>API testing tools with GraphQL support</td></tr>
+          <tr><td>The Guild ecosystem</td><td>GraphQL Yoga, Envelop (plugin system), GraphQL Modules, Code Generator</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ===== SECTION 17: Q&A ===== -->
+    <section id="qna">
+      <h2 class="section-title"><span class="sec-icon">17</span>Q&amp;A — 20 Questions</h2>
+
+      <!-- Easy -->
+      <details class="qa">
+        <summary><span class="badge easy">Easy</span> What is over-fetching and how does GraphQL solve it?</summary>
+        <div class="qa-body">
+          <p>Over-fetching occurs in REST APIs when an endpoint returns more data than the client needs. For example, a <code>GET /users/:id</code> endpoint might return 20 fields (name, email, phone, address, bio, avatar, createdAt, etc.) but the client only needs name and email for a list view — wasting bandwidth and parsing time.</p>
+          <p>GraphQL solves this because the client explicitly lists every field it wants in the query. The server returns exactly those fields and nothing else. A GraphQL client fetching a user list only for display purposes writes: <code>{ users { id name } }</code> — and receives only <code>id</code> and <code>name</code> for each user, regardless of how many fields the User type has in the schema.</p>
+        </div>
+      </details>
+
+      <details class="qa">
+        <summary><span class="badge easy">Easy</span> What is the difference between <code>type</code> and <code>input</code> in GraphQL SDL?</summary>
+        <div class="qa-body">
+          <p><strong>Object types</strong> (defined with <code>type</code>) describe data that the server <em>returns</em>. They can have resolvers, and their fields can resolve to other object types, forming a graph.</p>
+          <p><strong>Input types</strong> (defined with <code>input</code>) describe arguments passed <em>to</em> the server in mutations and queries. Input types can only contain scalar types, enum types, and other input types — they cannot reference object types (no circular dependencies back into the query graph). This separation exists because output types may have resolver logic, but input arguments are simple data structures.</p>
+          <pre><code class="language-graphql">type User { id: ID!, name: String! }    # output — what server returns
+input CreateUserInput { name: String! } # input — what client sends</code></pre>
+        </div>
+      </details>
+
+      <details class="qa">
+        <summary><span class="badge easy">Easy</span> What is GraphQL introspection and when should it be disabled?</summary>
+        <div class="qa-body">
+          <p>Introspection is a built-in GraphQL feature that allows clients to query the schema itself — what types exist, what fields they have, what queries/mutations/subscriptions are available. Tools like GraphiQL, Apollo Studio, and code generators rely on introspection to understand the API.</p>
+          <p>In <strong>production</strong>, introspection should be disabled because it exposes your entire API surface area to potential attackers, giving them a roadmap for crafting targeted queries, finding deprecated fields, or discovering sensitive operations. Disable it with <code>introspection: process.env.NODE_ENV !== 'production'</code> in Apollo Server, or via the equivalent setting in your server library.</p>
+        </div>
+      </details>
+
+      <details class="qa">
+        <summary><span class="badge easy">Easy</span> What is a fragment in GraphQL and why would you use one?</summary>
+        <div class="qa-body">
+          <p>A fragment is a reusable set of fields that can be spread into multiple queries, mutations, or subscriptions using the <code>...</code> spread syntax. Fragments serve two purposes:</p>
+          <p><strong>1. DRY (Don't Repeat Yourself):</strong> If multiple queries need the same set of user fields, define them once as a fragment <code>fragment UserFields on User { id name email avatar }</code> and spread them in each query.</p>
+          <p><strong>2. Component colocation:</strong> In the "fragment colocation" pattern, each component defines a fragment declaring its own data needs. The parent query composes all fragments. This makes data dependencies explicit and local to each component — changing a component's data needs only requires updating its fragment.</p>
+        </div>
+      </details>
+
+      <details class="qa">
+        <summary><span class="badge easy">Easy</span> What are the four arguments to a resolver function?</summary>
+        <div class="qa-body">
+          <p><code>(parent, args, context, info)</code> — conventionally shortened to <code>(root, args, ctx, info)</code> or <code>(_, args, { db, user })</code>:</p>
+          <ul style="margin: 8px 0 8px 20px;">
+            <li><strong>parent</strong> — the result returned by the parent field's resolver. For root-level Query/Mutation fields, this is the root value (often undefined or an empty object). For nested fields like <code>User.posts</code>, it's the User object returned by <code>Query.user</code>.</li>
+            <li><strong>args</strong> — arguments passed to this specific field in the query (e.g., <code>user(id: "123")</code> gives <code>args = { id: "123" }</code>).</li>
+            <li><strong>context</strong> — shared request-scoped object: typically contains authenticated user, database connections, DataLoaders, and request metadata.</li>
+            <li><strong>info</strong> — AST information about the field: schema, path, return type, field name, selected sub-fields. Rarely needed in application code.</li>
+          </ul>
+        </div>
+      </details>
+
+      <!-- Intermediate -->
+      <details class="qa">
+        <summary><span class="badge intermediate">Intermediate</span> Explain the N+1 problem with a concrete example and how DataLoader solves it.</summary>
+        <div class="qa-body">
+          <p>Given a query that fetches 100 posts with their authors, the naive resolver approach fires 1 DB query to fetch all posts, then 1 DB query <em>per post</em> to fetch each author — 101 total queries. This is "N+1" (1 for the list + N for the related objects).</p>
+          <p>DataLoader works by exploiting the JavaScript event loop. When all 100 <code>Post.author</code> resolvers call <code>userLoader.load(post.authorId)</code>, DataLoader does NOT immediately execute 100 DB calls. Instead, it <strong>collects all IDs</strong> within the same event loop tick, then fires a single batch function at the end of the tick: <code>SELECT * FROM users WHERE id IN (id1, id2, ..., id100)</code> — 1 DB query total for all 100 authors.</p>
+          <p>The batch function must return an array of results in the <em>same order</em> as the input IDs — this is critical and a common bug source. DataLoader also caches results by key within a request, so if the same user authored 5 posts, they are only fetched once.</p>
+        </div>
+      </details>
+
+      <details class="qa">
+        <summary><span class="badge intermediate">Intermediate</span> What is the Relay Connection spec and why is it the recommended pagination pattern?</summary>
+        <div class="qa-body">
+          <p>The Relay Connection spec defines a standard structure for paginated lists: each paginated field returns a <strong>connection object</strong> containing <code>edges</code> (array of <code>{ node, cursor }</code> objects) and <code>pageInfo</code> (<code>{ hasNextPage, hasPreviousPage, startCursor, endCursor }</code>).</p>
+          <p>Benefits of this pattern:</p>
+          <ul style="margin: 8px 0 8px 20px;">
+            <li><strong>Cursor-based pagination</strong> is stable even when items are inserted or deleted (unlike offset pagination where inserting row 3 shifts all subsequent offsets).</li>
+            <li><strong>Bidirectional navigation</strong> — the spec supports forward (<code>first</code>/<code>after</code>) and backward (<code>last</code>/<code>before</code>) traversal.</li>
+            <li><strong>Metadata extensibility</strong> — adding <code>totalCount</code> or other metadata to the connection object is straightforward without breaking the shape.</li>
+            <li><strong>Tooling support</strong> — Relay's built-in pagination hooks, Apollo's <code>relayStylePagination()</code> cache policy, and various code generators understand this pattern natively.</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="qa">
+        <summary><span class="badge intermediate">Intermediate</span> How does Apollo Client's InMemoryCache normalize data?</summary>
+        <div class="qa-body">
+          <p>Apollo Client's InMemoryCache normalizes objects by their <strong>__typename + id</strong> (or custom key fields). When data is stored in the cache, each object with an id is stored as a flat reference (like <code>User:123</code>) rather than nested under the query that fetched it.</p>
+          <p>When two different queries both return the same user (e.g., a user list and a user detail query), Apollo Client recognizes they have the same <code>__typename</code> and <code>id</code>, and stores only one copy. Any mutation that updates <code>User:123</code> via <code>cache.writeFragment</code> or <code>cache.modify</code> automatically updates all components that display data from that user — regardless of which query fetched it.</p>
+          <p>The cache is essentially a normalized relational store keyed by <code>__typename:id</code>. This is why Apollo automatically includes <code>__typename</code> in all queries — without it, normalization cannot work.</p>
+        </div>
+      </details>
+
+      <details class="qa">
+        <summary><span class="badge intermediate">Intermediate</span> What are GraphQL subscriptions and how do they differ from queries and mutations?</summary>
+        <div class="qa-body">
+          <p>Subscriptions are <strong>long-lived connections</strong> that push data from server to client whenever a specified event occurs. Unlike queries (request-response, client asks once) and mutations (trigger a change), subscriptions maintain an open channel (typically WebSocket) and the server pushes updates proactively.</p>
+          <p><strong>Key differences:</strong></p>
+          <ul style="margin: 8px 0 8px 20px;">
+            <li>Protocol: queries/mutations use HTTP; subscriptions use WebSocket (graphql-ws protocol)</li>
+            <li>Direction: queries/mutations are client-initiated pull; subscriptions are server-initiated push</li>
+            <li>Lifecycle: queries are one-shot; subscriptions remain active until client unsubscribes</li>
+            <li>Execution: each subscription type requires a resolver with both a <code>subscribe</code> function (returns AsyncIterable) and a <code>resolve</code> function (formats the pushed event)</li>
+          </ul>
+          <p>Use subscriptions only when real-time push is genuinely needed — for data that changes at unpredictable intervals, client-side polling (<code>pollInterval</code>) is often simpler and more scalable.</p>
+        </div>
+      </details>
+
+      <details class="qa">
+        <summary><span class="badge intermediate">Intermediate</span> Explain the Apollo Client fetch policies and when to use each.</summary>
+        <div class="qa-body">
+          <p><strong>cache-first (default):</strong> Check cache first; only hit network on a cache miss. Best for data that doesn't change often and where slight staleness is acceptable (e.g., user profile, category lists). Best performance.</p>
+          <p><strong>cache-and-network:</strong> Return cached data immediately (fast render) while simultaneously fetching fresh data from the network to update the cache. Best UX for data that changes but immediate display is important. Slightly higher network usage.</p>
+          <p><strong>network-only:</strong> Always fetch from network; ignore and overwrite cache. Use for critical data that must always be current (e.g., current balance, security-sensitive information).</p>
+          <p><strong>cache-only:</strong> Only read from cache; throw error if cache miss. Used in offline-first apps or when you're certain the data is already cached.</p>
+          <p><strong>no-cache:</strong> Always fetch from network and do NOT write the result to the cache. For sensitive data (medical records, financial transactions) that should not persist in browser memory.</p>
+        </div>
+      </details>
+
+      <!-- Advanced -->
+      <details class="qa">
+        <summary><span class="badge advanced">Advanced</span> Walk through how Apollo Federation composes a distributed schema and resolves a cross-service query.</summary>
+        <div class="qa-body">
+          <p><strong>Schema composition:</strong> At startup (or CI time), the Router fetches SDL from each registered subgraph. It validates that entities are consistent (same @key fields, no conflicting types) and composes them into a single "supergraph SDL" that represents the unified API clients see.</p>
+          <p><strong>Query planning:</strong> When a client sends a query, the Router analyzes which subgraphs own which fields, generates a query plan (a tree of "fetch" operations), and executes them — potentially in parallel for independent fields.</p>
+          <p><strong>Cross-service entity resolution:</strong> When query field B in Service B requires a User entity that was returned by Service A, the Router takes the <code>id</code> (the @key field) from Service A's response and sends a "representations" query to Service B: <code>_entities(representations: [{__typename: "User", id: "123"}])</code>. Service B's <code>__resolveReference</code> resolver fetches the full user data and returns the extended fields.</p>
+          <p>This process is transparent to the client — they just write a normal GraphQL query spanning multiple services and receive a unified response.</p>
+        </div>
+      </details>
+
+      <details class="qa">
+        <summary><span class="badge advanced">Advanced</span> What are the differences between GraphQL errors in <code>errors</code> array vs throwing exceptions in resolvers?</summary>
+        <div class="qa-body">
+          <p>When a resolver <strong>throws an error</strong>, GraphQL catches it and adds it to the response <code>errors</code> array. The affected field is set to <code>null</code> in <code>data</code>. If the field is non-null (<code>!`), the null propagates up to the nearest nullable parent. Apollo Server sanitizes error messages in production — only errors with known codes (or set <code>exposeErrors: true</code>) show their message; others become "Internal server error."</p>
+          <p><strong>Expected errors</strong> (validation failures, auth errors, not found) should use <code>GraphQLError</code> with meaningful <code>extensions.code</code> values — these are user-facing and Apollo Server exposes their message.</p>
+          <p><strong>Unexpected errors</strong> (DB timeouts, null pointer exceptions) are sanitized and logged server-side — clients receive a generic message. The <code>errors</code> array can coexist with partial <code>data</code> when using <code>errorPolicy: 'all'</code> on the client.</p>
+          <p>The <strong>payload pattern</strong> is an alternative — return errors as part of the data type (not in the GraphQL errors array), enabling typed error handling without relying on the errors mechanism. This keeps the response structure consistent and plays better with code generation.</p>
+        </div>
+      </details>
+
+      <details class="qa">
+        <summary><span class="badge advanced">Advanced</span> How does GraphQL Code Generator improve type safety end-to-end?</summary>
+        <div class="qa-body">
+          <p>GraphQL Code Generator reads your schema SDL and your operation documents (queries, mutations, fragments in <code>.graphql</code> files or <code>gql</code> tagged templates) and generates TypeScript types that exactly match both.</p>
+          <p><strong>Without codegen:</strong> You cast API responses to manually defined types, which drift from the schema over time. A server-side type change won't automatically surface as a TypeScript error in the client.</p>
+          <p><strong>With codegen:</strong> Every operation gets a generated variables type and result type derived directly from the schema. If the schema changes (e.g., a field is renamed), codegen regenerates the types and TypeScript compilation fails at the exact component that uses the renamed field — instant catch before deployment.</p>
+          <p>Codegen also generates typed hooks (<code>useGetUsersQuery</code>) that eliminate the need for generic type parameters on Apollo's <code>useQuery&lt;GetUsersQuery, GetUsersQueryVariables&gt;</code>. In watch mode (<code>codegen --watch</code>), types regenerate on every schema or operation file change during development.</p>
+        </div>
+      </details>
+
+      <details class="qa">
+        <summary><span class="badge advanced">Advanced</span> Explain the difference between schema-stitching and Apollo Federation. When would you choose one over the other?</summary>
+        <div class="qa-body">
+          <p><strong>Schema Stitching</strong> (via <code>@graphql-tools/stitch</code>) merges multiple GraphQL schemas in a gateway layer. The gateway has full knowledge of all schemas and handles type merging manually. The subgraphs don't need to know about each other.</p>
+          <p><strong>Apollo Federation</strong> is a first-class distributed schema protocol. Each subgraph declares its piece of the schema using <code>@key</code>, <code>@external</code>, and other federation directives. Subgraphs are independently deployable and each one knows its own domain. The Router composes subgraphs automatically based on these declarations.</p>
+          <p><strong>Choose Stitching when:</strong> You have existing GraphQL services not built with Federation in mind, you need to wrap third-party schemas, or you have a small number of services with a single gateway team. Stitching gives more flexibility in how you compose schemas.</p>
+          <p><strong>Choose Federation when:</strong> You have multiple teams owning different domain services and need clear ownership boundaries, you need the Router's advanced features (traffic shaping, observability, schema checks), and you can adopt the Federation spec from the start. Federation is the better long-term choice for large microservice architectures.</p>
+        </div>
+      </details>
+
+      <!-- Very Advanced -->
+      <details class="qa">
+        <summary><span class="badge very-advanced">Very Advanced</span> What are the trade-offs of nullability in GraphQL schema design and how does it affect error propagation?</summary>
+        <div class="qa-body">
+          <p>GraphQL's null propagation rule states: if a non-null field returns null (due to a resolver error or explicit null), the null propagates up to the nearest nullable ancestor field. If that ancestor is also non-null, it continues propagating up.</p>
+          <p><strong>Over-using non-null (!)</strong> creates brittle schemas. If <code>Post.author: User!</code> is non-null and the author lookup fails (e.g., DB timeout), the entire post becomes null. If <code>Query.posts: [Post!]!</code> is also non-null, the entire response data becomes null — despite many posts loading successfully.</p>
+          <p><strong>Schema design principle:</strong> Use nullable fields at "natural failure boundaries" — fields that cross service boundaries, involve optional relationships, or could partially fail. Make leaf scalar fields (id, name, createdAt) non-null when they're guaranteed. The more nullable your schema, the better partial data resilience you get.</p>
+          <p><strong>The semantic nullable debate:</strong> Some argue all fields should be nullable by default to enable graceful degradation. Others argue that excessive nullability forces clients to handle null everywhere, polluting code. The GraphQL Working Group continues to discuss "semantic non-null" (field won't be null unless an error occurs) as a potential solution for a future spec version.</p>
+        </div>
+      </details>
+
+      <details class="qa">
+        <summary><span class="badge very-advanced">Very Advanced</span> Describe how Automatic Persisted Queries (APQ) work and the security/performance trade-offs.</summary>
+        <div class="qa-body">
+          <p>APQ replaces full query strings with SHA-256 hashes. The flow:</p>
+          <p><strong>First request (cache miss):</strong> Client sends only the hash. Server doesn't recognize it, returns a <code>PERSISTED_QUERY_NOT_FOUND</code> error. Client resends with both the hash and the full query string. Server stores the query string keyed by hash (in Redis or in-memory), then executes it.</p>
+          <p><strong>Subsequent requests:</strong> Client sends only the hash. Server finds the query in its store and executes it — no query string transfer overhead.</p>
+          <p><strong>Performance benefits:</strong> Query strings can be kilobytes for complex queries. APQ reduces payload to ~32 bytes (the hash). Combined with GET requests for queries (query in URL parameters), responses become CDN-cacheable — a major win for public APIs.</p>
+          <p><strong>Security consideration:</strong> APQ alone does not prevent unauthorized queries — any client can still send new queries by including the full text. For tighter security, use "trusted document" mode: pre-register only your application's queries server-side (at build/deploy time), reject any query not in the registry. This prevents clients from executing arbitrary GraphQL queries against your API.</p>
+          <p><strong>Trade-off:</strong> Trusted documents require rebuilding and redeploying both client and server when query changes are needed — introduces deployment coupling. APQ without the trusted-document restriction is a pure performance win with no security trade-offs.</p>
+        </div>
+      </details>
+
+      <details class="qa">
+        <summary><span class="badge very-advanced">Very Advanced</span> How do you implement real-time subscriptions at scale, and what are the infrastructure challenges?</summary>
+        <div class="qa-body">
+          <p>Scaling WebSocket subscriptions requires solving the <strong>fan-out problem</strong>: when a server receives an event (e.g., a new message in room "X"), it must notify all clients subscribed to that room — potentially connected to different server instances.</p>
+          <p><strong>Pub/Sub with Redis:</strong> Each server instance subscribes to a Redis channel. When any server receives an event (mutation), it publishes to Redis. All server instances receive the publication via Redis and push to their locally-connected clients subscribed to that event. Apollo Server uses <code>graphql-redis-subscriptions</code> for this pattern.</p>
+          <pre><code class="language-ts">import { RedisPubSub } from 'graphql-redis-subscriptions'
+const pubsub = new RedisPubSub({ connection: redisClient })
+
+// In mutation resolver
+await pubsub.publish('POST_CREATED', { postCreated: newPost })
+
+// In subscription resolver
+Subscription: {
+  postCreated: {
+    subscribe: () => pubsub.asyncIterator(['POST_CREATED']),
+  },
+}</code></pre>
+          <p><strong>Infrastructure challenges:</strong></p>
+          <ul style="margin: 8px 0 8px 20px;">
+            <li><strong>Sticky sessions:</strong> Load balancers must route reconnecting clients to the same server instance (or use a stateless architecture where any instance can serve any subscription via shared pub/sub).</li>
+            <li><strong>Connection limits:</strong> Each WebSocket is a persistent connection consuming memory. A single Node.js server can handle ~10K-100K concurrent WebSocket connections; plan capacity accordingly.</li>
+            <li><strong>Authorization on reconnect:</strong> JWT tokens expire; subscriptions must handle token refresh and re-authenticate without losing the connection.</li>
+            <li><strong>Filtering:</strong> Redis fan-out pushes to all instances; subscription resolvers must filter events per-subscriber efficiently.</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="qa">
+        <summary><span class="badge very-advanced">Very Advanced</span> Compare urql's exchange architecture with Apollo Client's link chain and explain the design philosophy difference.</summary>
+        <div class="qa-body">
+          <p>Both are middleware pipelines for processing GraphQL operations, but they differ in philosophy and composability.</p>
+          <p><strong>Apollo Client Links</strong> form a directional chain where each link can forward to the next or short-circuit. Links are composed with <code>.concat()</code> or <code>from([])</code>: <code>authLink.concat(retryLink).concat(httpLink)</code>. Links are typically stateful (e.g., <code>InMemoryCache</code> link has embedded state). The chain is set up once and each operation passes through it linearly.</p>
+          <p><strong>urql Exchanges</strong> are bidirectional — they see both the operation going down (from client to network) and the result coming back up (from network to component). Each exchange wraps the next exchange's <code>forward</code> function: <code>[dedupExchange, cacheExchange, fetchExchange]</code>. This bidirectional visibility makes features like logging, error handling, and offline queuing more natural — the exchange sees both sides of each operation without needing separate request/response links.</p>
+          <p><strong>Key philosophical difference:</strong> Apollo's links encourage composing specialized single-purpose layers. urql's exchanges encourage writing stateful middleware that can intercept operations going either direction. urql's design is arguably more Haskell-inspired (similar to Conduit/pipes), while Apollo's is more Express middleware-inspired.</p>
+          <p>For most applications, either achieves the same outcomes; the choice often comes down to bundle size requirements (urql is significantly smaller) and ecosystem preference.</p>
+        </div>
+      </details>
+
+    </section>
+  </main>
+</div>
+
+<script>
+  hljs.highlightAll()
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'dark',
+    themeVariables: {
+      primaryColor: '#161b22',
+      primaryTextColor: '#c9d1d9',
+      primaryBorderColor: '#30363d',
+      lineColor: '#bc8cff',
+      secondaryColor: '#21262d',
+      tertiaryColor: '#0d1117',
+      background: '#0d1117',
+    },
+  })
+</script>
+</body>
+</html>
