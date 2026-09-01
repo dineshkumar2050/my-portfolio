@@ -54,6 +54,22 @@ VERCEL_PROJECT_ID
 
 ## Vercel Setup
 
+Production deployment:
+
+```text
+https://my-portfolio-nitfhsyyi-dinesh-portfolio2.vercel.app
+```
+
+Project:
+
+```text
+dinesh-portfolio2/my-portfolio
+```
+
+The project can be deployed by GitHub Actions using the configured repository secrets. Native Vercel Git integration requires connecting the GitHub account inside Vercel first.
+
+Manual setup/reference steps:
+
 1. Go to Vercel and import `dineshkumar2050/my-portfolio`.
 2. Set Framework Preset to `Next.js`.
 3. Add the same runtime environment variables in Vercel Project Settings.
