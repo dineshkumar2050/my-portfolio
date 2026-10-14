@@ -35,3 +35,6 @@ Thumbs.db
 .vercel
 .env*
 !.env.local.example
+
+# Skill-match eval model cache
+scripts/skill-match-eval/.hf-cache/

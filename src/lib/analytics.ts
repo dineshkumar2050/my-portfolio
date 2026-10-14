@@ -26,6 +26,7 @@ interface DownloadRecord {
   downloadCount: number;
   basicCount: number;
   detailedCount: number;
+  tailoredCount?: number;
   verifiedEmail: boolean;
 }
 
@@ -97,7 +98,8 @@ export async function logResumeDownload(email: string, type: string, verified: b
       records[idx].downloadCount += 1;
       downloadCount = records[idx].downloadCount;
       if (type === 'basic') records[idx].basicCount += 1;
-      else records[idx].detailedCount += 1;
+      else if (type === 'detailed') records[idx].detailedCount += 1;
+      else records[idx].tailoredCount = (records[idx].tailoredCount ?? 0) + 1;
     } else {
       records.push({
         email,
@@ -106,6 +108,7 @@ export async function logResumeDownload(email: string, type: string, verified: b
         downloadCount: 1,
         basicCount: type === 'basic' ? 1 : 0,
         detailedCount: type === 'detailed' ? 1 : 0,
+        tailoredCount: type === 'tailored' ? 1 : 0,
         verifiedEmail: verified,
       });
     }

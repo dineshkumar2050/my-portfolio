@@ -26,6 +26,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Skill-matching regression test
+        run: npm run test:skills
+
       - name: Build
         run: npm run build
         env:

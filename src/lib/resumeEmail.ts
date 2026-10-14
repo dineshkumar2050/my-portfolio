@@ -1,10 +1,20 @@
-import { createResumePdf, type ResumeType } from '@/lib/resumePdf';
+import { createResumePdf, type GeneratedResume, type ResumeType } from '@/lib/resumePdf';
+
+interface ResumeEmail {
+  subject: string;
+  heading: string;
+  intro: string; // trusted HTML — escape any user/job-derived text before passing it in
+}
 
 function resumeLabel(type: ResumeType) {
   return type === 'detailed' ? 'Detailed Resume' : 'Basic Resume';
 }
 
-function resumeEmailHtml(type: ResumeType) {
+function escapeHtml(text: string) {
+  return text.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]!));
+}
+
+function resumeEmailHtml({ heading, intro }: ResumeEmail) {
   return `<!DOCTYPE html>
 <html><head><meta charset="utf-8"/></head>
 <body style="margin:0;padding:0;background:#07101f;font-family:Inter,sans-serif;">
@@ -14,9 +24,9 @@ function resumeEmailHtml(type: ResumeType) {
       <p style="color:#6e869e;font-size:0.85rem;margin:8px 0 0;">Dinesh Kumar · Senior Software Engineer</p>
     </div>
     <div style="padding:36px;">
-      <h2 style="color:#e2eeff;font-size:1.1rem;margin:0 0 12px;">Verified — resume attached</h2>
+      <h2 style="color:#e2eeff;font-size:1.1rem;margin:0 0 12px;">${heading}</h2>
       <p style="color:#6e869e;font-size:0.9rem;line-height:1.6;margin:0 0 24px;">
-        Thanks for your interest. Dinesh Kumar's ${resumeLabel(type)} is attached to this email as a PDF.
+        ${intro}
       </p>
       <div style="background:#07101f;border:1px solid #1a2e46;border-radius:10px;padding:18px 20px;">
         <p style="color:#6e869e;font-size:0.85rem;font-weight:700;margin:0 0 10px;">About Dinesh Kumar</p>
@@ -30,8 +40,7 @@ function resumeEmailHtml(type: ResumeType) {
 </body></html>`;
 }
 
-async function sendViaGmail(to: string, type: ResumeType) {
-  const resume = await createResumePdf(type);
+async function sendViaGmail(to: string, resume: GeneratedResume, email: ResumeEmail) {
   const nodemailer = await import('nodemailer');
   const transporter = nodemailer.default.createTransport({
     service: 'gmail',
@@ -44,8 +53,8 @@ async function sendViaGmail(to: string, type: ResumeType) {
   await transporter.sendMail({
     from: `"Dinesh Kumar Portfolio" <${process.env.EMAIL_USER}>`,
     to,
-    subject: `Dinesh Kumar's ${resumeLabel(type)}`,
-    html: resumeEmailHtml(type),
+    subject: email.subject,
+    html: resumeEmailHtml(email),
     attachments: [
       {
         filename: resume.fileName,
@@ -56,8 +65,7 @@ async function sendViaGmail(to: string, type: ResumeType) {
   });
 }
 
-async function sendViaResend(to: string, type: ResumeType) {
-  const resume = await createResumePdf(type);
+async function sendViaResend(to: string, resume: GeneratedResume, email: ResumeEmail) {
   const { Resend } = await import('resend');
   const resend = new Resend(process.env.RESEND_API_KEY);
   const fromEmail = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
@@ -65,8 +73,8 @@ async function sendViaResend(to: string, type: ResumeType) {
   await resend.emails.send({
     from: fromEmail,
     to,
-    subject: `Dinesh Kumar's ${resumeLabel(type)}`,
-    html: resumeEmailHtml(type),
+    subject: email.subject,
+    html: resumeEmailHtml(email),
     attachments: [
       {
         filename: resume.fileName,
@@ -77,17 +85,34 @@ async function sendViaResend(to: string, type: ResumeType) {
   });
 }
 
-export async function sendResumeEmail(to: string, type: ResumeType) {
+async function deliver(to: string, resume: GeneratedResume, email: ResumeEmail) {
   if (process.env.EMAIL_USER && process.env.EMAIL_APP_PASSWORD) {
-    await sendViaGmail(to, type);
+    await sendViaGmail(to, resume, email);
     return;
   }
 
   if (process.env.RESEND_API_KEY && !process.env.RESEND_API_KEY.startsWith('re_xxx')) {
-    await sendViaResend(to, type);
+    await sendViaResend(to, resume, email);
     return;
   }
 
-  const resume = await createResumePdf(type);
   console.log(`[DEV] Resume email skipped for ${to}; generated attachment: ${resume.fileName}`);
+}
+
+export async function sendResumeEmail(to: string, type: ResumeType) {
+  const resume = await createResumePdf(type);
+  await deliver(to, resume, {
+    subject: `Dinesh Kumar's ${resumeLabel(type)}`,
+    heading: 'Verified — resume attached',
+    intro: `Thanks for your interest. Dinesh Kumar's ${resumeLabel(type)} is attached to this email as a PDF.`,
+  });
+}
+
+export async function sendTailoredResumeEmail(to: string, resume: GeneratedResume, roleTitle: string, company: string) {
+  const target = company ? `${roleTitle} at ${company}` : roleTitle;
+  await deliver(to, resume, {
+    subject: `Dinesh Kumar's resume — ${target}`.slice(0, 140),
+    heading: 'Your tailored resume is ready',
+    intro: `Dinesh Kumar's resume, tailored for the <strong style="color:#e2eeff;">${escapeHtml(target)}</strong> role, is attached as a PDF. It highlights his real experience that best matches this job description.`,
+  });
 }

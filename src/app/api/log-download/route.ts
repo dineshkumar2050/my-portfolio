@@ -5,7 +5,7 @@ export async function POST(req: NextRequest) {
   try {
     const { email, type, verified } = await req.json();
     const safeEmail = typeof email === 'string' && email.includes('@') ? email : 'anonymous';
-    const safeType = type === 'detailed' ? 'detailed' : 'basic';
+    const safeType = type === 'detailed' || type === 'tailored' ? type : 'basic';
     await logResumeDownload(safeEmail, safeType, Boolean(verified));
     return NextResponse.json({ ok: true });
   } catch (err) {

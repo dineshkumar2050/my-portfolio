@@ -1,0 +1,902 @@
+[
+  {
+    "keyword": "LLM",
+    "label": "claim",
+    "category": "hierarchy",
+    "rationale": "Skills list \"LLMs\"; portfolio bullet \"Claude, Gemini and Groq LLMs\"."
+  },
+  {
+    "keyword": "Generative AI",
+    "label": "claim",
+    "category": "hierarchy",
+    "rationale": "\"LLM-powered multi-agent system that ... generates a job-tailored ... resume\"; RAG pipelines."
+  },
+  {
+    "keyword": "AI agents",
+    "label": "claim",
+    "category": "hierarchy",
+    "rationale": "\"agentic AI\", \"multi-agent systems\", LangGraph multi-agent pipeline."
+  },
+  {
+    "keyword": "AI coding assistants",
+    "label": "claim",
+    "category": "hierarchy",
+    "rationale": "\"Built Claude Skills and RAG pipelines for enterprise developer productivity\"; Spec-Kit style workflows."
+  },
+  {
+    "keyword": "message queue",
+    "label": "claim",
+    "category": "hierarchy",
+    "rationale": "Profile lists SQS and RabbitMQ."
+  },
+  {
+    "keyword": "message broker",
+    "label": "claim",
+    "category": "hierarchy",
+    "rationale": "Profile lists Kafka and RabbitMQ."
+  },
+  {
+    "keyword": "container orchestration",
+    "label": "claim",
+    "category": "hierarchy",
+    "rationale": "Profile lists Kubernetes and Helm."
+  },
+  {
+    "keyword": "containerization",
+    "label": "claim",
+    "category": "hierarchy",
+    "rationale": "Profile lists Docker (Zengines bullet)."
+  },
+  {
+    "keyword": "relational database",
+    "label": "claim",
+    "category": "hierarchy",
+    "rationale": "MySQL, PostgreSQL in skills and many jobs."
+  },
+  {
+    "keyword": "NoSQL",
+    "label": "claim",
+    "category": "hierarchy",
+    "rationale": "MongoDB used at LendingPoint, CureFit, Trackwick, Axon, etc."
+  },
+  {
+    "keyword": "observability",
+    "label": "claim",
+    "category": "hierarchy",
+    "rationale": "Skill group \"Observability and Quality\"; Grafana, Prometheus, LangSmith tracing."
+  },
+  {
+    "keyword": "frontend framework",
+    "label": "claim",
+    "category": "hierarchy",
+    "rationale": "React.js, Angular, Vue.js, Next.js."
+  },
+  {
+    "keyword": "cloud platform",
+    "label": "claim",
+    "category": "hierarchy",
+    "rationale": "AWS ECS/EC2/S3/Lambda etc."
+  },
+  {
+    "keyword": "search engine",
+    "label": "claim",
+    "category": "hierarchy",
+    "rationale": "Elasticsearch in \"Databases and Search\"."
+  },
+  {
+    "keyword": "secrets management",
+    "label": "claim",
+    "category": "hierarchy",
+    "rationale": "HashiCorp Vault; highlight \"secrets management\"."
+  },
+  {
+    "keyword": "monitoring and alerting",
+    "label": "claim",
+    "category": "hierarchy",
+    "rationale": "Grafana, Prometheus, PagerDuty; highlight \"dashboards, metrics, alerting\"."
+  },
+  {
+    "keyword": "serverless",
+    "label": "claim",
+    "category": "hierarchy",
+    "rationale": "AWS Lambda; \"Vercel serverless deployment\"; \"S3/EC2/serverless support\"."
+  },
+  {
+    "keyword": "API gateway",
+    "label": "related",
+    "category": "hierarchy",
+    "rationale": "Only ALB and NestJS middleware shown; no API gateway product."
+  },
+  {
+    "keyword": "distributed tracing",
+    "label": "related",
+    "category": "hierarchy",
+    "rationale": "Only \"OpenTelemetry concepts\" and LangSmith (LLM) tracing; no service-level tracing system."
+  },
+  {
+    "keyword": "infrastructure as code",
+    "label": "related",
+    "category": "hierarchy",
+    "rationale": "Helm, Docker, AWS deployment paths, but no Terraform/CloudFormation/IaC stated."
+  },
+  {
+    "keyword": "object-oriented programming",
+    "label": "claim",
+    "category": "hierarchy",
+    "rationale": "Java/Spring Boot and \"SOLID\" (object-oriented design principles)."
+  },
+  {
+    "keyword": "K8s",
+    "label": "claim",
+    "category": "synonym",
+    "rationale": "Kubernetes in Cloud and DevOps skills."
+  },
+  {
+    "keyword": "JS",
+    "label": "claim",
+    "category": "synonym",
+    "rationale": "\"JavaScript ES2022+\"."
+  },
+  {
+    "keyword": "TS",
+    "label": "claim",
+    "category": "synonym",
+    "rationale": "TypeScript in languages and multiple jobs."
+  },
+  {
+    "keyword": "ES6",
+    "label": "claim",
+    "category": "synonym",
+    "rationale": "\"JavaScript ES2022+\" includes ES6 features."
+  },
+  {
+    "keyword": "Postgres",
+    "label": "claim",
+    "category": "synonym",
+    "rationale": "PostgreSQL / \"PostgreSQL JSONB\"."
+  },
+  {
+    "keyword": "Mongo",
+    "label": "claim",
+    "category": "synonym",
+    "rationale": "MongoDB."
+  },
+  {
+    "keyword": "RDBMS",
+    "label": "claim",
+    "category": "synonym",
+    "rationale": "MySQL, PostgreSQL."
+  },
+  {
+    "keyword": "IaC",
+    "label": "related",
+    "category": "synonym",
+    "rationale": "No IaC tool listed; only adjacent Helm/AWS deployment work."
+  },
+  {
+    "keyword": "SSR",
+    "label": "related",
+    "category": "synonym",
+    "rationale": "Next.js used, but server-side rendering never stated explicitly."
+  },
+  {
+    "keyword": "SPA",
+    "label": "claim",
+    "category": "synonym",
+    "rationale": "React/Angular/Vue apps with client \"routing\" and API integration."
+  },
+  {
+    "keyword": "PWA",
+    "label": "claim",
+    "category": "synonym",
+    "rationale": "Shopiji: \"Mobile-friendly progressive web app\"."
+  },
+  {
+    "keyword": "RTL",
+    "label": "claim",
+    "category": "synonym",
+    "rationale": "React Testing Library; Zengines bullet \"Jest, RTL\"."
+  },
+  {
+    "keyword": "Domain-Driven Design",
+    "label": "claim",
+    "category": "synonym",
+    "rationale": "\"DDD\" in Architecture skills."
+  },
+  {
+    "keyword": "TanStack Query",
+    "label": "claim",
+    "category": "synonym",
+    "rationale": "\"React Query\" (renamed TanStack Query)."
+  },
+  {
+    "keyword": "Retrieval-Augmented Generation",
+    "label": "claim",
+    "category": "synonym",
+    "rationale": "\"RAG pipelines\"."
+  },
+  {
+    "keyword": "EKS",
+    "label": "related",
+    "category": "synonym",
+    "rationale": "Kubernetes and AWS (ECS) shown separately; Amazon EKS not mentioned."
+  },
+  {
+    "keyword": "NodeJS",
+    "label": "claim",
+    "category": "exact-variant",
+    "rationale": "\"Node.js\"."
+  },
+  {
+    "keyword": "ReactJS",
+    "label": "claim",
+    "category": "exact-variant",
+    "rationale": "\"React.js\"."
+  },
+  {
+    "keyword": "Spring",
+    "label": "claim",
+    "category": "exact-variant",
+    "rationale": "\"Spring Boot\" (Java/Spring Boot integrations at CBA)."
+  },
+  {
+    "keyword": "Express",
+    "label": "claim",
+    "category": "exact-variant",
+    "rationale": "\"Express.js\" in Backend skills."
+  },
+  {
+    "keyword": "RESTful APIs",
+    "label": "claim",
+    "category": "exact-variant",
+    "rationale": "\"REST\", \"Designed scalable REST/GraphQL APIs\"."
+  },
+  {
+    "keyword": "Apache Kafka",
+    "label": "claim",
+    "category": "exact-variant",
+    "rationale": "\"Kafka\"."
+  },
+  {
+    "keyword": "Python",
+    "label": "claim",
+    "category": "exact-variant",
+    "rationale": "\"Python automation\"; Python/Django at Shopiji."
+  },
+  {
+    "keyword": "Django",
+    "label": "claim",
+    "category": "exact-variant",
+    "rationale": "Shopiji: \"REST APIs using ... Python, and Django\"."
+  },
+  {
+    "keyword": "Java",
+    "label": "claim",
+    "category": "near-miss",
+    "rationale": "Languages list \"Java\"; \"Java/Spring Boot integrations\" (must not be confused with JavaScript)."
+  },
+  {
+    "keyword": "Figma",
+    "label": "claim",
+    "category": "exact-variant",
+    "rationale": "\"Created UI screens from Figma\"."
+  },
+  {
+    "keyword": "Google Gemini",
+    "label": "claim",
+    "category": "exact-variant",
+    "rationale": "Gemini model-quality contract; Gemini LLM provider."
+  },
+  {
+    "keyword": "microservices architecture",
+    "label": "claim",
+    "category": "exact-variant",
+    "rationale": "\"Microservices\"; \"event-driven NestJS microservices\"."
+  },
+  {
+    "keyword": "event-driven architecture",
+    "label": "claim",
+    "category": "exact-variant",
+    "rationale": "\"event-driven systems\", \"event-driven workflows\"."
+  },
+  {
+    "keyword": "AngularJS",
+    "label": "related",
+    "category": "near-miss",
+    "rationale": "Profile says \"Angular\" (modern); AngularJS 1.x is a different framework."
+  },
+  {
+    "keyword": "GCP",
+    "label": "related",
+    "category": "sibling",
+    "rationale": "Cloud experience is AWS only."
+  },
+  {
+    "keyword": "Azure",
+    "label": "related",
+    "category": "sibling",
+    "rationale": "Cloud experience is AWS only."
+  },
+  {
+    "keyword": "DynamoDB",
+    "label": "related",
+    "category": "sibling",
+    "rationale": "NoSQL via MongoDB and AWS services, but no DynamoDB."
+  },
+  {
+    "keyword": "Vite",
+    "label": "related",
+    "category": "sibling",
+    "rationale": "Build tooling is Webpack/Babel."
+  },
+  {
+    "keyword": "Tailwind CSS",
+    "label": "related",
+    "category": "sibling",
+    "rationale": "CSS3/SCSS, Material UI, Mantine UI - no Tailwind."
+  },
+  {
+    "keyword": "Flutter",
+    "label": "related",
+    "category": "sibling",
+    "rationale": "Cross-platform mobile via React Native only."
+  },
+  {
+    "keyword": "Apache Airflow",
+    "label": "related",
+    "category": "sibling",
+    "rationale": "Workflow orchestration via Temporal, not Airflow."
+  },
+  {
+    "keyword": "gRPC",
+    "label": "related",
+    "category": "sibling",
+    "rationale": "APIs are REST/GraphQL/WebSockets."
+  },
+  {
+    "keyword": "Datadog",
+    "label": "related",
+    "category": "sibling",
+    "rationale": "Monitoring via Grafana/Prometheus/Observe/Sentry."
+  },
+  {
+    "keyword": "Terraform",
+    "label": "related",
+    "category": "sibling",
+    "rationale": "AWS deployment paths and Helm, but no Terraform."
+  },
+  {
+    "keyword": "Cypress",
+    "label": "related",
+    "category": "sibling",
+    "rationale": "Testing via Jest/Enzyme/RTL (unit), no E2E tool."
+  },
+  {
+    "keyword": "OpenAI API",
+    "label": "related",
+    "category": "sibling",
+    "rationale": "LLM providers are Claude, Gemini, Groq."
+  },
+  {
+    "keyword": "Pinecone",
+    "label": "related",
+    "category": "sibling",
+    "rationale": "RAG pipelines shown, but no vector store named."
+  },
+  {
+    "keyword": "Go",
+    "label": "none",
+    "category": "near-miss",
+    "rationale": "No evidence (no Go/Golang in languages)."
+  },
+  {
+    "keyword": "Golang",
+    "label": "none",
+    "category": "near-miss",
+    "rationale": "No evidence."
+  },
+  {
+    "keyword": "C",
+    "label": "none",
+    "category": "near-miss",
+    "rationale": "No evidence."
+  },
+  {
+    "keyword": "C++",
+    "label": "none",
+    "category": "near-miss",
+    "rationale": "No evidence."
+  },
+  {
+    "keyword": "C#",
+    "label": "none",
+    "category": "near-miss",
+    "rationale": "No evidence."
+  },
+  {
+    "keyword": ".NET",
+    "label": "none",
+    "category": "near-miss",
+    "rationale": "No evidence."
+  },
+  {
+    "keyword": "R",
+    "label": "none",
+    "category": "near-miss",
+    "rationale": "No evidence (R language)."
+  },
+  {
+    "keyword": "Swift",
+    "label": "none",
+    "category": "near-miss",
+    "rationale": "No evidence (mobile is React Native only)."
+  },
+  {
+    "keyword": "Scala",
+    "label": "none",
+    "category": "near-miss",
+    "rationale": "No evidence."
+  },
+  {
+    "keyword": "Kotlin",
+    "label": "none",
+    "category": "near-miss",
+    "rationale": "No evidence."
+  },
+  {
+    "keyword": "Rust",
+    "label": "none",
+    "category": "near-miss",
+    "rationale": "No evidence."
+  },
+  {
+    "keyword": "Ruby on Rails",
+    "label": "none",
+    "category": "near-miss",
+    "rationale": "No evidence."
+  },
+  {
+    "keyword": "PHP",
+    "label": "none",
+    "category": "near-miss",
+    "rationale": "No evidence."
+  },
+  {
+    "keyword": "ExpressionEngine",
+    "label": "none",
+    "category": "near-miss",
+    "rationale": "No evidence (PHP CMS; not Express.js)."
+  },
+  {
+    "keyword": "Elixir",
+    "label": "none",
+    "category": "near-miss",
+    "rationale": "No evidence."
+  },
+  {
+    "keyword": "Dart",
+    "label": "none",
+    "category": "near-miss",
+    "rationale": "No evidence."
+  },
+  {
+    "keyword": "MATLAB",
+    "label": "none",
+    "category": "near-miss",
+    "rationale": "No evidence."
+  },
+  {
+    "keyword": "COBOL",
+    "label": "none",
+    "category": "near-miss",
+    "rationale": "No evidence."
+  },
+  {
+    "keyword": "Groovy",
+    "label": "none",
+    "category": "near-miss",
+    "rationale": "No evidence."
+  },
+  {
+    "keyword": "Objective-C",
+    "label": "none",
+    "category": "near-miss",
+    "rationale": "No evidence."
+  },
+  {
+    "keyword": "Salesforce Apex",
+    "label": "none",
+    "category": "other",
+    "rationale": "No evidence."
+  },
+  {
+    "keyword": "SAP ABAP",
+    "label": "none",
+    "category": "other",
+    "rationale": "No evidence."
+  },
+  {
+    "keyword": "Unity game engine",
+    "label": "none",
+    "category": "other",
+    "rationale": "No evidence (gamification pages at Psydro are not game development)."
+  },
+  {
+    "keyword": "embedded systems",
+    "label": "none",
+    "category": "other",
+    "rationale": "No evidence."
+  },
+  {
+    "keyword": "Solidity",
+    "label": "none",
+    "category": "other",
+    "rationale": "No evidence."
+  },
+  {
+    "keyword": "fintech",
+    "label": "claim",
+    "category": "domain",
+    "rationale": "LendingPoint/InKind \"fintech journeys\"; summary lists fintech."
+  },
+  {
+    "keyword": "banking",
+    "label": "claim",
+    "category": "domain",
+    "rationale": "Commonwealth Bank of Australia - Institutional Banking."
+  },
+  {
+    "keyword": "payments",
+    "label": "related",
+    "category": "domain",
+    "rationale": "Only \"payment-supporting flows\" in commerce and lending; no payment-system engineering."
+  },
+  {
+    "keyword": "healthcare",
+    "label": "claim",
+    "category": "domain",
+    "rationale": "Summary lists healthcare; CureFit health platform; online pharmacy."
+  },
+  {
+    "keyword": "e-commerce",
+    "label": "claim",
+    "category": "domain",
+    "rationale": "Landmark/MaxFashion e-commerce, Shopiji, Mobiles N You."
+  },
+  {
+    "keyword": "edtech",
+    "label": "claim",
+    "category": "domain",
+    "rationale": "PCG Education K-12 special education platform."
+  },
+  {
+    "keyword": "govtech",
+    "label": "claim",
+    "category": "domain",
+    "rationale": "Summary lists \"government technology\"; Medicaid reimbursement, law-enforcement evidence."
+  },
+  {
+    "keyword": "algorithmic trading",
+    "label": "none",
+    "category": "domain",
+    "rationale": "No evidence."
+  },
+  {
+    "keyword": "logistics",
+    "label": "related",
+    "category": "domain",
+    "rationale": "Trackwick GPS/field-force tracking is adjacent, but no logistics/supply-chain work."
+  },
+  {
+    "keyword": "telecom",
+    "label": "none",
+    "category": "domain",
+    "rationale": "No evidence (Mobiles N You is phone retail, not telecom)."
+  },
+  {
+    "keyword": "automotive",
+    "label": "none",
+    "category": "domain",
+    "rationale": "No evidence."
+  },
+  {
+    "keyword": "regulated industries",
+    "label": "claim",
+    "category": "domain",
+    "rationale": "\"regulated and consumer domains\"; \"regulatory-grade reliability\"."
+  },
+  {
+    "keyword": "marketplace platforms",
+    "label": "claim",
+    "category": "domain",
+    "rationale": "WildHire freelance marketplace, Psydro, marketplace products."
+  },
+  {
+    "keyword": "TDD",
+    "label": "related",
+    "category": "practice",
+    "rationale": "Unit testing with Jest/Enzyme, but test-driven development never stated."
+  },
+  {
+    "keyword": "agile",
+    "label": "claim",
+    "category": "practice",
+    "rationale": "\"agile delivery\" across many jobs."
+  },
+  {
+    "keyword": "Scrum",
+    "label": "related",
+    "category": "practice",
+    "rationale": "\"planned sprints\", \"sprint collaboration\" but Scrum itself not named."
+  },
+  {
+    "keyword": "code review",
+    "label": "claim",
+    "category": "practice",
+    "rationale": "\"code review\", \"code reviews\", \"reviewed PRs\"."
+  },
+  {
+    "keyword": "system design",
+    "label": "claim",
+    "category": "practice",
+    "rationale": "\"Owned HLD/LLD, API design, workflow architecture\"."
+  },
+  {
+    "keyword": "mentoring",
+    "label": "claim",
+    "category": "practice",
+    "rationale": "\"mentored junior/mid engineers\"."
+  },
+  {
+    "keyword": "technical leadership",
+    "label": "claim",
+    "category": "practice",
+    "rationale": "\"Led a 6-engineer team\"; Team Lead roles."
+  },
+  {
+    "keyword": "incident management",
+    "label": "claim",
+    "category": "practice",
+    "rationale": "\"runbooks, and incident support\"; PagerDuty; ServiceNow."
+  },
+  {
+    "keyword": "requirements gathering",
+    "label": "claim",
+    "category": "practice",
+    "rationale": "\"requirement gathering\" (Zengines), \"requirement analysis\" (CureFit)."
+  },
+  {
+    "keyword": "stakeholder management",
+    "label": "claim",
+    "category": "practice",
+    "rationale": "\"client communication\", \"client demos\", \"translated client asks into technical delivery plans\"."
+  },
+  {
+    "keyword": "performance optimization",
+    "label": "claim",
+    "category": "practice",
+    "rationale": "\"performance optimization\", \"improved page-load performance\"."
+  },
+  {
+    "keyword": "secure coding",
+    "label": "claim",
+    "category": "practice",
+    "rationale": "\"secure coding\" (CBA), \"API security\", \"SSRF protection\"."
+  },
+  {
+    "keyword": "site reliability engineering",
+    "label": "related",
+    "category": "practice",
+    "rationale": "Observability, alerting, incident support, but no SRE role/practices (SLOs) stated."
+  },
+  {
+    "keyword": "accessibility (WCAG)",
+    "label": "related",
+    "category": "practice",
+    "rationale": "Only \"responsive design\", \"cross-browser compatibility\"; no accessibility."
+  },
+  {
+    "keyword": "data pipelines",
+    "label": "claim",
+    "category": "data-ai",
+    "rationale": "\"Built job-ingestion data pipelines from LinkedIn and Naukri APIs\"."
+  },
+  {
+    "keyword": "ETL",
+    "label": "related",
+    "category": "data-ai",
+    "rationale": "Zengines context mentions data transformation/integration, and ingestion pipelines, but ETL not stated."
+  },
+  {
+    "keyword": "data warehouse",
+    "label": "related",
+    "category": "data-ai",
+    "rationale": "Only operational databases (MySQL/PostgreSQL)."
+  },
+  {
+    "keyword": "Snowflake",
+    "label": "related",
+    "category": "data-ai",
+    "rationale": "Only MySQL/PostgreSQL SQL experience."
+  },
+  {
+    "keyword": "dbt",
+    "label": "related",
+    "category": "data-ai",
+    "rationale": "SQL and schema design shown, but no dbt/analytics engineering."
+  },
+  {
+    "keyword": "Apache Spark",
+    "label": "none",
+    "category": "data-ai",
+    "rationale": "No evidence of big-data processing."
+  },
+  {
+    "keyword": "Hadoop",
+    "label": "none",
+    "category": "data-ai",
+    "rationale": "No evidence."
+  },
+  {
+    "keyword": "Databricks",
+    "label": "none",
+    "category": "data-ai",
+    "rationale": "No evidence."
+  },
+  {
+    "keyword": "knowledge graph",
+    "label": "related",
+    "category": "data-ai",
+    "rationale": "RAG pipelines adjacent; no graph/knowledge-graph work."
+  },
+  {
+    "keyword": "semantic layer",
+    "label": "none",
+    "category": "data-ai",
+    "rationale": "No evidence (BI semantic layer)."
+  },
+  {
+    "keyword": "vector database",
+    "label": "related",
+    "category": "data-ai",
+    "rationale": "RAG pipelines shown, but no vector DB named."
+  },
+  {
+    "keyword": "embeddings",
+    "label": "related",
+    "category": "data-ai",
+    "rationale": "TF-IDF cosine similarity and RAG, but embeddings not mentioned."
+  },
+  {
+    "keyword": "fine-tuning",
+    "label": "related",
+    "category": "data-ai",
+    "rationale": "Gemini model-quality work (curated datasets, training processes) is adjacent; no fine-tuning."
+  },
+  {
+    "keyword": "RLHF",
+    "label": "related",
+    "category": "data-ai",
+    "rationale": "Gemini trainer: analyzed outputs, feedback-loop design; RLHF not named."
+  },
+  {
+    "keyword": "LLM evaluation",
+    "label": "claim",
+    "category": "data-ai",
+    "rationale": "\"Analyzed model outputs ... identified response inaccuracies\"; \"evaluating AI behavior\"."
+  },
+  {
+    "keyword": "responsible AI",
+    "label": "claim",
+    "category": "data-ai",
+    "rationale": "\"responsible AI outcomes\", \"bias mitigation practices\"."
+  },
+  {
+    "keyword": "LLM guardrails",
+    "label": "claim",
+    "category": "data-ai",
+    "rationale": "\"guardrails against hallucinated claims\"."
+  },
+  {
+    "keyword": "prompt engineering",
+    "label": "claim",
+    "category": "data-ai",
+    "rationale": "\"prompt engineering\" in skills and portfolio bullet."
+  },
+  {
+    "keyword": "LLM observability",
+    "label": "claim",
+    "category": "data-ai",
+    "rationale": "\"LangSmith tracing for observability of every agent run\"."
+  },
+  {
+    "keyword": "NLP",
+    "label": "related",
+    "category": "data-ai",
+    "rationale": "TF-IDF and LLM text tasks adjacent; no NLP engineering stated."
+  },
+  {
+    "keyword": "machine learning",
+    "label": "related",
+    "category": "data-ai",
+    "rationale": "Job-fit scoring (TF-IDF) and Gemini model-quality work adjacent; no ML model building."
+  },
+  {
+    "keyword": "MLOps",
+    "label": "none",
+    "category": "data-ai",
+    "rationale": "No evidence."
+  },
+  {
+    "keyword": "PyTorch",
+    "label": "none",
+    "category": "data-ai",
+    "rationale": "No evidence."
+  },
+  {
+    "keyword": "TensorFlow",
+    "label": "none",
+    "category": "data-ai",
+    "rationale": "No evidence."
+  },
+  {
+    "keyword": "scikit-learn",
+    "label": "none",
+    "category": "data-ai",
+    "rationale": "No evidence."
+  },
+  {
+    "keyword": "pandas",
+    "label": "none",
+    "category": "data-ai",
+    "rationale": "No evidence (Python automation only)."
+  },
+  {
+    "keyword": "computer vision",
+    "label": "none",
+    "category": "data-ai",
+    "rationale": "No evidence (image reasoning evaluation only, not CV engineering)."
+  },
+  {
+    "keyword": "Tableau",
+    "label": "none",
+    "category": "data-ai",
+    "rationale": "No evidence."
+  },
+  {
+    "keyword": "Power BI",
+    "label": "none",
+    "category": "data-ai",
+    "rationale": "No evidence."
+  },
+  {
+    "keyword": "Perl",
+    "label": "none",
+    "category": "near-miss",
+    "rationale": "No evidence."
+  },
+  {
+    "keyword": "Haskell",
+    "label": "none",
+    "category": "near-miss",
+    "rationale": "No evidence."
+  },
+  {
+    "keyword": "bioinformatics",
+    "label": "none",
+    "category": "domain",
+    "rationale": "No evidence (healthcare work is product/app engineering, not bioinformatics)."
+  },
+  {
+    "keyword": "aerospace",
+    "label": "none",
+    "category": "domain",
+    "rationale": "No evidence."
+  },
+  {
+    "keyword": "SAS",
+    "label": "none",
+    "category": "data-ai",
+    "rationale": "No evidence (SAS analytics language)."
+  }
+]
