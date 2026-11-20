@@ -1,23 +1,13 @@
+import Anthropic from '@anthropic-ai/sdk';
 import { NextRequest, NextResponse } from 'next/server';
+import { isTokenBudgetExhausted, recordTokens, TOKEN_LIMIT_MESSAGE } from '@/lib/tokenBudget';
 
-// ══════════════════════════════════════════════════════════════════════════════
-// AI PROVIDER TOGGLE
-// ──────────────────────────────────────────────────────────────────────────────
-// Only ONE block should be active at a time. To switch provider:
-//   1. Comment out the active block (search "── <Provider> (active)")
-//   2. Uncomment the block for your desired provider
-//   3. Add the corresponding API key to .env.local
-//   4. Restart: npm run dev
-//
-// Providers & required installs:
-//   ○  OpenAI        → OPENAI_API_KEY         (already installed: openai)
-//   ○  Anthropic     → ANTHROPIC_API_KEY      (npm i @anthropic-ai/sdk)
-//   ✅ Google Gemini → GOOGLE_API_KEY         (already installed: @google/genai)
-//   ○  Grok (xAI)    → XAI_API_KEY            (uses openai SDK — no extra install)
-//   ○  Perplexity    → PERPLEXITY_API_KEY     (uses openai SDK — no extra install)
-//   ✅ Groq fallback → GROQ_API_KEY           (uses openai SDK via Groq — no extra install)
-//   ○  Azure OpenAI  → AZURE_OPENAI_API_KEY   (uses openai SDK — no extra install)
-// ══════════════════════════════════════════════════════════════════════════════
+// Claude Haiku 5.5 (Anthropic's cheapest model) is the only model. Every call counts toward the site-wide
+// daily token budget in lib/tokenBudget.ts; once it is spent, chat answers with TOKEN_LIMIT_MESSAGE.
+const CHAT_MODEL = process.env.CHAT_CLAUDE_MODEL || 'claude-haiku-5-5';
+const MAX_REPLY_TOKENS = 300;     // the prompt asks for 2-4 sentences
+const MAX_HISTORY_MESSAGES = 6;   // every earlier message is re-sent (and billed) with each question
+const MAX_MESSAGE_CHARS = 1_000;
 
 const SYSTEM_PROMPT = `You are a helpful AI assistant on Dinesh Kumar's portfolio website. Your job is to answer questions about Dinesh's professional background, skills, projects, and experience. Be friendly, concise, and informative. If someone seems like a recruiter or hiring manager, be especially helpful.
 
@@ -102,94 +92,58 @@ export async function POST(req: NextRequest) {
   try {
     const { messages } = await req.json();
 
-    // ── Google Gemini (active) ───────────────────────────────────────────────
-    const apiKey = process.env.GOOGLE_API_KEY;
-    if (!apiKey || apiKey === 'your-key-here') {
-      return NextResponse.json(
-        { error: 'Chat is not configured. Please set a valid GOOGLE_API_KEY.' },
-        { status: 503 }
-      );
+    const apiKey = process.env.ANTHROPIC_API_KEY;
+    if (!apiKey || apiKey === 'your-key-here' || apiKey.startsWith('sk-ant-xxx')) {
+      return NextResponse.json({ error: 'Chat is not configured. Please set ANTHROPIC_API_KEY.' }, { status: 503 });
     }
-
-    if (!messages?.length) {
+    if (!Array.isArray(messages) || !messages.length) {
       return NextResponse.json({ error: 'No messages provided' }, { status: 400 });
     }
 
-    const { GoogleGenAI } = await import('@google/genai');
-    const ai = new GoogleGenAI({ apiKey });
+    // Shared by all visitors: once the day's budget is used up (by anyone), everyone gets this message.
+    if (await isTokenBudgetExhausted()) {
+      return NextResponse.json({ error: TOKEN_LIMIT_MESSAGE }, { status: 429 });
+    }
 
+    // Only user/assistant turns, trimmed, must start with a user turn and alternate for the API.
+    const recent: Anthropic.MessageParam[] = [];
+    for (const m of messages.slice(-MAX_HISTORY_MESSAGES) as { role: string; content: unknown }[]) {
+      if ((m.role !== 'user' && m.role !== 'assistant') || typeof m.content !== 'string' || !m.content.trim()) continue;
+      const last = recent[recent.length - 1];
+      if (last?.role === m.role) { recent.pop(); }
+      recent.push({ role: m.role, content: m.content.slice(0, MAX_MESSAGE_CHARS) });
+    }
+    while (recent.length && recent[0].role !== 'user') recent.shift();
+    if (!recent.length || recent[recent.length - 1].role !== 'user') {
+      return NextResponse.json({ error: 'No messages provided' }, { status: 400 });
+    }
+
+    const client = new Anthropic({ apiKey, maxRetries: 1 });
     const encoder = new TextEncoder();
     const stream = new ReadableStream({
       async start(controller) {
-        const recentMessages = messages.slice(-12);
         try {
-          const conversation = recentMessages
-            .map((m: { role: string; content: string }) => `${m.role}: ${m.content}`)
-            .join('\n');
-
-          const geminiStream = await ai.models.generateContentStream({
-            model: 'gemini-3.6-flash',
-            contents: `${SYSTEM_PROMPT}\n\nConversation:\n${conversation}\nassistant:`,
+          const response = client.messages.stream({
+            model: CHAT_MODEL,
+            max_tokens: MAX_REPLY_TOKENS,
+            output_config: { effort: 'low' }, // no extended thinking: it would be billed as output tokens
+            system: SYSTEM_PROMPT,
+            messages: recent,
           });
-
-          for await (const chunk of geminiStream) {
-            const text = chunk.text ?? '';
-            if (text) controller.enqueue(encoder.encode(text));
-          }
+          response.on('text', (text) => controller.enqueue(encoder.encode(text)));
+          const final = await response.finalMessage();
+          await recordTokens(final.usage.input_tokens + final.usage.output_tokens);
           controller.close();
         } catch (err: unknown) {
-          const maybeError = err as { status?: number; code?: string; type?: string; message?: string };
-          const msg = maybeError.message || String(err);
-          const isAuth = maybeError.status === 401 || maybeError.status === 403 || msg.includes('401') || msg.includes('403') || msg.toLowerCase().includes('api key');
-          const isQuota = maybeError.status === 429 || msg.includes('429') || msg.toLowerCase().includes('quota') || msg.toLowerCase().includes('rate limit');
-          console.error('[chat] Gemini request failed:', {
-            status: maybeError.status,
-            code: maybeError.code,
-            type: maybeError.type,
-            message: msg.replace(apiKey, '[redacted]'),
-          });
-
-          const groqApiKey = process.env.GROQ_API_KEY;
-          if (groqApiKey && groqApiKey !== 'your-key-here') {
-            try {
-              const OpenAI = (await import('openai')).default;
-              const groq = new OpenAI({
-                apiKey: groqApiKey,
-                baseURL: 'https://api.groq.com/openai/v1',
-              });
-              const groqStream = await groq.chat.completions.create({
-                model: 'openai/gpt-oss-20b',
-                max_tokens: 600,
-                stream: true,
-                messages: [
-                  { role: 'system', content: SYSTEM_PROMPT },
-                  ...recentMessages,
-                ],
-              });
-
-              for await (const chunk of groqStream) {
-                const text = chunk.choices[0]?.delta?.content ?? '';
-                if (text) controller.enqueue(encoder.encode(text));
-              }
-              controller.close();
-              return;
-            } catch (fallbackErr: unknown) {
-              const fallbackError = fallbackErr as { status?: number; code?: string; type?: string; message?: string };
-              const fallbackMsg = fallbackError.message || String(fallbackErr);
-              console.error('[chat] Groq fallback failed:', {
-                status: fallbackError.status,
-                code: fallbackError.code,
-                type: fallbackError.type,
-                message: fallbackMsg.replace(groqApiKey, '[redacted]'),
-              });
-            }
-          }
-
+          const e = err as { status?: number; message?: string };
+          console.error('[chat] Claude request failed:', { status: e.status, message: String(e.message ?? err).replace(apiKey, '[redacted]') });
+          const isAuth = e.status === 401 || e.status === 403;
+          const isQuota = e.status === 429 || e.status === 529 || /credit balance|rate limit|overloaded/i.test(String(e.message));
           controller.enqueue(encoder.encode(
             isQuota
-              ? 'Chat is temporarily unavailable because the Gemini API quota or rate limit was reached. Please contact Dinesh directly at dinesh.kumar.199998888@gmail.com.'
+              ? 'Chat is temporarily unavailable because the AI quota or rate limit was reached. Please contact Dinesh directly at dinesh.kumar.199998888@gmail.com.'
               : isAuth
-                ? 'Chat is not configured - the Gemini API key is invalid. Please contact Dinesh directly at dinesh.kumar.199998888@gmail.com.'
+                ? 'Chat is not configured - the API key is invalid. Please contact Dinesh directly at dinesh.kumar.199998888@gmail.com.'
                 : 'Sorry, something went wrong. Please try again or contact Dinesh directly.'
           ));
           controller.close();
@@ -197,222 +151,8 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    return new Response(stream, {
-      headers: { 'Content-Type': 'text/plain; charset=utf-8' },
-    });
-    // ── End Google Gemini ─────────────────────────────────────────────────────
-
-    // ── Anthropic / Claude (commented — uncomment to switch) ─────────────────
-    // const apiKey = process.env.ANTHROPIC_API_KEY;
-    // if (!apiKey || apiKey.startsWith('sk-ant-xxx')) {
-    //   return NextResponse.json({ error: 'Chat is not configured. Please set ANTHROPIC_API_KEY.' }, { status: 503 });
-    // }
-    // if (!messages?.length) return NextResponse.json({ error: 'No messages provided' }, { status: 400 });
-    // const Anthropic = (await import('@anthropic-ai/sdk')).default;
-    // const client = new Anthropic({ apiKey });
-    // const encoder = new TextEncoder();
-    // const stream = new ReadableStream({
-    //   async start(controller) {
-    //     try {
-    //       const s = client.messages.stream({ model: 'claude-haiku-4-5-20251001', max_tokens: 600, system: SYSTEM_PROMPT, messages: messages.slice(-12) });
-    //       for await (const event of s) {
-    //         if (event.type === 'content_block_delta' && event.delta.type === 'text_delta')
-    //           controller.enqueue(encoder.encode(event.delta.text));
-    //       }
-    //       controller.close();
-    //     } catch (err: unknown) {
-    //       const msg = err instanceof Error ? err.message : String(err);
-    //       controller.enqueue(encoder.encode(msg.includes('401') ? 'Invalid API key. Contact Dinesh at dinesh.kumar.199998888@gmail.com.' : 'Something went wrong. Please try again.'));
-    //       controller.close();
-    //     }
-    //   },
-    // });
-    // return new Response(stream, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
-    // ── End Anthropic ─────────────────────────────────────────────────────────
-
-    // ── Google Gemini (alternate commented sample) ────────────────────────────
-    // Install first: npm i @google/genai
-    // .env.local: GOOGLE_API_KEY=AIza...  (get at aistudio.google.com/app/apikey)
-    //
-    // const apiKey = process.env.GOOGLE_API_KEY;
-    // if (!apiKey || apiKey === 'your-key-here') {
-    //   return NextResponse.json({ error: 'Chat is not configured. Please set GOOGLE_API_KEY.' }, { status: 503 });
-    // }
-    // if (!messages?.length) return NextResponse.json({ error: 'No messages provided' }, { status: 400 });
-    // const { GoogleGenAI } = await import('@google/genai');
-    // const ai = new GoogleGenAI({ apiKey });
-    // const encoder = new TextEncoder();
-    // const stream = new ReadableStream({
-    //   async start(controller) {
-    //     try {
-    //       const geminiStream = await ai.models.generateContentStream({
-    //         model: 'gemini-3.6-flash',
-    //         contents: [
-    //           { role: 'user', parts: [{ text: SYSTEM_PROMPT + '\n\nConversation:\n' + messages.map((m: {role:string,content:string}) => `${m.role}: ${m.content}`).join('\n') }] },
-    //         ],
-    //       });
-    //       for await (const chunk of geminiStream) {
-    //         const text = chunk.text ?? '';
-    //         if (text) controller.enqueue(encoder.encode(text));
-    //       }
-    //       controller.close();
-    //     } catch (err: unknown) {
-    //       const msg = err instanceof Error ? err.message : String(err);
-    //       controller.enqueue(encoder.encode(msg.includes('401') || msg.includes('API_KEY') ? 'Invalid API key. Contact Dinesh at dinesh.kumar.199998888@gmail.com.' : 'Something went wrong. Please try again.'));
-    //       controller.close();
-    //     }
-    //   },
-    // });
-    // return new Response(stream, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
-    // ── End Google Gemini ─────────────────────────────────────────────────────
-
-    // ── Grok / xAI (commented) ────────────────────────────────────────────────
-    // No extra install needed — uses openai SDK with xAI's OpenAI-compatible API
-    // .env.local: XAI_API_KEY=xai-...  (get at console.x.ai)
-    //
-    // const apiKey = process.env.XAI_API_KEY;
-    // if (!apiKey || apiKey === 'your-key-here') {
-    //   return NextResponse.json({ error: 'Chat is not configured. Please set XAI_API_KEY.' }, { status: 503 });
-    // }
-    // if (!messages?.length) return NextResponse.json({ error: 'No messages provided' }, { status: 400 });
-    // const OpenAI = (await import('openai')).default;
-    // const client = new OpenAI({ apiKey, baseURL: 'https://api.x.ai/v1' });
-    // const encoder = new TextEncoder();
-    // const stream = new ReadableStream({
-    //   async start(controller) {
-    //     try {
-    //       const s = await client.chat.completions.create({
-    //         model: 'grok-3-mini',   // or 'grok-3' for full model
-    //         max_tokens: 600, stream: true,
-    //         messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages.slice(-12)],
-    //       });
-    //       for await (const chunk of s) {
-    //         const text = chunk.choices[0]?.delta?.content ?? '';
-    //         if (text) controller.enqueue(encoder.encode(text));
-    //       }
-    //       controller.close();
-    //     } catch (err: unknown) {
-    //       const msg = err instanceof Error ? err.message : String(err);
-    //       controller.enqueue(encoder.encode(msg.includes('401') ? 'Invalid API key. Contact Dinesh at dinesh.kumar.199998888@gmail.com.' : 'Something went wrong. Please try again.'));
-    //       controller.close();
-    //     }
-    //   },
-    // });
-    // return new Response(stream, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
-    // ── End Grok ──────────────────────────────────────────────────────────────
-
-    // ── Perplexity (commented) ────────────────────────────────────────────────
-    // No extra install — uses openai SDK with Perplexity's OpenAI-compatible API
-    // .env.local: PERPLEXITY_API_KEY=pplx-...  (get at perplexity.ai/settings/api)
-    //
-    // const apiKey = process.env.PERPLEXITY_API_KEY;
-    // if (!apiKey || apiKey === 'your-key-here') {
-    //   return NextResponse.json({ error: 'Chat is not configured. Please set PERPLEXITY_API_KEY.' }, { status: 503 });
-    // }
-    // if (!messages?.length) return NextResponse.json({ error: 'No messages provided' }, { status: 400 });
-    // const OpenAI = (await import('openai')).default;
-    // const client = new OpenAI({ apiKey, baseURL: 'https://api.perplexity.ai' });
-    // const encoder = new TextEncoder();
-    // const stream = new ReadableStream({
-    //   async start(controller) {
-    //     try {
-    //       const s = await client.chat.completions.create({
-    //         model: 'llama-3.1-sonar-small-128k-online',  // has web search built-in
-    //         max_tokens: 600, stream: true,
-    //         messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages.slice(-12)],
-    //       });
-    //       for await (const chunk of s) {
-    //         const text = chunk.choices[0]?.delta?.content ?? '';
-    //         if (text) controller.enqueue(encoder.encode(text));
-    //       }
-    //       controller.close();
-    //     } catch (err: unknown) {
-    //       const msg = err instanceof Error ? err.message : String(err);
-    //       controller.enqueue(encoder.encode(msg.includes('401') ? 'Invalid API key. Contact Dinesh at dinesh.kumar.199998888@gmail.com.' : 'Something went wrong. Please try again.'));
-    //       controller.close();
-    //     }
-    //   },
-    // });
-    // return new Response(stream, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
-    // ── End Perplexity ────────────────────────────────────────────────────────
-
-    // ── Meta / Llama via Groq (commented) ────────────────────────────────────
-    // No extra install — uses openai SDK with Groq's OpenAI-compatible API (free tier)
-    // .env.local: GROQ_API_KEY=gsk_...  (get free key at console.groq.com)
-    //
-    // const apiKey = process.env.GROQ_API_KEY;
-    // if (!apiKey || apiKey === 'your-key-here') {
-    //   return NextResponse.json({ error: 'Chat is not configured. Please set GROQ_API_KEY.' }, { status: 503 });
-    // }
-    // if (!messages?.length) return NextResponse.json({ error: 'No messages provided' }, { status: 400 });
-    // const OpenAI = (await import('openai')).default;
-    // const client = new OpenAI({ apiKey, baseURL: 'https://api.groq.com/openai/v1' });
-    // const encoder = new TextEncoder();
-    // const stream = new ReadableStream({
-    //   async start(controller) {
-    //     try {
-    //       const s = await client.chat.completions.create({
-    //         model: 'llama-3.3-70b-versatile',  // Meta Llama 3.3 70B, fast & free on Groq
-    //         max_tokens: 600, stream: true,
-    //         messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages.slice(-12)],
-    //       });
-    //       for await (const chunk of s) {
-    //         const text = chunk.choices[0]?.delta?.content ?? '';
-    //         if (text) controller.enqueue(encoder.encode(text));
-    //       }
-    //       controller.close();
-    //     } catch (err: unknown) {
-    //       const msg = err instanceof Error ? err.message : String(err);
-    //       controller.enqueue(encoder.encode(msg.includes('401') ? 'Invalid API key. Contact Dinesh at dinesh.kumar.199998888@gmail.com.' : 'Something went wrong. Please try again.'));
-    //       controller.close();
-    //     }
-    //   },
-    // });
-    // return new Response(stream, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
-    // ── End Meta / Llama ──────────────────────────────────────────────────────
-
-    // ── Microsoft Azure OpenAI (commented) ───────────────────────────────────
-    // No extra install — uses openai SDK with Azure config
-    // .env.local:
-    //   AZURE_OPENAI_API_KEY=...       (Azure portal → your resource → Keys)
-    //   AZURE_OPENAI_ENDPOINT=https://YOUR-RESOURCE.openai.azure.com
-    //   AZURE_OPENAI_DEPLOYMENT=gpt-4o-mini  (your deployment name)
-    //
-    // const apiKey = process.env.AZURE_OPENAI_API_KEY;
-    // const endpoint = process.env.AZURE_OPENAI_ENDPOINT;
-    // const deployment = process.env.AZURE_OPENAI_DEPLOYMENT || 'gpt-4o-mini';
-    // if (!apiKey || !endpoint) {
-    //   return NextResponse.json({ error: 'Chat is not configured. Please set AZURE_OPENAI_API_KEY and AZURE_OPENAI_ENDPOINT.' }, { status: 503 });
-    // }
-    // if (!messages?.length) return NextResponse.json({ error: 'No messages provided' }, { status: 400 });
-    // const { AzureOpenAI } = await import('openai');
-    // const client = new AzureOpenAI({ apiKey, endpoint, apiVersion: '2025-01-01-preview' });
-    // const encoder = new TextEncoder();
-    // const stream = new ReadableStream({
-    //   async start(controller) {
-    //     try {
-    //       const s = await client.chat.completions.create({
-    //         model: deployment,
-    //         max_tokens: 600, stream: true,
-    //         messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages.slice(-12)],
-    //       });
-    //       for await (const chunk of s) {
-    //         const text = chunk.choices[0]?.delta?.content ?? '';
-    //         if (text) controller.enqueue(encoder.encode(text));
-    //       }
-    //       controller.close();
-    //     } catch (err: unknown) {
-    //       const msg = err instanceof Error ? err.message : String(err);
-    //       controller.enqueue(encoder.encode(msg.includes('401') ? 'Invalid API key. Contact Dinesh at dinesh.kumar.199998888@gmail.com.' : 'Something went wrong. Please try again.'));
-    //       controller.close();
-    //     }
-    //   },
-    // });
-    // return new Response(stream, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
-    // ── End Azure OpenAI ──────────────────────────────────────────────────────
-
-  } catch (err) {
-    console.error('chat error:', err);
-    return NextResponse.json({ error: 'Chat failed' }, { status: 500 });
+    return new Response(stream, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
+  } catch {
+    return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
   }
 }

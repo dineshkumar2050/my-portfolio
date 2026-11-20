@@ -58,7 +58,7 @@ If the role is a weak fit (below 50%), the visitor sees the fit score and the ma
 | App | **Next.js 14** (App Router), **React 18**, **TypeScript**, Tailwind | UI, API routes (serverless), streaming NDJSON responses |
 | Agent orchestration | **LangGraph** (`@langchain/langgraph`) | `StateGraph`, conditional edges, `Send` fan-outs, reducers for shared state |
 | LLM framework | **LangChain** (`@langchain/core`, `@langchain/anthropic`, `@langchain/google-genai`, `@langchain/groq`) | Structured outputs, provider fallbacks, retries, runnables |
-| Models | **Claude Haiku 5.5** (primary), Gemini, Groq (fallbacks) | Analysis, matching, writing, fact-checking, editing |
+| Models | **Claude Haiku 5.5** (only model; daily token budget in `tokenBudget.ts`) | Analysis, matching, writing, fact-checking, editing |
 | Tracing | **LangSmith** | Per-agent traces, latency and token usage |
 | Validation | **Zod** | Typed LLM output schemas (JSON-schema structured outputs) |
 | ML / NLP | Custom **TF-IDF + cosine similarity**, skill **knowledge graph**, LLM judge; **transformers.js** (MiniLM, BGE) and char n-gram TF-IDF in the benchmark | Job-fit scoring, semantic skill matching, project ranking |
@@ -88,7 +88,6 @@ flowchart LR
 
   subgraph External["External services"]
     CL["Anthropic Claude<br/>(Haiku 5.5)"]
-    GM["Google Gemini /<br/>Groq (fallbacks)"]
     JOB["LinkedIn & Naukri APIs<br/>Apify · ScraperAPI"]
     MAIL["Gmail SMTP / Resend"]
     LS["LangSmith tracing"]
@@ -99,11 +98,11 @@ flowchart LR
   M2 --> OTP1 & OTP2 & TR
   CW --> CHAT
   TR --> G --> PDF --> MAIL
-  G --> CL & GM & JOB
+  G --> CL & JOB
   G -. traces .-> LS
   OTP1 --> MAIL
   OTP2 --> MAIL
-  CHAT --> GM
+  CHAT --> CL
 
   GH["GitHub Actions<br/>test:skills → build"] -->|deploy on push to main| Vercel
 ```
@@ -218,7 +217,7 @@ flowchart LR
 
 - **Reducers make parallel writes safe.** Writers and editors upsert project drafts by id, and fact-checkers append findings.
 - **The `notes` channel** is an append-only audit log, e.g. "related skills claimed", "editor fixed 2 claims". It's logged on the server and visible in LangSmith.
-- **Provider resilience.** Each agent calls `Claude → Gemini → Groq` through LangChain `withFallbacks`, wrapped in a retry with backoff for rate limits. Daily-quota errors aren't retried.
+- **Cost control.** Claude Haiku 5.5 only, at low effort. Every call's tokens count toward a shared daily budget (default 150k/day) that also covers chat; once spent, visitors see "Token limit reached for today, please try again tomorrow." Rate-limit errors are retried with backoff.
 
 ## ML work
 
@@ -339,7 +338,7 @@ src/
     api/
       tailored-resume/route.ts       # streams the agent graph (NDJSON), renders + emails the PDF
       send-otp/ verify-otp/          # stateless HMAC OTP + session tokens
-      chat/                          # AI chat widget (Gemini → Groq)
+      chat/                          # AI chat widget (Claude Haiku 5.5)
   components/
     ResumeSection.tsx                # 3 resume cards
     TailoredResumeModal.tsx          # job input, live agent progress, low-fit confirmation
@@ -354,7 +353,7 @@ src/
       skillTaxonomy.ts               # skill knowledge graph
       similarity.ts                  # TF-IDF cosine similarity
       jobIngest.ts                   # job fetching chain + SSRF guard
-      llm.ts                         # Claude → Gemini → Groq fallbacks, retries, effort
+      llm.ts                         # Claude Haiku 5.5, token metering, retries
     resumePdf.ts  resumeEmail.ts  otpStore.ts
 scripts/skill-match-eval/            # labelled dataset, benchmark harness, CI regression test
 ```
@@ -376,7 +375,7 @@ npm run dev                        # http://localhost:3000
 
 Key environment variables:
 
-- **AI:** `ANTHROPIC_API_KEY` (primary model), plus `GOOGLE_API_KEY` and `GROQ_API_KEY` (fallbacks and the chat widget).
+- **AI:** `ANTHROPIC_API_KEY` (chat + resume agents), `KV_REST_API_URL`/`KV_REST_API_TOKEN` (daily token counter), optional `DAILY_TOKEN_LIMIT`.
 - **Email:** `EMAIL_USER` and `EMAIL_APP_PASSWORD` (Gmail SMTP), or `RESEND_API_KEY`.
 - **Security:** `OTP_SIGNING_SECRET`.
 - **Job scraping:** `APIFY_API_TOKEN`, `SCRAPERAPI_KEY` (both optional).

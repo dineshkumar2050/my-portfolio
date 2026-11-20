@@ -9,6 +9,7 @@ import { sendTailoredResumeEmail } from '@/lib/resumeEmail';
 import { resumeGraph, sectionLabel, toResumeContent, type PreparedJob, type ResumeGraphState } from '@/lib/resumeAgents/graph';
 import { JobFetchError } from '@/lib/resumeAgents/jobIngest';
 import { agentsConfigured, isCapacityError } from '@/lib/resumeAgents/llm';
+import { hasTokensLeft, TOKEN_LIMIT_MESSAGE, TokenLimitError } from '@/lib/tokenBudget';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -21,6 +22,7 @@ export const maxDuration = 180;
 //   {"type":"done","roleTitle":"…","company":"…","coverage":{…}}
 //   {"type":"error","message":"…"}
 
+const RESUME_MIN_TOKENS = Number(process.env.RESUME_MIN_TOKENS) || 55_000;
 const MIN_JD_CHARS = 200;
 const MAX_JD_CHARS = 20_000;
 
@@ -63,6 +65,11 @@ export async function POST(req: NextRequest) {
   }
   if (!agentsConfigured()) {
     return NextResponse.json({ error: 'Resume generation is not configured right now.' }, { status: 503 });
+  }
+
+  // Measured: one resume run uses ~54k tokens (48-59k). Refuse up front rather than burn the budget and fail midway.
+  if (!(await hasTokensLeft(RESUME_MIN_TOKENS))) {
+    return NextResponse.json({ error: TOKEN_LIMIT_MESSAGE }, { status: 429 });
   }
 
   const platform = JOB_PLATFORM_IDS.includes(body.platform) ? body.platform : 'other';
@@ -146,6 +153,8 @@ export async function POST(req: NextRequest) {
           type: 'error',
           message: err instanceof JobFetchError
             ? err.message
+            : err instanceof TokenLimitError
+              ? TOKEN_LIMIT_MESSAGE
             : isCapacityError(err)
               ? 'The AI agents are at capacity right now. Please try again in a few minutes, or later today.'
               : 'Something went wrong while generating the resume. Please try again, or paste the job description instead of a URL.',

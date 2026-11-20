@@ -57,8 +57,9 @@ VERCEL_PROJECT_ID
 The GitHub Action pulls runtime variables from Vercel (`vercel pull`), so set these in Vercel Project Settings → Environment Variables:
 
 ```text
-ANTHROPIC_API_KEY                       # tailored-resume agents (Claude Haiku, primary)
-GOOGLE_API_KEY, GROQ_API_KEY            # chat widget + agent fallbacks
+ANTHROPIC_API_KEY                       # chat widget + tailored-resume agents (Claude Haiku 5.5, the only model)
+KV_REST_API_URL, KV_REST_API_TOKEN      # daily token counter — add the Upstash Redis integration (see below)
+DAILY_TOKEN_LIMIT (optional)            # default 150000 tokens/day, all visitors combined
 EMAIL_USER, EMAIL_APP_PASSWORD          # Gmail SMTP for OTP + resume emails
 OTP_SIGNING_SECRET                      # signs OTP + session tokens
 APIFY_API_TOKEN, SCRAPINGBEE_API_KEY,   # optional: read job URLs that block direct fetches
@@ -85,9 +86,15 @@ fuzzy n-grams, MiniLM/BGE embeddings, taxonomy, LLM, hybrids) on an independentl
 85.7% macro-F1 on the held-out half, 100% claim recall, 0 false claims (`npm run eval:skills`; `npm run test:skills` in CI). At ≥50% (`RESUME_FLEX_THRESHOLD`) agents write freely and may claim related JD
 skills that fit Dinesh's stack. Below it the run pauses and the visitor is asked whether they still want the resume; on
 "yes" it is generated in strict mode (profile facts only). Employers, titles, dates, education and achievements always
-come from `profile.ts`. A run makes 5–6 LLM calls (~12k input tokens) on Claude Haiku 5.5
-(`claude-haiku-5-5`, $0.10 / $0.50 per MTok — well under a cent per resume). Gemini and Groq are fallbacks only; their
-free tiers (Gemini 5 req/min + 20/day, Groq 8k tokens/min) can't run the pipeline on their own.
+come from `profile.ts`. A run makes many LLM calls (measured ≈ 54k tokens, 48–59k) on Claude Haiku 5.5
+(`claude-haiku-5-5`, $0.10 / $0.50 per MTok — about 3 cents per resume at worst). Haiku 5.5 is the only model: no Gemini/Groq fallbacks.
+
+### Daily token budget
+Chat and resume generation share one site-wide budget (`src/lib/tokenBudget.ts`): `DAILY_TOKEN_LIMIT`, default 150,000 tokens per UTC day
+(≈ 2 resumes + 15 chat messages, ≤ $0.08/day). When it is used up, every visitor sees "Token limit reached for today, please try again tomorrow."
+A resume only starts if `RESUME_MIN_TOKENS` (55,000) remain. The counter needs shared storage: install **Upstash Redis** from the Vercel
+Marketplace (`vercel integration add upstash`, link it to the project) so `KV_REST_API_URL`/`KV_REST_API_TOKEN` exist in production.
+Without it each serverless instance counts separately and the limit is only approximate.
 Job URLs are read cheapest-first: LinkedIn guest API / Naukri job API (free) → direct fetch → Apify (Indeed) →
 ScrapingBee → ScraperAPI. When every source fails or is out of credits, the visitor is asked to paste the JD.
 The function needs up to ~60s, so `maxDuration` is 180 (requires Vercel Fluid compute, the default for new projects).
